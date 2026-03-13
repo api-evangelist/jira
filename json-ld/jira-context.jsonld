@@ -1,0 +1,355 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "jira": "https://developer.atlassian.com/cloud/jira/platform/ns/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "Issue": {
+      "@id": "jira:Issue",
+      "@context": {
+        "key": "schema:identifier",
+        "summary": "schema:name",
+        "description": "schema:text",
+        "status": "jira:status",
+        "priority": "jira:priority",
+        "resolution": "jira:resolution",
+        "self": {
+          "@id": "jira:apiUrl",
+          "@type": "@id"
+        },
+        "assignee": {
+          "@id": "jira:assignee",
+          "@type": "@id"
+        },
+        "reporter": {
+          "@id": "schema:author",
+          "@type": "@id"
+        },
+        "creator": {
+          "@id": "dcterms:creator",
+          "@type": "@id"
+        },
+        "labels": {
+          "@id": "schema:keywords",
+          "@container": "@set"
+        },
+        "components": {
+          "@id": "jira:components",
+          "@container": "@set"
+        },
+        "fixVersions": {
+          "@id": "jira:fixVersions",
+          "@container": "@set"
+        },
+        "versions": {
+          "@id": "jira:affectedVersions",
+          "@container": "@set"
+        },
+        "subtasks": {
+          "@id": "jira:subtasks",
+          "@container": "@set"
+        },
+        "parent": {
+          "@id": "jira:parentIssue",
+          "@type": "@id"
+        },
+        "issuelinks": {
+          "@id": "jira:issueLinks",
+          "@container": "@set"
+        },
+        "comment": "schema:commentCount",
+        "watches": "jira:watchCount",
+        "votes": "jira:voteCount",
+        "duedate": {
+          "@id": "jira:dueDate",
+          "@type": "xsd:date"
+        },
+        "created": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "updated": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        },
+        "resolutiondate": {
+          "@id": "jira:resolutionDate",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Project": {
+      "@id": "jira:Project",
+      "@context": {
+        "key": "schema:identifier",
+        "name": "schema:name",
+        "description": "schema:description",
+        "url": {
+          "@id": "schema:url",
+          "@type": "@id"
+        },
+        "self": {
+          "@id": "jira:apiUrl",
+          "@type": "@id"
+        },
+        "lead": {
+          "@id": "schema:maintainer",
+          "@type": "@id"
+        },
+        "projectTypeKey": "jira:projectType",
+        "simplified": "jira:isSimplified",
+        "style": "jira:projectStyle",
+        "archived": "jira:isArchived",
+        "deleted": "jira:isDeleted",
+        "assigneeType": "jira:defaultAssigneeType",
+        "components": {
+          "@id": "jira:components",
+          "@container": "@set"
+        },
+        "issueTypes": {
+          "@id": "jira:issueTypes",
+          "@container": "@set"
+        },
+        "versions": {
+          "@id": "jira:versions",
+          "@container": "@set"
+        },
+        "roles": "jira:roles",
+        "projectCategory": "jira:projectCategory"
+      }
+    },
+
+    "User": {
+      "@id": "jira:User",
+      "@context": {
+        "accountId": "schema:identifier",
+        "displayName": "schema:name",
+        "emailAddress": "schema:email",
+        "self": {
+          "@id": "jira:apiUrl",
+          "@type": "@id"
+        },
+        "avatarUrls": {
+          "@id": "schema:image",
+          "@type": "@id"
+        },
+        "active": "jira:isActive",
+        "timeZone": "jira:timeZone",
+        "accountType": "jira:accountType"
+      }
+    },
+
+    "IssueType": {
+      "@id": "jira:IssueType",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "iconUrl": {
+          "@id": "schema:image",
+          "@type": "@id"
+        },
+        "subtask": "jira:isSubtask",
+        "hierarchyLevel": "jira:hierarchyLevel"
+      }
+    },
+
+    "Status": {
+      "@id": "jira:Status",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "statusCategory": "jira:statusCategory",
+        "iconUrl": {
+          "@id": "schema:image",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "Priority": {
+      "@id": "jira:Priority",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "iconUrl": {
+          "@id": "schema:image",
+          "@type": "@id"
+        },
+        "statusColor": "jira:statusColor"
+      }
+    },
+
+    "Resolution": {
+      "@id": "jira:Resolution",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description"
+      }
+    },
+
+    "Component": {
+      "@id": "jira:Component",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "lead": {
+          "@id": "schema:maintainer",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "Version": {
+      "@id": "jira:Version",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "archived": "jira:isArchived",
+        "released": "jira:isReleased",
+        "releaseDate": {
+          "@id": "jira:releaseDate",
+          "@type": "xsd:date"
+        },
+        "startDate": {
+          "@id": "jira:startDate",
+          "@type": "xsd:date"
+        },
+        "overdue": "jira:isOverdue"
+      }
+    },
+
+    "Comment": {
+      "@id": "jira:Comment",
+      "@context": {
+        "body": "schema:text",
+        "author": {
+          "@id": "schema:author",
+          "@type": "@id"
+        },
+        "updateAuthor": {
+          "@id": "jira:updateAuthor",
+          "@type": "@id"
+        },
+        "created": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "updated": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        },
+        "visibility": "jira:visibility"
+      }
+    },
+
+    "Attachment": {
+      "@id": "jira:Attachment",
+      "@context": {
+        "filename": "schema:name",
+        "mimeType": "schema:encodingFormat",
+        "size": "schema:contentSize",
+        "content": {
+          "@id": "schema:contentUrl",
+          "@type": "@id"
+        },
+        "thumbnail": {
+          "@id": "schema:thumbnailUrl",
+          "@type": "@id"
+        },
+        "author": {
+          "@id": "schema:author",
+          "@type": "@id"
+        },
+        "created": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Worklog": {
+      "@id": "jira:Worklog",
+      "@context": {
+        "timeSpent": "jira:timeSpent",
+        "timeSpentSeconds": "jira:timeSpentSeconds",
+        "author": {
+          "@id": "schema:author",
+          "@type": "@id"
+        },
+        "started": {
+          "@id": "jira:started",
+          "@type": "xsd:dateTime"
+        },
+        "created": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "updated": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Sprint": {
+      "@id": "jira:Sprint",
+      "@context": {
+        "name": "schema:name",
+        "state": "jira:sprintState",
+        "goal": "schema:description",
+        "startDate": {
+          "@id": "jira:startDate",
+          "@type": "xsd:dateTime"
+        },
+        "endDate": {
+          "@id": "jira:endDate",
+          "@type": "xsd:dateTime"
+        },
+        "completeDate": {
+          "@id": "jira:completeDate",
+          "@type": "xsd:dateTime"
+        },
+        "originBoardId": "jira:originBoardId"
+      }
+    },
+
+    "Board": {
+      "@id": "jira:Board",
+      "@context": {
+        "name": "schema:name",
+        "type": "jira:boardType",
+        "self": {
+          "@id": "jira:apiUrl",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "WebhookEvent": {
+      "@id": "jira:WebhookEvent",
+      "@context": {
+        "webhookEvent": "jira:eventType",
+        "timestamp": {
+          "@id": "jira:timestamp",
+          "@type": "xsd:long"
+        },
+        "user": {
+          "@id": "jira:actor",
+          "@type": "@id"
+        },
+        "issue": {
+          "@id": "jira:issue",
+          "@type": "@id"
+        },
+        "project": {
+          "@id": "jira:project",
+          "@type": "@id"
+        },
+        "changelog": "jira:changelog"
+      }
+    }
+  }
+}

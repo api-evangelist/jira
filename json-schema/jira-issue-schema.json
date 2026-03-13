@@ -1,0 +1,892 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developer.atlassian.com/schemas/jira/issue.json",
+  "title": "Jira Issue",
+  "description": "A Jira issue representing a unit of work such as a bug, story, task, epic, or sub-task tracked within a Jira project.",
+  "type": "object",
+  "required": ["id", "key", "fields"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the issue."
+    },
+    "key": {
+      "type": "string",
+      "description": "The key of the issue in PROJECT-NUMBER format (e.g., PROJ-123).",
+      "pattern": "^[A-Z][A-Z0-9_]+-[0-9]+$"
+    },
+    "self": {
+      "type": "string",
+      "format": "uri",
+      "description": "The URL of the issue in the Jira REST API."
+    },
+    "expand": {
+      "type": "string",
+      "description": "The expand options applied to the issue response."
+    },
+    "fields": {
+      "$ref": "#/$defs/IssueFields"
+    },
+    "renderedFields": {
+      "type": "object",
+      "description": "HTML-rendered versions of applicable issue fields.",
+      "additionalProperties": true
+    },
+    "names": {
+      "type": "object",
+      "description": "A mapping of field IDs to their human-readable names.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "schema": {
+      "type": "object",
+      "description": "JSON Schema definitions for each field on the issue.",
+      "additionalProperties": true
+    },
+    "transitions": {
+      "type": "array",
+      "description": "The list of workflow transitions available for the issue.",
+      "items": {
+        "$ref": "#/$defs/Transition"
+      }
+    },
+    "changelog": {
+      "$ref": "#/$defs/Changelog"
+    }
+  },
+  "$defs": {
+    "IssueFields": {
+      "type": "object",
+      "description": "The core and custom fields of a Jira issue.",
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "The summary (title) of the issue.",
+          "minLength": 1
+        },
+        "description": {
+          "description": "The description of the issue in Atlassian Document Format (ADF). In API v3 this is a structured JSON object; in v2 it is a plain string.",
+          "oneOf": [
+            { "$ref": "#/$defs/AtlassianDocumentFormat" },
+            { "type": "null" }
+          ]
+        },
+        "issuetype": {
+          "$ref": "#/$defs/IssueType"
+        },
+        "project": {
+          "$ref": "#/$defs/ProjectRef"
+        },
+        "status": {
+          "$ref": "#/$defs/Status"
+        },
+        "priority": {
+          "$ref": "#/$defs/Priority"
+        },
+        "resolution": {
+          "oneOf": [
+            { "$ref": "#/$defs/Resolution" },
+            { "type": "null" }
+          ],
+          "description": "The resolution of the issue, if resolved."
+        },
+        "assignee": {
+          "oneOf": [
+            { "$ref": "#/$defs/User" },
+            { "type": "null" }
+          ],
+          "description": "The user assigned to the issue."
+        },
+        "reporter": {
+          "$ref": "#/$defs/User"
+        },
+        "creator": {
+          "$ref": "#/$defs/User"
+        },
+        "labels": {
+          "type": "array",
+          "description": "Labels applied to the issue.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "components": {
+          "type": "array",
+          "description": "Project components associated with the issue.",
+          "items": {
+            "$ref": "#/$defs/Component"
+          }
+        },
+        "fixVersions": {
+          "type": "array",
+          "description": "The versions in which this issue is fixed.",
+          "items": {
+            "$ref": "#/$defs/Version"
+          }
+        },
+        "versions": {
+          "type": "array",
+          "description": "The versions affected by this issue.",
+          "items": {
+            "$ref": "#/$defs/Version"
+          }
+        },
+        "environment": {
+          "description": "The environment in which the issue was discovered, in ADF.",
+          "oneOf": [
+            { "$ref": "#/$defs/AtlassianDocumentFormat" },
+            { "type": "null" }
+          ]
+        },
+        "duedate": {
+          "type": ["string", "null"],
+          "format": "date",
+          "description": "The due date of the issue in YYYY-MM-DD format."
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time the issue was created."
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time the issue was last updated."
+        },
+        "resolutiondate": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "The date and time the issue was resolved."
+        },
+        "watches": {
+          "$ref": "#/$defs/Watches"
+        },
+        "votes": {
+          "$ref": "#/$defs/Votes"
+        },
+        "comment": {
+          "$ref": "#/$defs/PageOfComments"
+        },
+        "worklog": {
+          "$ref": "#/$defs/PageOfWorklogs"
+        },
+        "subtasks": {
+          "type": "array",
+          "description": "Sub-tasks of the issue.",
+          "items": {
+            "$ref": "#/$defs/IssueRef"
+          }
+        },
+        "parent": {
+          "oneOf": [
+            { "$ref": "#/$defs/IssueRef" },
+            { "type": "null" }
+          ],
+          "description": "The parent issue, if this is a sub-task or child issue."
+        },
+        "issuelinks": {
+          "type": "array",
+          "description": "Links between this issue and other issues.",
+          "items": {
+            "$ref": "#/$defs/IssueLink"
+          }
+        },
+        "attachment": {
+          "type": "array",
+          "description": "Attachments on the issue.",
+          "items": {
+            "$ref": "#/$defs/Attachment"
+          }
+        },
+        "timetracking": {
+          "$ref": "#/$defs/TimeTracking"
+        }
+      },
+      "additionalProperties": true
+    },
+    "IssueType": {
+      "type": "object",
+      "description": "An issue type in Jira (e.g., Bug, Story, Task, Epic, Sub-task).",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the issue type."
+        },
+        "description": {
+          "type": "string"
+        },
+        "iconUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "subtask": {
+          "type": "boolean",
+          "description": "Whether this issue type represents a sub-task."
+        },
+        "hierarchyLevel": {
+          "type": "integer",
+          "description": "The hierarchy level of the issue type (e.g., 0 for base, -1 for sub-task, 1 for epic)."
+        }
+      }
+    },
+    "ProjectRef": {
+      "type": "object",
+      "description": "A reference to a Jira project.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string",
+          "description": "The project key (e.g., PROJ)."
+        },
+        "name": {
+          "type": "string"
+        },
+        "projectTypeKey": {
+          "type": "string",
+          "enum": ["software", "service_desk", "business"]
+        },
+        "avatarUrls": {
+          "$ref": "#/$defs/AvatarUrls"
+        }
+      }
+    },
+    "Status": {
+      "type": "object",
+      "description": "A workflow status in Jira.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the status (e.g., To Do, In Progress, Done)."
+        },
+        "description": {
+          "type": "string"
+        },
+        "iconUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "statusCategory": {
+          "$ref": "#/$defs/StatusCategory"
+        }
+      }
+    },
+    "StatusCategory": {
+      "type": "object",
+      "description": "A status category grouping related statuses (e.g., To Do, In Progress, Done).",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "key": {
+          "type": "string",
+          "enum": ["new", "indeterminate", "done", "undefined"]
+        },
+        "colorName": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Priority": {
+      "type": "object",
+      "description": "An issue priority level.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the priority (e.g., Highest, High, Medium, Low, Lowest)."
+        },
+        "iconUrl": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "Resolution": {
+      "type": "object",
+      "description": "An issue resolution.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the resolution (e.g., Fixed, Won't Fix, Duplicate, Cannot Reproduce, Done)."
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "description": "A Jira Cloud user identified by account ID.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "accountId": {
+          "type": "string",
+          "description": "The unique account ID for the user across all Atlassian products.",
+          "maxLength": 128
+        },
+        "emailAddress": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address of the user (availability depends on privacy settings)."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The display name of the user."
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Whether the user account is active."
+        },
+        "timeZone": {
+          "type": "string"
+        },
+        "accountType": {
+          "type": "string",
+          "enum": ["atlassian", "app", "customer"]
+        },
+        "avatarUrls": {
+          "$ref": "#/$defs/AvatarUrls"
+        }
+      }
+    },
+    "Component": {
+      "type": "object",
+      "description": "A project component.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "Version": {
+      "type": "object",
+      "description": "A project version.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "archived": {
+          "type": "boolean"
+        },
+        "released": {
+          "type": "boolean"
+        },
+        "releaseDate": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "IssueRef": {
+      "type": "object",
+      "description": "A reference to another issue.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        },
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "fields": {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string"
+            },
+            "status": {
+              "$ref": "#/$defs/Status"
+            },
+            "priority": {
+              "$ref": "#/$defs/Priority"
+            },
+            "issuetype": {
+              "$ref": "#/$defs/IssueType"
+            }
+          }
+        }
+      }
+    },
+    "IssueLink": {
+      "type": "object",
+      "description": "A link between two issues.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "type": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "inward": {
+              "type": "string",
+              "description": "The inward link description (e.g., is blocked by)."
+            },
+            "outward": {
+              "type": "string",
+              "description": "The outward link description (e.g., blocks)."
+            }
+          }
+        },
+        "inwardIssue": {
+          "$ref": "#/$defs/IssueRef"
+        },
+        "outwardIssue": {
+          "$ref": "#/$defs/IssueRef"
+        }
+      }
+    },
+    "Attachment": {
+      "type": "object",
+      "description": "An attachment on an issue.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "author": {
+          "$ref": "#/$defs/User"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "size": {
+          "type": "integer",
+          "description": "The size of the attachment in bytes."
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL to download the attachment content."
+        },
+        "thumbnail": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "TimeTracking": {
+      "type": "object",
+      "description": "Time tracking information for an issue.",
+      "properties": {
+        "originalEstimate": {
+          "type": "string",
+          "description": "The original time estimate (e.g., 2d 4h)."
+        },
+        "remainingEstimate": {
+          "type": "string",
+          "description": "The remaining time estimate."
+        },
+        "timeSpent": {
+          "type": "string",
+          "description": "The total time spent."
+        },
+        "originalEstimateSeconds": {
+          "type": "integer"
+        },
+        "remainingEstimateSeconds": {
+          "type": "integer"
+        },
+        "timeSpentSeconds": {
+          "type": "integer"
+        }
+      }
+    },
+    "Watches": {
+      "type": "object",
+      "description": "The watchers of an issue.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "watchCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "isWatching": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Votes": {
+      "type": "object",
+      "description": "The votes for an issue.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "votes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "hasVoted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "PageOfComments": {
+      "type": "object",
+      "description": "A paginated list of comments.",
+      "properties": {
+        "startAt": {
+          "type": "integer"
+        },
+        "maxResults": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "comments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Comment"
+          }
+        }
+      }
+    },
+    "Comment": {
+      "type": "object",
+      "description": "A comment on an issue.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "author": {
+          "$ref": "#/$defs/User"
+        },
+        "body": {
+          "$ref": "#/$defs/AtlassianDocumentFormat"
+        },
+        "updateAuthor": {
+          "$ref": "#/$defs/User"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "visibility": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["group", "role"]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "PageOfWorklogs": {
+      "type": "object",
+      "description": "A paginated list of worklogs.",
+      "properties": {
+        "startAt": {
+          "type": "integer"
+        },
+        "maxResults": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "worklogs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Worklog"
+          }
+        }
+      }
+    },
+    "Worklog": {
+      "type": "object",
+      "description": "A worklog entry recording time spent on an issue.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "author": {
+          "$ref": "#/$defs/User"
+        },
+        "updateAuthor": {
+          "$ref": "#/$defs/User"
+        },
+        "timeSpent": {
+          "type": "string"
+        },
+        "timeSpentSeconds": {
+          "type": "integer"
+        },
+        "started": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Transition": {
+      "type": "object",
+      "description": "A workflow transition available for an issue.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "to": {
+          "$ref": "#/$defs/Status"
+        },
+        "hasScreen": {
+          "type": "boolean"
+        },
+        "isGlobal": {
+          "type": "boolean"
+        },
+        "isInitial": {
+          "type": "boolean"
+        },
+        "isConditional": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Changelog": {
+      "type": "object",
+      "description": "A paginated history of changes to the issue.",
+      "properties": {
+        "startAt": {
+          "type": "integer"
+        },
+        "maxResults": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "histories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ChangeHistory"
+          }
+        }
+      }
+    },
+    "ChangeHistory": {
+      "type": "object",
+      "description": "A single changelog entry recording field changes.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "author": {
+          "$ref": "#/$defs/User"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "type": "string"
+              },
+              "fieldtype": {
+                "type": "string"
+              },
+              "fieldId": {
+                "type": "string"
+              },
+              "from": {
+                "type": ["string", "null"]
+              },
+              "fromString": {
+                "type": ["string", "null"]
+              },
+              "to": {
+                "type": ["string", "null"]
+              },
+              "toString": {
+                "type": ["string", "null"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "AvatarUrls": {
+      "type": "object",
+      "description": "Avatar image URLs in multiple sizes.",
+      "properties": {
+        "16x16": {
+          "type": "string",
+          "format": "uri"
+        },
+        "24x24": {
+          "type": "string",
+          "format": "uri"
+        },
+        "32x32": {
+          "type": "string",
+          "format": "uri"
+        },
+        "48x48": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "AtlassianDocumentFormat": {
+      "type": "object",
+      "description": "Atlassian Document Format (ADF) representing rich text content used in Jira Cloud v3 API.",
+      "required": ["type", "version", "content"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "doc"
+        },
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "content": {
+          "type": "array",
+          "description": "The block-level content nodes of the document.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "The block node type (e.g., paragraph, heading, bulletList, orderedList, codeBlock, blockquote, table, rule, mediaSingle)."
+              },
+              "content": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              },
+              "attrs": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      }
+    }
+  }
+}

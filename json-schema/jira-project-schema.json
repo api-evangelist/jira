@@ -1,0 +1,386 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developer.atlassian.com/schemas/jira/project.json",
+  "title": "Jira Project",
+  "description": "A Jira project used to organize and track issues. Projects can be software, service desk, or business type and may be team-managed (next-gen) or company-managed (classic).",
+  "type": "object",
+  "required": ["id", "key", "name"],
+  "properties": {
+    "self": {
+      "type": "string",
+      "format": "uri",
+      "description": "The URL of the project in the Jira REST API."
+    },
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the project."
+    },
+    "key": {
+      "type": "string",
+      "description": "The project key used as a prefix for issue keys (e.g., PROJ).",
+      "pattern": "^[A-Z][A-Z0-9_]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the project.",
+      "minLength": 1
+    },
+    "description": {
+      "type": ["string", "null"],
+      "description": "A description of the project."
+    },
+    "url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "A URL associated with the project."
+    },
+    "lead": {
+      "$ref": "#/$defs/User"
+    },
+    "projectTypeKey": {
+      "type": "string",
+      "description": "The type of the project.",
+      "enum": ["software", "service_desk", "business"]
+    },
+    "simplified": {
+      "type": "boolean",
+      "description": "Whether the project uses simplified (team-managed/next-gen) configuration."
+    },
+    "style": {
+      "type": "string",
+      "description": "The project style indicating its management model.",
+      "enum": ["classic", "next-gen"]
+    },
+    "archived": {
+      "type": "boolean",
+      "description": "Whether the project is archived."
+    },
+    "deleted": {
+      "type": "boolean",
+      "description": "Whether the project is in the trash."
+    },
+    "assigneeType": {
+      "type": "string",
+      "description": "The default assignee type when creating issues in this project.",
+      "enum": ["PROJECT_LEAD", "UNASSIGNED"]
+    },
+    "components": {
+      "type": "array",
+      "description": "The components defined in the project.",
+      "items": {
+        "$ref": "#/$defs/Component"
+      }
+    },
+    "issueTypes": {
+      "type": "array",
+      "description": "The issue types available in the project.",
+      "items": {
+        "$ref": "#/$defs/IssueType"
+      }
+    },
+    "versions": {
+      "type": "array",
+      "description": "The versions (releases) defined in the project.",
+      "items": {
+        "$ref": "#/$defs/Version"
+      }
+    },
+    "roles": {
+      "type": "object",
+      "description": "A mapping of role names to their REST API URLs.",
+      "additionalProperties": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "avatarUrls": {
+      "$ref": "#/$defs/AvatarUrls"
+    },
+    "projectCategory": {
+      "$ref": "#/$defs/ProjectCategory"
+    },
+    "insight": {
+      "$ref": "#/$defs/ProjectInsight"
+    },
+    "permissions": {
+      "$ref": "#/$defs/ProjectPermissions"
+    },
+    "properties": {
+      "type": "object",
+      "description": "Entity properties stored on the project.",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "User": {
+      "type": "object",
+      "description": "A Jira Cloud user.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "accountId": {
+          "type": "string",
+          "description": "The unique account ID for the user across all Atlassian products.",
+          "maxLength": 128
+        },
+        "emailAddress": {
+          "type": "string",
+          "format": "email"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The display name of the user."
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Whether the user account is active."
+        },
+        "timeZone": {
+          "type": "string"
+        },
+        "accountType": {
+          "type": "string",
+          "enum": ["atlassian", "app", "customer"]
+        },
+        "avatarUrls": {
+          "$ref": "#/$defs/AvatarUrls"
+        }
+      }
+    },
+    "Component": {
+      "type": "object",
+      "description": "A project component used to group issues within a project.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the component."
+        },
+        "description": {
+          "type": ["string", "null"],
+          "description": "A description of the component."
+        },
+        "lead": {
+          "$ref": "#/$defs/User"
+        },
+        "assigneeType": {
+          "type": "string",
+          "description": "The default assignee type for issues in this component.",
+          "enum": ["PROJECT_DEFAULT", "COMPONENT_LEAD", "PROJECT_LEAD", "UNASSIGNED"]
+        },
+        "assignee": {
+          "$ref": "#/$defs/User"
+        },
+        "realAssigneeType": {
+          "type": "string",
+          "description": "The actual assignee type used after resolution of fallbacks.",
+          "enum": ["PROJECT_DEFAULT", "COMPONENT_LEAD", "PROJECT_LEAD", "UNASSIGNED"]
+        },
+        "realAssignee": {
+          "$ref": "#/$defs/User"
+        },
+        "project": {
+          "type": "string",
+          "description": "The project key."
+        },
+        "projectId": {
+          "type": "integer",
+          "description": "The project ID."
+        },
+        "isAssigneeTypeValid": {
+          "type": "boolean"
+        }
+      }
+    },
+    "IssueType": {
+      "type": "object",
+      "description": "An issue type available in the project.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the issue type (e.g., Bug, Story, Task, Epic, Sub-task)."
+        },
+        "description": {
+          "type": "string"
+        },
+        "iconUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "subtask": {
+          "type": "boolean",
+          "description": "Whether this issue type is used to create sub-tasks."
+        },
+        "avatarId": {
+          "type": "integer"
+        },
+        "hierarchyLevel": {
+          "type": "integer",
+          "description": "The hierarchy level of the issue type."
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        }
+      }
+    },
+    "Version": {
+      "type": "object",
+      "description": "A project version (release).",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the version."
+        },
+        "description": {
+          "type": ["string", "null"]
+        },
+        "archived": {
+          "type": "boolean",
+          "description": "Whether the version is archived."
+        },
+        "released": {
+          "type": "boolean",
+          "description": "Whether the version has been released."
+        },
+        "releaseDate": {
+          "type": "string",
+          "format": "date",
+          "description": "The release date in YYYY-MM-DD format."
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date",
+          "description": "The start date in YYYY-MM-DD format."
+        },
+        "overdue": {
+          "type": "boolean",
+          "description": "Whether the version is overdue."
+        },
+        "projectId": {
+          "type": "integer"
+        },
+        "userReleaseDate": {
+          "type": "string",
+          "description": "The release date in the user's locale format."
+        },
+        "userStartDate": {
+          "type": "string",
+          "description": "The start date in the user's locale format."
+        }
+      }
+    },
+    "ProjectCategory": {
+      "type": "object",
+      "description": "A category for organizing projects.",
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the project category."
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "ProjectInsight": {
+      "type": "object",
+      "description": "Insight data about the project.",
+      "properties": {
+        "totalIssueCount": {
+          "type": "integer",
+          "description": "The total number of issues in the project."
+        },
+        "lastIssueUpdateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time the most recent issue was updated."
+        }
+      }
+    },
+    "ProjectPermissions": {
+      "type": "object",
+      "description": "The permissions the current user has for this project.",
+      "properties": {
+        "canEdit": {
+          "type": "boolean",
+          "description": "Whether the user can edit the project."
+        }
+      }
+    },
+    "Scope": {
+      "type": "object",
+      "description": "The scope of an issue type.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["PROJECT", "TEMPLATE"]
+        },
+        "project": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "AvatarUrls": {
+      "type": "object",
+      "description": "Avatar image URLs in multiple sizes.",
+      "properties": {
+        "16x16": {
+          "type": "string",
+          "format": "uri"
+        },
+        "24x24": {
+          "type": "string",
+          "format": "uri"
+        },
+        "32x32": {
+          "type": "string",
+          "format": "uri"
+        },
+        "48x48": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    }
+  }
+}

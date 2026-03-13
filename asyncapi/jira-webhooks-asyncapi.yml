@@ -1,0 +1,800 @@
+asyncapi: 2.6.0
+info:
+  title: Jira Cloud Webhooks
+  description: >-
+    Jira Cloud webhooks deliver HTTP POST payloads to a configured URL whenever
+    specified events occur in your Jira instance. Webhooks can be registered
+    via the Jira REST API or through the Jira administration UI. Each webhook
+    delivery includes a JSON payload with details about the event, the affected
+    entities, and a timestamp. Jira supports both dynamic webhooks (registered
+    via REST API with expiration) and static webhooks (configured in app
+    descriptors for Connect apps). Forge apps use a separate event trigger
+    mechanism.
+  version: '3'
+  contact:
+    name: Atlassian Developer Support
+    url: https://developer.atlassian.com/support
+    email: ecosystem@atlassian.com
+  license:
+    name: Atlassian Developer Terms
+    url: https://developer.atlassian.com/platform/marketplace/atlassian-developer-terms/
+  externalDocs:
+    description: Jira Cloud Webhooks Documentation
+    url: https://developer.atlassian.com/cloud/jira/platform/webhooks/
+servers:
+  webhook-receiver:
+    url: '{webhookUrl}'
+    protocol: https
+    description: >-
+      Your webhook receiver endpoint. Jira sends POST requests to this URL
+      when subscribed events occur. The URL must be publicly accessible and
+      respond with a 200-level status code within 10 seconds.
+    variables:
+      webhookUrl:
+        description: The URL configured to receive Jira webhook deliveries.
+channels:
+  /webhook:
+    description: >-
+      The endpoint that receives all Jira Cloud webhook event deliveries. The
+      event type is identified by the webhookEvent field in the JSON payload.
+      Jira retries failed deliveries (non-200 responses) up to 8 times with
+      exponential backoff.
+    publish:
+      operationId: receiveJiraWebhookEvent
+      summary: Receive a Jira webhook event
+      description: >-
+        Jira delivers webhook events as HTTP POST requests with JSON payloads.
+        Each delivery includes a webhookEvent field identifying the event type,
+        a timestamp, and relevant entity data. The payload structure varies
+        by event type but always includes the webhookEvent and timestamp
+        fields.
+      bindings:
+        http:
+          type: request
+          method: POST
+          headers:
+            type: object
+            properties:
+              Content-Type:
+                type: string
+                enum:
+                  - application/json
+                description: The content type of the webhook payload.
+              User-Agent:
+                type: string
+                description: >-
+                  Identifies the request as originating from Atlassian. Typically
+                  prefixed with Atlassian Webhook.
+              X-Atlassian-Webhook-Identifier:
+                type: string
+                description: A unique identifier for the webhook configuration.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/jira:issue_created'
+          - $ref: '#/components/messages/jira:issue_updated'
+          - $ref: '#/components/messages/jira:issue_deleted'
+          - $ref: '#/components/messages/comment_created'
+          - $ref: '#/components/messages/comment_updated'
+          - $ref: '#/components/messages/comment_deleted'
+          - $ref: '#/components/messages/issuelink_created'
+          - $ref: '#/components/messages/issuelink_deleted'
+          - $ref: '#/components/messages/attachment_created'
+          - $ref: '#/components/messages/attachment_deleted'
+          - $ref: '#/components/messages/worklog_created'
+          - $ref: '#/components/messages/worklog_updated'
+          - $ref: '#/components/messages/worklog_deleted'
+          - $ref: '#/components/messages/project_created'
+          - $ref: '#/components/messages/project_updated'
+          - $ref: '#/components/messages/project_deleted'
+          - $ref: '#/components/messages/project_soft_deleted'
+          - $ref: '#/components/messages/project_restored_deleted'
+          - $ref: '#/components/messages/sprint_created'
+          - $ref: '#/components/messages/sprint_updated'
+          - $ref: '#/components/messages/sprint_deleted'
+          - $ref: '#/components/messages/sprint_started'
+          - $ref: '#/components/messages/sprint_closed'
+          - $ref: '#/components/messages/board_created'
+          - $ref: '#/components/messages/board_updated'
+          - $ref: '#/components/messages/board_deleted'
+          - $ref: '#/components/messages/user_created'
+          - $ref: '#/components/messages/user_updated'
+          - $ref: '#/components/messages/user_deleted'
+          - $ref: '#/components/messages/option_voting_changed'
+          - $ref: '#/components/messages/option_watching_changed'
+          - $ref: '#/components/messages/option_unassigned_issues_changed'
+          - $ref: '#/components/messages/option_subtasks_changed'
+          - $ref: '#/components/messages/option_attachments_changed'
+          - $ref: '#/components/messages/option_issuelinks_changed'
+          - $ref: '#/components/messages/option_timetracking_changed'
+components:
+  messages:
+    jira:issue_created:
+      name: jira:issue_created
+      title: Issue Created
+      summary: Fired when a new issue is created in Jira.
+      description: >-
+        Triggered when a user creates a new issue. The payload includes the
+        full issue details, the user who created it, and the changelog.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/IssueWebhookPayload'
+      examples:
+        - name: Bug created
+          payload:
+            timestamp: 1709478000000
+            webhookEvent: jira:issue_created
+            issue_event_type_name: issue_created
+            user:
+              accountId: 5b10a2844c20165700ede21g
+              displayName: Jane Developer
+              active: true
+            issue:
+              id: '10001'
+              key: PROJ-123
+              fields:
+                summary: Login page returns 500 error
+                issuetype:
+                  name: Bug
+                project:
+                  key: PROJ
+                  name: My Project
+                status:
+                  name: To Do
+                priority:
+                  name: High
+    jira:issue_updated:
+      name: jira:issue_updated
+      title: Issue Updated
+      summary: Fired when an existing issue is updated in Jira.
+      description: >-
+        Triggered when a user updates an issue. This includes field changes,
+        status transitions, comments added, and other modifications. The
+        payload includes the changelog showing what changed.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/IssueWebhookPayload'
+    jira:issue_deleted:
+      name: jira:issue_deleted
+      title: Issue Deleted
+      summary: Fired when an issue is deleted from Jira.
+      description: >-
+        Triggered when a user deletes an issue. The payload includes the issue
+        details as they were before deletion.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/IssueWebhookPayload'
+    comment_created:
+      name: comment_created
+      title: Comment Created
+      summary: Fired when a comment is added to an issue.
+      description: >-
+        Triggered when a user adds a comment to an issue. The payload includes
+        the full comment details and the associated issue.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CommentWebhookPayload'
+    comment_updated:
+      name: comment_updated
+      title: Comment Updated
+      summary: Fired when an existing comment on an issue is edited.
+      description: >-
+        Triggered when a user edits a comment on an issue. The payload includes
+        the updated comment details and the associated issue.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CommentWebhookPayload'
+    comment_deleted:
+      name: comment_deleted
+      title: Comment Deleted
+      summary: Fired when a comment is removed from an issue.
+      description: >-
+        Triggered when a user deletes a comment from an issue. The payload
+        includes the deleted comment details and the associated issue.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CommentWebhookPayload'
+    issuelink_created:
+      name: issuelink_created
+      title: Issue Link Created
+      summary: Fired when a link between issues is created.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/IssueLinkWebhookPayload'
+    issuelink_deleted:
+      name: issuelink_deleted
+      title: Issue Link Deleted
+      summary: Fired when a link between issues is removed.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/IssueLinkWebhookPayload'
+    attachment_created:
+      name: attachment_created
+      title: Attachment Created
+      summary: Fired when an attachment is added to an issue.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/BaseWebhookPayload'
+    attachment_deleted:
+      name: attachment_deleted
+      title: Attachment Deleted
+      summary: Fired when an attachment is removed from an issue.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/BaseWebhookPayload'
+    worklog_created:
+      name: worklog_created
+      title: Worklog Created
+      summary: Fired when a worklog entry is added to an issue.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/WorklogWebhookPayload'
+    worklog_updated:
+      name: worklog_updated
+      title: Worklog Updated
+      summary: Fired when a worklog entry is edited on an issue.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/WorklogWebhookPayload'
+    worklog_deleted:
+      name: worklog_deleted
+      title: Worklog Deleted
+      summary: Fired when a worklog entry is removed from an issue.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/WorklogWebhookPayload'
+    project_created:
+      name: project_created
+      title: Project Created
+      summary: Fired when a new project is created.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ProjectWebhookPayload'
+    project_updated:
+      name: project_updated
+      title: Project Updated
+      summary: Fired when a project is updated.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ProjectWebhookPayload'
+    project_deleted:
+      name: project_deleted
+      title: Project Deleted
+      summary: Fired when a project is permanently deleted.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ProjectWebhookPayload'
+    project_soft_deleted:
+      name: project_soft_deleted
+      title: Project Soft Deleted
+      summary: Fired when a project is moved to the trash.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ProjectWebhookPayload'
+    project_restored_deleted:
+      name: project_restored_deleted
+      title: Project Restored from Trash
+      summary: Fired when a project is restored from the trash.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ProjectWebhookPayload'
+    sprint_created:
+      name: sprint_created
+      title: Sprint Created
+      summary: Fired when a sprint is created.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/SprintWebhookPayload'
+    sprint_updated:
+      name: sprint_updated
+      title: Sprint Updated
+      summary: Fired when a sprint is updated.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/SprintWebhookPayload'
+    sprint_deleted:
+      name: sprint_deleted
+      title: Sprint Deleted
+      summary: Fired when a sprint is deleted.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/SprintWebhookPayload'
+    sprint_started:
+      name: sprint_started
+      title: Sprint Started
+      summary: Fired when a sprint is started.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/SprintWebhookPayload'
+    sprint_closed:
+      name: sprint_closed
+      title: Sprint Closed
+      summary: Fired when a sprint is closed (completed).
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/SprintWebhookPayload'
+    board_created:
+      name: board_created
+      title: Board Created
+      summary: Fired when a board is created.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/BoardWebhookPayload'
+    board_updated:
+      name: board_updated
+      title: Board Updated
+      summary: Fired when a board is updated.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/BoardWebhookPayload'
+    board_deleted:
+      name: board_deleted
+      title: Board Deleted
+      summary: Fired when a board is deleted.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/BoardWebhookPayload'
+    user_created:
+      name: user_created
+      title: User Created
+      summary: Fired when a new user is created.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/UserWebhookPayload'
+    user_updated:
+      name: user_updated
+      title: User Updated
+      summary: Fired when a user account is updated.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/UserWebhookPayload'
+    user_deleted:
+      name: user_deleted
+      title: User Deleted
+      summary: Fired when a user account is deleted.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/UserWebhookPayload'
+    option_voting_changed:
+      name: option_voting_changed
+      title: Voting Option Changed
+      summary: Fired when the voting option is enabled or disabled.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/BaseWebhookPayload'
+    option_watching_changed:
+      name: option_watching_changed
+      title: Watching Option Changed
+      summary: Fired when the watching option is enabled or disabled.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/BaseWebhookPayload'
+    option_unassigned_issues_changed:
+      name: option_unassigned_issues_changed
+      title: Unassigned Issues Option Changed
+      summary: Fired when the unassigned issues option is changed.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/BaseWebhookPayload'
+    option_subtasks_changed:
+      name: option_subtasks_changed
+      title: Sub-tasks Option Changed
+      summary: Fired when the sub-tasks option is enabled or disabled.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/BaseWebhookPayload'
+    option_attachments_changed:
+      name: option_attachments_changed
+      title: Attachments Option Changed
+      summary: Fired when the attachments option is enabled or disabled.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/BaseWebhookPayload'
+    option_issuelinks_changed:
+      name: option_issuelinks_changed
+      title: Issue Links Option Changed
+      summary: Fired when the issue links option is enabled or disabled.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/BaseWebhookPayload'
+    option_timetracking_changed:
+      name: option_timetracking_changed
+      title: Time Tracking Option Changed
+      summary: Fired when the time tracking option is enabled or disabled.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/BaseWebhookPayload'
+  schemas:
+    BaseWebhookPayload:
+      type: object
+      description: Base fields present in all Jira webhook payloads.
+      required:
+        - timestamp
+        - webhookEvent
+      properties:
+        timestamp:
+          type: integer
+          format: int64
+          description: >-
+            The Unix timestamp (in milliseconds) of when the event occurred.
+        webhookEvent:
+          type: string
+          description: >-
+            The event type identifier (e.g., jira:issue_created,
+            jira:issue_updated, project_created).
+        matchedWebhookIds:
+          type: array
+          description: The IDs of the webhooks that matched this event.
+          items:
+            type: integer
+    IssueWebhookPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseWebhookPayload'
+        - type: object
+          properties:
+            issue_event_type_name:
+              type: string
+              description: >-
+                The specific issue event type (e.g., issue_created,
+                issue_updated, issue_generic, issue_assigned,
+                issue_comment_edited).
+            user:
+              $ref: '#/components/schemas/WebhookUser'
+            issue:
+              $ref: '#/components/schemas/WebhookIssue'
+            changelog:
+              $ref: '#/components/schemas/WebhookChangelog'
+    CommentWebhookPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseWebhookPayload'
+        - type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/WebhookUser'
+            issue:
+              $ref: '#/components/schemas/WebhookIssue'
+            comment:
+              $ref: '#/components/schemas/WebhookComment'
+    IssueLinkWebhookPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseWebhookPayload'
+        - type: object
+          properties:
+            issueLink:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                sourceIssueId:
+                  type: integer
+                  format: int64
+                destinationIssueId:
+                  type: integer
+                  format: int64
+                issueLinkType:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    name:
+                      type: string
+                    outwardName:
+                      type: string
+                    inwardName:
+                      type: string
+    WorklogWebhookPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseWebhookPayload'
+        - type: object
+          properties:
+            worklog:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                self:
+                  type: string
+                  format: uri
+                author:
+                  $ref: '#/components/schemas/WebhookUser'
+                updateAuthor:
+                  $ref: '#/components/schemas/WebhookUser'
+                timeSpent:
+                  type: string
+                timeSpentSeconds:
+                  type: integer
+                  format: int64
+                created:
+                  type: string
+                  format: date-time
+                updated:
+                  type: string
+                  format: date-time
+                started:
+                  type: string
+                  format: date-time
+                issueId:
+                  type: integer
+                  format: int64
+    ProjectWebhookPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseWebhookPayload'
+        - type: object
+          properties:
+            project:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                key:
+                  type: string
+                name:
+                  type: string
+                description:
+                  type: string
+                projectTypeKey:
+                  type: string
+                self:
+                  type: string
+                  format: uri
+                projectLead:
+                  $ref: '#/components/schemas/WebhookUser'
+    SprintWebhookPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseWebhookPayload'
+        - type: object
+          properties:
+            sprint:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                self:
+                  type: string
+                  format: uri
+                state:
+                  type: string
+                  enum:
+                    - future
+                    - active
+                    - closed
+                name:
+                  type: string
+                startDate:
+                  type: string
+                  format: date-time
+                endDate:
+                  type: string
+                  format: date-time
+                completeDate:
+                  type: string
+                  format: date-time
+                originBoardId:
+                  type: integer
+                  format: int64
+                goal:
+                  type: string
+    BoardWebhookPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseWebhookPayload'
+        - type: object
+          properties:
+            board:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                self:
+                  type: string
+                  format: uri
+                name:
+                  type: string
+                type:
+                  type: string
+                  enum:
+                    - scrum
+                    - kanban
+                    - simple
+    UserWebhookPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseWebhookPayload'
+        - type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/WebhookUser'
+    WebhookUser:
+      type: object
+      description: A user as represented in webhook payloads.
+      properties:
+        self:
+          type: string
+          format: uri
+        accountId:
+          type: string
+          description: The account ID of the user.
+        accountType:
+          type: string
+          enum:
+            - atlassian
+            - app
+            - customer
+        displayName:
+          type: string
+        active:
+          type: boolean
+        timeZone:
+          type: string
+        avatarUrls:
+          type: object
+          properties:
+            16x16:
+              type: string
+              format: uri
+            24x24:
+              type: string
+              format: uri
+            32x32:
+              type: string
+              format: uri
+            48x48:
+              type: string
+              format: uri
+    WebhookIssue:
+      type: object
+      description: An issue as represented in webhook payloads.
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        self:
+          type: string
+          format: uri
+        fields:
+          type: object
+          properties:
+            summary:
+              type: string
+            description:
+              type: object
+              description: Atlassian Document Format (ADF) representation.
+            issuetype:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                subtask:
+                  type: boolean
+                iconUrl:
+                  type: string
+                  format: uri
+            project:
+              type: object
+              properties:
+                id:
+                  type: string
+                key:
+                  type: string
+                name:
+                  type: string
+                projectTypeKey:
+                  type: string
+            status:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                statusCategory:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    key:
+                      type: string
+                    name:
+                      type: string
+            priority:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                iconUrl:
+                  type: string
+                  format: uri
+            assignee:
+              $ref: '#/components/schemas/WebhookUser'
+            reporter:
+              $ref: '#/components/schemas/WebhookUser'
+            creator:
+              $ref: '#/components/schemas/WebhookUser'
+            labels:
+              type: array
+              items:
+                type: string
+            created:
+              type: string
+              format: date-time
+            updated:
+              type: string
+              format: date-time
+            resolution:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+          additionalProperties: true
+    WebhookComment:
+      type: object
+      description: A comment as represented in webhook payloads.
+      properties:
+        self:
+          type: string
+          format: uri
+        id:
+          type: string
+        author:
+          $ref: '#/components/schemas/WebhookUser'
+        body:
+          type: object
+          description: The comment body in ADF.
+        updateAuthor:
+          $ref: '#/components/schemas/WebhookUser'
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+    WebhookChangelog:
+      type: object
+      description: A changelog included with issue update webhook events.
+      properties:
+        id:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The human-readable name of the field changed.
+              fieldtype:
+                type: string
+                description: The type of the field (e.g., jira, custom).
+              fieldId:
+                type: string
+                description: The ID of the field changed.
+              from:
+                type:
+                  - string
+                  - 'null'
+                description: The previous value ID.
+              fromString:
+                type:
+                  - string
+                  - 'null'
+                description: The previous value as a string.
+              to:
+                type:
+                  - string
+                  - 'null'
+                description: The new value ID.
+              toString:
+                type:
+                  - string
+                  - 'null'
+                description: The new value as a string.
