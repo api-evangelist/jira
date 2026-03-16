@@ -3,7 +3,7 @@ description: APIs for Atlassian Jira project management and issue tracking platf
 image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
 url: https://www.atlassian.com/software/jira
 created: '2024'
-modified: '2026-03-03'
+modified: '2026-03-16'
 apis:
 - name: Jira Cloud Platform REST API
   description: The Jira Cloud platform REST API for building apps and integrations
