@@ -18,6 +18,21 @@ info:
     email: ecosystem@atlassian.com
   x-atlassian-api-version: '3'
 tags:
+  - name: Issue Comments
+    description: Manage comments on issues.
+  - name: Issue Priorities
+    description: Retrieve issue priority levels.
+  - name: Issue Search
+    description: Search for issues using JQL (Jira Query Language).
+    externalDocs:
+      description: Jira Search REST API documentation
+      url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/
+  - name: Issue Statuses
+    description: Retrieve issue statuses.
+  - name: Issue Transitions
+    description: Retrieve and perform workflow transitions on issues.
+  - name: Issue Types
+    description: Retrieve and manage issue types for projects.
   - name: Issues
     description: Create, read, update, delete, and transition Jira issues.
     externalDocs:
@@ -28,21 +43,6 @@ tags:
     externalDocs:
       description: Jira Projects REST API documentation
       url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/
-  - name: Issue Search
-    description: Search for issues using JQL (Jira Query Language).
-    externalDocs:
-      description: Jira Search REST API documentation
-      url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/
-  - name: Issue Types
-    description: Retrieve and manage issue types for projects.
-  - name: Issue Priorities
-    description: Retrieve issue priority levels.
-  - name: Issue Statuses
-    description: Retrieve issue statuses.
-  - name: Issue Comments
-    description: Manage comments on issues.
-  - name: Issue Transitions
-    description: Retrieve and perform workflow transitions on issues.
 servers:
   - url: https://{domain}.atlassian.net/rest/api/3
     description: Jira Cloud instance
@@ -715,8 +715,8 @@ paths:
         project.
       operationId: getAllStatuses
       tags:
-        - Projects
         - Issue Statuses
+        - Projects
       externalDocs:
         description: API method documentation
         url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/#api-rest-api-3-project-projectidorkey-statuses-get
