@@ -60,7 +60,7 @@ security:
 paths:
   /issue:
     post:
-      summary: Create issue
+      summary: Jira Create issue
       description: >-
         Creates an issue or a sub-task from a JSON representation. The fields
         that can be set on an issue depend on the connected Jira instance
@@ -131,7 +131,7 @@ paths:
           description: The user does not have permission to create issues in the project.
   /issue/{issueIdOrKey}:
     get:
-      summary: Get issue
+      summary: Jira Get issue
       description: >-
         Returns the details for an issue. The issue is identified by its ID or
         key. The returned issue includes all fields, comment count, names,
@@ -199,7 +199,7 @@ paths:
         '404':
           description: The issue was not found or the user does not have permission to view it.
     put:
-      summary: Edit issue
+      summary: Jira Edit issue
       description: >-
         Edits an issue. A transition may be applied and issue properties updated
         as part of the edit. The editable fields depend on the connected Jira
@@ -261,7 +261,7 @@ paths:
         '404':
           description: The issue was not found or the user does not have permission to view it.
     delete:
-      summary: Delete issue
+      summary: Jira Delete issue
       description: >-
         Deletes an issue. An issue can only be deleted if it has no sub-tasks,
         unless deleteSubtasks is set to true.
@@ -296,7 +296,7 @@ paths:
           description: The issue was not found or the user does not have permission to view it.
   /issue/{issueIdOrKey}/transitions:
     get:
-      summary: Get transitions
+      summary: Jira Get transitions
       description: >-
         Returns either all transitions or a transition that can be performed by
         the user on an issue, based on the issue's status.
@@ -350,7 +350,7 @@ paths:
         '404':
           description: The issue was not found or the user does not have permission to view it.
     post:
-      summary: Transition issue
+      summary: Jira Transition issue
       description: >-
         Performs an issue transition and, optionally, updates the fields and adds
         a comment. The fields that can be set depend on the transition and
@@ -390,7 +390,7 @@ paths:
           description: The issue was not found or the user does not have permission to view it.
   /issue/{issueIdOrKey}/comment:
     get:
-      summary: Get comments
+      summary: Jira Get comments
       description: >-
         Returns all comments for an issue. Comments are ordered by created date
         in ascending order by default.
@@ -449,7 +449,7 @@ paths:
         '404':
           description: The issue was not found or the user does not have permission to view it.
     post:
-      summary: Add comment
+      summary: Jira Add comment
       description: >-
         Adds a comment to an issue. The comment body uses Atlassian Document
         Format (ADF).
@@ -506,7 +506,7 @@ paths:
           description: The issue was not found or the user does not have permission to view it.
   /project:
     get:
-      summary: Get all projects
+      summary: Jira Get all projects
       description: >-
         Returns all projects visible to the user. Deprecated, use Get projects
         paginated that supports search and pagination.
@@ -558,7 +558,7 @@ paths:
           description: Authentication credentials are missing or invalid.
   /project/search:
     get:
-      summary: Get projects paginated
+      summary: Jira Get projects paginated
       description: >-
         Returns a paginated list of projects visible to the user. This
         operation can be filtered by project type, category, and action.
@@ -662,7 +662,7 @@ paths:
           description: Authentication credentials are missing or invalid.
   /project/{projectIdOrKey}:
     get:
-      summary: Get project
+      summary: Jira Get project
       description: >-
         Returns the project details for a project. The returned project
         includes additional information such as issue types, components,
@@ -708,7 +708,7 @@ paths:
           description: The project was not found or the user does not have permission to view it.
   /project/{projectIdOrKey}/statuses:
     get:
-      summary: Get all statuses for project
+      summary: Jira Get all statuses for project
       description: >-
         Returns the valid statuses for a project. The statuses are grouped by
         issue type, listing the allowed statuses for each issue type in the
@@ -737,7 +737,7 @@ paths:
           description: The project was not found or the user does not have permission to view it.
   /search:
     get:
-      summary: Search for issues using JQL (GET)
+      summary: Jira Search for issues using JQL (GET)
       description: >-
         Searches for issues using JQL. If the JQL query expression is too large
         to be encoded as a query parameter, use the POST version of this
@@ -848,7 +848,7 @@ paths:
         '401':
           description: Authentication credentials are missing or invalid.
     post:
-      summary: Search for issues using JQL (POST)
+      summary: Jira Search for issues using JQL (POST)
       description: >-
         Searches for issues using JQL. Use this endpoint when the JQL query
         expression is too large to send as a query parameter. This provides
@@ -890,7 +890,7 @@ paths:
           description: Authentication credentials are missing or invalid.
   /issuetype:
     get:
-      summary: Get all issue types for user
+      summary: Jira Get all issue types for user
       description: >-
         Returns all issue types visible to the user. The list of issue types
         returned depends on the user's permissions.
@@ -913,7 +913,7 @@ paths:
           description: Authentication credentials are missing or invalid.
   /priority:
     get:
-      summary: Get priorities
+      summary: Jira Get priorities
       description: >-
         Returns the list of all issue priorities.
       operationId: getPriorities
