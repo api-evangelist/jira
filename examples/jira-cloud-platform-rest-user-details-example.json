@@ -1,0 +1,9 @@
+{
+  "self": "example_value",
+  "accountId": "500123",
+  "emailAddress": "user@example.com",
+  "displayName": "example_value",
+  "active": true,
+  "timeZone": "example_value",
+  "accountType": "example_value"
+}

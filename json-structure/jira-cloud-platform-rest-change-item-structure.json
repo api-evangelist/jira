@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "ChangeItem",
+  "type": "object",
+  "properties": {
+    "field": {
+      "type": "string"
+    },
+    "fieldtype": {
+      "type": "string"
+    },
+    "fieldId": {
+      "type": "string"
+    },
+    "from": {
+      "type": "['string', 'null']"
+    },
+    "fromString": {
+      "type": "['string', 'null']"
+    },
+    "to": {
+      "type": "['string', 'null']"
+    },
+    "toString": {
+      "type": "['string', 'null']"
+    }
+  }
+}

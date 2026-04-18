@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Visibility",
+  "type": "object",
+  "description": "The visibility restrictions for a comment.",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string",
+      "description": "The name of the group or role to restrict visibility to."
+    },
+    "identifier": {
+      "type": "string",
+      "description": "The ID of the group or role."
+    }
+  }
+}

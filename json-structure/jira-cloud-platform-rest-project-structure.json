@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "Project",
+  "type": "object",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "key": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "components": {
+      "type": "array"
+    },
+    "issueTypes": {
+      "type": "array"
+    },
+    "url": {
+      "type": "string"
+    },
+    "assigneeType": {
+      "type": "string"
+    },
+    "versions": {
+      "type": "array"
+    },
+    "roles": {
+      "type": "object"
+    },
+    "projectTypeKey": {
+      "type": "string"
+    },
+    "simplified": {
+      "type": "boolean"
+    },
+    "style": {
+      "type": "string"
+    },
+    "archived": {
+      "type": "boolean"
+    },
+    "deleted": {
+      "type": "boolean"
+    },
+    "insight": {
+      "type": "object"
+    }
+  }
+}

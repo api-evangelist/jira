@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IssueTypeWithStatus",
+  "type": "object",
+  "description": "Issue type with its valid statuses.",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "subtask": {
+      "type": "boolean"
+    },
+    "statuses": {
+      "type": "array"
+    }
+  }
+}

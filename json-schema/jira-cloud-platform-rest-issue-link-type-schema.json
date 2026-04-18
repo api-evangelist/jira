@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IssueLinkType",
+  "type": "object",
+  "description": "The type of link between issues.",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "inward": {
+      "type": "string",
+      "description": "The inward description (e.g., is blocked by)."
+    },
+    "outward": {
+      "type": "string",
+      "description": "The outward description (e.g., blocks)."
+    },
+    "self": {
+      "type": "string"
+    }
+  }
+}

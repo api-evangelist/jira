@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EntityProperty",
+  "type": "object",
+  "description": "An entity property (key-value pair).",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "The property key."
+    },
+    "value": {
+      "type": "string",
+      "description": "The property value (any JSON value)."
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PageBeanProject",
+  "type": "object",
+  "description": "A paginated list of projects.",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "nextPage": {
+      "type": "string"
+    },
+    "maxResults": {
+      "type": "integer"
+    },
+    "startAt": {
+      "type": "integer"
+    },
+    "total": {
+      "type": "integer"
+    },
+    "isLast": {
+      "type": "boolean"
+    },
+    "values": {
+      "type": "array"
+    }
+  }
+}

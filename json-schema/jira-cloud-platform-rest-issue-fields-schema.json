@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IssueFields",
+  "type": "object",
+  "description": "The fields of a Jira issue.",
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "The summary (title) of the issue."
+    },
+    "description": {
+      "type": "string",
+      "description": "The description of the issue in Atlassian Document Format (ADF)."
+    },
+    "assignee": {
+      "type": "string",
+      "description": "The user assigned to the issue."
+    },
+    "labels": {
+      "type": "array",
+      "description": "Labels applied to the issue."
+    },
+    "components": {
+      "type": "array",
+      "description": "Components associated with the issue."
+    },
+    "fixVersions": {
+      "type": "array",
+      "description": "Fix versions for the issue."
+    },
+    "versions": {
+      "type": "array",
+      "description": "Affected versions for the issue."
+    },
+    "resolution": {
+      "type": "string",
+      "description": "The resolution of the issue."
+    },
+    "resolutiondate": {
+      "type": "['string', 'null']",
+      "description": "The date the issue was resolved."
+    },
+    "created": {
+      "type": "string",
+      "description": "The date and time the issue was created."
+    },
+    "updated": {
+      "type": "string",
+      "description": "The date and time the issue was last updated."
+    },
+    "duedate": {
+      "type": "['string', 'null']",
+      "description": "The due date of the issue."
+    },
+    "subtasks": {
+      "type": "array",
+      "description": "Sub-tasks of the issue."
+    },
+    "parent": {
+      "type": "string",
+      "description": "The parent issue, if this is a sub-task."
+    },
+    "environment": {
+      "type": "string",
+      "description": "The environment in which the issue was found in ADF."
+    },
+    "attachment": {
+      "type": "array",
+      "description": "Attachments on the issue."
+    },
+    "issuelinks": {
+      "type": "array",
+      "description": "Links to other issues."
+    }
+  }
+}

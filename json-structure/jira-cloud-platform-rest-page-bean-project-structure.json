@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "PageBeanProject",
+  "type": "object",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "nextPage": {
+      "type": "string"
+    },
+    "maxResults": {
+      "type": "integer"
+    },
+    "startAt": {
+      "type": "integer"
+    },
+    "total": {
+      "type": "integer"
+    },
+    "isLast": {
+      "type": "boolean"
+    },
+    "values": {
+      "type": "array"
+    }
+  }
+}

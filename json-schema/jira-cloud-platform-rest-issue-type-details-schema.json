@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IssueTypeDetails",
+  "type": "object",
+  "description": "Details of an issue type.",
+  "properties": {
+    "self": {
+      "type": "string",
+      "description": "The URL of the issue type in the REST API."
+    },
+    "id": {
+      "type": "string",
+      "description": "The ID of the issue type."
+    },
+    "description": {
+      "type": "string",
+      "description": "The description of the issue type."
+    },
+    "iconUrl": {
+      "type": "string",
+      "description": "The URL of the issue type icon."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the issue type (e.g., Bug, Story, Task, Epic)."
+    },
+    "subtask": {
+      "type": "boolean",
+      "description": "Whether this issue type is used to create sub-tasks."
+    },
+    "avatarId": {
+      "type": "integer",
+      "description": "The ID of the avatar for the issue type."
+    },
+    "hierarchyLevel": {
+      "type": "integer",
+      "description": "The hierarchy level of the issue type."
+    }
+  }
+}

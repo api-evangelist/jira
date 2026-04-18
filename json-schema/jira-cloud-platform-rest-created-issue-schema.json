@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CreatedIssue",
+  "type": "object",
+  "description": "Details of a newly created issue.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The ID of the created issue."
+    },
+    "key": {
+      "type": "string",
+      "description": "The key of the created issue (e.g., PROJ-123)."
+    },
+    "self": {
+      "type": "string",
+      "description": "The URL of the created issue in the REST API."
+    },
+    "transition": {
+      "type": "object",
+      "description": "Status of the transition applied during creation."
+    }
+  }
+}

@@ -4,7 +4,14 @@ description: >-
 image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
 url: https://www.atlassian.com/software/jira
 created: '2024'
-modified: '2026-03-16'
+modified: '2026-04-18'
+specificationVersion: '0.18'
+tags:
+  - Agile
+  - Issue Tracking
+  - ITSM
+  - Project Management
+  - Service Management
 apis:
   - name: Jira Cloud Platform REST API
     description: >-
@@ -29,25 +36,13 @@ apis:
         url: asyncapi/jira-webhooks-asyncapi.yml
       - type: Authentication
         url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#authentication
-      - type: Rate Limits
+      - type: RateLimits
         url: https://developer.atlassian.com/cloud/jira/platform/rate-limiting/
-      - type: Change Log
+      - type: ChangeLog
         url: https://developer.atlassian.com/cloud/jira/platform/changelog/
-      - type: Deprecation Policy
-        url: https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/
       - type: Security
         url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
-      - type: OAuth Scopes
-        url: https://developer.atlassian.com/cloud/jira/platform/scopes-for-oauth-2-3LO-and-forge-apps/
-      - type: Basic Authentication
-        url: https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/
-      - type: Pagination
-        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#pagination
-      - type: Expansion
-        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#expansion
-      - type: Jira Expressions
-        url: https://developer.atlassian.com/cloud/jira/platform/jira-expressions/
-      - type: Getting Started
+      - type: GettingStarted
         url: https://developer.atlassian.com/cloud/jira/platform/getting-started/
   - name: Jira Cloud Platform REST API v2
     description: >-
@@ -67,12 +62,10 @@ apis:
         url: https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/
       - type: Authentication
         url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#authentication
-      - type: Change Log
+      - type: ChangeLog
         url: https://developer.atlassian.com/cloud/jira/platform/changelog/
       - type: Security
         url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
-      - type: Basic Authentication
-        url: https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/
   - name: Jira Software Cloud REST API
     description: >-
       REST API for Jira Software features including boards, sprints, and backlogs.
@@ -90,20 +83,16 @@ apis:
         url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
       - type: OpenAPI
         url: https://dac-static.atlassian.com/cloud/jira/software/swagger.v3.json
-      - type: Examples
+      - type: CodeExamples
         url: https://developer.atlassian.com/cloud/jira/software/rest/intro/#examples
-      - type: Change Log
+      - type: ChangeLog
         url: https://developer.atlassian.com/cloud/jira/software/changelog/
       - type: Security
         url: https://developer.atlassian.com/cloud/jira/software/security-overview/
-      - type: Getting Started
+      - type: GettingStarted
         url: https://developer.atlassian.com/cloud/jira/software/getting-started-with-forge/
       - type: Authentication
         url: https://developer.atlassian.com/cloud/jira/software/security-overview/
-      - type: Basic Authentication
-        url: https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis/
-      - type: OAuth 2.0
-        url: https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/
   - name: Jira Service Management REST API
     description: >-
       REST API for Jira Service Management features including queues, customers, requests,
@@ -122,14 +111,10 @@ apis:
         url: https://developer.atlassian.com/cloud/jira/service-desk/rest/intro/
       - type: OpenAPI
         url: https://dac-static.atlassian.com/cloud/jira/service-desk/swagger.v3.json
-      - type: Change Log
+      - type: ChangeLog
         url: https://developer.atlassian.com/cloud/jira/service-desk/changelog/
       - type: Security
         url: https://developer.atlassian.com/cloud/jira/service-desk/security-overview/
-      - type: Basic Authentication
-        url: https://developer.atlassian.com/cloud/jira/service-desk/basic-auth-for-rest-apis/
-      - type: OAuth 2.0
-        url: https://developer.atlassian.com/cloud/jira/service-desk/oauth-2-authorization-code-grants-3lo-for-apps/
   - name: Jira Service Management Operations REST API
     description: >-
       Operations APIs for Jira Service Management covering schedules, on-call rotations,
@@ -149,12 +134,6 @@ apis:
         url: https://developer.atlassian.com/cloud/jira/service-desk-ops/rest/v2/intro/
       - type: Authentication
         url: https://developer.atlassian.com/cloud/jira/service-desk-ops/security/basic-auth-for-rest-apis/
-      - type: OAuth 2.0
-        url: https://developer.atlassian.com/cloud/jira/service-desk-ops/security/oauth-2-3lo-apps/
-      - type: Integration Events API
-        url: https://developer.atlassian.com/cloud/jira/service-desk-ops/rest/v1/
-      - type: Services API
-        url: https://developer.atlassian.com/cloud/jira/service-desk-ops/rest/v3/
   - name: Jira Align REST API
     description: >-
       REST API for Jira Align enterprise agile planning platform, providing access
@@ -171,9 +150,9 @@ apis:
     properties:
       - type: Documentation
         url: https://help.jiraalign.com/hc/en-us/sections/360008049974-API-2-0
-      - type: Getting Started
+      - type: GettingStarted
         url: https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
-      - type: Rate Limits
+      - type: RateLimits
         url: https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
       - type: Authentication
         url: https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
@@ -194,7 +173,7 @@ apis:
         url: https://developer.atlassian.com/cloud/customer-service-management/rest/v1/api-group-customer/
       - type: Authentication
         url: https://developer.atlassian.com/cloud/customer-service-management/apis/narratives/authentication/
-      - type: Getting Started
+      - type: GettingStarted
         url: https://developer.atlassian.com/cloud/customer-service-management/
 maintainers:
   - name: Atlassian
@@ -205,51 +184,28 @@ maintainers:
 common:
   - type: Portal
     url: https://developer.atlassian.com/cloud/jira/platform/
-  - type: Getting Started
+  - type: GettingStarted
     url: https://developer.atlassian.com/cloud/jira/platform/getting-started/
-  - type: SDKs
+  - type: SDK
     url: https://developer.atlassian.com/cloud/jira/platform/libraries/
-  - type: Webhooks
-    url: https://developer.atlassian.com/cloud/jira/platform/webhooks/
-  - type: OAuth 2.0
+  - type: Authentication
     url: https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/
-  - type: Community
-    url: https://community.atlassian.com/
-  - type: Developer Community
-    url: https://community.developer.atlassian.com/c/jira/5
+    title: OAuth 2.0
   - type: Support
     url: https://support.atlassian.com/
-  - type: Status Page
+  - type: StatusPage
     url: https://status.atlassian.com/
-  - type: Terms of Service
+  - type: TermsOfService
     url: https://www.atlassian.com/legal/cloud-terms-of-service
-  - type: Privacy Policy
+  - type: PrivacyPolicy
     url: https://www.atlassian.com/legal/privacy-policy
-  - type: Change Log
+  - type: ChangeLog
     url: https://developer.atlassian.com/changelog/
   - type: Blog
     url: https://www.atlassian.com/blog/developer
-  - type: Forge Platform
-    url: https://developer.atlassian.com/platform/forge/
   - type: Marketplace
     url: https://developer.atlassian.com/platform/marketplace/getting-started/
-  - type: API Tokens
-    url: https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/
-  - type: Postman Collection
-    url: https://www.postman.com/postman/atlassian-jira-api/overview
-  - type: Cloud Admin APIs
-    url: https://developer.atlassian.com/cloud/admin/rest-apis/
-  - type: User Management API
-    url: https://developer.atlassian.com/cloud/admin/user-management/rest/
-  - type: User Provisioning API
-    url: https://developer.atlassian.com/cloud/admin/user-provisioning/rest/
-  - type: Organizations API
-    url: https://developer.atlassian.com/cloud/admin/organization/about/
-  - type: Connect Framework
-    url: https://developer.atlassian.com/cloud/jira/platform/connect-frameworks-and-tools/
-  - type: Forge Migration
-    url: https://developer.atlassian.com/platform/adopting-forge-from-connect/
-  - type: Rate Limits
+  - type: RateLimits
     url: https://developer.atlassian.com/cloud/jira/platform/rate-limiting/
   - type: Security
     url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
@@ -259,6 +215,44 @@ common:
   - type: JSONSchema
     url: json-schema/jira-project-schema.json
     name: Jira Project Schema
-  - type: JSON-LD
+  - type: JSONLD
     url: json-ld/jira-context.jsonld
     name: Jira JSON-LD Context
+  - type: Features
+    data:
+      - name: JQL Search
+        description: Powerful Jira Query Language enabling complex issue searches with field-based filtering, functions, and operators.
+      - name: Workflow Automation
+        description: Configurable workflow transitions with validators, conditions, and post-functions for automated issue lifecycle management.
+      - name: Agile Boards
+        description: Scrum and Kanban boards with sprint planning, backlog management, and velocity tracking for agile teams.
+      - name: Service Level Agreements
+        description: SLA management with configurable goals, time tracking, and breach notifications for service management.
+      - name: Webhooks
+        description: Real-time event notifications for issue changes, sprint events, and board updates via configurable webhook endpoints.
+      - name: Atlassian Document Format
+        description: Rich text document format supporting structured content in issue descriptions and comments via the v3 API.
+  - type: UseCases
+    data:
+      - name: Issue Tracking Automation
+        description: Automate issue creation, assignment, and transitions based on external events from CI/CD pipelines, monitoring tools, or customer feedback systems.
+      - name: Sprint Management
+        description: Programmatically manage sprints, backlogs, and board configurations for automated agile workflow orchestration.
+      - name: Service Desk Integration
+        description: Integrate customer support channels with Jira Service Management for automated ticket creation and SLA tracking.
+      - name: Incident Management
+        description: Automate incident response workflows with on-call scheduling, alert routing, and escalation management.
+      - name: Enterprise Agile Planning
+        description: Connect portfolio planning tools with Jira Align for cross-team dependency tracking and program-level reporting.
+  - type: Integrations
+    data:
+      - name: Confluence
+        description: Link Jira issues to Confluence pages for seamless knowledge management and documentation alongside project tracking.
+      - name: Bitbucket
+        description: Connect code repositories to Jira issues for automated status updates, smart commits, and development tracking.
+      - name: GitHub
+        description: Link GitHub pull requests, branches, and commits to Jira issues for end-to-end development visibility.
+      - name: Slack
+        description: Create and manage Jira issues from Slack channels with bi-directional notifications and status updates.
+      - name: Microsoft Teams
+        description: Receive Jira notifications and manage issues directly from Microsoft Teams conversations.

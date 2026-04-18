@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IssueCreateRequest",
+  "type": "object",
+  "description": "Request body for creating an issue.",
+  "properties": {
+    "update": {
+      "type": "object",
+      "description": "A map of operations to perform on issue fields. Each key is a field ID and the value is an array of operations."
+    },
+    "fields": {
+      "type": "object",
+      "description": "A map of field ID to field value for the issue. Required fields depend on the project and issue type."
+    },
+    "historyMetadata": {
+      "type": "object",
+      "description": "Metadata about the history entry."
+    },
+    "properties": {
+      "type": "array",
+      "description": "Entity properties to set on the issue."
+    }
+  }
+}

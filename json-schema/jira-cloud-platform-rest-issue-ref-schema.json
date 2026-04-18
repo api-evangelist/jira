@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IssueRef",
+  "type": "object",
+  "description": "A reference to an issue.",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "key": {
+      "type": "string"
+    },
+    "self": {
+      "type": "string"
+    },
+    "fields": {
+      "type": "object"
+    }
+  }
+}

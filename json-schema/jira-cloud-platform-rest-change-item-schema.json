@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChangeItem",
+  "type": "object",
+  "description": "An individual field change within a changelog entry.",
+  "properties": {
+    "field": {
+      "type": "string"
+    },
+    "fieldtype": {
+      "type": "string"
+    },
+    "fieldId": {
+      "type": "string"
+    },
+    "from": {
+      "type": "['string', 'null']"
+    },
+    "fromString": {
+      "type": "['string', 'null']"
+    },
+    "to": {
+      "type": "['string', 'null']"
+    },
+    "toString": {
+      "type": "['string', 'null']"
+    }
+  }
+}

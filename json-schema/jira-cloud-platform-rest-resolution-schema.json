@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Resolution",
+  "type": "object",
+  "description": "An issue resolution.",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the resolution (e.g., Fixed, Won't Fix, Duplicate)."
+    },
+    "description": {
+      "type": "string"
+    }
+  }
+}

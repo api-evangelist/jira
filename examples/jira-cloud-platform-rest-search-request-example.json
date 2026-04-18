@@ -1,0 +1,10 @@
+{
+  "jql": "example_value",
+  "startAt": 10,
+  "maxResults": 10,
+  "validateQuery": "example_value",
+  "fields": [],
+  "expand": "example_value",
+  "properties": [],
+  "fieldsByKeys": true
+}

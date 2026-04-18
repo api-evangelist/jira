@@ -1,0 +1,7 @@
+{
+  "id": "abc123",
+  "name": "Example Title",
+  "inward": "example_value",
+  "outward": "example_value",
+  "self": "example_value"
+}

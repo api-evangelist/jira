@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "IssueTransitionRequest",
+  "type": "object",
+  "properties": {
+    "fields": {
+      "type": "object"
+    },
+    "update": {
+      "type": "object"
+    },
+    "historyMetadata": {
+      "type": "object"
+    }
+  }
+}

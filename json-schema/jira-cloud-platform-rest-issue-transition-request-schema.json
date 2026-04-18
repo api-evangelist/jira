@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IssueTransitionRequest",
+  "type": "object",
+  "description": "Request body for performing an issue transition.",
+  "properties": {
+    "fields": {
+      "type": "object",
+      "description": "A map of field ID to field value to set during the transition."
+    },
+    "update": {
+      "type": "object",
+      "description": "A map of operations to perform on issue fields during the transition."
+    },
+    "historyMetadata": {
+      "type": "object",
+      "description": "Metadata about the history entry."
+    }
+  }
+}

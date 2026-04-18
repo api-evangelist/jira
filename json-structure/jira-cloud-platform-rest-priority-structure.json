@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "Priority",
+  "type": "object",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "iconUrl": {
+      "type": "string"
+    },
+    "statusColor": {
+      "type": "string"
+    }
+  }
+}

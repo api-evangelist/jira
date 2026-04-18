@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Transition",
+  "type": "object",
+  "description": "A workflow transition.",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "hasScreen": {
+      "type": "boolean"
+    },
+    "isGlobal": {
+      "type": "boolean"
+    },
+    "isInitial": {
+      "type": "boolean"
+    },
+    "isConditional": {
+      "type": "boolean"
+    },
+    "fields": {
+      "type": "object",
+      "description": "Fields available during the transition."
+    }
+  }
+}

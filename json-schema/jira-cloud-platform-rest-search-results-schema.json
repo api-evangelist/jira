@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SearchResults",
+  "type": "object",
+  "description": "The result of a JQL search.",
+  "properties": {
+    "expand": {
+      "type": "string",
+      "description": "The expand options applied."
+    },
+    "startAt": {
+      "type": "integer",
+      "description": "The index of the first result returned."
+    },
+    "maxResults": {
+      "type": "integer",
+      "description": "The maximum number of results returned per page."
+    },
+    "total": {
+      "type": "integer",
+      "description": "The total number of results matching the JQL query."
+    },
+    "issues": {
+      "type": "array",
+      "description": "The list of issues matching the JQL query."
+    },
+    "warningMessages": {
+      "type": "array",
+      "description": "Warning messages about the JQL query."
+    },
+    "names": {
+      "type": "object",
+      "description": "Field name mapping."
+    },
+    "schema": {
+      "type": "object",
+      "description": "JSON Schema for each field."
+    }
+  }
+}

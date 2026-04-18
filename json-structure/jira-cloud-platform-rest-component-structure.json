@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "Component",
+  "type": "object",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "assigneeType": {
+      "type": "string"
+    },
+    "project": {
+      "type": "string"
+    },
+    "projectId": {
+      "type": "integer"
+    }
+  }
+}

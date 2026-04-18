@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TransitionRef",
+  "type": "object",
+  "description": "A reference to a transition by ID.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The ID of the transition."
+    }
+  }
+}

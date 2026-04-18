@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Comment",
+  "type": "object",
+  "description": "A comment on an issue.",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "renderedBody": {
+      "type": "string",
+      "description": "The rendered version of the comment body in HTML."
+    },
+    "created": {
+      "type": "string"
+    },
+    "updated": {
+      "type": "string"
+    },
+    "jsdPublic": {
+      "type": "boolean",
+      "description": "Whether the comment is visible in Jira Service Management."
+    }
+  }
+}

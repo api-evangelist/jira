@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "Transition",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "hasScreen": {
+      "type": "boolean"
+    },
+    "isGlobal": {
+      "type": "boolean"
+    },
+    "isInitial": {
+      "type": "boolean"
+    },
+    "isConditional": {
+      "type": "boolean"
+    },
+    "fields": {
+      "type": "object"
+    }
+  }
+}

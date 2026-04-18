@@ -1,0 +1,10 @@
+{
+  "self": "example_value",
+  "id": "abc123",
+  "filename": "example_value",
+  "created": "example_value",
+  "size": 10,
+  "mimeType": "example_value",
+  "content": "example_value",
+  "thumbnail": "example_value"
+}

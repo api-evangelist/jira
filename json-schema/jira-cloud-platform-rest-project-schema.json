@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project",
+  "type": "object",
+  "description": "A Jira project.",
+  "properties": {
+    "self": {
+      "type": "string",
+      "description": "The URL of the project in the REST API."
+    },
+    "id": {
+      "type": "string",
+      "description": "The ID of the project."
+    },
+    "key": {
+      "type": "string",
+      "description": "The key of the project (e.g., PROJ)."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the project."
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the project."
+    },
+    "components": {
+      "type": "array",
+      "description": "Components in the project."
+    },
+    "issueTypes": {
+      "type": "array",
+      "description": "Issue types available in the project."
+    },
+    "url": {
+      "type": "string",
+      "description": "A URL to the project."
+    },
+    "assigneeType": {
+      "type": "string",
+      "description": "The default assignee type for the project."
+    },
+    "versions": {
+      "type": "array",
+      "description": "The versions defined in the project."
+    },
+    "roles": {
+      "type": "object",
+      "description": "Project role URLs."
+    },
+    "projectTypeKey": {
+      "type": "string",
+      "description": "The project type."
+    },
+    "simplified": {
+      "type": "boolean",
+      "description": "Whether the project is simplified (next-gen/team-managed)."
+    },
+    "style": {
+      "type": "string",
+      "description": "The style of the project. Classic or next-gen."
+    },
+    "archived": {
+      "type": "boolean",
+      "description": "Whether the project is archived."
+    },
+    "deleted": {
+      "type": "boolean",
+      "description": "Whether the project is marked as deleted."
+    },
+    "insight": {
+      "type": "object",
+      "description": "Insight information about the project."
+    }
+  }
+}

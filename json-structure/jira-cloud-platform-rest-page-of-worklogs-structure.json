@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "PageOfWorklogs",
+  "type": "object",
+  "properties": {
+    "startAt": {
+      "type": "integer"
+    },
+    "maxResults": {
+      "type": "integer"
+    },
+    "total": {
+      "type": "integer"
+    },
+    "worklogs": {
+      "type": "array"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Scope",
+  "type": "object",
+  "description": "The scope of the issue type (project or global).",
+  "properties": {
+    "type": {
+      "type": "string"
+    }
+  }
+}

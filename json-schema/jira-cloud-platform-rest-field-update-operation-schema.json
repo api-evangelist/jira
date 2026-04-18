@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FieldUpdateOperation",
+  "type": "object",
+  "description": "An operation to perform on a field value.",
+  "properties": {
+    "add": {
+      "type": "string",
+      "description": "Value to add to the field."
+    },
+    "remove": {
+      "type": "string",
+      "description": "Value to remove from the field."
+    },
+    "set": {
+      "type": "string",
+      "description": "Value to set the field to."
+    },
+    "edit": {
+      "type": "string",
+      "description": "Value to edit in the field."
+    },
+    "copy": {
+      "type": "string",
+      "description": "Value to copy to the field."
+    }
+  }
+}

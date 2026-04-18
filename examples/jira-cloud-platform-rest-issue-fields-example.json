@@ -1,0 +1,19 @@
+{
+  "summary": "example_value",
+  "description": "A sample description.",
+  "assignee": "example_value",
+  "labels": [],
+  "components": [],
+  "fixVersions": [],
+  "versions": [],
+  "resolution": "example_value",
+  "resolutiondate": "example_value",
+  "created": "example_value",
+  "updated": "example_value",
+  "duedate": "example_value",
+  "subtasks": [],
+  "parent": "example_value",
+  "environment": "example_value",
+  "attachment": [],
+  "issuelinks": []
+}

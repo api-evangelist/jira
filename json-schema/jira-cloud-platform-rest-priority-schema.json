@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Priority",
+  "type": "object",
+  "description": "An issue priority.",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the priority (e.g., Highest, High, Medium, Low, Lowest)."
+    },
+    "description": {
+      "type": "string"
+    },
+    "iconUrl": {
+      "type": "string"
+    },
+    "statusColor": {
+      "type": "string",
+      "description": "The color associated with the priority."
+    }
+  }
+}

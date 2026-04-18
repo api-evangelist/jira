@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IssueLink",
+  "type": "object",
+  "description": "A link between issues.",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "self": {
+      "type": "string"
+    }
+  }
+}

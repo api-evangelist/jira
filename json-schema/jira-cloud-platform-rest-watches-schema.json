@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Watches",
+  "type": "object",
+  "description": "The watchers of an issue.",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "watchCount": {
+      "type": "integer"
+    },
+    "isWatching": {
+      "type": "boolean"
+    }
+  }
+}

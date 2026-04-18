@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "CreatedIssue",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "key": {
+      "type": "string"
+    },
+    "self": {
+      "type": "string"
+    },
+    "transition": {
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UserDetails",
+  "type": "object",
+  "description": "A Jira user.",
+  "properties": {
+    "self": {
+      "type": "string",
+      "description": "The URL of the user in the REST API."
+    },
+    "accountId": {
+      "type": "string",
+      "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products."
+    },
+    "emailAddress": {
+      "type": "string",
+      "description": "The email address of the user (may not be available depending on privacy settings)."
+    },
+    "displayName": {
+      "type": "string",
+      "description": "The display name of the user."
+    },
+    "active": {
+      "type": "boolean",
+      "description": "Whether the user account is active."
+    },
+    "timeZone": {
+      "type": "string",
+      "description": "The time zone of the user."
+    },
+    "accountType": {
+      "type": "string",
+      "description": "The type of account."
+    }
+  }
+}

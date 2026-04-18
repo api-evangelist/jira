@@ -1,0 +1,9 @@
+{
+  "id": "abc123",
+  "name": "Example Title",
+  "hasScreen": true,
+  "isGlobal": true,
+  "isInitial": true,
+  "isConditional": true,
+  "fields": "example_value"
+}

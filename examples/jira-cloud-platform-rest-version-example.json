@@ -1,0 +1,12 @@
+{
+  "self": "example_value",
+  "id": "abc123",
+  "name": "Example Title",
+  "description": "A sample description.",
+  "archived": true,
+  "released": true,
+  "releaseDate": "example_value",
+  "startDate": "example_value",
+  "overdue": true,
+  "projectId": "500123"
+}

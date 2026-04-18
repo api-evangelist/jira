@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AvatarUrls",
+  "type": "object",
+  "description": "Avatar URLs in multiple sizes.",
+  "properties": {
+    "16x16": {
+      "type": "string"
+    },
+    "24x24": {
+      "type": "string"
+    },
+    "32x32": {
+      "type": "string"
+    },
+    "48x48": {
+      "type": "string"
+    }
+  }
+}

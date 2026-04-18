@@ -1,0 +1,19 @@
+{
+  "self": "example_value",
+  "id": "abc123",
+  "key": "example_value",
+  "name": "Example Title",
+  "description": "A sample description.",
+  "components": [],
+  "issueTypes": [],
+  "url": "https://www.example.com",
+  "assigneeType": "example_value",
+  "versions": [],
+  "roles": "example_value",
+  "projectTypeKey": "example_value",
+  "simplified": true,
+  "style": "example_value",
+  "archived": true,
+  "deleted": true,
+  "insight": "example_value"
+}

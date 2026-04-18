@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Votes",
+  "type": "object",
+  "description": "The votes for an issue.",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "votes": {
+      "type": "integer"
+    },
+    "hasVoted": {
+      "type": "boolean"
+    }
+  }
+}

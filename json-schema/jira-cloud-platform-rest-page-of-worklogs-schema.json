@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PageOfWorklogs",
+  "type": "object",
+  "description": "A paginated list of worklogs.",
+  "properties": {
+    "startAt": {
+      "type": "integer"
+    },
+    "maxResults": {
+      "type": "integer"
+    },
+    "total": {
+      "type": "integer"
+    },
+    "worklogs": {
+      "type": "array"
+    }
+  }
+}

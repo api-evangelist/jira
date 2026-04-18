@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "ChangeHistory",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "created": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array"
+    }
+  }
+}

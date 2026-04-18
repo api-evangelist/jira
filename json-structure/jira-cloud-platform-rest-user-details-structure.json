@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "UserDetails",
+  "type": "object",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "accountId": {
+      "type": "string"
+    },
+    "emailAddress": {
+      "type": "string"
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "timeZone": {
+      "type": "string"
+    },
+    "accountType": {
+      "type": "string"
+    }
+  }
+}

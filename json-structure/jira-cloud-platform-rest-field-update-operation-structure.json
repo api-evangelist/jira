@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "FieldUpdateOperation",
+  "type": "object",
+  "properties": {
+    "add": {
+      "type": "string"
+    },
+    "remove": {
+      "type": "string"
+    },
+    "set": {
+      "type": "string"
+    },
+    "edit": {
+      "type": "string"
+    },
+    "copy": {
+      "type": "string"
+    }
+  }
+}

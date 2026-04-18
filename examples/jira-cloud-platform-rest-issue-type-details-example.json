@@ -1,0 +1,10 @@
+{
+  "self": "example_value",
+  "id": "abc123",
+  "description": "A sample description.",
+  "iconUrl": "https://www.example.com",
+  "name": "Example Title",
+  "subtask": true,
+  "avatarId": "500123",
+  "hierarchyLevel": 10
+}

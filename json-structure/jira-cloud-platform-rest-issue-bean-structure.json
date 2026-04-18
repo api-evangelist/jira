@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "IssueBean",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "key": {
+      "type": "string"
+    },
+    "self": {
+      "type": "string"
+    },
+    "expand": {
+      "type": "string"
+    },
+    "renderedFields": {
+      "type": "object"
+    },
+    "names": {
+      "type": "object"
+    },
+    "schema": {
+      "type": "object"
+    },
+    "transitions": {
+      "type": "array"
+    }
+  }
+}

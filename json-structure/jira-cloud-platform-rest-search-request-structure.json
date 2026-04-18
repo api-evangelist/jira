@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "SearchRequest",
+  "type": "object",
+  "properties": {
+    "jql": {
+      "type": "string"
+    },
+    "startAt": {
+      "type": "integer"
+    },
+    "maxResults": {
+      "type": "integer"
+    },
+    "validateQuery": {
+      "type": "string"
+    },
+    "fields": {
+      "type": "array"
+    },
+    "expand": {
+      "type": "string"
+    },
+    "properties": {
+      "type": "array"
+    },
+    "fieldsByKeys": {
+      "type": "boolean"
+    }
+  }
+}

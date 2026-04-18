@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Version",
+  "type": "object",
+  "description": "A project version.",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "archived": {
+      "type": "boolean"
+    },
+    "released": {
+      "type": "boolean"
+    },
+    "releaseDate": {
+      "type": "string"
+    },
+    "startDate": {
+      "type": "string"
+    },
+    "overdue": {
+      "type": "boolean"
+    },
+    "projectId": {
+      "type": "integer"
+    }
+  }
+}

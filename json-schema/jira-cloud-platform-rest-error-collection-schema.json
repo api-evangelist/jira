@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ErrorCollection",
+  "type": "object",
+  "description": "Error details returned by the API.",
+  "properties": {
+    "errorMessages": {
+      "type": "array",
+      "description": "The list of error messages."
+    },
+    "errors": {
+      "type": "object",
+      "description": "Field-specific errors."
+    },
+    "status": {
+      "type": "integer",
+      "description": "The HTTP status code."
+    }
+  }
+}

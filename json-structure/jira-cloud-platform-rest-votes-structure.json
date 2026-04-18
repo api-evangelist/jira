@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "Votes",
+  "type": "object",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "votes": {
+      "type": "integer"
+    },
+    "hasVoted": {
+      "type": "boolean"
+    }
+  }
+}

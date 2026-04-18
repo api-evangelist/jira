@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StatusCategory",
+  "type": "object",
+  "description": "A status category in Jira.",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "id": {
+      "type": "integer"
+    },
+    "key": {
+      "type": "string",
+      "description": "The key of the status category (e.g., new, indeterminate, done)."
+    },
+    "colorName": {
+      "type": "string",
+      "description": "The color name for the status category."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the status category."
+    }
+  }
+}

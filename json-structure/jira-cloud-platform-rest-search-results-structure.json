@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "SearchResults",
+  "type": "object",
+  "properties": {
+    "expand": {
+      "type": "string"
+    },
+    "startAt": {
+      "type": "integer"
+    },
+    "maxResults": {
+      "type": "integer"
+    },
+    "total": {
+      "type": "integer"
+    },
+    "issues": {
+      "type": "array"
+    },
+    "warningMessages": {
+      "type": "array"
+    },
+    "names": {
+      "type": "object"
+    },
+    "schema": {
+      "type": "object"
+    }
+  }
+}

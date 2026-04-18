@@ -1,0 +1,15 @@
+name: jira API Vocabulary
+provider: jira
+created: '2026-04-18'
+modified: '2026-04-18'
+operations: 16
+schemas: 44
+tags:
+- Issue Comments
+- Issue Priorities
+- Issue Search
+- Issue Statuses
+- Issue Transitions
+- Issue Types
+- Issues
+- Projects

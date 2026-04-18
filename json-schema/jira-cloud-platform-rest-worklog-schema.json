@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Worklog",
+  "type": "object",
+  "description": "A worklog entry.",
+  "properties": {
+    "self": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "created": {
+      "type": "string"
+    },
+    "updated": {
+      "type": "string"
+    },
+    "started": {
+      "type": "string"
+    },
+    "timeSpent": {
+      "type": "string",
+      "description": "The time spent on the worklog (e.g., 3h 20m)."
+    },
+    "timeSpentSeconds": {
+      "type": "integer"
+    }
+  }
+}

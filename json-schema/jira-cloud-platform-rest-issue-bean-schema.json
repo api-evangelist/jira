@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IssueBean",
+  "type": "object",
+  "description": "A Jira issue with all fields and metadata.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The ID of the issue."
+    },
+    "key": {
+      "type": "string",
+      "description": "The key of the issue (e.g., PROJ-123)."
+    },
+    "self": {
+      "type": "string",
+      "description": "The URL of the issue in the REST API."
+    },
+    "expand": {
+      "type": "string",
+      "description": "The expand options applied to the issue."
+    },
+    "renderedFields": {
+      "type": "object",
+      "description": "HTML-rendered versions of the issue fields."
+    },
+    "names": {
+      "type": "object",
+      "description": "Field name mapping for the issue."
+    },
+    "schema": {
+      "type": "object",
+      "description": "JSON Schema for each field in the issue."
+    },
+    "transitions": {
+      "type": "array",
+      "description": "Transitions available for the issue."
+    }
+  }
+}

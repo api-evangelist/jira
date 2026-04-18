@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "IssueCreateRequest",
+  "type": "object",
+  "properties": {
+    "update": {
+      "type": "object"
+    },
+    "fields": {
+      "type": "object"
+    },
+    "historyMetadata": {
+      "type": "object"
+    },
+    "properties": {
+      "type": "array"
+    }
+  }
+}

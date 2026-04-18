@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PageOfComments",
+  "type": "object",
+  "description": "A paginated list of comments.",
+  "properties": {
+    "startAt": {
+      "type": "integer"
+    },
+    "maxResults": {
+      "type": "integer"
+    },
+    "total": {
+      "type": "integer"
+    },
+    "comments": {
+      "type": "array"
+    }
+  }
+}

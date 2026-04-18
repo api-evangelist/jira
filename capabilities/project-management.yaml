@@ -1,0 +1,306 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Jira Project Management"
+  description: "Unified project management workflow combining issue tracking, workflow transitions, JQL search, and project management. Used by project managers, developers, and team leads to manage agile software delivery."
+  tags:
+    - Jira
+    - Project Management
+    - Issue Tracking
+    - Agile
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      JIRA_API_TOKEN: JIRA_API_TOKEN
+      JIRA_EMAIL: JIRA_EMAIL
+
+capability:
+  consumes:
+    - import: jira-cloud
+      location: ./shared/jira-cloud-platform.yaml
+
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: jira-pm-api
+      description: "Unified REST API for Jira project management workflows."
+      resources:
+        - path: /v1/issues
+          name: issues
+          description: "Issue lifecycle management."
+          operations:
+            - method: POST
+              name: create-issue
+              description: "Create a new issue."
+              call: "jira-cloud.create-issue"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/issues/{issueIdOrKey}
+          name: issue-detail
+          description: "Single issue operations."
+          operations:
+            - method: GET
+              name: get-issue
+              description: "Get issue details."
+              call: "jira-cloud.get-issue"
+              with:
+                issueIdOrKey: "rest.issueIdOrKey"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: PUT
+              name: edit-issue
+              description: "Edit an issue."
+              call: "jira-cloud.edit-issue"
+              with:
+                issueIdOrKey: "rest.issueIdOrKey"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: DELETE
+              name: delete-issue
+              description: "Delete an issue."
+              call: "jira-cloud.delete-issue"
+              with:
+                issueIdOrKey: "rest.issueIdOrKey"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/issues/{issueIdOrKey}/transitions
+          name: transitions
+          description: "Workflow transitions."
+          operations:
+            - method: GET
+              name: get-transitions
+              description: "Get available transitions."
+              call: "jira-cloud.get-transitions"
+              with:
+                issueIdOrKey: "rest.issueIdOrKey"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: do-transition
+              description: "Perform a transition."
+              call: "jira-cloud.do-transition"
+              with:
+                issueIdOrKey: "rest.issueIdOrKey"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/issues/{issueIdOrKey}/comments
+          name: comments
+          description: "Issue comments."
+          operations:
+            - method: GET
+              name: get-comments
+              description: "Get issue comments."
+              call: "jira-cloud.get-comments"
+              with:
+                issueIdOrKey: "rest.issueIdOrKey"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: add-comment
+              description: "Add a comment."
+              call: "jira-cloud.add-comment"
+              with:
+                issueIdOrKey: "rest.issueIdOrKey"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/search
+          name: search
+          description: "JQL issue search."
+          operations:
+            - method: GET
+              name: search-issues
+              description: "Search with JQL."
+              call: "jira-cloud.search-issues-jql"
+              with:
+                jql: "rest.jql"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/projects
+          name: projects
+          description: "Project management."
+          operations:
+            - method: GET
+              name: list-projects
+              description: "List all projects."
+              call: "jira-cloud.get-all-projects"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/projects/{projectIdOrKey}
+          name: project-detail
+          description: "Single project."
+          operations:
+            - method: GET
+              name: get-project
+              description: "Get project details."
+              call: "jira-cloud.get-project"
+              with:
+                projectIdOrKey: "rest.projectIdOrKey"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9090
+      namespace: jira-pm-mcp
+      transport: http
+      description: "MCP server for AI-assisted Jira project management."
+      tools:
+        - name: create-issue
+          description: "Create a new Jira issue."
+          hints:
+            readOnly: false
+          call: "jira-cloud.create-issue"
+          with:
+            project_key: "tools.project_key"
+            summary: "tools.summary"
+            issue_type: "tools.issue_type"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-issue
+          description: "Get Jira issue details."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "jira-cloud.get-issue"
+          with:
+            issueIdOrKey: "tools.issueIdOrKey"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: edit-issue
+          description: "Edit an existing Jira issue."
+          hints:
+            readOnly: false
+            idempotent: true
+          call: "jira-cloud.edit-issue"
+          with:
+            issueIdOrKey: "tools.issueIdOrKey"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: delete-issue
+          description: "Delete a Jira issue."
+          hints:
+            readOnly: false
+            destructive: true
+          call: "jira-cloud.delete-issue"
+          with:
+            issueIdOrKey: "tools.issueIdOrKey"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-transitions
+          description: "Get available workflow transitions."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "jira-cloud.get-transitions"
+          with:
+            issueIdOrKey: "tools.issueIdOrKey"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: do-transition
+          description: "Transition an issue through its workflow."
+          hints:
+            readOnly: false
+          call: "jira-cloud.do-transition"
+          with:
+            issueIdOrKey: "tools.issueIdOrKey"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-comments
+          description: "Get comments on a Jira issue."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "jira-cloud.get-comments"
+          with:
+            issueIdOrKey: "tools.issueIdOrKey"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: add-comment
+          description: "Add a comment to a Jira issue."
+          hints:
+            readOnly: false
+          call: "jira-cloud.add-comment"
+          with:
+            issueIdOrKey: "tools.issueIdOrKey"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: search-issues
+          description: "Search Jira issues using JQL."
+          hints:
+            readOnly: true
+            idempotent: true
+            openWorld: true
+          call: "jira-cloud.search-issues-jql"
+          with:
+            jql: "tools.jql"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-projects
+          description: "List all Jira projects."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "jira-cloud.get-all-projects"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-project
+          description: "Get Jira project details."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "jira-cloud.get-project"
+          with:
+            projectIdOrKey: "tools.projectIdOrKey"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-statuses
+          description: "Get all Jira issue statuses."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "jira-cloud.get-all-statuses"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-issue-types
+          description: "Get all Jira issue types."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "jira-cloud.get-all-issue-types"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-priorities
+          description: "Get all Jira priorities."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "jira-cloud.get-priorities"
+          outputParameters:
+            - type: object
+              mapping: "$."
