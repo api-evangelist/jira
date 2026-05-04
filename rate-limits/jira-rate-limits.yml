@@ -1,0 +1,41 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Jira Cloud
+providerId: jira
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - Rate Limiting
+  - Project Management
+description: Jira Cloud REST API rate limits per app + per user.
+sources:
+  - https://www.atlassian.com/software/jira/pricing
+  - https://developer.atlassian.com/cloud/jira/platform/rate-limiting/
+headers:
+  retryAfter: Retry-After
+  limit: X-RateLimit-Limit
+  remaining: X-RateLimit-Remaining
+responseCodes:
+  throttled: 429
+limits:
+  - name: Per-app per-user-per-tenant
+    scope: app/user/tenant
+    metric: requests_per_second
+    limit: 10
+    timeFrame: second
+    notes: Token-bucket; soft limit varies by endpoint.
+  - name: Per-tenant aggregate
+    scope: tenant
+    metric: requests_per_minute
+    limit: varies
+  - name: Bulk operations
+    scope: request
+    metric: items
+    limit: 100
+    timeFrame: request
+  - name: Issue search (JQL)
+    scope: user
+    metric: requests_per_minute
+    limit: subject to throttling

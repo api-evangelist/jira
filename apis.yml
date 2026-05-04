@@ -1,10 +1,9 @@
 name: Jira
-description: >-
-  APIs for Atlassian Jira project management and issue tracking platform.
+description: APIs for Atlassian Jira project management and issue tracking platform.
 image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
 url: https://www.atlassian.com/software/jira
 created: '2024'
-modified: '2026-04-18'
+modified: '2026-05-04'
 specificationVersion: '0.18'
 tags:
   - Agile
@@ -14,8 +13,7 @@ tags:
   - Service Management
 apis:
   - name: Jira Cloud Platform REST API
-    description: >-
-      The Jira Cloud platform REST API for building apps and integrations.
+    description: The Jira Cloud platform REST API for building apps and integrations.
     image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
     humanURL: https://developer.atlassian.com/cloud/jira/platform/
     baseURL: https://your-domain.atlassian.net/rest/api/3
@@ -45,9 +43,8 @@ apis:
       - type: GettingStarted
         url: https://developer.atlassian.com/cloud/jira/platform/getting-started/
   - name: Jira Cloud Platform REST API v2
-    description: >-
-      Version 2 of the Jira Cloud platform REST API, offering the same operations
-      as v3 but without Atlassian Document Format support.
+    description: Version 2 of the Jira Cloud platform REST API, offering the same operations as v3 but
+      without Atlassian Document Format support.
     image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
     humanURL: https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/
     baseURL: https://your-domain.atlassian.net/rest/api/2
@@ -67,8 +64,7 @@ apis:
       - type: Security
         url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
   - name: Jira Software Cloud REST API
-    description: >-
-      REST API for Jira Software features including boards, sprints, and backlogs.
+    description: REST API for Jira Software features including boards, sprints, and backlogs.
     image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
     humanURL: https://developer.atlassian.com/cloud/jira/software/
     baseURL: https://your-domain.atlassian.net/rest/agile/1.0
@@ -94,8 +90,7 @@ apis:
       - type: Authentication
         url: https://developer.atlassian.com/cloud/jira/software/security-overview/
   - name: Jira Service Management REST API
-    description: >-
-      REST API for Jira Service Management features including queues, customers, requests,
+    description: REST API for Jira Service Management features including queues, customers, requests,
       and SLAs.
     image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
     humanURL: https://developer.atlassian.com/cloud/jira/service-desk/
@@ -116,9 +111,8 @@ apis:
       - type: Security
         url: https://developer.atlassian.com/cloud/jira/service-desk/security-overview/
   - name: Jira Service Management Operations REST API
-    description: >-
-      Operations APIs for Jira Service Management covering schedules, on-call rotations,
-      alerts, escalations, and incident management.
+    description: Operations APIs for Jira Service Management covering schedules, on-call rotations, alerts,
+      escalations, and incident management.
     image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
     humanURL: https://developer.atlassian.com/cloud/jira/service-desk-ops/introduction/introduction/
     baseURL: https://api.atlassian.com/jsm/ops/api/{cloudId}
@@ -135,9 +129,8 @@ apis:
       - type: Authentication
         url: https://developer.atlassian.com/cloud/jira/service-desk-ops/security/basic-auth-for-rest-apis/
   - name: Jira Align REST API
-    description: >-
-      REST API for Jira Align enterprise agile planning platform, providing access
-      to portfolios, epics, features, and program management data.
+    description: REST API for Jira Align enterprise agile planning platform, providing access to portfolios,
+      epics, features, and program management data.
     image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
     humanURL: https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
     baseURL: https://your-domain.jiraalign.com/rest/align/api/2
@@ -157,9 +150,8 @@ apis:
       - type: Authentication
         url: https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
   - name: Jira Customer Service Management REST API
-    description: >-
-      REST API for Atlassian Customer Service Management providing access to customers,
-      organizations, products, and entitlements data.
+    description: REST API for Atlassian Customer Service Management providing access to customers, organizations,
+      products, and entitlements data.
     image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
     humanURL: https://developer.atlassian.com/cloud/customer-service-management/
     baseURL: https://your-domain.atlassian.net
@@ -220,39 +212,55 @@ common:
     name: Jira JSON-LD Context
   - type: Features
     data:
-      - name: JQL Search
-        description: Powerful Jira Query Language enabling complex issue searches with field-based filtering, functions, and operators.
-      - name: Workflow Automation
-        description: Configurable workflow transitions with validators, conditions, and post-functions for automated issue lifecycle management.
-      - name: Agile Boards
-        description: Scrum and Kanban boards with sprint planning, backlog management, and velocity tracking for agile teams.
-      - name: Service Level Agreements
-        description: SLA management with configurable goals, time tracking, and breach notifications for service management.
-      - name: Webhooks
-        description: Real-time event notifications for issue changes, sprint events, and board updates via configurable webhook endpoints.
-      - name: Atlassian Document Format
-        description: Rich text document format supporting structured content in issue descriptions and comments via the v3 API.
+      - 'Free: up to 10 users'
+      - 'Standard: $7.91-$9.05/user/mo (volume tiered)'
+      - 'Premium: $14.54-$18.30/user/mo with Advanced Roadmaps'
+      - 'Enterprise custom: Atlassian Intelligence, 99.95% uptime, data residency'
+      - 'Volume discount: rates drop above 100 users (max 50K)'
+      - REST API v3 at api.atlassian.com
+      - GraphQL API for some products
+      - Token-bucket rate limit ~10 req/sec/app/user
+      - Bulk operations max 100 items/request
+      - Webhooks v3 for issue/project events
+      - OAuth 2.0 (3LO) and API tokens
+      - Atlassian Connect framework for marketplace apps
+      - Forge for serverless app development
+      - JQL (Jira Query Language) for advanced search
+      - Atlassian Intelligence AI assistant (Enterprise)
+      - Cross-product Analytics + Atlas integrations
+    sources:
+      - https://www.atlassian.com/software/jira/pricing
+    updated: '2026-05-04'
   - type: UseCases
     data:
       - name: Issue Tracking Automation
-        description: Automate issue creation, assignment, and transitions based on external events from CI/CD pipelines, monitoring tools, or customer feedback systems.
+        description: Automate issue creation, assignment, and transitions based on external events from
+          CI/CD pipelines, monitoring tools, or customer feedback systems.
       - name: Sprint Management
-        description: Programmatically manage sprints, backlogs, and board configurations for automated agile workflow orchestration.
+        description: Programmatically manage sprints, backlogs, and board configurations for automated
+          agile workflow orchestration.
       - name: Service Desk Integration
-        description: Integrate customer support channels with Jira Service Management for automated ticket creation and SLA tracking.
+        description: Integrate customer support channels with Jira Service Management for automated ticket
+          creation and SLA tracking.
       - name: Incident Management
-        description: Automate incident response workflows with on-call scheduling, alert routing, and escalation management.
+        description: Automate incident response workflows with on-call scheduling, alert routing, and
+          escalation management.
       - name: Enterprise Agile Planning
-        description: Connect portfolio planning tools with Jira Align for cross-team dependency tracking and program-level reporting.
+        description: Connect portfolio planning tools with Jira Align for cross-team dependency tracking
+          and program-level reporting.
   - type: Integrations
     data:
       - name: Confluence
-        description: Link Jira issues to Confluence pages for seamless knowledge management and documentation alongside project tracking.
+        description: Link Jira issues to Confluence pages for seamless knowledge management and documentation
+          alongside project tracking.
       - name: Bitbucket
-        description: Connect code repositories to Jira issues for automated status updates, smart commits, and development tracking.
+        description: Connect code repositories to Jira issues for automated status updates, smart commits,
+          and development tracking.
       - name: GitHub
-        description: Link GitHub pull requests, branches, and commits to Jira issues for end-to-end development visibility.
+        description: Link GitHub pull requests, branches, and commits to Jira issues for end-to-end development
+          visibility.
       - name: Slack
-        description: Create and manage Jira issues from Slack channels with bi-directional notifications and status updates.
+        description: Create and manage Jira issues from Slack channels with bi-directional notifications
+          and status updates.
       - name: Microsoft Teams
         description: Receive Jira notifications and manage issues directly from Microsoft Teams conversations.

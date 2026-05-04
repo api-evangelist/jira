@@ -1,0 +1,103 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Jira Cloud
+providerId: jira
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - Issue Tracking
+  - Project Management
+  - Agile
+description: Jira Cloud per-user-per-month plans. Pricing scales down with user count.
+sources:
+  - https://www.atlassian.com/software/jira/pricing
+plans:
+  - id: jira-free
+    name: Free
+    type: freemium
+    description: Up to 10 users.
+    entries:
+      - label: Users
+        name: users
+        type: quota
+        metric: user
+        limit: 10
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+    elements:
+      - name: Up to 10 users
+      - name: Scrum/Kanban boards
+      - name: Backlog
+      - name: Agile reports
+      - name: Customizable workflows
+      - name: 2 GB storage
+  - id: jira-standard
+    name: Standard
+    type: paid
+    description: $7.91-$9.05/user/month (varies by tier; 1-100 users).
+    entries:
+      - label: Per user (avg)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '9.05'
+        userMultiplied: true
+    elements:
+      - name: Permissions
+      - name: Project roles
+      - name: Audit logs
+      - name: 250 GB storage
+      - name: Standard support
+  - id: jira-premium
+    name: Premium
+    type: paid
+    description: $14.54-$18.30/user/month.
+    entries:
+      - label: Per user (avg)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '18.30'
+        userMultiplied: true
+    elements:
+      - name: Advanced roadmaps
+      - name: Project archiving
+      - name: Sandbox
+      - name: Release tracks
+      - name: Unlimited storage
+      - name: 24/7 Premium support
+  - id: jira-enterprise
+    name: Enterprise
+    type: enterprise
+    description: Custom pricing.
+    entries:
+      - label: Per user (custom)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: custom
+        userMultiplied: true
+    elements:
+      - name: Atlassian Intelligence AI
+      - name: 99.95% uptime
+      - name: Centralized security
+      - name: 24/7 enterprise support
+      - name: Cross-product analytics
+      - name: Data residency
