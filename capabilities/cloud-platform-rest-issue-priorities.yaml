@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Jira Cloud Platform REST API — Issue Priorities
+  description: 'Jira Cloud Platform REST API — Issue Priorities. 1 operations. Lead operation: Jira Get Priorities. Self-contained
+    Naftiko capability covering one Jira business surface.'
+  tags:
+  - Jira
+  - Issue Priorities
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    JIRA_API_KEY: JIRA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: cloud-platform-rest-issue-priorities
+    baseUri: https://{domain}.atlassian.net/rest/api/3
+    description: Jira Cloud Platform REST API — Issue Priorities business capability. Self-contained, no shared references.
+    resources:
+    - name: priority
+      path: /priority
+      operations:
+      - name: getpriorities
+        method: GET
+        description: Jira Get Priorities
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.JIRA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: cloud-platform-rest-issue-priorities-rest
+    port: 8080
+    description: REST adapter for Jira Cloud Platform REST API — Issue Priorities. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/priority
+      name: priority
+      description: REST surface for priority.
+      operations:
+      - method: GET
+        name: getpriorities
+        description: Jira Get Priorities
+        call: cloud-platform-rest-issue-priorities.getpriorities
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: cloud-platform-rest-issue-priorities-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Jira Cloud Platform REST API — Issue Priorities. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: jira-get-priorities
+      description: Jira Get Priorities
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cloud-platform-rest-issue-priorities.getpriorities
+      outputParameters:
+      - type: object
+        mapping: $.

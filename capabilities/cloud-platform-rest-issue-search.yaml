@@ -1,0 +1,160 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Jira Cloud Platform REST API — Issue Search
+  description: 'Jira Cloud Platform REST API — Issue Search. 2 operations. Lead operation: Jira Search for Issues Using Jql
+    (get). Self-contained Naftiko capability covering one Jira business surface.'
+  tags:
+  - Jira
+  - Issue Search
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    JIRA_API_KEY: JIRA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: cloud-platform-rest-issue-search
+    baseUri: https://{domain}.atlassian.net/rest/api/3
+    description: Jira Cloud Platform REST API — Issue Search business capability. Self-contained, no shared references.
+    resources:
+    - name: search
+      path: /search
+      operations:
+      - name: searchforissuesusingjql
+        method: GET
+        description: Jira Search for Issues Using Jql (get)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: jql
+          in: query
+          type: string
+          description: 'The JQL query string. For example: project = HSP AND issuetype = Bug. See JQL documentation for syntax.'
+        - name: startAt
+          in: query
+          type: integer
+          description: The index of the first item to return in a page of results (page offset).
+        - name: maxResults
+          in: query
+          type: integer
+          description: The maximum number of items to return per page. The maximum allowed value is determined by the Jira
+            instance configuration, typically 100.
+        - name: validateQuery
+          in: query
+          type: string
+          description: 'Whether to validate the JQL query and how to handle validation results. Accepted values: strict, warn,
+            none.'
+        - name: fields
+          in: query
+          type: array
+          description: A list of fields to return for each issue. Use *all for all fields, *navigable for navigable fields
+            only.
+        - name: expand
+          in: query
+          type: string
+          description: 'Use expand to include additional information about issues in the response. Accepted values: renderedFields,
+            names, schema, transitions, operations, editmeta, ch'
+        - name: properties
+          in: query
+          type: array
+          description: A list of issue properties to return for each issue.
+        - name: fieldsByKeys
+          in: query
+          type: boolean
+          description: Whether fields in fields are referenced by keys rather than IDs.
+      - name: searchforissuesusingjqlpost
+        method: POST
+        description: Jira Search for Issues Using Jql (post)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.JIRA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: cloud-platform-rest-issue-search-rest
+    port: 8080
+    description: REST adapter for Jira Cloud Platform REST API — Issue Search. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/search
+      name: search
+      description: REST surface for search.
+      operations:
+      - method: GET
+        name: searchforissuesusingjql
+        description: Jira Search for Issues Using Jql (get)
+        call: cloud-platform-rest-issue-search.searchforissuesusingjql
+        with:
+          jql: rest.jql
+          startAt: rest.startAt
+          maxResults: rest.maxResults
+          validateQuery: rest.validateQuery
+          fields: rest.fields
+          expand: rest.expand
+          properties: rest.properties
+          fieldsByKeys: rest.fieldsByKeys
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: searchforissuesusingjqlpost
+        description: Jira Search for Issues Using Jql (post)
+        call: cloud-platform-rest-issue-search.searchforissuesusingjqlpost
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: cloud-platform-rest-issue-search-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Jira Cloud Platform REST API — Issue Search. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: jira-search-issues-using-jql
+      description: Jira Search for Issues Using Jql (get)
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cloud-platform-rest-issue-search.searchforissuesusingjql
+      with:
+        jql: tools.jql
+        startAt: tools.startAt
+        maxResults: tools.maxResults
+        validateQuery: tools.validateQuery
+        fields: tools.fields
+        expand: tools.expand
+        properties: tools.properties
+        fieldsByKeys: tools.fieldsByKeys
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: jira-search-issues-using-jql-2
+      description: Jira Search for Issues Using Jql (post)
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: cloud-platform-rest-issue-search.searchforissuesusingjqlpost
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

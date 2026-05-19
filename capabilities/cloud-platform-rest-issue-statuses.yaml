@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Jira Cloud Platform REST API — Issue Statuses
+  description: 'Jira Cloud Platform REST API — Issue Statuses. 1 operations. Lead operation: Jira Get All Statuses for Project.
+    Self-contained Naftiko capability covering one Jira business surface.'
+  tags:
+  - Jira
+  - Issue Statuses
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    JIRA_API_KEY: JIRA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: cloud-platform-rest-issue-statuses
+    baseUri: https://{domain}.atlassian.net/rest/api/3
+    description: Jira Cloud Platform REST API — Issue Statuses business capability. Self-contained, no shared references.
+    resources:
+    - name: project-projectIdOrKey-statuses
+      path: /project/{projectIdOrKey}/statuses
+      operations:
+      - name: getallstatuses
+        method: GET
+        description: Jira Get All Statuses for Project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.JIRA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: cloud-platform-rest-issue-statuses-rest
+    port: 8080
+    description: REST adapter for Jira Cloud Platform REST API — Issue Statuses. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/project/{projectidorkey}/statuses
+      name: project-projectidorkey-statuses
+      description: REST surface for project-projectIdOrKey-statuses.
+      operations:
+      - method: GET
+        name: getallstatuses
+        description: Jira Get All Statuses for Project
+        call: cloud-platform-rest-issue-statuses.getallstatuses
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: cloud-platform-rest-issue-statuses-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Jira Cloud Platform REST API — Issue Statuses. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: jira-get-all-statuses-project
+      description: Jira Get All Statuses for Project
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cloud-platform-rest-issue-statuses.getallstatuses
+      outputParameters:
+      - type: object
+        mapping: $.

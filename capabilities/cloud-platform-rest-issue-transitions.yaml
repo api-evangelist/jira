@@ -1,0 +1,132 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Jira Cloud Platform REST API — Issue Transitions
+  description: 'Jira Cloud Platform REST API — Issue Transitions. 2 operations. Lead operation: Jira Get Transitions. Self-contained
+    Naftiko capability covering one Jira business surface.'
+  tags:
+  - Jira
+  - Issue Transitions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    JIRA_API_KEY: JIRA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: cloud-platform-rest-issue-transitions
+    baseUri: https://{domain}.atlassian.net/rest/api/3
+    description: Jira Cloud Platform REST API — Issue Transitions business capability. Self-contained, no shared references.
+    resources:
+    - name: issue-issueIdOrKey-transitions
+      path: /issue/{issueIdOrKey}/transitions
+      operations:
+      - name: gettransitions
+        method: GET
+        description: Jira Get Transitions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: expand
+          in: query
+          type: string
+          description: 'Use expand to include additional information about transitions in the response. Accepted values: transitions.fields.'
+        - name: transitionId
+          in: query
+          type: string
+          description: The ID of the transition.
+        - name: skipRemoteOnlyCondition
+          in: query
+          type: boolean
+          description: Whether transitions with the condition Hide From User Condition are included in the response.
+        - name: includeUnavailableTransitions
+          in: query
+          type: boolean
+          description: Whether details of transitions that fail a condition are included.
+      - name: dotransition
+        method: POST
+        description: Jira Transition Issue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.JIRA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: cloud-platform-rest-issue-transitions-rest
+    port: 8080
+    description: REST adapter for Jira Cloud Platform REST API — Issue Transitions. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/issue/{issueidorkey}/transitions
+      name: issue-issueidorkey-transitions
+      description: REST surface for issue-issueIdOrKey-transitions.
+      operations:
+      - method: GET
+        name: gettransitions
+        description: Jira Get Transitions
+        call: cloud-platform-rest-issue-transitions.gettransitions
+        with:
+          expand: rest.expand
+          transitionId: rest.transitionId
+          skipRemoteOnlyCondition: rest.skipRemoteOnlyCondition
+          includeUnavailableTransitions: rest.includeUnavailableTransitions
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: dotransition
+        description: Jira Transition Issue
+        call: cloud-platform-rest-issue-transitions.dotransition
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: cloud-platform-rest-issue-transitions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Jira Cloud Platform REST API — Issue Transitions. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: jira-get-transitions
+      description: Jira Get Transitions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cloud-platform-rest-issue-transitions.gettransitions
+      with:
+        expand: tools.expand
+        transitionId: tools.transitionId
+        skipRemoteOnlyCondition: tools.skipRemoteOnlyCondition
+        includeUnavailableTransitions: tools.includeUnavailableTransitions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: jira-transition-issue
+      description: Jira Transition Issue
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: cloud-platform-rest-issue-transitions.dotransition
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
