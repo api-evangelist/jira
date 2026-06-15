@@ -1,0 +1,4831 @@
+{
+  "item": [
+    {
+      "id": "46efe592-6fe9-4526-af3d-24a56372bbe3",
+      "name": "Issue Comments",
+      "description": {
+        "content": "Manage comments on issues.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c08a6c0d-4e6f-4947-8c1c-e4a8ec9ae260",
+          "name": "Jira Get Comments",
+          "request": {
+            "name": "Jira Get Comments",
+            "description": {
+              "content": "Returns all comments for an issue. Comments are ordered by created date in ascending order by default.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue",
+                ":issueIdOrKey",
+                "comment"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "startAt",
+                  "value": "0",
+                  "description": "The index of the first item to return in a page of results (page offset)."
+                },
+                {
+                  "disabled": false,
+                  "key": "maxResults",
+                  "value": "50",
+                  "description": "The maximum number of items to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "orderBy",
+                  "value": "<string>",
+                  "description": "The order of comments returned. Accepted values: created (ascending by default), -created (descending)."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "issueIdOrKey",
+                  "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                },
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2dcee482-f20a-4ed7-91aa-1862159a8289",
+              "name": "Comments returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startAt",
+                      "value": "10"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "10"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "created"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"startAt\": 10,\n  \"maxResults\": 10,\n  \"total\": 10,\n  \"comments\": [\n    {\n      \"self\": \"https://www.example.com\",\n      \"id\": \"abc123\",\n      \"renderedBody\": \"example_value\",\n      \"created\": \"2026-01-15T10:30:00Z\",\n      \"updated\": \"2026-01-15T10:30:00Z\",\n      \"jsdPublic\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "335196aa-a324-4664-b1b1-a8dceef07639",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startAt",
+                      "value": "10"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "10"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "created"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "07736b85-8046-4dbf-b8e2-62e971fb4e33",
+              "name": "The issue was not found or the user does not have permission to view it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startAt",
+                      "value": "10"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "10"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "created"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "32ce1d75-0b70-45a8-805c-e9fb6345beae",
+          "name": "Jira Add Comment",
+          "request": {
+            "name": "Jira Add Comment",
+            "description": {
+              "content": "Adds a comment to an issue. The comment body uses Atlassian Document Format (ADF).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue",
+                ":issueIdOrKey",
+                "comment"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "issueIdOrKey",
+                  "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                },
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"self\": \"<uri>\",\n  \"id\": \"<string>\",\n  \"author\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"<string>\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"body\": {\n    \"type\": \"<string>\",\n    \"version\": \"<integer>\",\n    \"content\": [\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": \"string\",\n                  \"key_1\": \"string\"\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": \"string\",\n                  \"key_1\": 6171\n                }\n              }\n            ]\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": 9341.043662048949,\n                  \"key_1\": 9112.69733859567\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": \"string\",\n                  \"key_1\": 5484\n                }\n              }\n            ],\n            \"key_0\": 5359.395742439491,\n            \"key_1\": \"string\"\n          }\n        ],\n        \"attrs\": {\n          \"key_0\": true,\n          \"key_1\": 5033.4793666058795,\n          \"key_2\": false,\n          \"key_3\": 2072\n        }\n      },\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": 7772\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": 9905.574161853834,\n                  \"key_1\": 2785\n                }\n              }\n            ]\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": 3975.4600662768557\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": true,\n                  \"key_1\": 3391.133539561405,\n                  \"key_2\": 5241.617292932738\n                }\n              }\n            ],\n            \"key_0\": 5465.647601561451,\n            \"key_1\": 4095,\n            \"key_2\": 1955.3709162903276\n          }\n        ],\n        \"attrs\": {\n          \"key_0\": 8254.621107005623,\n          \"key_1\": true,\n          \"key_2\": 5571.3123059821155\n        }\n      }\n    ]\n  },\n  \"renderedBody\": \"<string>\",\n  \"updateAuthor\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"<string>\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"created\": \"<dateTime>\",\n  \"updated\": \"<dateTime>\",\n  \"visibility\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"jsdPublic\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9df354fd-26c8-4aed-9cca-627744c3a24a",
+              "name": "Comment added successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"paragraph\",\n        \"content\": [\n          {\n            \"type\": \"text\",\n            \"text\": \"This is a comment using Atlassian Document Format.\"\n          }\n        ]\n      }\n    ]\n  },\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"Administrators\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"self\": \"https://www.example.com\",\n  \"id\": \"abc123\",\n  \"author\": {\n    \"self\": \"https://www.example.com\",\n    \"accountId\": \"500123\",\n    \"emailAddress\": \"user@example.com\",\n    \"displayName\": \"example_value\",\n    \"active\": true,\n    \"timeZone\": \"example_value\",\n    \"accountType\": \"atlassian\"\n  },\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {}\n    ]\n  },\n  \"renderedBody\": \"example_value\",\n  \"updateAuthor\": {\n    \"self\": \"https://www.example.com\",\n    \"accountId\": \"500123\",\n    \"emailAddress\": \"user@example.com\",\n    \"displayName\": \"example_value\",\n    \"active\": true,\n    \"timeZone\": \"example_value\",\n    \"accountType\": \"atlassian\"\n  },\n  \"created\": \"2026-01-15T10:30:00Z\",\n  \"updated\": \"2026-01-15T10:30:00Z\",\n  \"visibility\": {\n    \"type\": \"group\",\n    \"value\": \"example_value\",\n    \"identifier\": \"example_value\"\n  },\n  \"jsdPublic\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b972b1d-4284-4ddf-bf84-c9f1b547a6f8",
+              "name": "The input is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"paragraph\",\n        \"content\": [\n          {\n            \"type\": \"text\",\n            \"text\": \"This is a comment using Atlassian Document Format.\"\n          }\n        ]\n      }\n    ]\n  },\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"Administrators\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorMessages\": [\n    \"example_value\"\n  ],\n  \"errors\": \"example_value\",\n  \"status\": 10\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "638e0e5b-a4bd-4694-a5e0-98303286b100",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"paragraph\",\n        \"content\": [\n          {\n            \"type\": \"text\",\n            \"text\": \"This is a comment using Atlassian Document Format.\"\n          }\n        ]\n      }\n    ]\n  },\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"Administrators\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "14118d53-9afe-49f3-a248-889c438fa1e4",
+              "name": "The issue was not found or the user does not have permission to view it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"paragraph\",\n        \"content\": [\n          {\n            \"type\": \"text\",\n            \"text\": \"This is a comment using Atlassian Document Format.\"\n          }\n        ]\n      }\n    ]\n  },\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"Administrators\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "30342468-e1b1-40bb-8a75-e8164885172b",
+      "name": "Issue Priorities",
+      "description": {
+        "content": "Retrieve issue priority levels.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "86ef1af4-1502-4044-a23d-4337d0aea538",
+          "name": "Jira Get Priorities",
+          "request": {
+            "name": "Jira Get Priorities",
+            "description": {
+              "content": "Returns the list of all issue priorities.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "priority"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b14c64af-7ccb-4971-ba6c-1bc6f5f57f53",
+              "name": "Priorities returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "priority"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"self\": \"https://www.example.com\",\n    \"id\": \"abc123\",\n    \"name\": \"Example Title\",\n    \"description\": \"A sample description.\",\n    \"iconUrl\": \"https://www.example.com\",\n    \"statusColor\": \"example_value\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64a3146a-57ef-4345-9e85-6a3000c35304",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "priority"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "0c41bad9-9894-4d17-bf0c-24e5fc199443",
+      "name": "Issue Search",
+      "description": {
+        "content": "Search for issues using JQL (Jira Query Language).",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d52db0b5-975b-400e-a7b6-a2969670743d",
+          "name": "Jira Search for Issues Using Jql (get)",
+          "request": {
+            "name": "Jira Search for Issues Using Jql (get)",
+            "description": {
+              "content": "Searches for issues using JQL. If the JQL query expression is too large to be encoded as a query parameter, use the POST version of this resource. Sorting is supported via the ORDER BY clause in JQL.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "jql",
+                  "value": "<string>",
+                  "description": "The JQL query string. For example: project = HSP AND issuetype = Bug. See JQL documentation for syntax."
+                },
+                {
+                  "disabled": false,
+                  "key": "startAt",
+                  "value": "0",
+                  "description": "The index of the first item to return in a page of results (page offset)."
+                },
+                {
+                  "disabled": false,
+                  "key": "maxResults",
+                  "value": "50",
+                  "description": "The maximum number of items to return per page. The maximum allowed value is determined by the Jira instance configuration, typically 100."
+                },
+                {
+                  "disabled": false,
+                  "key": "validateQuery",
+                  "value": "strict",
+                  "description": "Whether to validate the JQL query and how to handle validation results. Accepted values: strict, warn, none."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "A list of fields to return for each issue. Use *all for all fields, *navigable for navigable fields only."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "A list of fields to return for each issue. Use *all for all fields, *navigable for navigable fields only."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Use expand to include additional information about issues in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations."
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "A list of issue properties to return for each issue."
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "A list of issue properties to return for each issue."
+                },
+                {
+                  "disabled": false,
+                  "key": "fieldsByKeys",
+                  "value": "false",
+                  "description": "Whether fields in fields are referenced by keys rather than IDs."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "41cfb7bb-3662-4661-8f21-c76590d49e1a",
+              "name": "Search results returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jql",
+                      "value": "project = PROJ AND status = Open ORDER BY created DESC"
+                    },
+                    {
+                      "key": "startAt",
+                      "value": "10"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "10"
+                    },
+                    {
+                      "key": "validateQuery",
+                      "value": "strict"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "fieldsByKeys",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"expand\": \"example_value\",\n  \"startAt\": 10,\n  \"maxResults\": 10,\n  \"total\": 10,\n  \"issues\": [\n    {\n      \"id\": \"abc123\",\n      \"key\": \"example_value\",\n      \"self\": \"https://www.example.com\",\n      \"expand\": \"example_value\",\n      \"renderedFields\": \"example_value\",\n      \"names\": \"example_value\",\n      \"schema\": \"example_value\",\n      \"transitions\": {}\n    }\n  ],\n  \"warningMessages\": [\n    \"example_value\"\n  ],\n  \"names\": \"example_value\",\n  \"schema\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1bf8ee0-127d-484b-9567-59c228796cf6",
+              "name": "The JQL query is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jql",
+                      "value": "project = PROJ AND status = Open ORDER BY created DESC"
+                    },
+                    {
+                      "key": "startAt",
+                      "value": "10"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "10"
+                    },
+                    {
+                      "key": "validateQuery",
+                      "value": "strict"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "fieldsByKeys",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorMessages\": [\n    \"example_value\"\n  ],\n  \"errors\": \"example_value\",\n  \"status\": 10\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aaba0109-400a-491a-9120-d35c8e98af37",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jql",
+                      "value": "project = PROJ AND status = Open ORDER BY created DESC"
+                    },
+                    {
+                      "key": "startAt",
+                      "value": "10"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "10"
+                    },
+                    {
+                      "key": "validateQuery",
+                      "value": "strict"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "fieldsByKeys",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b21cc235-c421-4e6d-8760-cf8fcf2400b1",
+          "name": "Jira Search for Issues Using Jql (post)",
+          "request": {
+            "name": "Jira Search for Issues Using Jql (post)",
+            "description": {
+              "content": "Searches for issues using JQL. Use this endpoint when the JQL query expression is too large to send as a query parameter. This provides the same functionality as the GET version.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jql\": \"<string>\",\n  \"startAt\": 0,\n  \"maxResults\": 50,\n  \"validateQuery\": \"<string>\",\n  \"fields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"expand\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"fieldsByKeys\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0b339f37-9e40-48b9-b5a5-6cefc06637c4",
+              "name": "Search results returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jql\": \"project = PROJ AND issuetype = Bug ORDER BY created DESC\",\n  \"startAt\": 0,\n  \"maxResults\": 15,\n  \"fields\": [\n    \"summary\",\n    \"status\",\n    \"assignee\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"expand\": \"example_value\",\n  \"startAt\": 10,\n  \"maxResults\": 10,\n  \"total\": 10,\n  \"issues\": [\n    {\n      \"id\": \"abc123\",\n      \"key\": \"example_value\",\n      \"self\": \"https://www.example.com\",\n      \"expand\": \"example_value\",\n      \"renderedFields\": \"example_value\",\n      \"names\": \"example_value\",\n      \"schema\": \"example_value\",\n      \"transitions\": {}\n    }\n  ],\n  \"warningMessages\": [\n    \"example_value\"\n  ],\n  \"names\": \"example_value\",\n  \"schema\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f7b82d9-764e-411e-a28c-62f227120555",
+              "name": "The JQL query is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jql\": \"project = PROJ AND issuetype = Bug ORDER BY created DESC\",\n  \"startAt\": 0,\n  \"maxResults\": 15,\n  \"fields\": [\n    \"summary\",\n    \"status\",\n    \"assignee\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorMessages\": [\n    \"example_value\"\n  ],\n  \"errors\": \"example_value\",\n  \"status\": 10\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7172eaa7-786a-4fdb-aa6c-d39ed1437e4a",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jql\": \"project = PROJ AND issuetype = Bug ORDER BY created DESC\",\n  \"startAt\": 0,\n  \"maxResults\": 15,\n  \"fields\": [\n    \"summary\",\n    \"status\",\n    \"assignee\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "96a10145-41f8-47ff-9b02-7b202a3562cb",
+      "name": "Issue Statuses",
+      "description": {
+        "content": "Retrieve issue statuses.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "49a1e8a5-e7b9-4a3b-bc04-508bd78e5097",
+          "name": "Jira Get All Statuses for Project",
+          "request": {
+            "name": "Jira Get All Statuses for Project",
+            "description": {
+              "content": "Returns the valid statuses for a project. The statuses are grouped by issue type, listing the allowed statuses for each issue type in the project.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "project",
+                ":projectIdOrKey",
+                "statuses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectIdOrKey",
+                  "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                },
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5a73adac-a5e1-4597-8f9d-d4ac7b200e1a",
+              "name": "Statuses returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project",
+                    ":projectIdOrKey",
+                    "statuses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectIdOrKey",
+                      "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"self\": \"https://www.example.com\",\n    \"id\": \"abc123\",\n    \"name\": \"Example Title\",\n    \"subtask\": true,\n    \"statuses\": [\n      {}\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1e1027c-e884-441a-848c-5c94c6439e25",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project",
+                    ":projectIdOrKey",
+                    "statuses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectIdOrKey",
+                      "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b321fbcf-d9a3-4846-9b82-858b3a21b8ec",
+              "name": "The project was not found or the user does not have permission to view it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project",
+                    ":projectIdOrKey",
+                    "statuses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectIdOrKey",
+                      "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "42768b53-bbf0-4e37-aa61-dc2d9a715a0c",
+      "name": "Issue Transitions",
+      "description": {
+        "content": "Retrieve and perform workflow transitions on issues.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "08826a03-aa0b-4ec1-8963-7b2cb51fe1d9",
+          "name": "Jira Get Transitions",
+          "request": {
+            "name": "Jira Get Transitions",
+            "description": {
+              "content": "Returns either all transitions or a transition that can be performed by the user on an issue, based on the issue's status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue",
+                ":issueIdOrKey",
+                "transitions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Use expand to include additional information about transitions in the response. Accepted values: transitions.fields."
+                },
+                {
+                  "disabled": false,
+                  "key": "transitionId",
+                  "value": "<string>",
+                  "description": "The ID of the transition."
+                },
+                {
+                  "disabled": false,
+                  "key": "skipRemoteOnlyCondition",
+                  "value": "false",
+                  "description": "Whether transitions with the condition Hide From User Condition are included in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "includeUnavailableTransitions",
+                  "value": "false",
+                  "description": "Whether details of transitions that fail a condition are included."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "issueIdOrKey",
+                  "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                },
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "56c8629e-eccd-4574-af07-f1e1f8478ec6",
+              "name": "Transitions returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "transitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "transitionId",
+                      "value": "500123"
+                    },
+                    {
+                      "key": "skipRemoteOnlyCondition",
+                      "value": "true"
+                    },
+                    {
+                      "key": "includeUnavailableTransitions",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"expand\": \"example_value\",\n  \"transitions\": [\n    {\n      \"id\": \"abc123\",\n      \"name\": \"Example Title\",\n      \"hasScreen\": true,\n      \"isGlobal\": true,\n      \"isInitial\": true,\n      \"isConditional\": true,\n      \"fields\": \"example_value\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5fdc1025-9968-4a55-b697-1c5e5cb54ca0",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "transitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "transitionId",
+                      "value": "500123"
+                    },
+                    {
+                      "key": "skipRemoteOnlyCondition",
+                      "value": "true"
+                    },
+                    {
+                      "key": "includeUnavailableTransitions",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "65a426d0-091b-4a85-b57d-937af8989a78",
+              "name": "The issue was not found or the user does not have permission to view it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "transitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "transitionId",
+                      "value": "500123"
+                    },
+                    {
+                      "key": "skipRemoteOnlyCondition",
+                      "value": "true"
+                    },
+                    {
+                      "key": "includeUnavailableTransitions",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5168af43-864b-4a7f-85fb-4daf1356684c",
+          "name": "Jira Transition Issue",
+          "request": {
+            "name": "Jira Transition Issue",
+            "description": {
+              "content": "Performs an issue transition and, optionally, updates the fields and adds a comment. The fields that can be set depend on the transition and the connected Jira instance configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue",
+                ":issueIdOrKey",
+                "transitions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "issueIdOrKey",
+                  "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                },
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"fields\": {\n    \"key_0\": 2878.3084909268364,\n    \"key_1\": \"string\",\n    \"key_2\": 9114\n  },\n  \"update\": {\n    \"key_0\": [\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      },\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      }\n    ]\n  },\n  \"historyMetadata\": {\n    \"key_0\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2dfa8917-aa74-4fdf-91fb-f1fccb7bd1ea",
+              "name": "Transition performed successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "transitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transition\": {\n    \"id\": \"5\"\n  },\n  \"fields\": {\n    \"resolution\": {\n      \"name\": \"Fixed\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cab21e20-762c-46e2-bdc6-c1657ac6ab33",
+              "name": "The transition or field values are invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "transitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transition\": {\n    \"id\": \"5\"\n  },\n  \"fields\": {\n    \"resolution\": {\n      \"name\": \"Fixed\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorMessages\": [\n    \"example_value\"\n  ],\n  \"errors\": \"example_value\",\n  \"status\": 10\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f1dcd6c-d13d-4007-bec9-1798bce27d46",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "transitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transition\": {\n    \"id\": \"5\"\n  },\n  \"fields\": {\n    \"resolution\": {\n      \"name\": \"Fixed\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9c4a0181-0231-423d-9082-9102254be43c",
+              "name": "The issue was not found or the user does not have permission to view it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "transitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transition\": {\n    \"id\": \"5\"\n  },\n  \"fields\": {\n    \"resolution\": {\n      \"name\": \"Fixed\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "2b51a5ed-d47d-423a-8b0f-2bbf31f2bc28",
+      "name": "Issue Types",
+      "description": {
+        "content": "Retrieve and manage issue types for projects.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3031f4a9-8ea5-4c0e-b1d9-6f0998b5c06b",
+          "name": "Jira Get All Issue Types for User",
+          "request": {
+            "name": "Jira Get All Issue Types for User",
+            "description": {
+              "content": "Returns all issue types visible to the user. The list of issue types returned depends on the user's permissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issuetype"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "995ba6fe-9f24-40c5-9cf1-a15c94e53963",
+              "name": "Issue types returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issuetype"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"self\": \"https://www.example.com\",\n    \"id\": \"abc123\",\n    \"description\": \"A sample description.\",\n    \"iconUrl\": \"https://www.example.com\",\n    \"name\": \"Example Title\",\n    \"subtask\": true,\n    \"avatarId\": \"500123\",\n    \"hierarchyLevel\": 10,\n    \"scope\": {\n      \"type\": \"PROJECT\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "332280d3-2964-499d-b483-e5b10feae154",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issuetype"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "9d49f0ba-334b-48de-9cde-84e670da669c",
+      "name": "Issues",
+      "description": {
+        "content": "Create, read, update, delete, and transition Jira issues.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2996c0d2-686c-4685-a0e5-be79a92bdda0",
+          "name": "Jira Create Issue",
+          "request": {
+            "name": "Jira Create Issue",
+            "description": {
+              "content": "Creates an issue or a sub-task from a JSON representation. The fields that can be set on an issue depend on the connected Jira instance configuration, the project, and the issue type. You can determine appropriate field values using the Create Issue Metadata endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "updateHistory",
+                  "value": "false",
+                  "description": "Whether the project in which the issue is created is added to the user's Recently viewed project list, as shown under Projects in Jira."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fields\": {\n    \"key_0\": \"string\"\n  },\n  \"update\": {\n    \"key_0\": [\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      },\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      }\n    ],\n    \"key_1\": [\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      },\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      }\n    ],\n    \"key_2\": [\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      },\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      }\n    ]\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"key_0\": 6746.526190297423\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {}\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {}\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e4a4c687-7531-4388-b1df-e00df9f1bd36",
+              "name": "Issue created successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "updateHistory",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fields\": {\n    \"project\": {\n      \"key\": \"PROJ\"\n    },\n    \"summary\": \"Main order flow fails when item is sold out\",\n    \"description\": {\n      \"type\": \"doc\",\n      \"version\": 1,\n      \"content\": [\n        {\n          \"type\": \"paragraph\",\n          \"content\": [\n            {\n              \"type\": \"text\",\n              \"text\": \"Order flow errors when an item is sold out.\"\n            }\n          ]\n        }\n      ]\n    },\n    \"issuetype\": {\n      \"name\": \"Bug\"\n    },\n    \"priority\": {\n      \"name\": \"High\"\n    },\n    \"labels\": [\n      \"bugfix\",\n      \"production\"\n    ],\n    \"assignee\": {\n      \"accountId\": \"5b10a2844c20165700ede21g\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"abc123\",\n  \"key\": \"example_value\",\n  \"self\": \"https://www.example.com\",\n  \"transition\": {\n    \"status\": 10,\n    \"errorCollection\": {\n      \"errorMessages\": {},\n      \"errors\": \"example_value\",\n      \"status\": 10\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7bd91fe6-1213-4b17-9127-603465ef3b8f",
+              "name": "The input is invalid, including if the request body is missing or has invalid fields.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "updateHistory",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fields\": {\n    \"project\": {\n      \"key\": \"PROJ\"\n    },\n    \"summary\": \"Main order flow fails when item is sold out\",\n    \"description\": {\n      \"type\": \"doc\",\n      \"version\": 1,\n      \"content\": [\n        {\n          \"type\": \"paragraph\",\n          \"content\": [\n            {\n              \"type\": \"text\",\n              \"text\": \"Order flow errors when an item is sold out.\"\n            }\n          ]\n        }\n      ]\n    },\n    \"issuetype\": {\n      \"name\": \"Bug\"\n    },\n    \"priority\": {\n      \"name\": \"High\"\n    },\n    \"labels\": [\n      \"bugfix\",\n      \"production\"\n    ],\n    \"assignee\": {\n      \"accountId\": \"5b10a2844c20165700ede21g\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorMessages\": [\n    \"example_value\"\n  ],\n  \"errors\": \"example_value\",\n  \"status\": 10\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bbe91a66-6319-4343-ac34-09d0e37c4f75",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "updateHistory",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fields\": {\n    \"project\": {\n      \"key\": \"PROJ\"\n    },\n    \"summary\": \"Main order flow fails when item is sold out\",\n    \"description\": {\n      \"type\": \"doc\",\n      \"version\": 1,\n      \"content\": [\n        {\n          \"type\": \"paragraph\",\n          \"content\": [\n            {\n              \"type\": \"text\",\n              \"text\": \"Order flow errors when an item is sold out.\"\n            }\n          ]\n        }\n      ]\n    },\n    \"issuetype\": {\n      \"name\": \"Bug\"\n    },\n    \"priority\": {\n      \"name\": \"High\"\n    },\n    \"labels\": [\n      \"bugfix\",\n      \"production\"\n    ],\n    \"assignee\": {\n      \"accountId\": \"5b10a2844c20165700ede21g\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "aa480c13-652c-4bee-9d5f-31e74acad48c",
+              "name": "The user does not have permission to create issues in the project.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "updateHistory",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fields\": {\n    \"project\": {\n      \"key\": \"PROJ\"\n    },\n    \"summary\": \"Main order flow fails when item is sold out\",\n    \"description\": {\n      \"type\": \"doc\",\n      \"version\": 1,\n      \"content\": [\n        {\n          \"type\": \"paragraph\",\n          \"content\": [\n            {\n              \"type\": \"text\",\n              \"text\": \"Order flow errors when an item is sold out.\"\n            }\n          ]\n        }\n      ]\n    },\n    \"issuetype\": {\n      \"name\": \"Bug\"\n    },\n    \"priority\": {\n      \"name\": \"High\"\n    },\n    \"labels\": [\n      \"bugfix\",\n      \"production\"\n    ],\n    \"assignee\": {\n      \"accountId\": \"5b10a2844c20165700ede21g\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bd66e733-98ef-4655-acb4-25c71d2dac62",
+          "name": "Jira Get Issue",
+          "request": {
+            "name": "Jira Get Issue",
+            "description": {
+              "content": "Returns the details for an issue. The issue is identified by its ID or key. The returned issue includes all fields, comment count, names, schema, transitions, editmeta, changelog, and rendered fields.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue",
+                ":issueIdOrKey"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "A list of fields to return for the issue. Use it to retrieve a subset of fields. Allowed values include any field name, *all for all fields, *navigable for navigable fields."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "A list of fields to return for the issue. Use it to retrieve a subset of fields. Allowed values include any field name, *all for all fields, *navigable for navigable fields."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Use expand to include additional information in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations, fields."
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "A list of issue properties to return for the issue. By default no properties are returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "A list of issue properties to return for the issue. By default no properties are returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "fieldsByKeys",
+                  "value": "false",
+                  "description": "Whether fields in fields are referenced by keys rather than IDs."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "issueIdOrKey",
+                  "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                },
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ba15be8e-29d2-4ae2-8d73-6437d5011a8b",
+              "name": "Issue details returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "fieldsByKeys",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"abc123\",\n  \"key\": \"example_value\",\n  \"self\": \"https://www.example.com\",\n  \"expand\": \"example_value\",\n  \"fields\": {\n    \"summary\": \"example_value\",\n    \"description\": \"A sample description.\",\n    \"assignee\": \"example_value\",\n    \"labels\": [\n      {}\n    ],\n    \"components\": [\n      {}\n    ],\n    \"fixVersions\": [\n      {}\n    ],\n    \"versions\": [\n      {}\n    ],\n    \"resolution\": \"example_value\",\n    \"resolutiondate\": \"2026-01-15T10:30:00Z\",\n    \"created\": \"2026-01-15T10:30:00Z\",\n    \"updated\": \"2026-01-15T10:30:00Z\",\n    \"duedate\": \"2026-01-15\",\n    \"subtasks\": [\n      {}\n    ],\n    \"parent\": \"example_value\",\n    \"environment\": \"example_value\",\n    \"attachment\": [\n      {}\n    ],\n    \"issuelinks\": [\n      {}\n    ]\n  },\n  \"renderedFields\": \"example_value\",\n  \"names\": \"example_value\",\n  \"schema\": \"example_value\",\n  \"transitions\": [\n    {\n      \"id\": \"abc123\",\n      \"name\": \"Example Title\",\n      \"hasScreen\": true,\n      \"isGlobal\": true,\n      \"isInitial\": true,\n      \"isConditional\": true,\n      \"fields\": \"example_value\"\n    }\n  ],\n  \"changelog\": {\n    \"startAt\": 10,\n    \"maxResults\": 10,\n    \"total\": 10,\n    \"histories\": [\n      {}\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c1ba21ba-e931-424f-8f0f-3ee4185e7072",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "fieldsByKeys",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "06a89436-32e7-48b0-8165-73b0f08ab2f3",
+              "name": "The issue was not found or the user does not have permission to view it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "fieldsByKeys",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0b59737e-d48c-4852-9577-4b0aced379c5",
+          "name": "Jira Edit Issue",
+          "request": {
+            "name": "Jira Edit Issue",
+            "description": {
+              "content": "Edits an issue. A transition may be applied and issue properties updated as part of the edit. The editable fields depend on the connected Jira instance configuration, the project, and the issue type.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue",
+                ":issueIdOrKey"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "notifyUsers",
+                  "value": "true",
+                  "description": "Whether a notification email about the issue update is sent to all watchers. Requires administer Jira global permission."
+                },
+                {
+                  "disabled": false,
+                  "key": "overrideScreenSecurity",
+                  "value": "false",
+                  "description": "Whether screen security is overridden to enable hidden fields to be edited. Requires administer Jira global permission."
+                },
+                {
+                  "disabled": false,
+                  "key": "overrideEditableFlag",
+                  "value": "false",
+                  "description": "Whether the non-editable flag is overridden to enable uneditable fields to be edited. Requires administer Jira global permission."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "issueIdOrKey",
+                  "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                },
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"update\": {\n    \"key_0\": [\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      },\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      }\n    ],\n    \"key_1\": [\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      },\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      }\n    ],\n    \"key_2\": [\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      },\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      }\n    ],\n    \"key_3\": [\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      },\n      {\n        \"add\": {},\n        \"remove\": {},\n        \"set\": {},\n        \"edit\": {},\n        \"copy\": {}\n      }\n    ]\n  },\n  \"fields\": {\n    \"key_0\": 7180.911412278416,\n    \"key_1\": true\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": false,\n    \"key_2\": true\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {}\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {}\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5a0a4f40-158c-48bc-acc3-82044be86974",
+              "name": "Issue updated successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "notifyUsers",
+                      "value": "true"
+                    },
+                    {
+                      "key": "overrideScreenSecurity",
+                      "value": "true"
+                    },
+                    {
+                      "key": "overrideEditableFlag",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"update\": \"example_value\",\n  \"fields\": \"example_value\",\n  \"transition\": {\n    \"id\": \"abc123\"\n  },\n  \"historyMetadata\": \"example_value\",\n  \"properties\": [\n    {\n      \"key\": \"example_value\",\n      \"value\": \"example_value\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7cbd939c-5030-464b-9b9f-d6d70d8f73a5",
+              "name": "The input is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "notifyUsers",
+                      "value": "true"
+                    },
+                    {
+                      "key": "overrideScreenSecurity",
+                      "value": "true"
+                    },
+                    {
+                      "key": "overrideEditableFlag",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"update\": \"example_value\",\n  \"fields\": \"example_value\",\n  \"transition\": {\n    \"id\": \"abc123\"\n  },\n  \"historyMetadata\": \"example_value\",\n  \"properties\": [\n    {\n      \"key\": \"example_value\",\n      \"value\": \"example_value\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorMessages\": [\n    \"example_value\"\n  ],\n  \"errors\": \"example_value\",\n  \"status\": 10\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4535a9e8-75be-4594-91fa-0218743552b3",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "notifyUsers",
+                      "value": "true"
+                    },
+                    {
+                      "key": "overrideScreenSecurity",
+                      "value": "true"
+                    },
+                    {
+                      "key": "overrideEditableFlag",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"update\": \"example_value\",\n  \"fields\": \"example_value\",\n  \"transition\": {\n    \"id\": \"abc123\"\n  },\n  \"historyMetadata\": \"example_value\",\n  \"properties\": [\n    {\n      \"key\": \"example_value\",\n      \"value\": \"example_value\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "64b4c9bc-1c8b-4c9c-b2e7-f9e5a2278225",
+              "name": "The user does not have permission to edit the issue.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "notifyUsers",
+                      "value": "true"
+                    },
+                    {
+                      "key": "overrideScreenSecurity",
+                      "value": "true"
+                    },
+                    {
+                      "key": "overrideEditableFlag",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"update\": \"example_value\",\n  \"fields\": \"example_value\",\n  \"transition\": {\n    \"id\": \"abc123\"\n  },\n  \"historyMetadata\": \"example_value\",\n  \"properties\": [\n    {\n      \"key\": \"example_value\",\n      \"value\": \"example_value\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4768b18c-4b62-4ef9-9b97-c9c07ebcaeeb",
+              "name": "The issue was not found or the user does not have permission to view it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "notifyUsers",
+                      "value": "true"
+                    },
+                    {
+                      "key": "overrideScreenSecurity",
+                      "value": "true"
+                    },
+                    {
+                      "key": "overrideEditableFlag",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"update\": \"example_value\",\n  \"fields\": \"example_value\",\n  \"transition\": {\n    \"id\": \"abc123\"\n  },\n  \"historyMetadata\": \"example_value\",\n  \"properties\": [\n    {\n      \"key\": \"example_value\",\n      \"value\": \"example_value\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7ef0c044-54ca-4529-932c-15341aadeb12",
+          "name": "Jira Delete Issue",
+          "request": {
+            "name": "Jira Delete Issue",
+            "description": {
+              "content": "Deletes an issue. An issue can only be deleted if it has no sub-tasks, unless deleteSubtasks is set to true.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue",
+                ":issueIdOrKey"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "deleteSubtasks",
+                  "value": "false",
+                  "description": "Whether the issue's sub-tasks are also deleted."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "issueIdOrKey",
+                  "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                },
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a0382fbd-f942-4117-9d35-a3a119eb28e1",
+              "name": "Issue deleted successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "deleteSubtasks",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "aed73e8b-b19b-4857-a3ed-eaf15ddd19c7",
+              "name": "The issue has sub-tasks and deleteSubtasks is not set to true.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "deleteSubtasks",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ec4752dc-4e88-40c5-93b8-19e1d361b478",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "deleteSubtasks",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2c1c6a04-dd3b-4cad-ae49-835417e8388a",
+              "name": "The user does not have permission to delete the issue.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "deleteSubtasks",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bd1e7e33-31d7-4938-b936-9ecc5a85126f",
+              "name": "The issue was not found or the user does not have permission to view it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "deleteSubtasks",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "b48f422d-e951-44cc-bb1b-f8bffc785e8c",
+      "name": "Projects",
+      "description": {
+        "content": "Manage Jira projects including metadata, roles, and components.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "35bf19d4-08c6-4377-b9e3-44e2322d62a3",
+          "name": "Jira Get All Projects",
+          "request": {
+            "name": "Jira Get All Projects",
+            "description": {
+              "content": "Returns all projects visible to the user. Deprecated, use Get projects paginated that supports search and pagination.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "project"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url."
+                },
+                {
+                  "disabled": false,
+                  "key": "recent",
+                  "value": "<integer>",
+                  "description": "Returns projects the user has accessed in the last given number of projects, up to 20."
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "A list of project properties to return for each project."
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "A list of project properties to return for each project."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1ac9fbe5-520d-4a9c-b41c-b5b61c762290",
+              "name": "Projects returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "recent",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"self\": \"https://www.example.com\",\n    \"id\": \"abc123\",\n    \"key\": \"example_value\",\n    \"name\": \"Example Title\",\n    \"description\": \"A sample description.\",\n    \"lead\": {\n      \"self\": \"https://www.example.com\",\n      \"accountId\": \"500123\",\n      \"emailAddress\": \"user@example.com\",\n      \"displayName\": \"example_value\",\n      \"active\": true,\n      \"timeZone\": \"example_value\",\n      \"accountType\": \"atlassian\"\n    },\n    \"components\": [\n      {}\n    ],\n    \"issueTypes\": [\n      {}\n    ],\n    \"url\": \"https://www.example.com\",\n    \"assigneeType\": \"PROJECT_LEAD\",\n    \"versions\": [\n      {}\n    ],\n    \"roles\": \"example_value\",\n    \"avatarUrls\": {\n      \"16x16\": \"https://www.example.com\",\n      \"24x24\": \"https://www.example.com\",\n      \"32x32\": \"https://www.example.com\",\n      \"48x48\": \"https://www.example.com\"\n    },\n    \"projectCategory\": {\n      \"self\": \"https://www.example.com\",\n      \"id\": \"abc123\",\n      \"name\": \"Example Title\",\n      \"description\": \"A sample description.\"\n    },\n    \"projectTypeKey\": \"software\",\n    \"simplified\": true,\n    \"style\": \"classic\",\n    \"archived\": true,\n    \"deleted\": true,\n    \"insight\": {\n      \"totalIssueCount\": 10,\n      \"lastIssueUpdateTime\": \"2026-01-15T10:30:00Z\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5c25b796-628e-41cb-81a3-4ee8c8833c7c",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "recent",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "86d08417-a31e-4768-940c-b48e558f61c5",
+          "name": "Jira Get Projects Paginated",
+          "request": {
+            "name": "Jira Get Projects Paginated",
+            "description": {
+              "content": "Returns a paginated list of projects visible to the user. This operation can be filtered by project type, category, and action.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "project",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "startAt",
+                  "value": "0",
+                  "description": "The index of the first item to return in a page of results (page offset)."
+                },
+                {
+                  "disabled": false,
+                  "key": "maxResults",
+                  "value": "50",
+                  "description": "The maximum number of items to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "orderBy",
+                  "value": "key",
+                  "description": "Order the results by a field. Accepted values: category, key, name, owner, issueCount, lastIssueUpdatedTime, archivedDate. Prefix with + or - for ascending/descending."
+                },
+                {
+                  "disabled": false,
+                  "key": "query",
+                  "value": "<string>",
+                  "description": "Filter results using a literal string match on project name or key."
+                },
+                {
+                  "disabled": false,
+                  "key": "typeKey",
+                  "value": "<string>",
+                  "description": "The type key of the project. Accepted values: business, service_desk, software."
+                },
+                {
+                  "disabled": false,
+                  "key": "categoryId",
+                  "value": "<long>",
+                  "description": "The ID of the project category to filter by."
+                },
+                {
+                  "disabled": false,
+                  "key": "action",
+                  "value": "view",
+                  "description": "Filter results by what the user has permission to do. Accepted values: view, browse, edit, create."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Use expand to include additional information in the response. Accepted values: description, projectKeys, lead, issueTypes, url, insight."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "The status of the project. Accepted values: live, archived, deleted."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "The status of the project. Accepted values: live, archived, deleted."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "93f9f1e3-e6a5-4934-9955-b0eb60bce10b",
+              "name": "Paginated project list returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startAt",
+                      "value": "10"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "10"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "query",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "typeKey",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "action",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"self\": \"https://www.example.com\",\n  \"nextPage\": \"https://www.example.com\",\n  \"maxResults\": 10,\n  \"startAt\": 10,\n  \"total\": 10,\n  \"isLast\": true,\n  \"values\": [\n    {\n      \"self\": \"https://www.example.com\",\n      \"id\": \"abc123\",\n      \"key\": \"example_value\",\n      \"name\": \"Example Title\",\n      \"description\": \"A sample description.\",\n      \"components\": {},\n      \"issueTypes\": {},\n      \"url\": \"https://www.example.com\",\n      \"assigneeType\": \"PROJECT_LEAD\",\n      \"versions\": {},\n      \"roles\": \"example_value\",\n      \"projectTypeKey\": \"software\",\n      \"simplified\": true,\n      \"style\": \"classic\",\n      \"archived\": true,\n      \"deleted\": true,\n      \"insight\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d05f3693-f3b2-4040-9b47-4948cfc317db",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startAt",
+                      "value": "10"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "10"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "query",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "typeKey",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "action",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a3570d73-74de-46fa-a032-f0d47c33709c",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startAt",
+                      "value": "10"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "10"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "query",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "typeKey",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "action",
+                      "value": "example_value"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f46f5142-48d3-4a8f-b40d-36b38e8afb41",
+          "name": "Jira Get Project",
+          "request": {
+            "name": "Jira Get Project",
+            "description": {
+              "content": "Returns the project details for a project. The returned project includes additional information such as issue types, components, versions, and roles.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "project",
+                ":projectIdOrKey"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url, insight."
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "A list of project properties to return for the project."
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "A list of project properties to return for the project."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectIdOrKey",
+                  "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                },
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1c792906-8791-4044-99d4-2cadf54b847d",
+              "name": "Project details returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project",
+                    ":projectIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectIdOrKey",
+                      "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"self\": \"https://www.example.com\",\n  \"id\": \"abc123\",\n  \"key\": \"example_value\",\n  \"name\": \"Example Title\",\n  \"description\": \"A sample description.\",\n  \"lead\": {\n    \"self\": \"https://www.example.com\",\n    \"accountId\": \"500123\",\n    \"emailAddress\": \"user@example.com\",\n    \"displayName\": \"example_value\",\n    \"active\": true,\n    \"timeZone\": \"example_value\",\n    \"accountType\": \"atlassian\"\n  },\n  \"components\": [\n    {\n      \"self\": \"https://www.example.com\",\n      \"id\": \"abc123\",\n      \"name\": \"Example Title\",\n      \"description\": \"A sample description.\",\n      \"assigneeType\": \"PROJECT_DEFAULT\",\n      \"project\": \"example_value\",\n      \"projectId\": \"500123\"\n    }\n  ],\n  \"issueTypes\": [\n    {\n      \"self\": \"https://www.example.com\",\n      \"id\": \"abc123\",\n      \"description\": \"A sample description.\",\n      \"iconUrl\": \"https://www.example.com\",\n      \"name\": \"Example Title\",\n      \"subtask\": true,\n      \"avatarId\": \"500123\",\n      \"hierarchyLevel\": 10\n    }\n  ],\n  \"url\": \"https://www.example.com\",\n  \"assigneeType\": \"PROJECT_LEAD\",\n  \"versions\": [\n    {\n      \"self\": \"https://www.example.com\",\n      \"id\": \"abc123\",\n      \"name\": \"Example Title\",\n      \"description\": \"A sample description.\",\n      \"archived\": true,\n      \"released\": true,\n      \"releaseDate\": \"2026-01-15\",\n      \"startDate\": \"2026-01-15\",\n      \"overdue\": true,\n      \"projectId\": \"500123\"\n    }\n  ],\n  \"roles\": \"example_value\",\n  \"avatarUrls\": {\n    \"16x16\": \"https://www.example.com\",\n    \"24x24\": \"https://www.example.com\",\n    \"32x32\": \"https://www.example.com\",\n    \"48x48\": \"https://www.example.com\"\n  },\n  \"projectCategory\": {\n    \"self\": \"https://www.example.com\",\n    \"id\": \"abc123\",\n    \"name\": \"Example Title\",\n    \"description\": \"A sample description.\"\n  },\n  \"projectTypeKey\": \"software\",\n  \"simplified\": true,\n  \"style\": \"classic\",\n  \"archived\": true,\n  \"deleted\": true,\n  \"insight\": {\n    \"totalIssueCount\": 10,\n    \"lastIssueUpdateTime\": \"2026-01-15T10:30:00Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "71be4462-ff78-41dc-a15c-8558ae98712e",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project",
+                    ":projectIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectIdOrKey",
+                      "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cdbf67f1-1882-4cff-ba53-c0cbb5e3888e",
+              "name": "The project was not found or the user does not have permission to view it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project",
+                    ":projectIdOrKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectIdOrKey",
+                      "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "72aff29d-0bb0-43e2-ab91-aa3aadca6739",
+          "name": "Jira Get All Statuses for Project",
+          "request": {
+            "name": "Jira Get All Statuses for Project",
+            "description": {
+              "content": "Returns the valid statuses for a project. The statuses are grouped by issue type, listing the allowed statuses for each issue type in the project.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "project",
+                ":projectIdOrKey",
+                "statuses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectIdOrKey",
+                  "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                },
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a4e2e240-c195-4dd8-aaf1-4f01723cfa30",
+              "name": "Statuses returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project",
+                    ":projectIdOrKey",
+                    "statuses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectIdOrKey",
+                      "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"self\": \"https://www.example.com\",\n    \"id\": \"abc123\",\n    \"name\": \"Example Title\",\n    \"subtask\": true,\n    \"statuses\": [\n      {}\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "974a5846-2715-41e2-ac5f-ffff77603815",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project",
+                    ":projectIdOrKey",
+                    "statuses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectIdOrKey",
+                      "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "587b227f-07fc-4ed1-a48b-b8412a0b97f8",
+              "name": "The project was not found or the user does not have permission to view it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project",
+                    ":projectIdOrKey",
+                    "statuses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectIdOrKey",
+                      "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your Jira Cloud site subdomain (e.g., your-company).",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "your-domain",
+      "key": "domain"
+    },
+    {
+      "type": "string",
+      "value": "https://{{domain}}.atlassian.net/rest/api/3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "55be13ca-8617-4e05-9cf8-87eeffe659e9",
+    "name": "Jira Cloud Platform REST API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.\n\nContact Support:\n Name: Atlassian Developer Support\n Email: ecosystem@atlassian.com",
+      "type": "text/plain"
+    }
+  }
+}
