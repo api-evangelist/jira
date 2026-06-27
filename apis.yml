@@ -183,7 +183,7 @@ common:
   url: https://developer.atlassian.com/cloud/jira/platform/
 - type: GettingStarted
   url: https://developer.atlassian.com/cloud/jira/platform/getting-started/
-- type: SDK
+- type: SDKs
   url: https://developer.atlassian.com/cloud/jira/platform/libraries/
 - type: Authentication
   url: https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/

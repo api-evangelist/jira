@@ -2,11 +2,11 @@
   "repo": "jira",
   "feeds": [
     {
-      "source": "https://www.atlassian.com/blog/developer",
-      "feed_url": "https://www.atlassian.com/blog/comments/feed",
+      "source": "https://www.atlassian.com/blog/development/feed",
+      "feed_url": "https://www.atlassian.com/blog/development/feed",
       "title": "",
-      "saved": 2,
-      "method": "discovered"
+      "saved": 4,
+      "method": "feed"
     },
     {
       "source": "https://developer.atlassian.com/changelog/",
@@ -16,6 +16,6 @@
       "method": "none"
     }
   ],
-  "post_count": 9,
-  "fetched": "2026-06-14T20:42:17Z"
+  "post_count": 14,
+  "fetched": "2026-06-27T12:03:07Z"
 }
