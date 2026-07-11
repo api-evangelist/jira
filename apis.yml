@@ -179,6 +179,14 @@ maintainers:
 - name: Kin Lane
   email: kin@apievangelist.com
 common:
+- type: TrustCenter
+  url: security/jira-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/jira-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/jira-domain-security.yml
+- type: Authentication
+  url: authentication/jira-authentication.yml
 - type: OAuthScopes
   url: scopes/jira-scopes.yml
 - type: Portal
