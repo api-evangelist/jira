@@ -179,6 +179,8 @@ maintainers:
 - name: Kin Lane
   email: kin@apievangelist.com
 common:
+- type: OAuthScopes
+  url: scopes/jira-scopes.yml
 - type: Portal
   url: https://developer.atlassian.com/cloud/jira/platform/
 - type: GettingStarted
