@@ -179,6 +179,8 @@ maintainers:
 - name: Kin Lane
   email: kin@apievangelist.com
 common:
+- type: AgenticAccess
+  url: agentic-access/jira-agentic-access.yml
 - type: TrustCenter
   url: security/jira-trust-center.yml
 - type: VulnerabilityDisclosure
