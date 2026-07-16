@@ -1,0 +1,46 @@
+generated: '2026-06-20'
+method: derived
+source: >-
+  openapi/jira-cloud-platform-rest-api-openapi.yml + developer.atlassian.com docs; cross-links
+  errors/jira-problem-types.yml, lifecycle/jira-lifecycle.yml, authentication/jira-authentication.yml,
+  rate-limits/jira-rate-limits.yml
+authentication:
+  styles: [basic-email-api-token, oauth2-3lo, connect-jwt-bearer]
+  ref: authentication/jira-authentication.yml
+pagination:
+  style: offset
+  request_params:
+    startAt: Zero-based index of the first item to return.
+    maxResults: Maximum items per page (server may cap, e.g. 50-100 depending on resource).
+  response_fields: [startAt, maxResults, total, isLast, values]
+  notes: >-
+    Page objects follow the PageBean shape (e.g. PageBeanProject). Some newer endpoints
+    (enhanced JQL search) use cursor-style nextPageToken; the classic search uses startAt/maxResults.
+field_expansion:
+  param: expand
+  description: >-
+    Comma-separated expand values pull in extra representations (e.g. renderedFields, names, schema,
+    transitions, changelog) on issue and project resources.
+  fields_param: fields
+  description_fields: Restrict/select returned issue fields via the fields query parameter (supports *all, *navigable, -field).
+rich_text:
+  format: Atlassian Document Format (ADF)
+  media: application/json
+  applies_to: v3 (comment bodies, descriptions); v2 uses wiki markup / plain text.
+query_language:
+  name: JQL (Jira Query Language)
+  used_by: [GET /search, POST /search]
+error_envelope:
+  schema: ErrorCollection
+  fields: [errorMessages, errors, status]
+  rfc9457: false
+  ref: errors/jira-problem-types.yml
+rate_limiting:
+  model: token-bucket, cost-based per app+user
+  signal_headers: [Retry-After, X-RateLimit-*]
+  ref: rate-limits/jira-rate-limits.yml
+bulk:
+  note: Bulk operations are capped (e.g. ~100 items/request) per resource.
+versioning:
+  ref: lifecycle/jira-lifecycle.yml
+  scheme: uri-path (v3 / v2 / agile 1.0)

@@ -1,0 +1,29 @@
+generated: '2026-06-20'
+method: searched
+source: live probes of Atlassian .well-known discovery surface (2026-06-20)
+hosts:
+- host: https://developer.atlassian.com
+  documents:
+  - path: /.well-known/security.txt          # RFC 9116 (PGP-signed)
+    status: 200
+    file: jira-security.txt
+  - path: /.well-known/api-catalog             # RFC 9727
+    status: 404
+- host: https://auth.atlassian.com
+  documents:
+  - path: /.well-known/openid-configuration    # OIDC Discovery
+    status: 200
+    file: jira-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server  # RFC 8414
+    status: 200
+    file: jira-oauth-authorization-server.json
+- host: https://api.atlassian.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+notes:
+- OAuth 2.0 (3LO) and OIDC discovery are served from the Atlassian identity host auth.atlassian.com,
+  not the per-tenant *.atlassian.net API host.
+- security.txt is PGP-signed; canonical copy at https://www.atlassian.com/.well-known/security.txt.

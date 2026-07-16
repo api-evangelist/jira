@@ -1,0 +1,58 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  https://developer.atlassian.com/cloud/jira/platform/libraries/ + npm/PyPI registry probes
+description: >-
+  Atlassian does not ship a language-specific SDK for the plain Jira Cloud REST API; instead it
+  publishes app-development frameworks (Forge, Atlassian Connect Express) and a first-party CLI.
+  The most complete REST client libraries are community-maintained. official:true is set only for
+  Atlassian-published packages.
+packages:
+- language: javascript
+  registry: npm
+  name: "@forge/cli"
+  url: https://www.npmjs.com/package/@forge/cli
+  install: npm install -g @forge/cli
+  official: true
+  role: Forge app-development CLI/framework for Atlassian-hosted apps (build/deploy/tunnel).
+- language: javascript
+  registry: npm
+  name: atlassian-connect-express
+  url: https://www.npmjs.com/package/atlassian-connect-express
+  install: npm install atlassian-connect-express
+  official: true
+  role: Atlassian Connect for Node.js/Express (ACE) toolkit for building Connect apps.
+- language: javascript
+  registry: npm
+  name: jira.js
+  url: https://www.npmjs.com/package/jira.js
+  install: npm install jira.js
+  official: false
+  role: >-
+    Community REST client covering Jira Cloud v2/v3, Agile, and Service Desk APIs (repo
+    github.com/mrrefactoring/jira.js).
+- language: javascript
+  registry: npm
+  name: jira-client
+  url: https://www.npmjs.com/package/jira-client
+  install: npm install jira-client
+  official: false
+  role: Community object-oriented wrapper for the Jira REST API.
+- language: python
+  registry: pypi
+  name: jira
+  url: https://pypi.org/project/jira/
+  install: pip install jira
+  official: false
+  role: Long-standing community Python client for the Jira REST API (repo github.com/pycontribs/jira).
+- language: python
+  registry: pypi
+  name: atlassian-python-api
+  url: https://pypi.org/project/atlassian-python-api/
+  install: pip install atlassian-python-api
+  official: false
+  role: Community Python client spanning Jira, Confluence, Bitbucket, and Service Desk.
+notes:
+- The Atlassian Command Line Interface (acli) is distributed as an OS-native binary, not a registry
+  package; its command surface is catalogued in cli/jira-cli.yml.
+- Atlassian Connect for Spring Boot is the official Java framework for Connect apps (Maven).

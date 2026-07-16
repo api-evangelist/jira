@@ -1,0 +1,42 @@
+generated: '2026-06-20'
+method: derived
+source: openapi/jira-cloud-platform-rest-api-openapi.yml
+format: jira-error-collection
+description: >-
+  Jira does not emit RFC 9457 problem+json. API errors are returned in the ErrorCollection envelope
+  with application/json. Derived from the OpenAPI 4xx responses across all 16 operations.
+envelope:
+  schema: ErrorCollection
+  media_type: application/json
+  fields:
+  - name: errorMessages
+    type: array<string>
+    description: General error messages not tied to a specific field.
+  - name: errors
+    type: object
+    description: Map of field name to field-specific error message.
+  - name: status
+    type: integer
+    description: HTTP status code echoed in the body.
+problems:
+- status: 400
+  title: Bad Request
+  description: >-
+    The request body or query is invalid (malformed issue fields, invalid JQL, invalid project
+    search parameters).
+  operations: [createIssue, editIssue, deleteIssue, doTransition, addComment, searchProjects, searchForIssuesUsingJql, searchForIssuesUsingJqlPost]
+- status: 401
+  title: Unauthorized
+  description: Authentication credentials are missing or invalid.
+  operations: [all operations]
+- status: 403
+  title: Forbidden
+  description: The authenticated user lacks permission to perform the operation.
+  operations: [createIssue, editIssue, deleteIssue]
+- status: 404
+  title: Not Found
+  description: The issue, project, or resource was not found, or the user cannot view it.
+  operations: [getIssue, editIssue, deleteIssue, getTransitions, doTransition, getComments, addComment, getProject, getAllStatuses]
+docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#status-codes
+notes:
+- 429 Too Many Requests is returned when rate limits are exceeded (Retry-After header); see rate-limits/jira-rate-limits.yml.

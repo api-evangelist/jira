@@ -1,0 +1,37 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Jira Cloud Platform REST API
+  version: 1.0.0
+generated: '2026-06-20'
+method: generated
+extends: openapi/jira-cloud-platform-rest-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: jira
+    x-apievangelist-artifacts:
+      authentication: authentication/jira-authentication.yml
+      scopes: scopes/jira-scopes.yml
+      errors: errors/jira-problem-types.yml
+      conventions: conventions/jira-conventions.yml
+      lifecycle: lifecycle/jira-lifecycle.yml
+      data_model: data-model/jira-data-model.yml
+      mcp: mcp/jira-mcp.yml
+- target: $.info
+  update:
+    x-apievangelist-pagination:
+      style: offset
+      params: [startAt, maxResults]
+      response_fields: [startAt, maxResults, total, isLast]
+- target: $.info
+  update:
+    x-apievangelist-error-envelope:
+      schema: ErrorCollection
+      fields: [errorMessages, errors, status]
+      rfc9457: false
+- target: $.servers
+  update:
+    x-apievangelist-oauth:
+      authorizationUrl: https://auth.atlassian.com/authorize
+      tokenUrl: https://auth.atlassian.com/oauth/token
+      openid_configuration: https://auth.atlassian.com/.well-known/openid-configuration

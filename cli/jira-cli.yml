@@ -1,0 +1,44 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  https://developer.atlassian.com/cloud/acli/reference/commands/jira/ +
+  https://developer.atlassian.com/platform/forge/cli-reference/
+description: >-
+  Atlassian ships two first-party CLIs relevant to Jira: ACLI (Atlassian Command Line Interface) for
+  operating on Jira Cloud data, and the Forge CLI for building/deploying Atlassian-hosted apps.
+clis:
+- name: acli
+  purpose: Operate Jira Cloud from the terminal (create/view/search/edit work items, boards, sprints, projects).
+  docs: https://developer.atlassian.com/cloud/acli/
+  install_docs:
+    macos: https://developer.atlassian.com/cloud/acli/guides/install-macos/
+    windows: https://developer.atlassian.com/cloud/acli/guides/install-windows/
+    linux: https://developer.atlassian.com/cloud/acli/guides/install-linux/
+  distribution: OS-native binary (macOS, Windows, Linux)
+  command_groups:
+  - group: acli jira auth
+    description: Authenticate to Jira Cloud.
+  - group: acli jira workitem
+    description: Create, view, search, edit, assign, and transition work items (issues).
+  - group: acli jira board
+    description: Manage boards.
+  - group: acli jira sprint
+    description: Manage sprints.
+  - group: acli jira project
+    description: Manage projects.
+  - group: acli jira filter
+    description: Manage saved filters.
+  - group: acli jira dashboard
+    description: Manage dashboards.
+  - group: acli jira field
+    description: Manage fields.
+  key_flows:
+  - Bulk operations across multiple sites and scripts run in parallel from the terminal.
+  - Handles authentication, retries, and error handling for Atlassian public APIs.
+- name: forge
+  package: "@forge/cli"
+  purpose: Build, deploy, tunnel, and manage Atlassian-hosted (Forge) apps.
+  docs: https://developer.atlassian.com/platform/forge/cli-reference/
+  install: npm install -g @forge/cli@latest
+  key_commands: [login, create, deploy, install, tunnel, build, lint, logs, register]
+  support_window: Each CLI version supported ~6 months after release.

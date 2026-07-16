@@ -1,0 +1,34 @@
+generated: '2026-06-20'
+method: searched
+source: https://developer.atlassian.com/cloud/jira/platform/changelog/
+scheme: dated-chronological
+structure: >-
+  Newest-first dated entries categorized by action (Added, Removed, Change, Announcement). No single
+  semantic version number; the REST API itself is versioned by path (v3/v2).
+current_api_version: v3
+docs: https://developer.atlassian.com/cloud/jira/platform/changelog/
+entries:
+- date: '2026-07-13'
+  type: removal
+  breaking: true
+  highlight: Workflow transition properties APIs discontinued; migrate to Bulk get/update workflows APIs.
+- date: '2026-07-13'
+  type: addition
+  breaking: false
+  highlight: Forge custom field search aliases support app-provided search suggestions via searchSuggestionsEnabled.
+- date: '2026-07-09'
+  type: announcement
+  breaking: false
+  highlight: Connect EOS customer messaging rolling out to production for select app categories.
+- date: '2026-07-07'
+  type: addition
+  breaking: false
+  highlight: UI Modifications Forge modules support unlicensed/anonymous/customer access via unlicensedAccess manifest property.
+- date: '2026-06-25'
+  type: addition
+  breaking: false
+  highlight: Status Search API adds includeGlobalStatuses parameter for project-scoped queries.
+- date: '2026-06-22'
+  type: announcement
+  breaking: false
+  highlight: Old workflow editor access removal effective 2026-07-13; implement rule descriptions and test apps.

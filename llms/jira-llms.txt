@@ -1,0 +1,50 @@
+# Jira
+
+> Atlassian Jira project management and issue-tracking platform. This index links the Jira API surface
+> — Cloud Platform REST (v3/v2), Jira Software (Agile), Jira Service Management, JSM Operations, Jira
+> Align, and Customer Service Management — plus the machine-readable artifacts API Evangelist has
+> harvested and derived for it. Generated from the repository catalog; the docs host does not publish
+> an llms.txt.
+
+## APIs
+- [Jira Cloud Platform REST API](https://developer.atlassian.com/cloud/jira/platform/): issues, projects, JQL search, transitions, comments (base https://your-domain.atlassian.net/rest/api/3)
+- [Jira Cloud Platform REST API v2](https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/): v2 without Atlassian Document Format
+- [Jira Software Cloud REST API](https://developer.atlassian.com/cloud/jira/software/): boards, sprints, backlogs (base /rest/agile/1.0)
+- [Jira Service Management REST API](https://developer.atlassian.com/cloud/jira/service-desk/): queues, customers, requests, SLAs
+- [Jira Service Management Operations REST API](https://developer.atlassian.com/cloud/jira/service-desk-ops/introduction/introduction/): schedules, on-call, alerts, incidents
+- [Jira Align REST API](https://help.jiraalign.com/hc/en-us/sections/360008049974-API-2-0): portfolios, epics, program management
+- [Customer Service Management REST API](https://developer.atlassian.com/cloud/customer-service-management/): customers, organizations, entitlements
+
+## Specs
+- [OpenAPI 3.1 (Jira Cloud Platform)](openapi/jira-cloud-platform-rest-api-openapi.yml)
+- [AsyncAPI (Jira webhooks)](asyncapi/jira-webhooks-asyncapi.yml)
+- [GraphQL notes](graphql/jira-graphql.md)
+- Vendor OpenAPI: https://dac-static.atlassian.com/cloud/jira/platform/swagger-v3.v3.json
+
+## Artifacts
+- [Authentication profile](authentication/jira-authentication.yml) — basic (email:api-token), OAuth 2.0 3LO, bearer
+- [OAuth scopes](scopes/jira-scopes.yml)
+- [MCP server (Atlassian Rovo, official)](mcp/jira-mcp.yml) — https://mcp.atlassian.com/v1/mcp/authv2
+- [Packages / SDKs](packages/jira-packages.yml)
+- [CLI (acli + Forge CLI)](cli/jira-cli.yml)
+- [Conventions](conventions/jira-conventions.yml) — startAt/maxResults pagination, JQL, expand, ADF
+- [Error catalog](errors/jira-problem-types.yml)
+- [Lifecycle](lifecycle/jira-lifecycle.yml)
+- [Changelog](changelog/jira-changelog.yml)
+- [Conformance](conformance/jira-conformance.yml)
+- [Data model](data-model/jira-data-model.yml)
+- [Components (UI)](components/jira-components.yml)
+- [Domain security](security/jira-domain-security.yml)
+- [Vulnerability disclosure](security/jira-vulnerability-disclosure.yml)
+- [Trust center](security/jira-trust-center.yml)
+- [Agentic access](agentic-access/jira-agentic-access.yml)
+
+## Docs
+- [Developer portal](https://developer.atlassian.com/cloud/jira/platform/)
+- [Getting started](https://developer.atlassian.com/cloud/jira/platform/getting-started/)
+- [Authentication](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#authentication)
+- [OAuth 2.0 (3LO)](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/)
+- [Rate limiting](https://developer.atlassian.com/cloud/jira/platform/rate-limiting/)
+- [Changelog](https://developer.atlassian.com/cloud/jira/platform/changelog/)
+- [Security overview](https://developer.atlassian.com/cloud/jira/platform/security-overview/)
+- [Status page](https://status.atlassian.com/)

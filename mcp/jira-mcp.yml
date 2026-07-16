@@ -1,0 +1,37 @@
+generated: '2026-06-20'
+method: searched
+status: published
+source: >-
+  https://github.com/atlassian/atlassian-mcp-server +
+  https://www.atlassian.com/platform/rovo-mcp
+server:
+  name: Atlassian Rovo MCP Server
+  vendor: Atlassian (official)
+  transport: http
+  url: https://mcp.atlassian.com/v1/mcp/authv2
+  url_api_token: https://mcp.atlassian.com/v1/mcp
+  auth: OAuth 2.1 (authorization); API token supported for token-based clients
+  tls: TLS 1.2+
+  products: [Jira, Confluence, Jira Service Management, Bitbucket, Compass]
+  clients:
+  - Claude (claude.ai, Desktop, Code)
+  - OpenAI ChatGPT
+  - Cursor
+  - VS Code (GitHub Copilot)
+  - GitHub Copilot CLI
+  - Google Gemini CLI
+  - Amazon Quick Suite
+  - Any MCP client via the mcp-remote proxy
+permission_groups:
+- name: read
+  description: Read Jira work items, projects, boards, and related data.
+- name: write
+  description: Create and update Jira work items and related resources.
+- name: search
+  description: Search Jira using JQL and cross-product queries.
+notes:
+- All tool actions respect the authenticated user's existing Atlassian access controls and
+  permissions (OAuth-scoped); the server enforces per-user authorization rather than a service key.
+- Example documented flows include searching open bugs, creating stories, and bulk work-item
+  creation from notes.
+- Registered in the MCP registry as com.atlassian/atlassian-mcp-server.

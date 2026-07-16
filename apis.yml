@@ -3,7 +3,7 @@ description: APIs for Atlassian Jira project management and issue tracking platf
 image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
 url: https://www.atlassian.com/software/jira
 created: '2024'
-modified: '2026-05-19'
+modified: '2026-06-20'
 specificationVersion: '0.18'
 tags:
 - Agile
@@ -179,6 +179,36 @@ maintainers:
 - name: Kin Lane
   email: kin@apievangelist.com
 common:
+- type: Packages
+  url: packages/jira-packages.yml
+- type: WellKnown
+  url: well-known/jira-well-known.yml
+- type: SecurityTxt
+  url: well-known/jira-security.txt
+- type: MCPServer
+  url: mcp/jira-mcp.yml
+  name: Atlassian Rovo MCP Server
+- type: LLMsTxt
+  url: llms/jira-llms.txt
+- type: Overlay
+  url: overlays/jira-cloud-platform-rest-api-overlay.yaml
+- type: Conformance
+  url: conformance/jira-conformance.yml
+- type: ErrorCatalog
+  url: errors/jira-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/jira-lifecycle.yml
+- type: Conventions
+  url: conventions/jira-conventions.yml
+- type: ChangeLog
+  url: changelog/jira-changelog.yml
+  name: Jira Cloud Platform Changelog (structured)
+- type: CLI
+  url: cli/jira-cli.yml
+- type: Components
+  url: components/jira-components.yml
+- type: DataModel
+  url: data-model/jira-data-model.yml
 - type: AgenticAccess
   url: agentic-access/jira-agentic-access.yml
 - type: TrustCenter

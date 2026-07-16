@@ -1,0 +1,37 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  https://atlassian.design/ + https://developer.atlassian.com/platform/forge/ui-kit/ +
+  https://developer.atlassian.com/platform/forge/custom-ui/
+description: >-
+  Client-side/embeddable UI surfaces Atlassian publishes for building on and inside Jira. Distinct
+  from the server-side client libraries in packages/jira-packages.yml.
+component_families:
+- family: Atlassian Design System (Atlaskit)
+  description: >-
+    React component library implementing the Atlassian Design System — buttons, forms, tables,
+    modals, dynamic tables, and the like — used to build Jira-consistent UIs.
+  loader: "@atlaskit/* npm packages"
+  docs: https://atlassian.design/components
+  official: true
+- family: Forge UI Kit
+  description: >-
+    Declarative component model for rendering app UI inside Jira (Forge apps); Atlassian renders the
+    components server-side into the product.
+  loader: "@forge/react (UI Kit components)"
+  docs: https://developer.atlassian.com/platform/forge/ui-kit/
+  official: true
+- family: Forge Custom UI
+  description: >-
+    Host a custom static front-end (any framework) inside a Jira iframe with the Forge bridge
+    (@forge/bridge) for product APIs and events.
+  loader: "@forge/bridge"
+  docs: https://developer.atlassian.com/platform/forge/custom-ui/
+  official: true
+- family: Atlassian Connect (JS API)
+  description: >-
+    all.js bridge for Connect apps embedded via iframes in Jira, exposing dialog, flag, navigator,
+    and request APIs.
+  loader: connect-host all.js (AP global)
+  docs: https://developer.atlassian.com/cloud/jira/platform/about-the-connect-framework/
+  official: true

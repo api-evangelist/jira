@@ -1,0 +1,58 @@
+generated: '2026-06-20'
+method: derived
+source: openapi/jira-cloud-platform-rest-api-openapi.yml ($ref graph across component schemas)
+description: >-
+  Entity-relationship graph derived from the Jira Cloud Platform OpenAPI schema $ref links. Cardinality
+  read from array-vs-object $ref shape. Jira identifies most resources by numeric id and issues/projects
+  additionally by a human key (e.g. PROJ-123, PROJ).
+entities:
+- name: Issue
+  schema: IssueBean
+  id_fields: [id, key]
+  key_format: "{PROJECTKEY}-{number} (e.g. PROJ-123)"
+  relationships:
+  - {to: IssueFields, type: has_one, via: fields}
+  - {to: Transition, type: has_many, via: transitions}
+  - {to: Changelog, type: has_one, via: changelog}
+  - {to: Project, type: belongs_to, via: fields.project}
+  - {to: IssueTypeDetails, type: has_one, via: fields.issuetype}
+  - {to: StatusDetails, type: has_one, via: fields.status}
+  - {to: Priority, type: has_one, via: fields.priority}
+  - {to: UserDetails, type: has_one, via: fields.assignee/reporter/creator}
+  - {to: Component, type: has_many, via: fields.components}
+  - {to: Version, type: has_many, via: fields.fixVersions/versions}
+  - {to: Comment, type: has_many, via: fields.comment (PageOfComments)}
+  - {to: Worklog, type: has_many, via: fields.worklog (PageOfWorklogs)}
+  - {to: Attachment, type: has_many, via: fields.attachment}
+  - {to: IssueLink, type: has_many, via: fields.issuelinks}
+  - {to: Issue, type: has_many, via: fields.subtasks (IssueRef)}
+- name: Project
+  schema: Project
+  id_fields: [id, key]
+  relationships:
+  - {to: UserDetails, type: has_one, via: lead}
+  - {to: Component, type: has_many, via: components}
+  - {to: IssueTypeDetails, type: has_many, via: issueTypes}
+  - {to: Version, type: has_many, via: versions}
+  - {to: ProjectCategory, type: has_one, via: projectCategory}
+- name: Comment
+  schema: Comment
+  relationships:
+  - {to: UserDetails, type: has_one, via: author/updateAuthor}
+  - {to: AtlassianDocumentFormat, type: has_one, via: body}
+  - {to: Visibility, type: has_one, via: visibility}
+- name: Worklog
+  schema: Worklog
+  relationships:
+  - {to: UserDetails, type: has_one, via: author/updateAuthor}
+  - {to: AtlassianDocumentFormat, type: has_one, via: comment}
+- name: Transition
+  schema: Transition
+  relationships:
+  - {to: StatusDetails, type: has_one, via: to}
+- name: IssueLink
+  schema: IssueLink
+  relationships:
+  - {to: IssueLinkType, type: has_one, via: type}
+  - {to: Issue, type: has_one, via: inwardIssue/outwardIssue (IssueRef)}
+supporting_entities: [IssueTypeDetails, StatusDetails, StatusCategory, Priority, Resolution, UserDetails, Component, Version, ProjectCategory, Attachment, Watches, Votes, AvatarUrls, EntityProperty]

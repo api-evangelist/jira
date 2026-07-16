@@ -1,0 +1,29 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  https://developer.atlassian.com/cloud/jira/platform/changelog/ +
+  https://developer.atlassian.com/platform/deprecation-policy/ + https://status.atlassian.com/
+versioning:
+  scheme: uri-path
+  current: v3
+  also_supported: [v2]
+  agile: /rest/agile/1.0
+  docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/
+  notes: >-
+    v3 uses Atlassian Document Format (ADF) for rich text; v2 offers the same operations with
+    wiki-markup/plain text and no ADF. Both are current and supported.
+deprecation:
+  policy_url: https://developer.atlassian.com/platform/deprecation-policy/
+  changelog_url: https://developer.atlassian.com/cloud/jira/platform/changelog/
+  notice: >-
+    Atlassian publishes deprecations/removals in the developer changelog with advance notice
+    (minimum ~2 weeks for smaller changes; longer transition windows for major removals — e.g.
+    workflow transition properties APIs noticed 2025-03-30, removed 2026-07-13).
+  sunset_header: false
+status_page: https://status.atlassian.com/
+sla:
+  url: https://www.atlassian.com/legal/cloud-support-services
+  enterprise_uptime_target: "99.95%"
+recent_removals:
+- date: '2026-07-13'
+  change: Workflow transition properties APIs discontinued; migrate to Bulk get/update workflows APIs.

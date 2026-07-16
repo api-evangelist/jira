@@ -1,0 +1,43 @@
+generated: '2026-06-20'
+method: derived
+source: >-
+  openapi/jira-cloud-platform-rest-api-openapi.yml + auth.atlassian.com OIDC discovery +
+  developer.atlassian.com docs
+standards:
+- id: oauth2
+  conforms: true
+  evidence: OpenAPI securitySchemes declares oauth2 authorizationCode (3LO); auth.atlassian.com/authorize + /oauth/token.
+- id: oidc
+  conforms: true
+  evidence: auth.atlassian.com/.well-known/openid-configuration returns 200 (issuer https://auth.atlassian.com).
+- id: rfc8414-oauth-authorization-server
+  conforms: true
+  evidence: auth.atlassian.com/.well-known/oauth-authorization-server returns 200.
+- id: rfc9116-security-txt
+  conforms: true
+  evidence: PGP-signed /.well-known/security.txt served (well-known/jira-security.txt).
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors use the Jira ErrorCollection envelope (errorMessages/errors/status) with application/json,
+    not application/problem+json.
+- id: pagination
+  conforms: true
+  evidence: Offset pagination via startAt/maxResults request params and startAt/maxResults/total response fields (PageBean).
+- id: http-basic
+  conforms: true
+  evidence: OpenAPI securitySchemes declares http basic (email + API token, Base64).
+- id: bearer-token
+  conforms: true
+  evidence: OpenAPI securitySchemes declares http bearer (Connect JWT / OAuth access token).
+- id: json-api
+  conforms: false
+  evidence: Plain JSON resource representations; not the JSON:API media type.
+- id: idempotency-keys
+  conforms: false
+  evidence: No Idempotency-Key header documented in the captured spec.
+- id: fhir-r4
+  conforms: false
+- id: scim2
+  conforms: false
+  evidence: SCIM 2.0 is offered separately via Atlassian identity provisioning, not in this Jira spec.
