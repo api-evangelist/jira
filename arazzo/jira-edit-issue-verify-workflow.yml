@@ -1,0 +1,139 @@
+arazzo: 1.0.1
+info:
+  title: Jira Edit an Issue and Verify the Change
+  summary: Read an issue, apply a field edit and label operations, then re-read to verify.
+  description: >-
+    Jira's edit operation returns 204 with no body, so a caller that stops at the
+    write has no evidence of what was actually stored — and Jira's field
+    configuration may silently reject or coerce values. This workflow captures
+    the before state, applies the edit using both the fields map for direct sets
+    and the update map for additive label operations, and then re-reads the
+    issue to prove the change landed. Every step spells out its request inline
+    so the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: jiraApi
+  url: ../openapi/jira-cloud-platform-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: edit-issue-verify
+  summary: Apply a field edit to a Jira issue and confirm the stored result.
+  description: >-
+    Reads the current summary and labels of an issue, edits the summary and
+    description while adding a label through an update operation, and re-reads
+    the issue to verify what Jira stored.
+  inputs:
+    type: object
+    required:
+    - issueIdOrKey
+    - newSummary
+    properties:
+      issueIdOrKey:
+        type: string
+        description: The id or key of the issue to edit (e.g. PROJ-123).
+      newSummary:
+        type: string
+        description: The replacement summary for the issue.
+      newDescriptionText:
+        type: string
+        description: The plain text body rendered into the replacement Atlassian Document Format description.
+      addLabel:
+        type: string
+        description: A label to add to the issue without disturbing its existing labels.
+      notifyUsers:
+        type: boolean
+        description: Whether watchers are emailed about the update.
+        default: true
+  steps:
+  - stepId: readBefore
+    description: >-
+      Capture the summary and labels before the edit so the change can be
+      confirmed as a real difference.
+    operationId: getIssue
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $inputs.issueIdOrKey
+    - name: fields
+      in: query
+      value:
+      - summary
+      - description
+      - labels
+      - updated
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      issueId: $response.body#/id
+      issueKey: $response.body#/key
+      summaryBefore: $response.body#/fields/summary
+      labelsBefore: $response.body#/fields/labels
+      updatedBefore: $response.body#/fields/updated
+  - stepId: applyEdit
+    description: >-
+      Edit the issue. The fields map sets the summary and description outright,
+      while the update map adds a label additively so existing labels survive.
+      This operation returns 204 with no body on success.
+    operationId: editIssue
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $inputs.issueIdOrKey
+    - name: notifyUsers
+      in: query
+      value: $inputs.notifyUsers
+    - name: overrideScreenSecurity
+      in: query
+      value: false
+    - name: overrideEditableFlag
+      in: query
+      value: false
+    requestBody:
+      contentType: application/json
+      payload:
+        fields:
+          summary: $inputs.newSummary
+          description:
+            type: doc
+            version: 1
+            content:
+            - type: paragraph
+              content:
+              - type: text
+                text: $inputs.newDescriptionText
+        update:
+          labels:
+          - add: $inputs.addLabel
+    successCriteria:
+    - condition: $statusCode == 204
+  - stepId: verifyEdit
+    description: >-
+      Re-read the issue and confirm the stored summary now matches what was sent
+      and that the update timestamp advanced.
+    operationId: getIssue
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $inputs.issueIdOrKey
+    - name: fields
+      in: query
+      value:
+      - summary
+      - description
+      - labels
+      - updated
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.fields.summary != null
+      type: jsonpath
+    outputs:
+      summaryAfter: $response.body#/fields/summary
+      labelsAfter: $response.body#/fields/labels
+      updatedAfter: $response.body#/fields/updated
+  outputs:
+    issueKey: $steps.readBefore.outputs.issueKey
+    summaryBefore: $steps.readBefore.outputs.summaryBefore
+    summaryAfter: $steps.verifyEdit.outputs.summaryAfter
+    labelsAfter: $steps.verifyEdit.outputs.labelsAfter

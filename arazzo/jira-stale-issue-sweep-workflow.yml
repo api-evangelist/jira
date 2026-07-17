@@ -1,0 +1,147 @@
+arazzo: 1.0.1
+info:
+  title: Jira Sweep a Stale Issue Through a Transition
+  summary: Find stale issues with JQL, annotate the first match, discover its transitions, and close it.
+  description: >-
+    The backlog hygiene pattern that most teams eventually automate. A JQL query
+    selects issues that have gone quiet — typically unresolved and not updated
+    for some number of days — and the workflow then leaves an audit comment
+    explaining the automated action before discovering the transitions legally
+    available on that issue and applying the closing one. Commenting before
+    transitioning matters: once an issue closes, the comment is the only record
+    of why. Every step spells out its request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: jiraApi
+  url: ../openapi/jira-cloud-platform-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: stale-issue-sweep
+  summary: Select a stale Jira issue by JQL, comment on it, and transition it closed.
+  description: >-
+    Runs a JQL search for stale issues, adds an audit comment to the first match
+    explaining the automated action, discovers the transitions available on that
+    issue, and performs the requested closing transition.
+  inputs:
+    type: object
+    required:
+    - jql
+    - transitionId
+    properties:
+      jql:
+        type: string
+        description: >-
+          The JQL query selecting stale issues, e.g.
+          project = PROJ AND resolution = Unresolved AND updated < -90d ORDER BY updated ASC.
+      transitionId:
+        type: string
+        description: >-
+          The id of the closing transition to perform, selected from the
+          transitions discovered by the listTransitions step.
+      auditText:
+        type: string
+        description: The plain text audit comment explaining why the issue is being closed automatically.
+      resolutionName:
+        type: string
+        description: The name of the resolution to set during the transition (e.g. "Won't Do").
+  steps:
+  - stepId: findStaleIssues
+    description: >-
+      Run the stale-issue JQL query via POST and take the first match. The query
+      is validated strictly so a malformed query fails loudly instead of
+      silently sweeping the wrong issues.
+    operationId: searchForIssuesUsingJqlPost
+    requestBody:
+      contentType: application/json
+      payload:
+        jql: $inputs.jql
+        startAt: 0
+        maxResults: 1
+        validateQuery: strict
+        fields:
+        - summary
+        - status
+        - updated
+        - resolution
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.issues.length > 0
+      type: jsonpath
+    outputs:
+      total: $response.body#/total
+      staleIssueKey: $response.body#/issues/0/key
+      staleIssueId: $response.body#/issues/0/id
+      staleIssueSummary: $response.body#/issues/0/fields/summary
+      lastUpdated: $response.body#/issues/0/fields/updated
+  - stepId: addAuditComment
+    description: >-
+      Leave an audit trail on the issue before it is closed, so the record of why
+      it was swept survives the transition.
+    operationId: addComment
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $steps.findStaleIssues.outputs.staleIssueKey
+    requestBody:
+      contentType: application/json
+      payload:
+        body:
+          type: doc
+          version: 1
+          content:
+          - type: paragraph
+            content:
+            - type: text
+              text: $inputs.auditText
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      commentId: $response.body#/id
+      commentCreated: $response.body#/created
+  - stepId: listTransitions
+    description: >-
+      Discover the transitions available on the stale issue from its current
+      status, rather than assuming a fixed transition id across projects.
+    operationId: getTransitions
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $steps.findStaleIssues.outputs.staleIssueKey
+    - name: expand
+      in: query
+      value: transitions.fields
+    - name: includeUnavailableTransitions
+      in: query
+      value: false
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.transitions.length > 0
+      type: jsonpath
+    outputs:
+      transitions: $response.body#/transitions
+  - stepId: closeIssue
+    description: >-
+      Perform the closing transition with a resolution. This operation returns
+      204 with no body on success.
+    operationId: doTransition
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $steps.findStaleIssues.outputs.staleIssueKey
+    requestBody:
+      contentType: application/json
+      payload:
+        transition:
+          id: $inputs.transitionId
+        fields:
+          resolution:
+            name: $inputs.resolutionName
+    successCriteria:
+    - condition: $statusCode == 204
+  outputs:
+    staleIssueKey: $steps.findStaleIssues.outputs.staleIssueKey
+    totalStale: $steps.findStaleIssues.outputs.total
+    commentId: $steps.addAuditComment.outputs.commentId

@@ -1,0 +1,85 @@
+arazzo: 1.0.1
+info:
+  title: Jira Safely Delete an Issue
+  summary: Read an issue and its sub-tasks first, then delete it with an explicit sub-task decision.
+  description: >-
+    Deletion in Jira is unrecoverable through the REST API and will fail outright
+    when an issue has sub-tasks unless the caller explicitly opts into deleting
+    them too. This workflow therefore reads the issue first — capturing its
+    summary and sub-task list so the caller knows exactly what is about to be
+    destroyed and can log it — before issuing the delete with a deliberate
+    deleteSubtasks decision. Every step spells out its request inline so the flow
+    can be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: jiraApi
+  url: ../openapi/jira-cloud-platform-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: safe-issue-delete
+  summary: Inspect a Jira issue and its sub-tasks, then delete it deliberately.
+  description: >-
+    Reads the issue to record what is being deleted and whether it has
+    sub-tasks, then deletes it with an explicit sub-task disposition.
+  inputs:
+    type: object
+    required:
+    - issueIdOrKey
+    properties:
+      issueIdOrKey:
+        type: string
+        description: The id or key of the issue to delete (e.g. PROJ-123).
+      deleteSubtasks:
+        type: string
+        description: >-
+          Whether the issue's sub-tasks are deleted along with it. Sent as the
+          string "true" or "false" as the API defines it. A delete against an
+          issue that has sub-tasks fails with 400 when this is "false".
+        enum:
+        - 'true'
+        - 'false'
+        default: 'false'
+  steps:
+  - stepId: inspectIssue
+    description: >-
+      Read the issue and its sub-tasks before destroying it, so the caller can
+      record what was deleted and know whether the sub-task flag is required.
+    operationId: getIssue
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $inputs.issueIdOrKey
+    - name: fields
+      in: query
+      value:
+      - summary
+      - status
+      - subtasks
+      - project
+      - issuetype
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      issueId: $response.body#/id
+      issueKey: $response.body#/key
+      issueSummary: $response.body#/fields/summary
+      subtasks: $response.body#/fields/subtasks
+      projectKey: $response.body#/fields/project/key
+  - stepId: deleteIssue
+    description: >-
+      Delete the inspected issue by the key returned from the read, with an
+      explicit decision about its sub-tasks. Returns 204 with no body on success.
+    operationId: deleteIssue
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $steps.inspectIssue.outputs.issueKey
+    - name: deleteSubtasks
+      in: query
+      value: $inputs.deleteSubtasks
+    successCriteria:
+    - condition: $statusCode == 204
+  outputs:
+    deletedIssueKey: $steps.inspectIssue.outputs.issueKey
+    deletedIssueSummary: $steps.inspectIssue.outputs.issueSummary
+    projectKey: $steps.inspectIssue.outputs.projectKey

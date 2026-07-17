@@ -1,0 +1,162 @@
+arazzo: 1.0.1
+info:
+  title: Jira Create an Issue and Read It Back
+  summary: Resolve project metadata, create an issue, then read back the stored issue.
+  description: >-
+    The canonical Jira intake pattern. Before writing anything the workflow
+    resolves the target project and the issue type and priority vocabularies,
+    because the fields that can be set on an issue depend on the project and
+    issue type of the connected Jira instance. It then creates the issue and
+    reads the created issue back so the caller holds the server's own view of
+    the record rather than assuming the write landed as sent. Every step spells
+    out its request inline so the flow can be read and executed without opening
+    the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: jiraApi
+  url: ../openapi/jira-cloud-platform-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-issue-read-back
+  summary: Create a Jira issue against validated project metadata and read it back.
+  description: >-
+    Confirms the project exists and exposes the requested issue type, resolves
+    the priority vocabulary, creates the issue with an Atlassian Document Format
+    description, and re-reads the created issue to confirm what was stored.
+  inputs:
+    type: object
+    required:
+    - projectKey
+    - summary
+    - descriptionText
+    - issueTypeName
+    properties:
+      projectKey:
+        type: string
+        description: The key of the project to create the issue in (e.g. PROJ).
+      summary:
+        type: string
+        description: The one-line summary of the issue.
+      descriptionText:
+        type: string
+        description: The plain text body rendered into the Atlassian Document Format description.
+      issueTypeName:
+        type: string
+        description: The name of the issue type to create (e.g. Bug, Task, Story).
+      priorityName:
+        type: string
+        description: The name of the priority to set on the issue (e.g. High).
+      labels:
+        type: array
+        description: Labels to apply to the new issue.
+        items:
+          type: string
+  steps:
+  - stepId: resolveProject
+    description: >-
+      Read the target project and expand its issue types, confirming the project
+      is visible to the caller before attempting a write.
+    operationId: getProject
+    parameters:
+    - name: projectIdOrKey
+      in: path
+      value: $inputs.projectKey
+    - name: expand
+      in: query
+      value: issueTypes
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      projectId: $response.body#/id
+      projectKey: $response.body#/key
+      projectName: $response.body#/name
+      projectIssueTypes: $response.body#/issueTypes
+  - stepId: listIssueTypes
+    description: >-
+      Retrieve the issue types available to the user so the supplied issue type
+      name can be matched against a real type rather than guessed.
+    operationId: getIssueAllTypes
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      issueTypes: $response.body
+  - stepId: listPriorities
+    description: >-
+      Retrieve the priority vocabulary of the instance so the supplied priority
+      name resolves to a configured priority.
+    operationId: getPriorities
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      priorities: $response.body
+  - stepId: createIssue
+    description: >-
+      Create the issue in the resolved project. The description is sent as an
+      Atlassian Document Format document, which REST API v3 requires for rich
+      text fields.
+    operationId: createIssue
+    parameters:
+    - name: updateHistory
+      in: query
+      value: true
+    requestBody:
+      contentType: application/json
+      payload:
+        fields:
+          project:
+            key: $steps.resolveProject.outputs.projectKey
+          summary: $inputs.summary
+          description:
+            type: doc
+            version: 1
+            content:
+            - type: paragraph
+              content:
+              - type: text
+                text: $inputs.descriptionText
+          issuetype:
+            name: $inputs.issueTypeName
+          priority:
+            name: $inputs.priorityName
+          labels: $inputs.labels
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      issueId: $response.body#/id
+      issueKey: $response.body#/key
+      issueSelf: $response.body#/self
+  - stepId: readBackIssue
+    description: >-
+      Read the created issue back by its key to confirm the stored summary,
+      status, and issue type match what was submitted.
+    operationId: getIssue
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $steps.createIssue.outputs.issueKey
+    - name: fields
+      in: query
+      value:
+      - summary
+      - status
+      - issuetype
+      - priority
+      - labels
+      - created
+    - name: fieldsByKeys
+      in: query
+      value: false
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.key != null
+      type: jsonpath
+    outputs:
+      storedSummary: $response.body#/fields/summary
+      storedStatus: $response.body#/fields/status/name
+      storedIssueType: $response.body#/fields/issuetype/name
+      createdAt: $response.body#/fields/created
+  outputs:
+    issueId: $steps.createIssue.outputs.issueId
+    issueKey: $steps.createIssue.outputs.issueKey
+    storedStatus: $steps.readBackIssue.outputs.storedStatus

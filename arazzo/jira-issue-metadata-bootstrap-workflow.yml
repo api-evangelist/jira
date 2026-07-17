@@ -1,0 +1,79 @@
+arazzo: 1.0.1
+info:
+  title: Jira Bootstrap Issue Creation Metadata
+  summary: Cache the projects, issue types, and priorities an issue-creation surface needs.
+  description: >-
+    Anything that renders a "create an issue" form against Jira — an internal
+    portal, a chat command, a support widget, an agent tool — needs the same
+    three vocabularies before it can show the user a single valid choice: the
+    projects they can see, the issue types available to them, and the instance
+    priority scheme. All three are instance-configured and none can be
+    hard-coded. This workflow reads them in one pass so a caller can cache them
+    and validate input before attempting a write. Every step spells out its
+    request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: jiraApi
+  url: ../openapi/jira-cloud-platform-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: issue-metadata-bootstrap
+  summary: Read the project, issue type, and priority vocabularies of a Jira instance.
+  description: >-
+    Retrieves the projects visible to the caller with their issue types
+    expanded, the full issue type list, and the priority scheme — the metadata
+    required to build and validate an issue-creation surface.
+  inputs:
+    type: object
+    properties:
+      recent:
+        type: integer
+        description: >-
+          When supplied, the number of recently viewed projects to return first
+          in the project list.
+  steps:
+  - stepId: listProjects
+    description: >-
+      List the projects visible to the caller, expanding issue types and lead so
+      the create-issue surface can scope issue types per project.
+    operationId: getAllProjects
+    parameters:
+    - name: expand
+      in: query
+      value: description,lead,issueTypes
+    - name: recent
+      in: query
+      value: $inputs.recent
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      projects: $response.body
+      firstProjectKey: $response.body#/0/key
+      firstProjectName: $response.body#/0/name
+  - stepId: listIssueTypes
+    description: >-
+      List every issue type available to the user across the instance, including
+      whether each is a sub-task type and where it sits in the hierarchy.
+    operationId: getIssueAllTypes
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      issueTypes: $response.body
+      firstIssueTypeId: $response.body#/0/id
+      firstIssueTypeName: $response.body#/0/name
+  - stepId: listPriorities
+    description: >-
+      List the priority scheme of the instance, which supplies the valid values
+      for the priority field on an issue.
+    operationId: getPriorities
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      priorities: $response.body
+      firstPriorityId: $response.body#/0/id
+      firstPriorityName: $response.body#/0/name
+  outputs:
+    projects: $steps.listProjects.outputs.projects
+    issueTypes: $steps.listIssueTypes.outputs.issueTypes
+    priorities: $steps.listPriorities.outputs.priorities

@@ -1,0 +1,133 @@
+arazzo: 1.0.1
+info:
+  title: Jira Run a JQL Report and Drill Into a Result
+  summary: Run a JQL search via GET, then drill into the first matching issue and its comments.
+  description: >-
+    The reporting and drill-down pattern behind dashboards, standup bots, and
+    agent queries over Jira. A JQL search returns a deliberately thin projection
+    of fields — enough to render a list without dragging every field of every
+    issue across the wire — and the workflow then drills into a single result to
+    fetch the full record with its changelog and the discussion attached to it.
+    Search wide and thin, then read one deep. Every step spells out its request
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: jiraApi
+  url: ../openapi/jira-cloud-platform-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: jql-issue-report
+  summary: Search Jira with JQL and drill into the first matching issue.
+  description: >-
+    Runs a JQL query over the GET search endpoint with a thin field projection,
+    then reads the first matched issue in full with its changelog and retrieves
+    the most recent comments on it.
+  inputs:
+    type: object
+    required:
+    - jql
+    properties:
+      jql:
+        type: string
+        description: >-
+          The JQL query to report on, e.g.
+          project = PROJ AND status = "In Progress" ORDER BY updated DESC.
+      maxResults:
+        type: integer
+        description: The maximum number of issues to return in the report page.
+        default: 50
+  steps:
+  - stepId: runReport
+    description: >-
+      Run the JQL query with a thin field projection suitable for rendering a
+      list. Query validation is set to warn so a soft query issue surfaces as a
+      warning message rather than failing the whole report.
+    operationId: searchForIssuesUsingJql
+    parameters:
+    - name: jql
+      in: query
+      value: $inputs.jql
+    - name: startAt
+      in: query
+      value: 0
+    - name: maxResults
+      in: query
+      value: $inputs.maxResults
+    - name: validateQuery
+      in: query
+      value: warn
+    - name: fields
+      in: query
+      value:
+      - summary
+      - status
+      - assignee
+      - priority
+      - updated
+    - name: fieldsByKeys
+      in: query
+      value: false
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.issues.length > 0
+      type: jsonpath
+    outputs:
+      total: $response.body#/total
+      issues: $response.body#/issues
+      warningMessages: $response.body#/warningMessages
+      firstIssueKey: $response.body#/issues/0/key
+      firstIssueId: $response.body#/issues/0/id
+  - stepId: drillIntoIssue
+    description: >-
+      Read the first matched issue in full, expanding the changelog and rendered
+      fields so the caller sees the issue's history alongside its current state.
+    operationId: getIssue
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $steps.runReport.outputs.firstIssueKey
+    - name: fields
+      in: query
+      value:
+      - '*navigable'
+    - name: expand
+      in: query
+      value: changelog,renderedFields
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      issueKey: $response.body#/key
+      issueSummary: $response.body#/fields/summary
+      issueStatus: $response.body#/fields/status/name
+      issueAssignee: $response.body#/fields/assignee/displayName
+      changelog: $response.body#/changelog
+  - stepId: readDiscussion
+    description: >-
+      Retrieve the most recent comments on the drilled-into issue, newest first,
+      to surface the current discussion alongside the report row.
+    operationId: getComments
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $steps.runReport.outputs.firstIssueKey
+    - name: startAt
+      in: query
+      value: 0
+    - name: maxResults
+      in: query
+      value: 10
+    - name: orderBy
+      in: query
+      value: -created
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      commentTotal: $response.body#/total
+      comments: $response.body#/comments
+  outputs:
+    total: $steps.runReport.outputs.total
+    issues: $steps.runReport.outputs.issues
+    firstIssueKey: $steps.drillIntoIssue.outputs.issueKey
+    firstIssueStatus: $steps.drillIntoIssue.outputs.issueStatus

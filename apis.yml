@@ -221,6 +221,36 @@ common:
   url: authentication/jira-authentication.yml
 - type: OAuthScopes
   url: scopes/jira-scopes.yml
+- type: Arazzo
+  url: arazzo/jira-comment-thread-reply-workflow.yml
+  name: Jira Read an Issue Comment Thread and Reply
+- type: Arazzo
+  url: arazzo/jira-create-issue-read-back-workflow.yml
+  name: Jira Create an Issue and Read It Back
+- type: Arazzo
+  url: arazzo/jira-deduplicate-issue-intake-workflow.yml
+  name: Jira Deduplicate Issue Intake
+- type: Arazzo
+  url: arazzo/jira-edit-issue-verify-workflow.yml
+  name: Jira Edit an Issue and Verify the Change
+- type: Arazzo
+  url: arazzo/jira-issue-metadata-bootstrap-workflow.yml
+  name: Jira Bootstrap Issue Creation Metadata
+- type: Arazzo
+  url: arazzo/jira-jql-issue-report-workflow.yml
+  name: Jira Run a JQL Report and Drill Into a Result
+- type: Arazzo
+  url: arazzo/jira-project-discovery-workflow.yml
+  name: Jira Discover a Project and Its Workflow Statuses
+- type: Arazzo
+  url: arazzo/jira-safe-issue-delete-workflow.yml
+  name: Jira Safely Delete an Issue
+- type: Arazzo
+  url: arazzo/jira-stale-issue-sweep-workflow.yml
+  name: Jira Sweep a Stale Issue Through a Transition
+- type: Arazzo
+  url: arazzo/jira-transition-issue-workflow.yml
+  name: Jira Transition an Issue to a New Status
 - type: Portal
   url: https://developer.atlassian.com/cloud/jira/platform/
 - type: GettingStarted

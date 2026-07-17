@@ -1,0 +1,116 @@
+arazzo: 1.0.1
+info:
+  title: Jira Discover a Project and Its Workflow Statuses
+  summary: Search projects by name, read the matched project, and map its per-issue-type statuses.
+  description: >-
+    The onboarding flow for any integration pointed at a Jira instance it does
+    not yet know. Rather than hard-coding a project key, the workflow searches
+    the paginated project list for a name or key fragment, reads the full
+    project record for the match, and then maps the statuses available for each
+    issue type in that project — which is what an integration actually needs
+    before it can create or transition anything. Every step spells out its
+    request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: jiraApi
+  url: ../openapi/jira-cloud-platform-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: project-discovery
+  summary: Resolve a Jira project from a search term and map its statuses by issue type.
+  description: >-
+    Searches projects the caller can browse, reads the first matching project
+    with its issue types and lead expanded, and retrieves the status model for
+    each issue type in the project.
+  inputs:
+    type: object
+    required:
+    - query
+    properties:
+      query:
+        type: string
+        description: >-
+          A literal string matched against project key and name to find the
+          target project.
+      maxResults:
+        type: integer
+        description: The maximum number of projects to return per page.
+        default: 50
+  steps:
+  - stepId: searchProjects
+    description: >-
+      Search the projects visible to the caller for the supplied name or key
+      fragment, ordered by name, returning the first page of matches.
+    operationId: searchProjects
+    parameters:
+    - name: query
+      in: query
+      value: $inputs.query
+    - name: startAt
+      in: query
+      value: 0
+    - name: maxResults
+      in: query
+      value: $inputs.maxResults
+    - name: orderBy
+      in: query
+      value: name
+    - name: action
+      in: query
+      value: browse
+    - name: status
+      in: query
+      value:
+      - live
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.values.length > 0
+      type: jsonpath
+    outputs:
+      total: $response.body#/total
+      isLast: $response.body#/isLast
+      matchedProjectId: $response.body#/values/0/id
+      matchedProjectKey: $response.body#/values/0/key
+      matchedProjectName: $response.body#/values/0/name
+  - stepId: readProject
+    description: >-
+      Read the full project record for the first match, expanding its issue
+      types, lead, and description so the caller holds the complete definition.
+    operationId: getProject
+    parameters:
+    - name: projectIdOrKey
+      in: path
+      value: $steps.searchProjects.outputs.matchedProjectKey
+    - name: expand
+      in: query
+      value: description,lead,issueTypes,url
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      projectId: $response.body#/id
+      projectKey: $response.body#/key
+      projectName: $response.body#/name
+      projectLead: $response.body#/lead/displayName
+      issueTypes: $response.body#/issueTypes
+  - stepId: mapStatuses
+    description: >-
+      Retrieve the valid statuses for each issue type in the project. This is the
+      status model a caller must respect when transitioning issues.
+    operationId: getAllStatuses
+    parameters:
+    - name: projectIdOrKey
+      in: path
+      value: $steps.readProject.outputs.projectKey
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      issueTypeStatuses: $response.body
+      firstIssueTypeName: $response.body#/0/name
+      firstIssueTypeStatuses: $response.body#/0/statuses
+  outputs:
+    projectId: $steps.readProject.outputs.projectId
+    projectKey: $steps.readProject.outputs.projectKey
+    projectName: $steps.readProject.outputs.projectName
+    issueTypeStatuses: $steps.mapStatuses.outputs.issueTypeStatuses

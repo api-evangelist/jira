@@ -1,0 +1,155 @@
+arazzo: 1.0.1
+info:
+  title: Jira Deduplicate Issue Intake
+  summary: Search for an existing issue by JQL and either comment on the duplicate or create a new issue.
+  description: >-
+    The most common Jira intake pattern for automated reporters — alert
+    pipelines, error trackers, and support bridges — where the same condition
+    fires repeatedly and must not open a new ticket every time. The workflow
+    runs a JQL search for an existing open issue matching the incoming signal
+    and then branches: when a match is found it appends a recurrence comment to
+    the existing issue, and when no match is found it opens a new one. Every
+    step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: jiraApi
+  url: ../openapi/jira-cloud-platform-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: deduplicate-issue-intake
+  summary: Upsert an issue — comment on the existing duplicate, or create a new issue.
+  description: >-
+    Searches the project with a JQL query for an existing unresolved issue
+    matching the incoming signal, then either annotates the matched issue with a
+    recurrence note or creates a new issue when nothing matched.
+  inputs:
+    type: object
+    required:
+    - projectKey
+    - jql
+    - summary
+    - descriptionText
+    - issueTypeName
+    properties:
+      projectKey:
+        type: string
+        description: The key of the project to search and create within (e.g. PROJ).
+      jql:
+        type: string
+        description: >-
+          The JQL query that identifies an existing duplicate, e.g.
+          project = PROJ AND resolution = Unresolved AND summary ~ "checkout 500s".
+      summary:
+        type: string
+        description: The summary to use when a new issue must be created.
+      descriptionText:
+        type: string
+        description: The plain text body of the new issue description.
+      issueTypeName:
+        type: string
+        description: The name of the issue type to create (e.g. Bug).
+      recurrenceText:
+        type: string
+        description: The plain text comment appended to an existing issue when a duplicate is found.
+  steps:
+  - stepId: findDuplicate
+    description: >-
+      Run the JQL query via POST, returning at most one match. POST is used
+      because JQL queries routinely exceed what is comfortable in a query string.
+    operationId: searchForIssuesUsingJqlPost
+    requestBody:
+      contentType: application/json
+      payload:
+        jql: $inputs.jql
+        startAt: 0
+        maxResults: 1
+        validateQuery: strict
+        fields:
+        - summary
+        - status
+        - resolution
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      total: $response.body#/total
+      matchedIssueKey: $response.body#/issues/0/key
+      matchedIssueId: $response.body#/issues/0/id
+    onSuccess:
+    - name: duplicateExists
+      type: goto
+      stepId: commentOnDuplicate
+      criteria:
+      - context: $response.body
+        condition: $.issues.length > 0
+        type: jsonpath
+    - name: duplicateMissing
+      type: goto
+      stepId: createNewIssue
+      criteria:
+      - context: $response.body
+        condition: $.issues.length == 0
+        type: jsonpath
+  - stepId: commentOnDuplicate
+    description: >-
+      Append a recurrence comment to the matched issue instead of opening a
+      duplicate ticket, preserving the existing triage context.
+    operationId: addComment
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $steps.findDuplicate.outputs.matchedIssueKey
+    requestBody:
+      contentType: application/json
+      payload:
+        body:
+          type: doc
+          version: 1
+          content:
+          - type: paragraph
+            content:
+            - type: text
+              text: $inputs.recurrenceText
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      commentId: $response.body#/id
+      commentCreated: $response.body#/created
+    onSuccess:
+    - name: done
+      type: end
+  - stepId: createNewIssue
+    description: >-
+      Create a new issue when the JQL search matched nothing, using an Atlassian
+      Document Format description as required by REST API v3.
+    operationId: createIssue
+    parameters:
+    - name: updateHistory
+      in: query
+      value: false
+    requestBody:
+      contentType: application/json
+      payload:
+        fields:
+          project:
+            key: $inputs.projectKey
+          summary: $inputs.summary
+          description:
+            type: doc
+            version: 1
+            content:
+            - type: paragraph
+              content:
+              - type: text
+                text: $inputs.descriptionText
+          issuetype:
+            name: $inputs.issueTypeName
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      createdIssueId: $response.body#/id
+      createdIssueKey: $response.body#/key
+  outputs:
+    matchedIssueKey: $steps.findDuplicate.outputs.matchedIssueKey
+    createdIssueKey: $steps.createNewIssue.outputs.createdIssueKey
+    commentId: $steps.commentOnDuplicate.outputs.commentId

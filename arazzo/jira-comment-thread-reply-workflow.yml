@@ -1,0 +1,130 @@
+arazzo: 1.0.1
+info:
+  title: Jira Read an Issue Comment Thread and Reply
+  summary: Read an issue, page through its comment thread oldest-first, then add a reply.
+  description: >-
+    The support-bridge pattern, where an external system mirrors a Jira comment
+    thread and posts back into it. The workflow reads the issue for context,
+    pages the comment thread in creation order so the reply is written against
+    the actual latest state of the conversation rather than a stale cache, and
+    then adds a comment with optional role-restricted visibility. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: jiraApi
+  url: ../openapi/jira-cloud-platform-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: comment-thread-reply
+  summary: Read a Jira issue comment thread and append a reply to it.
+  description: >-
+    Confirms the issue is visible, retrieves a page of its comments ordered by
+    creation date, and posts a new comment in Atlassian Document Format.
+  inputs:
+    type: object
+    required:
+    - issueIdOrKey
+    - commentText
+    properties:
+      issueIdOrKey:
+        type: string
+        description: The id or key of the issue whose thread is being read and replied to.
+      commentText:
+        type: string
+        description: The plain text body rendered into the Atlassian Document Format comment.
+      maxResults:
+        type: integer
+        description: The maximum number of comments to return in the page.
+        default: 50
+      visibilityRole:
+        type: string
+        description: >-
+          The project role name the comment is restricted to (e.g.
+          Administrators). Omit to post a comment visible to all who can view
+          the issue.
+  steps:
+  - stepId: readIssue
+    description: >-
+      Read the issue to confirm it is visible to the caller and to capture the
+      summary and status that give the thread its context.
+    operationId: getIssue
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $inputs.issueIdOrKey
+    - name: fields
+      in: query
+      value:
+      - summary
+      - status
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      issueId: $response.body#/id
+      issueKey: $response.body#/key
+      issueSummary: $response.body#/fields/summary
+  - stepId: readComments
+    description: >-
+      Page the comment thread oldest-first, rendering bodies to HTML so the
+      caller can mirror the thread without parsing Atlassian Document Format.
+    operationId: getComments
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $inputs.issueIdOrKey
+    - name: startAt
+      in: query
+      value: 0
+    - name: maxResults
+      in: query
+      value: $inputs.maxResults
+    - name: orderBy
+      in: query
+      value: created
+    - name: expand
+      in: query
+      value: renderedBody
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      total: $response.body#/total
+      comments: $response.body#/comments
+      latestCommentId: $response.body#/comments/0/id
+  - stepId: addReply
+    description: >-
+      Post the reply into the thread as an Atlassian Document Format document,
+      optionally restricting it to a single project role.
+    operationId: addComment
+    parameters:
+    - name: issueIdOrKey
+      in: path
+      value: $inputs.issueIdOrKey
+    - name: expand
+      in: query
+      value: renderedBody
+    requestBody:
+      contentType: application/json
+      payload:
+        body:
+          type: doc
+          version: 1
+          content:
+          - type: paragraph
+            content:
+            - type: text
+              text: $inputs.commentText
+        visibility:
+          type: role
+          value: $inputs.visibilityRole
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      commentId: $response.body#/id
+      commentAuthor: $response.body#/author/displayName
+      commentCreated: $response.body#/created
+      renderedBody: $response.body#/renderedBody
+  outputs:
+    issueKey: $steps.readIssue.outputs.issueKey
+    threadSize: $steps.readComments.outputs.total
+    commentId: $steps.addReply.outputs.commentId
