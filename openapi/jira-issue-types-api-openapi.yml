@@ -1,0 +1,191 @@
+openapi: 3.1.0
+info:
+  title: Jira Cloud Platform REST Issue Comments Issue Types API
+  description: The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.
+  version: '3'
+  license:
+    name: Atlassian Developer Terms
+    url: https://developer.atlassian.com/platform/marketplace/atlassian-developer-terms/
+  termsOfService: https://www.atlassian.com/legal/cloud-terms-of-service
+  contact:
+    name: Atlassian Developer Support
+    url: https://developer.atlassian.com/support
+    email: ecosystem@atlassian.com
+  x-atlassian-api-version: '3'
+servers:
+- url: https://{domain}.atlassian.net/rest/api/3
+  description: Jira Cloud instance
+  variables:
+    domain:
+      description: Your Jira Cloud site subdomain (e.g., your-company).
+      default: your-domain
+security:
+- basicAuth: []
+- oauth2: []
+- bearerAuth: []
+tags:
+- name: Issue Types
+  description: Retrieve and manage issue types for projects.
+paths:
+  /issuetype:
+    get:
+      summary: Jira Get All Issue Types for User
+      description: Returns all issue types visible to the user. The list of issue types returned depends on the user's permissions.
+      operationId: getIssueAllTypes
+      tags:
+      - Issue Types
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-types/#api-rest-api-3-issuetype-get
+      responses:
+        '200':
+          description: Issue types returned successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IssueTypeDetails'
+              examples:
+                Getissuealltypes200Example:
+                  summary: Default getIssueAllTypes 200 response
+                  x-microcks-default: true
+                  value:
+                  - self: https://www.example.com
+                    id: abc123
+                    description: A sample description.
+                    iconUrl: https://www.example.com
+                    name: Example Title
+                    subtask: true
+                    avatarId: '500123'
+                    hierarchyLevel: 10
+                    scope:
+                      type: PROJECT
+        '401':
+          description: Authentication credentials are missing or invalid.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    IssueTypeDetails:
+      type: object
+      description: Details of an issue type.
+      properties:
+        self:
+          type: string
+          format: uri
+          description: The URL of the issue type in the REST API.
+          example: https://www.example.com
+        id:
+          type: string
+          description: The ID of the issue type.
+          example: abc123
+        description:
+          type: string
+          description: The description of the issue type.
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          description: The URL of the issue type icon.
+          example: https://www.example.com
+        name:
+          type: string
+          description: The name of the issue type (e.g., Bug, Story, Task, Epic).
+          example: Example Title
+        subtask:
+          type: boolean
+          description: Whether this issue type is used to create sub-tasks.
+          example: true
+        avatarId:
+          type: integer
+          format: int64
+          description: The ID of the avatar for the issue type.
+          example: '500123'
+        hierarchyLevel:
+          type: integer
+          format: int32
+          description: The hierarchy level of the issue type.
+          example: 10
+        scope:
+          $ref: '#/components/schemas/Scope'
+    Scope:
+      type: object
+      description: The scope of the issue type (project or global).
+      properties:
+        type:
+          type: string
+          enum:
+          - PROJECT
+          - TEMPLATE
+          example: PROJECT
+        project:
+          $ref: '#/components/schemas/ProjectRef'
+    ProjectRef:
+      type: object
+      description: A reference to a Jira project.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        key:
+          type: string
+          example: example_value
+        name:
+          type: string
+          example: Example Title
+        avatarUrls:
+          $ref: '#/components/schemas/AvatarUrls'
+        projectTypeKey:
+          type: string
+          example: example_value
+    AvatarUrls:
+      type: object
+      description: Avatar URLs in multiple sizes.
+      properties:
+        16x16:
+          type: string
+          format: uri
+          example: https://www.example.com
+        24x24:
+          type: string
+          format: uri
+          example: https://www.example.com
+        32x32:
+          type: string
+          format: uri
+          example: https://www.example.com
+        48x48:
+          type: string
+          format: uri
+          example: https://www.example.com
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'Basic authentication using an Atlassian account email and API token. Format: email:api_token, Base64 encoded. Generate API tokens at https://id.atlassian.com/manage-profile/security/api-tokens.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant (3LO) for Jira Cloud apps.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          tokenUrl: https://auth.atlassian.com/oauth/token
+          scopes:
+            read:jira-work: Read Jira project and issue data.
+            write:jira-work: Create and edit Jira issues and projects.
+            manage:jira-project: Manage Jira project settings.
+            manage:jira-configuration: Manage Jira instance configuration.
+            read:jira-user: Read Jira user information.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token authentication using a personal access token (PAT) or OAuth 2.0 access token.
+externalDocs:
+  description: Jira Cloud Platform REST API v3 Documentation
+  url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/

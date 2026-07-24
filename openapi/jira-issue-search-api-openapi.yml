@@ -1,0 +1,1276 @@
+openapi: 3.1.0
+info:
+  title: Jira Cloud Platform REST Issue Comments Issue Search API
+  description: The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.
+  version: '3'
+  license:
+    name: Atlassian Developer Terms
+    url: https://developer.atlassian.com/platform/marketplace/atlassian-developer-terms/
+  termsOfService: https://www.atlassian.com/legal/cloud-terms-of-service
+  contact:
+    name: Atlassian Developer Support
+    url: https://developer.atlassian.com/support
+    email: ecosystem@atlassian.com
+  x-atlassian-api-version: '3'
+servers:
+- url: https://{domain}.atlassian.net/rest/api/3
+  description: Jira Cloud instance
+  variables:
+    domain:
+      description: Your Jira Cloud site subdomain (e.g., your-company).
+      default: your-domain
+security:
+- basicAuth: []
+- oauth2: []
+- bearerAuth: []
+tags:
+- name: Issue Search
+  description: Search for issues using JQL (Jira Query Language).
+  externalDocs:
+    description: Jira Search REST API documentation
+    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/
+paths:
+  /search:
+    get:
+      summary: Jira Search for Issues Using Jql (get)
+      description: Searches for issues using JQL. If the JQL query expression is too large to be encoded as a query parameter, use the POST version of this resource. Sorting is supported via the ORDER BY clause in JQL.
+      operationId: searchForIssuesUsingJql
+      tags:
+      - Issue Search
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-get
+      parameters:
+      - name: jql
+        in: query
+        description: 'The JQL query string. For example: project = HSP AND issuetype = Bug. See JQL documentation for syntax.'
+        required: false
+        schema:
+          type: string
+        example: project = PROJ AND status = Open ORDER BY created DESC
+      - name: startAt
+        in: query
+        description: The index of the first item to return in a page of results (page offset).
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 10
+      - name: maxResults
+        in: query
+        description: The maximum number of items to return per page. The maximum allowed value is determined by the Jira instance configuration, typically 100.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 50
+        example: 10
+      - name: validateQuery
+        in: query
+        description: 'Whether to validate the JQL query and how to handle validation results. Accepted values: strict, warn, none.'
+        required: false
+        schema:
+          type: string
+          enum:
+          - strict
+          - warn
+          - none
+          default: strict
+        example: strict
+      - name: fields
+        in: query
+        description: A list of fields to return for each issue. Use *all for all fields, *navigable for navigable fields only.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: true
+        example: []
+      - name: expand
+        in: query
+        description: 'Use expand to include additional information about issues in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations.'
+        required: false
+        schema:
+          type: string
+        example: example_value
+      - name: properties
+        in: query
+        description: A list of issue properties to return for each issue.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: true
+        example: []
+      - name: fieldsByKeys
+        in: query
+        description: Whether fields in fields are referenced by keys rather than IDs.
+        required: false
+        schema:
+          type: boolean
+          default: false
+        example: true
+      responses:
+        '200':
+          description: Search results returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+              examples:
+                Searchforissuesusingjql200Example:
+                  summary: Default searchForIssuesUsingJql 200 response
+                  x-microcks-default: true
+                  value:
+                    expand: example_value
+                    startAt: 10
+                    maxResults: 10
+                    total: 10
+                    issues:
+                    - id: abc123
+                      key: example_value
+                      self: https://www.example.com
+                      expand: example_value
+                      renderedFields: example_value
+                      names: example_value
+                      schema: example_value
+                      transitions: {}
+                    warningMessages:
+                    - example_value
+                    names: example_value
+                    schema: example_value
+        '400':
+          description: The JQL query is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollection'
+              examples:
+                Searchforissuesusingjql400Example:
+                  summary: Default searchForIssuesUsingJql 400 response
+                  x-microcks-default: true
+                  value:
+                    errorMessages:
+                    - example_value
+                    errors: example_value
+                    status: 10
+        '401':
+          description: Authentication credentials are missing or invalid.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      summary: Jira Search for Issues Using Jql (post)
+      description: Searches for issues using JQL. Use this endpoint when the JQL query expression is too large to send as a query parameter. This provides the same functionality as the GET version.
+      operationId: searchForIssuesUsingJqlPost
+      tags:
+      - Issue Search
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            example:
+              jql: project = PROJ AND issuetype = Bug ORDER BY created DESC
+              startAt: 0
+              maxResults: 15
+              fields:
+              - summary
+              - status
+              - assignee
+      responses:
+        '200':
+          description: Search results returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+              examples:
+                Searchforissuesusingjqlpost200Example:
+                  summary: Default searchForIssuesUsingJqlPost 200 response
+                  x-microcks-default: true
+                  value:
+                    expand: example_value
+                    startAt: 10
+                    maxResults: 10
+                    total: 10
+                    issues:
+                    - id: abc123
+                      key: example_value
+                      self: https://www.example.com
+                      expand: example_value
+                      renderedFields: example_value
+                      names: example_value
+                      schema: example_value
+                      transitions: {}
+                    warningMessages:
+                    - example_value
+                    names: example_value
+                    schema: example_value
+        '400':
+          description: The JQL query is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollection'
+              examples:
+                Searchforissuesusingjqlpost400Example:
+                  summary: Default searchForIssuesUsingJqlPost 400 response
+                  x-microcks-default: true
+                  value:
+                    errorMessages:
+                    - example_value
+                    errors: example_value
+                    status: 10
+        '401':
+          description: Authentication credentials are missing or invalid.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    Comment:
+      type: object
+      description: A comment on an issue.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        body:
+          $ref: '#/components/schemas/AtlassianDocumentFormat'
+        renderedBody:
+          type: string
+          description: The rendered version of the comment body in HTML.
+          example: example_value
+        updateAuthor:
+          $ref: '#/components/schemas/UserDetails'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        updated:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+        jsdPublic:
+          type: boolean
+          description: Whether the comment is visible in Jira Service Management.
+          example: true
+    Component:
+      type: object
+      description: A project component.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        lead:
+          $ref: '#/components/schemas/UserDetails'
+        assigneeType:
+          type: string
+          enum:
+          - PROJECT_DEFAULT
+          - COMPONENT_LEAD
+          - PROJECT_LEAD
+          - UNASSIGNED
+          example: PROJECT_DEFAULT
+        assignee:
+          $ref: '#/components/schemas/UserDetails'
+        project:
+          type: string
+          example: example_value
+        projectId:
+          type: integer
+          format: int64
+          example: '500123'
+    IssueBean:
+      type: object
+      description: A Jira issue with all fields and metadata.
+      properties:
+        id:
+          type: string
+          description: The ID of the issue.
+          example: abc123
+        key:
+          type: string
+          description: The key of the issue (e.g., PROJ-123).
+          example: example_value
+        self:
+          type: string
+          format: uri
+          description: The URL of the issue in the REST API.
+          example: https://www.example.com
+        expand:
+          type: string
+          description: The expand options applied to the issue.
+          example: example_value
+        fields:
+          $ref: '#/components/schemas/IssueFields'
+        renderedFields:
+          type: object
+          description: HTML-rendered versions of the issue fields.
+          additionalProperties: true
+          example: example_value
+        names:
+          type: object
+          description: Field name mapping for the issue.
+          additionalProperties:
+            type: string
+          example: example_value
+        schema:
+          type: object
+          description: JSON Schema for each field in the issue.
+          additionalProperties: true
+          example: example_value
+        transitions:
+          type: array
+          description: Transitions available for the issue.
+          items:
+            $ref: '#/components/schemas/Transition'
+          example: []
+        changelog:
+          $ref: '#/components/schemas/Changelog'
+    ChangeItem:
+      type: object
+      description: An individual field change within a changelog entry.
+      properties:
+        field:
+          type: string
+          example: example_value
+        fieldtype:
+          type: string
+          example: example_value
+        fieldId:
+          type: string
+          example: '500123'
+        from:
+          type:
+          - string
+          - 'null'
+          example: example_value
+        fromString:
+          type:
+          - string
+          - 'null'
+          example: example_value
+        to:
+          type:
+          - string
+          - 'null'
+          example: example_value
+        toString:
+          type:
+          - string
+          - 'null'
+          example: example_value
+    Watches:
+      type: object
+      description: The watchers of an issue.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        watchCount:
+          type: integer
+          format: int32
+          example: 10
+        isWatching:
+          type: boolean
+          example: true
+    IssueLinkType:
+      type: object
+      description: The type of link between issues.
+      properties:
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        inward:
+          type: string
+          description: The inward description (e.g., is blocked by).
+          example: example_value
+        outward:
+          type: string
+          description: The outward description (e.g., blocks).
+          example: example_value
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+    Attachment:
+      type: object
+      description: An attachment on an issue.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        filename:
+          type: string
+          example: example_value
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        size:
+          type: integer
+          format: int64
+          example: 10
+        mimeType:
+          type: string
+          example: example_value
+        content:
+          type: string
+          format: uri
+          description: The URL to download the attachment content.
+          example: https://www.example.com
+        thumbnail:
+          type: string
+          format: uri
+          example: https://www.example.com
+    IssueFields:
+      type: object
+      description: The fields of a Jira issue.
+      properties:
+        summary:
+          type: string
+          description: The summary (title) of the issue.
+          example: example_value
+        description:
+          description: The description of the issue in Atlassian Document Format (ADF).
+          oneOf:
+          - $ref: '#/components/schemas/AtlassianDocumentFormat'
+          - type: 'null'
+          example: A sample description.
+        issuetype:
+          $ref: '#/components/schemas/IssueTypeDetails'
+        project:
+          $ref: '#/components/schemas/ProjectRef'
+        status:
+          $ref: '#/components/schemas/StatusDetails'
+        priority:
+          $ref: '#/components/schemas/Priority'
+        assignee:
+          oneOf:
+          - $ref: '#/components/schemas/UserDetails'
+          - type: 'null'
+          description: The user assigned to the issue.
+          example: example_value
+        reporter:
+          $ref: '#/components/schemas/UserDetails'
+        creator:
+          $ref: '#/components/schemas/UserDetails'
+        labels:
+          type: array
+          description: Labels applied to the issue.
+          items:
+            type: string
+          example: []
+        components:
+          type: array
+          description: Components associated with the issue.
+          items:
+            $ref: '#/components/schemas/Component'
+          example: []
+        fixVersions:
+          type: array
+          description: Fix versions for the issue.
+          items:
+            $ref: '#/components/schemas/Version'
+          example: []
+        versions:
+          type: array
+          description: Affected versions for the issue.
+          items:
+            $ref: '#/components/schemas/Version'
+          example: []
+        resolution:
+          oneOf:
+          - $ref: '#/components/schemas/Resolution'
+          - type: 'null'
+          description: The resolution of the issue.
+          example: example_value
+        resolutiondate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the issue was resolved.
+          example: '2026-01-15T10:30:00Z'
+        created:
+          type: string
+          format: date-time
+          description: The date and time the issue was created.
+          example: '2026-01-15T10:30:00Z'
+        updated:
+          type: string
+          format: date-time
+          description: The date and time the issue was last updated.
+          example: '2026-01-15T10:30:00Z'
+        duedate:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The due date of the issue.
+          example: '2026-01-15'
+        watches:
+          $ref: '#/components/schemas/Watches'
+        votes:
+          $ref: '#/components/schemas/Votes'
+        comment:
+          $ref: '#/components/schemas/PageOfComments'
+        worklog:
+          $ref: '#/components/schemas/PageOfWorklogs'
+        subtasks:
+          type: array
+          description: Sub-tasks of the issue.
+          items:
+            $ref: '#/components/schemas/IssueRef'
+          example: []
+        parent:
+          oneOf:
+          - $ref: '#/components/schemas/IssueRef'
+          - type: 'null'
+          description: The parent issue, if this is a sub-task.
+          example: example_value
+        environment:
+          description: The environment in which the issue was found in ADF.
+          oneOf:
+          - $ref: '#/components/schemas/AtlassianDocumentFormat'
+          - type: 'null'
+          example: example_value
+        attachment:
+          type: array
+          description: Attachments on the issue.
+          items:
+            $ref: '#/components/schemas/Attachment'
+          example: []
+        issuelinks:
+          type: array
+          description: Links to other issues.
+          items:
+            $ref: '#/components/schemas/IssueLink'
+          example: []
+      additionalProperties: true
+    StatusCategory:
+      type: object
+      description: A status category in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: integer
+          format: int64
+          example: abc123
+        key:
+          type: string
+          description: The key of the status category (e.g., new, indeterminate, done).
+          example: example_value
+        colorName:
+          type: string
+          description: The color name for the status category.
+          example: example_value
+        name:
+          type: string
+          description: The name of the status category.
+          example: Example Title
+    StatusDetails:
+      type: object
+      description: A status in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the status (e.g., To Do, In Progress, Done).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          example: https://www.example.com
+        statusCategory:
+          $ref: '#/components/schemas/StatusCategory'
+    Priority:
+      type: object
+      description: An issue priority.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the priority (e.g., Highest, High, Medium, Low, Lowest).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          example: https://www.example.com
+        statusColor:
+          type: string
+          description: The color associated with the priority.
+          example: example_value
+    AvatarUrls:
+      type: object
+      description: Avatar URLs in multiple sizes.
+      properties:
+        16x16:
+          type: string
+          format: uri
+          example: https://www.example.com
+        24x24:
+          type: string
+          format: uri
+          example: https://www.example.com
+        32x32:
+          type: string
+          format: uri
+          example: https://www.example.com
+        48x48:
+          type: string
+          format: uri
+          example: https://www.example.com
+    IssueTypeDetails:
+      type: object
+      description: Details of an issue type.
+      properties:
+        self:
+          type: string
+          format: uri
+          description: The URL of the issue type in the REST API.
+          example: https://www.example.com
+        id:
+          type: string
+          description: The ID of the issue type.
+          example: abc123
+        description:
+          type: string
+          description: The description of the issue type.
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          description: The URL of the issue type icon.
+          example: https://www.example.com
+        name:
+          type: string
+          description: The name of the issue type (e.g., Bug, Story, Task, Epic).
+          example: Example Title
+        subtask:
+          type: boolean
+          description: Whether this issue type is used to create sub-tasks.
+          example: true
+        avatarId:
+          type: integer
+          format: int64
+          description: The ID of the avatar for the issue type.
+          example: '500123'
+        hierarchyLevel:
+          type: integer
+          format: int32
+          description: The hierarchy level of the issue type.
+          example: 10
+        scope:
+          $ref: '#/components/schemas/Scope'
+    AtlassianDocumentFormat:
+      type: object
+      description: Atlassian Document Format (ADF) representation of rich text content. ADF is a JSON-based format used in Jira Cloud REST API v3 for description, comment, and other rich text fields.
+      required:
+      - type
+      - version
+      - content
+      properties:
+        type:
+          type: string
+          enum:
+          - doc
+          description: The root node type. Always doc.
+          example: doc
+        version:
+          type: integer
+          description: The ADF version. Currently 1.
+          enum:
+          - 1
+          example: 1
+        content:
+          type: array
+          description: The content nodes of the document.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: The node type (e.g., paragraph, heading, bulletList, orderedList, codeBlock, blockquote, table, mediaSingle, rule).
+              content:
+                type: array
+                description: Child content nodes.
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: The inline node type (e.g., text, hardBreak, mention, emoji, inlineCard).
+                    text:
+                      type: string
+                    marks:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            description: The mark type (e.g., strong, em, code, link, underline, strike, textColor).
+                          attrs:
+                            type: object
+                            additionalProperties: true
+                  additionalProperties: true
+              attrs:
+                type: object
+                additionalProperties: true
+            additionalProperties: true
+          example: []
+    SearchResults:
+      type: object
+      description: The result of a JQL search.
+      properties:
+        expand:
+          type: string
+          description: The expand options applied.
+          example: example_value
+        startAt:
+          type: integer
+          format: int32
+          description: The index of the first result returned.
+          example: 10
+        maxResults:
+          type: integer
+          format: int32
+          description: The maximum number of results returned per page.
+          example: 10
+        total:
+          type: integer
+          format: int32
+          description: The total number of results matching the JQL query.
+          example: 10
+        issues:
+          type: array
+          description: The list of issues matching the JQL query.
+          items:
+            $ref: '#/components/schemas/IssueBean'
+          example: []
+        warningMessages:
+          type: array
+          description: Warning messages about the JQL query.
+          items:
+            type: string
+          example: []
+        names:
+          type: object
+          description: Field name mapping.
+          additionalProperties:
+            type: string
+          example: example_value
+        schema:
+          type: object
+          description: JSON Schema for each field.
+          additionalProperties: true
+          example: example_value
+    UserDetails:
+      type: object
+      description: A Jira user.
+      properties:
+        self:
+          type: string
+          format: uri
+          description: The URL of the user in the REST API.
+          example: https://www.example.com
+        accountId:
+          type: string
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products.
+          maxLength: 128
+          example: '500123'
+        emailAddress:
+          type: string
+          format: email
+          description: The email address of the user (may not be available depending on privacy settings).
+          example: user@example.com
+        displayName:
+          type: string
+          description: The display name of the user.
+          example: example_value
+        active:
+          type: boolean
+          description: Whether the user account is active.
+          example: true
+        timeZone:
+          type: string
+          description: The time zone of the user.
+          example: example_value
+        accountType:
+          type: string
+          description: The type of account.
+          enum:
+          - atlassian
+          - app
+          - customer
+          example: atlassian
+        avatarUrls:
+          $ref: '#/components/schemas/AvatarUrls'
+    Worklog:
+      type: object
+      description: A worklog entry.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        updateAuthor:
+          $ref: '#/components/schemas/UserDetails'
+        comment:
+          $ref: '#/components/schemas/AtlassianDocumentFormat'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        updated:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        started:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        timeSpent:
+          type: string
+          description: The time spent on the worklog (e.g., 3h 20m).
+          example: example_value
+        timeSpentSeconds:
+          type: integer
+          format: int64
+          example: 10
+    Visibility:
+      type: object
+      description: The visibility restrictions for a comment.
+      properties:
+        type:
+          type: string
+          enum:
+          - group
+          - role
+          example: group
+        value:
+          type: string
+          description: The name of the group or role to restrict visibility to.
+          example: example_value
+        identifier:
+          type: string
+          description: The ID of the group or role.
+          example: example_value
+    Votes:
+      type: object
+      description: The votes for an issue.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        votes:
+          type: integer
+          format: int32
+          example: 10
+        hasVoted:
+          type: boolean
+          example: true
+    SearchRequest:
+      type: object
+      description: Request body for JQL search via POST.
+      properties:
+        jql:
+          type: string
+          description: The JQL query string.
+          example: example_value
+        startAt:
+          type: integer
+          format: int32
+          description: The index of the first item to return (page offset).
+          default: 0
+          example: 10
+        maxResults:
+          type: integer
+          format: int32
+          description: The maximum number of items to return per page.
+          default: 50
+          example: 10
+        validateQuery:
+          type: string
+          description: 'Whether to validate the JQL query. Accepted values: strict, warn, none.'
+          enum:
+          - strict
+          - warn
+          - none
+          example: strict
+        fields:
+          type: array
+          description: Fields to return for each issue.
+          items:
+            type: string
+          example: []
+        expand:
+          type: string
+          description: Expand options for additional information.
+          example: example_value
+        properties:
+          type: array
+          description: Issue properties to return.
+          items:
+            type: string
+          example: []
+        fieldsByKeys:
+          type: boolean
+          description: Whether to reference fields by keys rather than IDs.
+          default: false
+          example: true
+    Transition:
+      type: object
+      description: A workflow transition.
+      properties:
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        to:
+          $ref: '#/components/schemas/StatusDetails'
+        hasScreen:
+          type: boolean
+          example: true
+        isGlobal:
+          type: boolean
+          example: true
+        isInitial:
+          type: boolean
+          example: true
+        isConditional:
+          type: boolean
+          example: true
+        fields:
+          type: object
+          description: Fields available during the transition.
+          additionalProperties: true
+          example: example_value
+    Scope:
+      type: object
+      description: The scope of the issue type (project or global).
+      properties:
+        type:
+          type: string
+          enum:
+          - PROJECT
+          - TEMPLATE
+          example: PROJECT
+        project:
+          $ref: '#/components/schemas/ProjectRef'
+    Changelog:
+      type: object
+      description: A paginated list of changelogs.
+      properties:
+        startAt:
+          type: integer
+          format: int32
+          example: 10
+        maxResults:
+          type: integer
+          format: int32
+          example: 10
+        total:
+          type: integer
+          format: int32
+          example: 10
+        histories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChangeHistory'
+          example: []
+    Version:
+      type: object
+      description: A project version.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        archived:
+          type: boolean
+          example: true
+        released:
+          type: boolean
+          example: true
+        releaseDate:
+          type: string
+          format: date
+          example: '2026-01-15'
+        startDate:
+          type: string
+          format: date
+          example: '2026-01-15'
+        overdue:
+          type: boolean
+          example: true
+        projectId:
+          type: integer
+          format: int64
+          example: '500123'
+    ErrorCollection:
+      type: object
+      description: Error details returned by the API.
+      properties:
+        errorMessages:
+          type: array
+          description: The list of error messages.
+          items:
+            type: string
+          example: []
+        errors:
+          type: object
+          description: Field-specific errors.
+          additionalProperties:
+            type: string
+          example: example_value
+        status:
+          type: integer
+          description: The HTTP status code.
+          example: 10
+    PageOfComments:
+      type: object
+      description: A paginated list of comments.
+      properties:
+        startAt:
+          type: integer
+          format: int32
+          example: 10
+        maxResults:
+          type: integer
+          format: int32
+          example: 10
+        total:
+          type: integer
+          format: int32
+          example: 10
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          example: []
+    ChangeHistory:
+      type: object
+      description: A changelog entry.
+      properties:
+        id:
+          type: string
+          example: abc123
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChangeItem'
+          example: []
+    Resolution:
+      type: object
+      description: An issue resolution.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the resolution (e.g., Fixed, Won't Fix, Duplicate).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+    IssueRef:
+      type: object
+      description: A reference to an issue.
+      properties:
+        id:
+          type: string
+          example: abc123
+        key:
+          type: string
+          example: example_value
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        fields:
+          type: object
+          properties:
+            summary:
+              type: string
+            status:
+              $ref: '#/components/schemas/StatusDetails'
+            priority:
+              $ref: '#/components/schemas/Priority'
+            issuetype:
+              $ref: '#/components/schemas/IssueTypeDetails'
+          example: example_value
+    PageOfWorklogs:
+      type: object
+      description: A paginated list of worklogs.
+      properties:
+        startAt:
+          type: integer
+          format: int32
+          example: 10
+        maxResults:
+          type: integer
+          format: int32
+          example: 10
+        total:
+          type: integer
+          format: int32
+          example: 10
+        worklogs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Worklog'
+          example: []
+    IssueLink:
+      type: object
+      description: A link between issues.
+      properties:
+        id:
+          type: string
+          example: abc123
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        type:
+          $ref: '#/components/schemas/IssueLinkType'
+        inwardIssue:
+          $ref: '#/components/schemas/IssueRef'
+        outwardIssue:
+          $ref: '#/components/schemas/IssueRef'
+    ProjectRef:
+      type: object
+      description: A reference to a Jira project.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        key:
+          type: string
+          example: example_value
+        name:
+          type: string
+          example: Example Title
+        avatarUrls:
+          $ref: '#/components/schemas/AvatarUrls'
+        projectTypeKey:
+          type: string
+          example: example_value
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'Basic authentication using an Atlassian account email and API token. Format: email:api_token, Base64 encoded. Generate API tokens at https://id.atlassian.com/manage-profile/security/api-tokens.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant (3LO) for Jira Cloud apps.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          tokenUrl: https://auth.atlassian.com/oauth/token
+          scopes:
+            read:jira-work: Read Jira project and issue data.
+            write:jira-work: Create and edit Jira issues and projects.
+            manage:jira-project: Manage Jira project settings.
+            manage:jira-configuration: Manage Jira instance configuration.
+            read:jira-user: Read Jira user information.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token authentication using a personal access token (PAT) or OAuth 2.0 access token.
+externalDocs:
+  description: Jira Cloud Platform REST API v3 Documentation
+  url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/

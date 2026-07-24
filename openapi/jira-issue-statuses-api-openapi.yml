@@ -1,0 +1,174 @@
+openapi: 3.1.0
+info:
+  title: Jira Cloud Platform REST Issue Comments Issue Statuses API
+  description: The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.
+  version: '3'
+  license:
+    name: Atlassian Developer Terms
+    url: https://developer.atlassian.com/platform/marketplace/atlassian-developer-terms/
+  termsOfService: https://www.atlassian.com/legal/cloud-terms-of-service
+  contact:
+    name: Atlassian Developer Support
+    url: https://developer.atlassian.com/support
+    email: ecosystem@atlassian.com
+  x-atlassian-api-version: '3'
+servers:
+- url: https://{domain}.atlassian.net/rest/api/3
+  description: Jira Cloud instance
+  variables:
+    domain:
+      description: Your Jira Cloud site subdomain (e.g., your-company).
+      default: your-domain
+security:
+- basicAuth: []
+- oauth2: []
+- bearerAuth: []
+tags:
+- name: Issue Statuses
+  description: Retrieve issue statuses.
+paths:
+  /project/{projectIdOrKey}/statuses:
+    get:
+      summary: Jira Get All Statuses for Project
+      description: Returns the valid statuses for a project. The statuses are grouped by issue type, listing the allowed statuses for each issue type in the project.
+      operationId: getAllStatuses
+      tags:
+      - Issue Statuses
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/#api-rest-api-3-project-projectidorkey-statuses-get
+      parameters:
+      - $ref: '#/components/parameters/projectIdOrKey'
+      responses:
+        '200':
+          description: Statuses returned successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IssueTypeWithStatus'
+              examples:
+                Getallstatuses200Example:
+                  summary: Default getAllStatuses 200 response
+                  x-microcks-default: true
+                  value:
+                  - self: https://www.example.com
+                    id: abc123
+                    name: Example Title
+                    subtask: true
+                    statuses:
+                    - {}
+        '401':
+          description: Authentication credentials are missing or invalid.
+        '404':
+          description: The project was not found or the user does not have permission to view it.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  parameters:
+    projectIdOrKey:
+      name: projectIdOrKey
+      in: path
+      description: The ID or key of the project (e.g., 10000 or PROJ).
+      required: true
+      schema:
+        type: string
+      example: PROJ
+  schemas:
+    StatusDetails:
+      type: object
+      description: A status in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the status (e.g., To Do, In Progress, Done).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          example: https://www.example.com
+        statusCategory:
+          $ref: '#/components/schemas/StatusCategory'
+    StatusCategory:
+      type: object
+      description: A status category in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: integer
+          format: int64
+          example: abc123
+        key:
+          type: string
+          description: The key of the status category (e.g., new, indeterminate, done).
+          example: example_value
+        colorName:
+          type: string
+          description: The color name for the status category.
+          example: example_value
+        name:
+          type: string
+          description: The name of the status category.
+          example: Example Title
+    IssueTypeWithStatus:
+      type: object
+      description: Issue type with its valid statuses.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        subtask:
+          type: boolean
+          example: true
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusDetails'
+          example: []
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'Basic authentication using an Atlassian account email and API token. Format: email:api_token, Base64 encoded. Generate API tokens at https://id.atlassian.com/manage-profile/security/api-tokens.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant (3LO) for Jira Cloud apps.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          tokenUrl: https://auth.atlassian.com/oauth/token
+          scopes:
+            read:jira-work: Read Jira project and issue data.
+            write:jira-work: Create and edit Jira issues and projects.
+            manage:jira-project: Manage Jira project settings.
+            manage:jira-configuration: Manage Jira instance configuration.
+            read:jira-user: Read Jira user information.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token authentication using a personal access token (PAT) or OAuth 2.0 access token.
+externalDocs:
+  description: Jira Cloud Platform REST API v3 Documentation
+  url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/

@@ -1,0 +1,882 @@
+openapi: 3.1.0
+info:
+  title: Jira Cloud Platform REST Issue Comments Projects API
+  description: The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.
+  version: '3'
+  license:
+    name: Atlassian Developer Terms
+    url: https://developer.atlassian.com/platform/marketplace/atlassian-developer-terms/
+  termsOfService: https://www.atlassian.com/legal/cloud-terms-of-service
+  contact:
+    name: Atlassian Developer Support
+    url: https://developer.atlassian.com/support
+    email: ecosystem@atlassian.com
+  x-atlassian-api-version: '3'
+servers:
+- url: https://{domain}.atlassian.net/rest/api/3
+  description: Jira Cloud instance
+  variables:
+    domain:
+      description: Your Jira Cloud site subdomain (e.g., your-company).
+      default: your-domain
+security:
+- basicAuth: []
+- oauth2: []
+- bearerAuth: []
+tags:
+- name: Projects
+  description: Manage Jira projects including metadata, roles, and components.
+  externalDocs:
+    description: Jira Projects REST API documentation
+    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/
+paths:
+  /project:
+    get:
+      summary: Jira Get All Projects
+      description: Returns all projects visible to the user. Deprecated, use Get projects paginated that supports search and pagination.
+      operationId: getAllProjects
+      tags:
+      - Projects
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/#api-rest-api-3-project-get
+      parameters:
+      - name: expand
+        in: query
+        description: 'Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url.'
+        required: false
+        schema:
+          type: string
+        example: example_value
+      - name: recent
+        in: query
+        description: Returns projects the user has accessed in the last given number of projects, up to 20.
+        required: false
+        schema:
+          type: integer
+          format: int32
+        example: 10
+      - name: properties
+        in: query
+        description: A list of project properties to return for each project.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: true
+        example: []
+      responses:
+        '200':
+          description: Projects returned successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+              examples:
+                Getallprojects200Example:
+                  summary: Default getAllProjects 200 response
+                  x-microcks-default: true
+                  value:
+                  - self: https://www.example.com
+                    id: abc123
+                    key: example_value
+                    name: Example Title
+                    description: A sample description.
+                    lead:
+                      self: https://www.example.com
+                      accountId: '500123'
+                      emailAddress: user@example.com
+                      displayName: example_value
+                      active: true
+                      timeZone: example_value
+                      accountType: atlassian
+                    components:
+                    - {}
+                    issueTypes:
+                    - {}
+                    url: https://www.example.com
+                    assigneeType: PROJECT_LEAD
+                    versions:
+                    - {}
+                    roles: example_value
+                    avatarUrls:
+                      16x16: https://www.example.com
+                      24x24: https://www.example.com
+                      32x32: https://www.example.com
+                      48x48: https://www.example.com
+                    projectCategory:
+                      self: https://www.example.com
+                      id: abc123
+                      name: Example Title
+                      description: A sample description.
+                    projectTypeKey: software
+                    simplified: true
+                    style: classic
+                    archived: true
+                    deleted: true
+                    insight:
+                      totalIssueCount: 10
+                      lastIssueUpdateTime: '2026-01-15T10:30:00Z'
+        '401':
+          description: Authentication credentials are missing or invalid.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /project/search:
+    get:
+      summary: Jira Get Projects Paginated
+      description: Returns a paginated list of projects visible to the user. This operation can be filtered by project type, category, and action.
+      operationId: searchProjects
+      tags:
+      - Projects
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/#api-rest-api-3-project-search-get
+      parameters:
+      - name: startAt
+        in: query
+        description: The index of the first item to return in a page of results (page offset).
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 0
+        example: 10
+      - name: maxResults
+        in: query
+        description: The maximum number of items to return per page.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 50
+        example: 10
+      - name: orderBy
+        in: query
+        description: 'Order the results by a field. Accepted values: category, key, name, owner, issueCount, lastIssueUpdatedTime, archivedDate. Prefix with + or - for ascending/descending.'
+        required: false
+        schema:
+          type: string
+          default: key
+        example: example_value
+      - name: query
+        in: query
+        description: Filter results using a literal string match on project name or key.
+        required: false
+        schema:
+          type: string
+        example: example_value
+      - name: typeKey
+        in: query
+        description: 'The type key of the project. Accepted values: business, service_desk, software.'
+        required: false
+        schema:
+          type: string
+        example: example_value
+      - name: categoryId
+        in: query
+        description: The ID of the project category to filter by.
+        required: false
+        schema:
+          type: integer
+          format: int64
+        example: '500123'
+      - name: action
+        in: query
+        description: 'Filter results by what the user has permission to do. Accepted values: view, browse, edit, create.'
+        required: false
+        schema:
+          type: string
+          default: view
+        example: example_value
+      - name: expand
+        in: query
+        description: 'Use expand to include additional information in the response. Accepted values: description, projectKeys, lead, issueTypes, url, insight.'
+        required: false
+        schema:
+          type: string
+        example: example_value
+      - name: status
+        in: query
+        description: 'The status of the project. Accepted values: live, archived, deleted.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - live
+            - archived
+            - deleted
+        style: form
+        explode: true
+        example: []
+      responses:
+        '200':
+          description: Paginated project list returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageBeanProject'
+              examples:
+                Searchprojects200Example:
+                  summary: Default searchProjects 200 response
+                  x-microcks-default: true
+                  value:
+                    self: https://www.example.com
+                    nextPage: https://www.example.com
+                    maxResults: 10
+                    startAt: 10
+                    total: 10
+                    isLast: true
+                    values:
+                    - self: https://www.example.com
+                      id: abc123
+                      key: example_value
+                      name: Example Title
+                      description: A sample description.
+                      components: {}
+                      issueTypes: {}
+                      url: https://www.example.com
+                      assigneeType: PROJECT_LEAD
+                      versions: {}
+                      roles: example_value
+                      projectTypeKey: software
+                      simplified: true
+                      style: classic
+                      archived: true
+                      deleted: true
+                      insight: {}
+        '400':
+          description: The request is invalid.
+        '401':
+          description: Authentication credentials are missing or invalid.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /project/{projectIdOrKey}:
+    get:
+      summary: Jira Get Project
+      description: Returns the project details for a project. The returned project includes additional information such as issue types, components, versions, and roles.
+      operationId: getProject
+      tags:
+      - Projects
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/#api-rest-api-3-project-projectidorkey-get
+      parameters:
+      - $ref: '#/components/parameters/projectIdOrKey'
+      - name: expand
+        in: query
+        description: 'Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url, insight.'
+        required: false
+        schema:
+          type: string
+        example: example_value
+      - name: properties
+        in: query
+        description: A list of project properties to return for the project.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: true
+        example: []
+      responses:
+        '200':
+          description: Project details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+              examples:
+                Getproject200Example:
+                  summary: Default getProject 200 response
+                  x-microcks-default: true
+                  value:
+                    self: https://www.example.com
+                    id: abc123
+                    key: example_value
+                    name: Example Title
+                    description: A sample description.
+                    lead:
+                      self: https://www.example.com
+                      accountId: '500123'
+                      emailAddress: user@example.com
+                      displayName: example_value
+                      active: true
+                      timeZone: example_value
+                      accountType: atlassian
+                    components:
+                    - self: https://www.example.com
+                      id: abc123
+                      name: Example Title
+                      description: A sample description.
+                      assigneeType: PROJECT_DEFAULT
+                      project: example_value
+                      projectId: '500123'
+                    issueTypes:
+                    - self: https://www.example.com
+                      id: abc123
+                      description: A sample description.
+                      iconUrl: https://www.example.com
+                      name: Example Title
+                      subtask: true
+                      avatarId: '500123'
+                      hierarchyLevel: 10
+                    url: https://www.example.com
+                    assigneeType: PROJECT_LEAD
+                    versions:
+                    - self: https://www.example.com
+                      id: abc123
+                      name: Example Title
+                      description: A sample description.
+                      archived: true
+                      released: true
+                      releaseDate: '2026-01-15'
+                      startDate: '2026-01-15'
+                      overdue: true
+                      projectId: '500123'
+                    roles: example_value
+                    avatarUrls:
+                      16x16: https://www.example.com
+                      24x24: https://www.example.com
+                      32x32: https://www.example.com
+                      48x48: https://www.example.com
+                    projectCategory:
+                      self: https://www.example.com
+                      id: abc123
+                      name: Example Title
+                      description: A sample description.
+                    projectTypeKey: software
+                    simplified: true
+                    style: classic
+                    archived: true
+                    deleted: true
+                    insight:
+                      totalIssueCount: 10
+                      lastIssueUpdateTime: '2026-01-15T10:30:00Z'
+        '401':
+          description: Authentication credentials are missing or invalid.
+        '404':
+          description: The project was not found or the user does not have permission to view it.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /project/{projectIdOrKey}/statuses:
+    get:
+      summary: Jira Get All Statuses for Project
+      description: Returns the valid statuses for a project. The statuses are grouped by issue type, listing the allowed statuses for each issue type in the project.
+      operationId: getAllStatuses
+      tags:
+      - Projects
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/#api-rest-api-3-project-projectidorkey-statuses-get
+      parameters:
+      - $ref: '#/components/parameters/projectIdOrKey'
+      responses:
+        '200':
+          description: Statuses returned successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IssueTypeWithStatus'
+              examples:
+                Getallstatuses200Example:
+                  summary: Default getAllStatuses 200 response
+                  x-microcks-default: true
+                  value:
+                  - self: https://www.example.com
+                    id: abc123
+                    name: Example Title
+                    subtask: true
+                    statuses:
+                    - {}
+        '401':
+          description: Authentication credentials are missing or invalid.
+        '404':
+          description: The project was not found or the user does not have permission to view it.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    Version:
+      type: object
+      description: A project version.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        archived:
+          type: boolean
+          example: true
+        released:
+          type: boolean
+          example: true
+        releaseDate:
+          type: string
+          format: date
+          example: '2026-01-15'
+        startDate:
+          type: string
+          format: date
+          example: '2026-01-15'
+        overdue:
+          type: boolean
+          example: true
+        projectId:
+          type: integer
+          format: int64
+          example: '500123'
+    IssueTypeDetails:
+      type: object
+      description: Details of an issue type.
+      properties:
+        self:
+          type: string
+          format: uri
+          description: The URL of the issue type in the REST API.
+          example: https://www.example.com
+        id:
+          type: string
+          description: The ID of the issue type.
+          example: abc123
+        description:
+          type: string
+          description: The description of the issue type.
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          description: The URL of the issue type icon.
+          example: https://www.example.com
+        name:
+          type: string
+          description: The name of the issue type (e.g., Bug, Story, Task, Epic).
+          example: Example Title
+        subtask:
+          type: boolean
+          description: Whether this issue type is used to create sub-tasks.
+          example: true
+        avatarId:
+          type: integer
+          format: int64
+          description: The ID of the avatar for the issue type.
+          example: '500123'
+        hierarchyLevel:
+          type: integer
+          format: int32
+          description: The hierarchy level of the issue type.
+          example: 10
+        scope:
+          $ref: '#/components/schemas/Scope'
+    PageBeanProject:
+      type: object
+      description: A paginated list of projects.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        nextPage:
+          type: string
+          format: uri
+          example: https://www.example.com
+        maxResults:
+          type: integer
+          format: int32
+          example: 10
+        startAt:
+          type: integer
+          format: int64
+          example: 10
+        total:
+          type: integer
+          format: int64
+          example: 10
+        isLast:
+          type: boolean
+          example: true
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+          example: []
+    IssueTypeWithStatus:
+      type: object
+      description: Issue type with its valid statuses.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        subtask:
+          type: boolean
+          example: true
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusDetails'
+          example: []
+    ProjectCategory:
+      type: object
+      description: A project category.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+    StatusCategory:
+      type: object
+      description: A status category in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: integer
+          format: int64
+          example: abc123
+        key:
+          type: string
+          description: The key of the status category (e.g., new, indeterminate, done).
+          example: example_value
+        colorName:
+          type: string
+          description: The color name for the status category.
+          example: example_value
+        name:
+          type: string
+          description: The name of the status category.
+          example: Example Title
+    UserDetails:
+      type: object
+      description: A Jira user.
+      properties:
+        self:
+          type: string
+          format: uri
+          description: The URL of the user in the REST API.
+          example: https://www.example.com
+        accountId:
+          type: string
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products.
+          maxLength: 128
+          example: '500123'
+        emailAddress:
+          type: string
+          format: email
+          description: The email address of the user (may not be available depending on privacy settings).
+          example: user@example.com
+        displayName:
+          type: string
+          description: The display name of the user.
+          example: example_value
+        active:
+          type: boolean
+          description: Whether the user account is active.
+          example: true
+        timeZone:
+          type: string
+          description: The time zone of the user.
+          example: example_value
+        accountType:
+          type: string
+          description: The type of account.
+          enum:
+          - atlassian
+          - app
+          - customer
+          example: atlassian
+        avatarUrls:
+          $ref: '#/components/schemas/AvatarUrls'
+    Project:
+      type: object
+      description: A Jira project.
+      properties:
+        self:
+          type: string
+          format: uri
+          description: The URL of the project in the REST API.
+          example: https://www.example.com
+        id:
+          type: string
+          description: The ID of the project.
+          example: abc123
+        key:
+          type: string
+          description: The key of the project (e.g., PROJ).
+          example: example_value
+        name:
+          type: string
+          description: The name of the project.
+          example: Example Title
+        description:
+          type: string
+          description: A description of the project.
+          example: A sample description.
+        lead:
+          $ref: '#/components/schemas/UserDetails'
+        components:
+          type: array
+          description: Components in the project.
+          items:
+            $ref: '#/components/schemas/Component'
+          example: []
+        issueTypes:
+          type: array
+          description: Issue types available in the project.
+          items:
+            $ref: '#/components/schemas/IssueTypeDetails'
+          example: []
+        url:
+          type: string
+          format: uri
+          description: A URL to the project.
+          example: https://www.example.com
+        assigneeType:
+          type: string
+          description: The default assignee type for the project.
+          enum:
+          - PROJECT_LEAD
+          - UNASSIGNED
+          example: PROJECT_LEAD
+        versions:
+          type: array
+          description: The versions defined in the project.
+          items:
+            $ref: '#/components/schemas/Version'
+          example: []
+        roles:
+          type: object
+          description: Project role URLs.
+          additionalProperties:
+            type: string
+            format: uri
+          example: example_value
+        avatarUrls:
+          $ref: '#/components/schemas/AvatarUrls'
+        projectCategory:
+          $ref: '#/components/schemas/ProjectCategory'
+        projectTypeKey:
+          type: string
+          description: The project type.
+          enum:
+          - software
+          - service_desk
+          - business
+          example: software
+        simplified:
+          type: boolean
+          description: Whether the project is simplified (next-gen/team-managed).
+          example: true
+        style:
+          type: string
+          description: The style of the project. Classic or next-gen.
+          enum:
+          - classic
+          - next-gen
+          example: classic
+        archived:
+          type: boolean
+          description: Whether the project is archived.
+          example: true
+        deleted:
+          type: boolean
+          description: Whether the project is marked as deleted.
+          example: true
+        insight:
+          type: object
+          description: Insight information about the project.
+          properties:
+            totalIssueCount:
+              type: integer
+              format: int64
+            lastIssueUpdateTime:
+              type: string
+              format: date-time
+          example: example_value
+    StatusDetails:
+      type: object
+      description: A status in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the status (e.g., To Do, In Progress, Done).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          example: https://www.example.com
+        statusCategory:
+          $ref: '#/components/schemas/StatusCategory'
+    Scope:
+      type: object
+      description: The scope of the issue type (project or global).
+      properties:
+        type:
+          type: string
+          enum:
+          - PROJECT
+          - TEMPLATE
+          example: PROJECT
+        project:
+          $ref: '#/components/schemas/ProjectRef'
+    Component:
+      type: object
+      description: A project component.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        lead:
+          $ref: '#/components/schemas/UserDetails'
+        assigneeType:
+          type: string
+          enum:
+          - PROJECT_DEFAULT
+          - COMPONENT_LEAD
+          - PROJECT_LEAD
+          - UNASSIGNED
+          example: PROJECT_DEFAULT
+        assignee:
+          $ref: '#/components/schemas/UserDetails'
+        project:
+          type: string
+          example: example_value
+        projectId:
+          type: integer
+          format: int64
+          example: '500123'
+    ProjectRef:
+      type: object
+      description: A reference to a Jira project.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        key:
+          type: string
+          example: example_value
+        name:
+          type: string
+          example: Example Title
+        avatarUrls:
+          $ref: '#/components/schemas/AvatarUrls'
+        projectTypeKey:
+          type: string
+          example: example_value
+    AvatarUrls:
+      type: object
+      description: Avatar URLs in multiple sizes.
+      properties:
+        16x16:
+          type: string
+          format: uri
+          example: https://www.example.com
+        24x24:
+          type: string
+          format: uri
+          example: https://www.example.com
+        32x32:
+          type: string
+          format: uri
+          example: https://www.example.com
+        48x48:
+          type: string
+          format: uri
+          example: https://www.example.com
+  parameters:
+    projectIdOrKey:
+      name: projectIdOrKey
+      in: path
+      description: The ID or key of the project (e.g., 10000 or PROJ).
+      required: true
+      schema:
+        type: string
+      example: PROJ
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'Basic authentication using an Atlassian account email and API token. Format: email:api_token, Base64 encoded. Generate API tokens at https://id.atlassian.com/manage-profile/security/api-tokens.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant (3LO) for Jira Cloud apps.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          tokenUrl: https://auth.atlassian.com/oauth/token
+          scopes:
+            read:jira-work: Read Jira project and issue data.
+            write:jira-work: Create and edit Jira issues and projects.
+            manage:jira-project: Manage Jira project settings.
+            manage:jira-configuration: Manage Jira instance configuration.
+            read:jira-user: Read Jira user information.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token authentication using a personal access token (PAT) or OAuth 2.0 access token.
+externalDocs:
+  description: Jira Cloud Platform REST API v3 Documentation
+  url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/

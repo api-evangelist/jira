@@ -1,0 +1,1433 @@
+openapi: 3.1.0
+info:
+  title: Jira Cloud Platform REST Issue Comments Issues API
+  description: The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.
+  version: '3'
+  license:
+    name: Atlassian Developer Terms
+    url: https://developer.atlassian.com/platform/marketplace/atlassian-developer-terms/
+  termsOfService: https://www.atlassian.com/legal/cloud-terms-of-service
+  contact:
+    name: Atlassian Developer Support
+    url: https://developer.atlassian.com/support
+    email: ecosystem@atlassian.com
+  x-atlassian-api-version: '3'
+servers:
+- url: https://{domain}.atlassian.net/rest/api/3
+  description: Jira Cloud instance
+  variables:
+    domain:
+      description: Your Jira Cloud site subdomain (e.g., your-company).
+      default: your-domain
+security:
+- basicAuth: []
+- oauth2: []
+- bearerAuth: []
+tags:
+- name: Issues
+  description: Create, read, update, delete, and transition Jira issues.
+  externalDocs:
+    description: Jira Issues REST API documentation
+    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/
+paths:
+  /issue:
+    post:
+      summary: Jira Create Issue
+      description: Creates an issue or a sub-task from a JSON representation. The fields that can be set on an issue depend on the connected Jira instance configuration, the project, and the issue type. You can determine appropriate field values using the Create Issue Metadata endpoint.
+      operationId: createIssue
+      tags:
+      - Issues
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post
+      parameters:
+      - name: updateHistory
+        in: query
+        description: Whether the project in which the issue is created is added to the user's Recently viewed project list, as shown under Projects in Jira.
+        required: false
+        schema:
+          type: boolean
+          default: false
+        example: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueCreateRequest'
+            example:
+              fields:
+                project:
+                  key: PROJ
+                summary: Main order flow fails when item is sold out
+                description:
+                  type: doc
+                  version: 1
+                  content:
+                  - type: paragraph
+                    content:
+                    - type: text
+                      text: Order flow errors when an item is sold out.
+                issuetype:
+                  name: Bug
+                priority:
+                  name: High
+                labels:
+                - bugfix
+                - production
+                assignee:
+                  accountId: 5b10a2844c20165700ede21g
+      responses:
+        '201':
+          description: Issue created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedIssue'
+              examples:
+                Createissue201Example:
+                  summary: Default createIssue 201 response
+                  x-microcks-default: true
+                  value:
+                    id: abc123
+                    key: example_value
+                    self: https://www.example.com
+                    transition:
+                      status: 10
+                      errorCollection:
+                        errorMessages: {}
+                        errors: example_value
+                        status: 10
+        '400':
+          description: The input is invalid, including if the request body is missing or has invalid fields.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollection'
+              examples:
+                Createissue400Example:
+                  summary: Default createIssue 400 response
+                  x-microcks-default: true
+                  value:
+                    errorMessages:
+                    - example_value
+                    errors: example_value
+                    status: 10
+        '401':
+          description: Authentication credentials are missing or invalid.
+        '403':
+          description: The user does not have permission to create issues in the project.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /issue/{issueIdOrKey}:
+    get:
+      summary: Jira Get Issue
+      description: Returns the details for an issue. The issue is identified by its ID or key. The returned issue includes all fields, comment count, names, schema, transitions, editmeta, changelog, and rendered fields.
+      operationId: getIssue
+      tags:
+      - Issues
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-get
+      parameters:
+      - $ref: '#/components/parameters/issueIdOrKey'
+      - name: fields
+        in: query
+        description: A list of fields to return for the issue. Use it to retrieve a subset of fields. Allowed values include any field name, *all for all fields, *navigable for navigable fields.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: true
+        example: []
+      - name: expand
+        in: query
+        description: 'Use expand to include additional information in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations, fields.'
+        required: false
+        schema:
+          type: string
+        example: example_value
+      - name: properties
+        in: query
+        description: A list of issue properties to return for the issue. By default no properties are returned.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: true
+        example: []
+      - name: fieldsByKeys
+        in: query
+        description: Whether fields in fields are referenced by keys rather than IDs.
+        required: false
+        schema:
+          type: boolean
+          default: false
+        example: true
+      responses:
+        '200':
+          description: Issue details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueBean'
+              examples:
+                Getissue200Example:
+                  summary: Default getIssue 200 response
+                  x-microcks-default: true
+                  value:
+                    id: abc123
+                    key: example_value
+                    self: https://www.example.com
+                    expand: example_value
+                    fields:
+                      summary: example_value
+                      description: A sample description.
+                      assignee: example_value
+                      labels:
+                      - {}
+                      components:
+                      - {}
+                      fixVersions:
+                      - {}
+                      versions:
+                      - {}
+                      resolution: example_value
+                      resolutiondate: '2026-01-15T10:30:00Z'
+                      created: '2026-01-15T10:30:00Z'
+                      updated: '2026-01-15T10:30:00Z'
+                      duedate: '2026-01-15'
+                      subtasks:
+                      - {}
+                      parent: example_value
+                      environment: example_value
+                      attachment:
+                      - {}
+                      issuelinks:
+                      - {}
+                    renderedFields: example_value
+                    names: example_value
+                    schema: example_value
+                    transitions:
+                    - id: abc123
+                      name: Example Title
+                      hasScreen: true
+                      isGlobal: true
+                      isInitial: true
+                      isConditional: true
+                      fields: example_value
+                    changelog:
+                      startAt: 10
+                      maxResults: 10
+                      total: 10
+                      histories:
+                      - {}
+        '401':
+          description: Authentication credentials are missing or invalid.
+        '404':
+          description: The issue was not found or the user does not have permission to view it.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    put:
+      summary: Jira Edit Issue
+      description: Edits an issue. A transition may be applied and issue properties updated as part of the edit. The editable fields depend on the connected Jira instance configuration, the project, and the issue type.
+      operationId: editIssue
+      tags:
+      - Issues
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
+      parameters:
+      - $ref: '#/components/parameters/issueIdOrKey'
+      - name: notifyUsers
+        in: query
+        description: Whether a notification email about the issue update is sent to all watchers. Requires administer Jira global permission.
+        required: false
+        schema:
+          type: boolean
+          default: true
+        example: true
+      - name: overrideScreenSecurity
+        in: query
+        description: Whether screen security is overridden to enable hidden fields to be edited. Requires administer Jira global permission.
+        required: false
+        schema:
+          type: boolean
+          default: false
+        example: true
+      - name: overrideEditableFlag
+        in: query
+        description: Whether the non-editable flag is overridden to enable uneditable fields to be edited. Requires administer Jira global permission.
+        required: false
+        schema:
+          type: boolean
+          default: false
+        example: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueUpdateRequest'
+            examples:
+              EditissueRequestExample:
+                summary: Default editIssue request
+                x-microcks-default: true
+                value:
+                  update: example_value
+                  fields: example_value
+                  transition:
+                    id: abc123
+                  historyMetadata: example_value
+                  properties:
+                  - key: example_value
+                    value: example_value
+      responses:
+        '204':
+          description: Issue updated successfully.
+        '400':
+          description: The input is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollection'
+              examples:
+                Editissue400Example:
+                  summary: Default editIssue 400 response
+                  x-microcks-default: true
+                  value:
+                    errorMessages:
+                    - example_value
+                    errors: example_value
+                    status: 10
+        '401':
+          description: Authentication credentials are missing or invalid.
+        '403':
+          description: The user does not have permission to edit the issue.
+        '404':
+          description: The issue was not found or the user does not have permission to view it.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      summary: Jira Delete Issue
+      description: Deletes an issue. An issue can only be deleted if it has no sub-tasks, unless deleteSubtasks is set to true.
+      operationId: deleteIssue
+      tags:
+      - Issues
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-delete
+      parameters:
+      - $ref: '#/components/parameters/issueIdOrKey'
+      - name: deleteSubtasks
+        in: query
+        description: Whether the issue's sub-tasks are also deleted.
+        required: false
+        schema:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          default: 'false'
+        example: 'true'
+      responses:
+        '204':
+          description: Issue deleted successfully.
+        '400':
+          description: The issue has sub-tasks and deleteSubtasks is not set to true.
+        '401':
+          description: Authentication credentials are missing or invalid.
+        '403':
+          description: The user does not have permission to delete the issue.
+        '404':
+          description: The issue was not found or the user does not have permission to view it.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    TransitionRef:
+      type: object
+      description: A reference to a transition by ID.
+      properties:
+        id:
+          type: string
+          description: The ID of the transition.
+          example: abc123
+      required:
+      - id
+    Comment:
+      type: object
+      description: A comment on an issue.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        body:
+          $ref: '#/components/schemas/AtlassianDocumentFormat'
+        renderedBody:
+          type: string
+          description: The rendered version of the comment body in HTML.
+          example: example_value
+        updateAuthor:
+          $ref: '#/components/schemas/UserDetails'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        updated:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+        jsdPublic:
+          type: boolean
+          description: Whether the comment is visible in Jira Service Management.
+          example: true
+    Component:
+      type: object
+      description: A project component.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        lead:
+          $ref: '#/components/schemas/UserDetails'
+        assigneeType:
+          type: string
+          enum:
+          - PROJECT_DEFAULT
+          - COMPONENT_LEAD
+          - PROJECT_LEAD
+          - UNASSIGNED
+          example: PROJECT_DEFAULT
+        assignee:
+          $ref: '#/components/schemas/UserDetails'
+        project:
+          type: string
+          example: example_value
+        projectId:
+          type: integer
+          format: int64
+          example: '500123'
+    IssueBean:
+      type: object
+      description: A Jira issue with all fields and metadata.
+      properties:
+        id:
+          type: string
+          description: The ID of the issue.
+          example: abc123
+        key:
+          type: string
+          description: The key of the issue (e.g., PROJ-123).
+          example: example_value
+        self:
+          type: string
+          format: uri
+          description: The URL of the issue in the REST API.
+          example: https://www.example.com
+        expand:
+          type: string
+          description: The expand options applied to the issue.
+          example: example_value
+        fields:
+          $ref: '#/components/schemas/IssueFields'
+        renderedFields:
+          type: object
+          description: HTML-rendered versions of the issue fields.
+          additionalProperties: true
+          example: example_value
+        names:
+          type: object
+          description: Field name mapping for the issue.
+          additionalProperties:
+            type: string
+          example: example_value
+        schema:
+          type: object
+          description: JSON Schema for each field in the issue.
+          additionalProperties: true
+          example: example_value
+        transitions:
+          type: array
+          description: Transitions available for the issue.
+          items:
+            $ref: '#/components/schemas/Transition'
+          example: []
+        changelog:
+          $ref: '#/components/schemas/Changelog'
+    IssueUpdateRequest:
+      type: object
+      description: Request body for editing an issue.
+      properties:
+        update:
+          type: object
+          description: A map of operations to perform on issue fields.
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/FieldUpdateOperation'
+          example: example_value
+        fields:
+          type: object
+          description: A map of field ID to field value for the issue.
+          additionalProperties: true
+          example: example_value
+        transition:
+          $ref: '#/components/schemas/TransitionRef'
+        historyMetadata:
+          type: object
+          description: Metadata about the history entry.
+          additionalProperties: true
+          example: example_value
+        properties:
+          type: array
+          description: Entity properties to set on the issue.
+          items:
+            $ref: '#/components/schemas/EntityProperty'
+          example: []
+    ChangeItem:
+      type: object
+      description: An individual field change within a changelog entry.
+      properties:
+        field:
+          type: string
+          example: example_value
+        fieldtype:
+          type: string
+          example: example_value
+        fieldId:
+          type: string
+          example: '500123'
+        from:
+          type:
+          - string
+          - 'null'
+          example: example_value
+        fromString:
+          type:
+          - string
+          - 'null'
+          example: example_value
+        to:
+          type:
+          - string
+          - 'null'
+          example: example_value
+        toString:
+          type:
+          - string
+          - 'null'
+          example: example_value
+    Watches:
+      type: object
+      description: The watchers of an issue.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        watchCount:
+          type: integer
+          format: int32
+          example: 10
+        isWatching:
+          type: boolean
+          example: true
+    IssueLinkType:
+      type: object
+      description: The type of link between issues.
+      properties:
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        inward:
+          type: string
+          description: The inward description (e.g., is blocked by).
+          example: example_value
+        outward:
+          type: string
+          description: The outward description (e.g., blocks).
+          example: example_value
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+    Attachment:
+      type: object
+      description: An attachment on an issue.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        filename:
+          type: string
+          example: example_value
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        size:
+          type: integer
+          format: int64
+          example: 10
+        mimeType:
+          type: string
+          example: example_value
+        content:
+          type: string
+          format: uri
+          description: The URL to download the attachment content.
+          example: https://www.example.com
+        thumbnail:
+          type: string
+          format: uri
+          example: https://www.example.com
+    IssueFields:
+      type: object
+      description: The fields of a Jira issue.
+      properties:
+        summary:
+          type: string
+          description: The summary (title) of the issue.
+          example: example_value
+        description:
+          description: The description of the issue in Atlassian Document Format (ADF).
+          oneOf:
+          - $ref: '#/components/schemas/AtlassianDocumentFormat'
+          - type: 'null'
+          example: A sample description.
+        issuetype:
+          $ref: '#/components/schemas/IssueTypeDetails'
+        project:
+          $ref: '#/components/schemas/ProjectRef'
+        status:
+          $ref: '#/components/schemas/StatusDetails'
+        priority:
+          $ref: '#/components/schemas/Priority'
+        assignee:
+          oneOf:
+          - $ref: '#/components/schemas/UserDetails'
+          - type: 'null'
+          description: The user assigned to the issue.
+          example: example_value
+        reporter:
+          $ref: '#/components/schemas/UserDetails'
+        creator:
+          $ref: '#/components/schemas/UserDetails'
+        labels:
+          type: array
+          description: Labels applied to the issue.
+          items:
+            type: string
+          example: []
+        components:
+          type: array
+          description: Components associated with the issue.
+          items:
+            $ref: '#/components/schemas/Component'
+          example: []
+        fixVersions:
+          type: array
+          description: Fix versions for the issue.
+          items:
+            $ref: '#/components/schemas/Version'
+          example: []
+        versions:
+          type: array
+          description: Affected versions for the issue.
+          items:
+            $ref: '#/components/schemas/Version'
+          example: []
+        resolution:
+          oneOf:
+          - $ref: '#/components/schemas/Resolution'
+          - type: 'null'
+          description: The resolution of the issue.
+          example: example_value
+        resolutiondate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the issue was resolved.
+          example: '2026-01-15T10:30:00Z'
+        created:
+          type: string
+          format: date-time
+          description: The date and time the issue was created.
+          example: '2026-01-15T10:30:00Z'
+        updated:
+          type: string
+          format: date-time
+          description: The date and time the issue was last updated.
+          example: '2026-01-15T10:30:00Z'
+        duedate:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The due date of the issue.
+          example: '2026-01-15'
+        watches:
+          $ref: '#/components/schemas/Watches'
+        votes:
+          $ref: '#/components/schemas/Votes'
+        comment:
+          $ref: '#/components/schemas/PageOfComments'
+        worklog:
+          $ref: '#/components/schemas/PageOfWorklogs'
+        subtasks:
+          type: array
+          description: Sub-tasks of the issue.
+          items:
+            $ref: '#/components/schemas/IssueRef'
+          example: []
+        parent:
+          oneOf:
+          - $ref: '#/components/schemas/IssueRef'
+          - type: 'null'
+          description: The parent issue, if this is a sub-task.
+          example: example_value
+        environment:
+          description: The environment in which the issue was found in ADF.
+          oneOf:
+          - $ref: '#/components/schemas/AtlassianDocumentFormat'
+          - type: 'null'
+          example: example_value
+        attachment:
+          type: array
+          description: Attachments on the issue.
+          items:
+            $ref: '#/components/schemas/Attachment'
+          example: []
+        issuelinks:
+          type: array
+          description: Links to other issues.
+          items:
+            $ref: '#/components/schemas/IssueLink'
+          example: []
+      additionalProperties: true
+    StatusCategory:
+      type: object
+      description: A status category in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: integer
+          format: int64
+          example: abc123
+        key:
+          type: string
+          description: The key of the status category (e.g., new, indeterminate, done).
+          example: example_value
+        colorName:
+          type: string
+          description: The color name for the status category.
+          example: example_value
+        name:
+          type: string
+          description: The name of the status category.
+          example: Example Title
+    EntityProperty:
+      type: object
+      description: An entity property (key-value pair).
+      properties:
+        key:
+          type: string
+          description: The property key.
+          example: example_value
+        value:
+          description: The property value (any JSON value).
+          example: example_value
+    StatusDetails:
+      type: object
+      description: A status in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the status (e.g., To Do, In Progress, Done).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          example: https://www.example.com
+        statusCategory:
+          $ref: '#/components/schemas/StatusCategory'
+    Priority:
+      type: object
+      description: An issue priority.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the priority (e.g., Highest, High, Medium, Low, Lowest).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          example: https://www.example.com
+        statusColor:
+          type: string
+          description: The color associated with the priority.
+          example: example_value
+    AvatarUrls:
+      type: object
+      description: Avatar URLs in multiple sizes.
+      properties:
+        16x16:
+          type: string
+          format: uri
+          example: https://www.example.com
+        24x24:
+          type: string
+          format: uri
+          example: https://www.example.com
+        32x32:
+          type: string
+          format: uri
+          example: https://www.example.com
+        48x48:
+          type: string
+          format: uri
+          example: https://www.example.com
+    IssueTypeDetails:
+      type: object
+      description: Details of an issue type.
+      properties:
+        self:
+          type: string
+          format: uri
+          description: The URL of the issue type in the REST API.
+          example: https://www.example.com
+        id:
+          type: string
+          description: The ID of the issue type.
+          example: abc123
+        description:
+          type: string
+          description: The description of the issue type.
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          description: The URL of the issue type icon.
+          example: https://www.example.com
+        name:
+          type: string
+          description: The name of the issue type (e.g., Bug, Story, Task, Epic).
+          example: Example Title
+        subtask:
+          type: boolean
+          description: Whether this issue type is used to create sub-tasks.
+          example: true
+        avatarId:
+          type: integer
+          format: int64
+          description: The ID of the avatar for the issue type.
+          example: '500123'
+        hierarchyLevel:
+          type: integer
+          format: int32
+          description: The hierarchy level of the issue type.
+          example: 10
+        scope:
+          $ref: '#/components/schemas/Scope'
+    AtlassianDocumentFormat:
+      type: object
+      description: Atlassian Document Format (ADF) representation of rich text content. ADF is a JSON-based format used in Jira Cloud REST API v3 for description, comment, and other rich text fields.
+      required:
+      - type
+      - version
+      - content
+      properties:
+        type:
+          type: string
+          enum:
+          - doc
+          description: The root node type. Always doc.
+          example: doc
+        version:
+          type: integer
+          description: The ADF version. Currently 1.
+          enum:
+          - 1
+          example: 1
+        content:
+          type: array
+          description: The content nodes of the document.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: The node type (e.g., paragraph, heading, bulletList, orderedList, codeBlock, blockquote, table, mediaSingle, rule).
+              content:
+                type: array
+                description: Child content nodes.
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: The inline node type (e.g., text, hardBreak, mention, emoji, inlineCard).
+                    text:
+                      type: string
+                    marks:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            description: The mark type (e.g., strong, em, code, link, underline, strike, textColor).
+                          attrs:
+                            type: object
+                            additionalProperties: true
+                  additionalProperties: true
+              attrs:
+                type: object
+                additionalProperties: true
+            additionalProperties: true
+          example: []
+    UserDetails:
+      type: object
+      description: A Jira user.
+      properties:
+        self:
+          type: string
+          format: uri
+          description: The URL of the user in the REST API.
+          example: https://www.example.com
+        accountId:
+          type: string
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products.
+          maxLength: 128
+          example: '500123'
+        emailAddress:
+          type: string
+          format: email
+          description: The email address of the user (may not be available depending on privacy settings).
+          example: user@example.com
+        displayName:
+          type: string
+          description: The display name of the user.
+          example: example_value
+        active:
+          type: boolean
+          description: Whether the user account is active.
+          example: true
+        timeZone:
+          type: string
+          description: The time zone of the user.
+          example: example_value
+        accountType:
+          type: string
+          description: The type of account.
+          enum:
+          - atlassian
+          - app
+          - customer
+          example: atlassian
+        avatarUrls:
+          $ref: '#/components/schemas/AvatarUrls'
+    Worklog:
+      type: object
+      description: A worklog entry.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        updateAuthor:
+          $ref: '#/components/schemas/UserDetails'
+        comment:
+          $ref: '#/components/schemas/AtlassianDocumentFormat'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        updated:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        started:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        timeSpent:
+          type: string
+          description: The time spent on the worklog (e.g., 3h 20m).
+          example: example_value
+        timeSpentSeconds:
+          type: integer
+          format: int64
+          example: 10
+    Visibility:
+      type: object
+      description: The visibility restrictions for a comment.
+      properties:
+        type:
+          type: string
+          enum:
+          - group
+          - role
+          example: group
+        value:
+          type: string
+          description: The name of the group or role to restrict visibility to.
+          example: example_value
+        identifier:
+          type: string
+          description: The ID of the group or role.
+          example: example_value
+    Votes:
+      type: object
+      description: The votes for an issue.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        votes:
+          type: integer
+          format: int32
+          example: 10
+        hasVoted:
+          type: boolean
+          example: true
+    Transition:
+      type: object
+      description: A workflow transition.
+      properties:
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        to:
+          $ref: '#/components/schemas/StatusDetails'
+        hasScreen:
+          type: boolean
+          example: true
+        isGlobal:
+          type: boolean
+          example: true
+        isInitial:
+          type: boolean
+          example: true
+        isConditional:
+          type: boolean
+          example: true
+        fields:
+          type: object
+          description: Fields available during the transition.
+          additionalProperties: true
+          example: example_value
+    CreatedIssue:
+      type: object
+      description: Details of a newly created issue.
+      properties:
+        id:
+          type: string
+          description: The ID of the created issue.
+          example: abc123
+        key:
+          type: string
+          description: The key of the created issue (e.g., PROJ-123).
+          example: example_value
+        self:
+          type: string
+          format: uri
+          description: The URL of the created issue in the REST API.
+          example: https://www.example.com
+        transition:
+          type: object
+          description: Status of the transition applied during creation.
+          properties:
+            status:
+              type: integer
+            errorCollection:
+              $ref: '#/components/schemas/ErrorCollection'
+          example: example_value
+    Scope:
+      type: object
+      description: The scope of the issue type (project or global).
+      properties:
+        type:
+          type: string
+          enum:
+          - PROJECT
+          - TEMPLATE
+          example: PROJECT
+        project:
+          $ref: '#/components/schemas/ProjectRef'
+    Changelog:
+      type: object
+      description: A paginated list of changelogs.
+      properties:
+        startAt:
+          type: integer
+          format: int32
+          example: 10
+        maxResults:
+          type: integer
+          format: int32
+          example: 10
+        total:
+          type: integer
+          format: int32
+          example: 10
+        histories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChangeHistory'
+          example: []
+    Version:
+      type: object
+      description: A project version.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        archived:
+          type: boolean
+          example: true
+        released:
+          type: boolean
+          example: true
+        releaseDate:
+          type: string
+          format: date
+          example: '2026-01-15'
+        startDate:
+          type: string
+          format: date
+          example: '2026-01-15'
+        overdue:
+          type: boolean
+          example: true
+        projectId:
+          type: integer
+          format: int64
+          example: '500123'
+    ErrorCollection:
+      type: object
+      description: Error details returned by the API.
+      properties:
+        errorMessages:
+          type: array
+          description: The list of error messages.
+          items:
+            type: string
+          example: []
+        errors:
+          type: object
+          description: Field-specific errors.
+          additionalProperties:
+            type: string
+          example: example_value
+        status:
+          type: integer
+          description: The HTTP status code.
+          example: 10
+    PageOfComments:
+      type: object
+      description: A paginated list of comments.
+      properties:
+        startAt:
+          type: integer
+          format: int32
+          example: 10
+        maxResults:
+          type: integer
+          format: int32
+          example: 10
+        total:
+          type: integer
+          format: int32
+          example: 10
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          example: []
+    ChangeHistory:
+      type: object
+      description: A changelog entry.
+      properties:
+        id:
+          type: string
+          example: abc123
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChangeItem'
+          example: []
+    IssueCreateRequest:
+      type: object
+      description: Request body for creating an issue.
+      properties:
+        update:
+          type: object
+          description: A map of operations to perform on issue fields. Each key is a field ID and the value is an array of operations.
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/FieldUpdateOperation'
+          example: example_value
+        fields:
+          type: object
+          description: A map of field ID to field value for the issue. Required fields depend on the project and issue type.
+          additionalProperties: true
+          example: example_value
+        transition:
+          $ref: '#/components/schemas/TransitionRef'
+        historyMetadata:
+          type: object
+          description: Metadata about the history entry.
+          additionalProperties: true
+          example: example_value
+        properties:
+          type: array
+          description: Entity properties to set on the issue.
+          items:
+            $ref: '#/components/schemas/EntityProperty'
+          example: []
+      required:
+      - fields
+    Resolution:
+      type: object
+      description: An issue resolution.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the resolution (e.g., Fixed, Won't Fix, Duplicate).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+    IssueRef:
+      type: object
+      description: A reference to an issue.
+      properties:
+        id:
+          type: string
+          example: abc123
+        key:
+          type: string
+          example: example_value
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        fields:
+          type: object
+          properties:
+            summary:
+              type: string
+            status:
+              $ref: '#/components/schemas/StatusDetails'
+            priority:
+              $ref: '#/components/schemas/Priority'
+            issuetype:
+              $ref: '#/components/schemas/IssueTypeDetails'
+          example: example_value
+    PageOfWorklogs:
+      type: object
+      description: A paginated list of worklogs.
+      properties:
+        startAt:
+          type: integer
+          format: int32
+          example: 10
+        maxResults:
+          type: integer
+          format: int32
+          example: 10
+        total:
+          type: integer
+          format: int32
+          example: 10
+        worklogs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Worklog'
+          example: []
+    IssueLink:
+      type: object
+      description: A link between issues.
+      properties:
+        id:
+          type: string
+          example: abc123
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        type:
+          $ref: '#/components/schemas/IssueLinkType'
+        inwardIssue:
+          $ref: '#/components/schemas/IssueRef'
+        outwardIssue:
+          $ref: '#/components/schemas/IssueRef'
+    ProjectRef:
+      type: object
+      description: A reference to a Jira project.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        key:
+          type: string
+          example: example_value
+        name:
+          type: string
+          example: Example Title
+        avatarUrls:
+          $ref: '#/components/schemas/AvatarUrls'
+        projectTypeKey:
+          type: string
+          example: example_value
+    FieldUpdateOperation:
+      type: object
+      description: An operation to perform on a field value.
+      properties:
+        add:
+          description: Value to add to the field.
+          example: example_value
+        remove:
+          description: Value to remove from the field.
+          example: example_value
+        set:
+          description: Value to set the field to.
+          example: example_value
+        edit:
+          description: Value to edit in the field.
+          example: example_value
+        copy:
+          description: Value to copy to the field.
+          example: example_value
+  parameters:
+    issueIdOrKey:
+      name: issueIdOrKey
+      in: path
+      description: The ID or key of the issue (e.g., 10001 or PROJ-123).
+      required: true
+      schema:
+        type: string
+      example: PROJ-123
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'Basic authentication using an Atlassian account email and API token. Format: email:api_token, Base64 encoded. Generate API tokens at https://id.atlassian.com/manage-profile/security/api-tokens.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant (3LO) for Jira Cloud apps.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          tokenUrl: https://auth.atlassian.com/oauth/token
+          scopes:
+            read:jira-work: Read Jira project and issue data.
+            write:jira-work: Create and edit Jira issues and projects.
+            manage:jira-project: Manage Jira project settings.
+            manage:jira-configuration: Manage Jira instance configuration.
+            read:jira-user: Read Jira user information.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token authentication using a personal access token (PAT) or OAuth 2.0 access token.
+externalDocs:
+  description: Jira Cloud Platform REST API v3 Documentation
+  url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/

@@ -1,0 +1,454 @@
+openapi: 3.1.0
+info:
+  title: Jira Cloud Platform REST Issue Comments API
+  description: The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.
+  version: '3'
+  license:
+    name: Atlassian Developer Terms
+    url: https://developer.atlassian.com/platform/marketplace/atlassian-developer-terms/
+  termsOfService: https://www.atlassian.com/legal/cloud-terms-of-service
+  contact:
+    name: Atlassian Developer Support
+    url: https://developer.atlassian.com/support
+    email: ecosystem@atlassian.com
+  x-atlassian-api-version: '3'
+servers:
+- url: https://{domain}.atlassian.net/rest/api/3
+  description: Jira Cloud instance
+  variables:
+    domain:
+      description: Your Jira Cloud site subdomain (e.g., your-company).
+      default: your-domain
+security:
+- basicAuth: []
+- oauth2: []
+- bearerAuth: []
+tags:
+- name: Issue Comments
+  description: Manage comments on issues.
+paths:
+  /issue/{issueIdOrKey}/comment:
+    get:
+      summary: Jira Get Comments
+      description: Returns all comments for an issue. Comments are ordered by created date in ascending order by default.
+      operationId: getComments
+      tags:
+      - Issue Comments
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-comments/#api-rest-api-3-issue-issueidorkey-comment-get
+      parameters:
+      - $ref: '#/components/parameters/issueIdOrKey'
+      - name: startAt
+        in: query
+        description: The index of the first item to return in a page of results (page offset).
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 0
+        example: 10
+      - name: maxResults
+        in: query
+        description: The maximum number of items to return per page.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 50
+        example: 10
+      - name: orderBy
+        in: query
+        description: 'The order of comments returned. Accepted values: created (ascending by default), -created (descending).'
+        required: false
+        schema:
+          type: string
+          enum:
+          - created
+          - -created
+        example: created
+      - name: expand
+        in: query
+        description: 'Use expand to include additional information about comments in the response. Accepted values: renderedBody.'
+        required: false
+        schema:
+          type: string
+        example: example_value
+      responses:
+        '200':
+          description: Comments returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageOfComments'
+              examples:
+                Getcomments200Example:
+                  summary: Default getComments 200 response
+                  x-microcks-default: true
+                  value:
+                    startAt: 10
+                    maxResults: 10
+                    total: 10
+                    comments:
+                    - self: https://www.example.com
+                      id: abc123
+                      renderedBody: example_value
+                      created: '2026-01-15T10:30:00Z'
+                      updated: '2026-01-15T10:30:00Z'
+                      jsdPublic: true
+        '401':
+          description: Authentication credentials are missing or invalid.
+        '404':
+          description: The issue was not found or the user does not have permission to view it.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      summary: Jira Add Comment
+      description: Adds a comment to an issue. The comment body uses Atlassian Document Format (ADF).
+      operationId: addComment
+      tags:
+      - Issue Comments
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-comments/#api-rest-api-3-issue-issueidorkey-comment-post
+      parameters:
+      - $ref: '#/components/parameters/issueIdOrKey'
+      - name: expand
+        in: query
+        description: 'Use expand to include additional information about comments in the response. Accepted values: renderedBody.'
+        required: false
+        schema:
+          type: string
+        example: example_value
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+            example:
+              body:
+                type: doc
+                version: 1
+                content:
+                - type: paragraph
+                  content:
+                  - type: text
+                    text: This is a comment using Atlassian Document Format.
+              visibility:
+                type: role
+                value: Administrators
+      responses:
+        '201':
+          description: Comment added successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+              examples:
+                Addcomment201Example:
+                  summary: Default addComment 201 response
+                  x-microcks-default: true
+                  value:
+                    self: https://www.example.com
+                    id: abc123
+                    author:
+                      self: https://www.example.com
+                      accountId: '500123'
+                      emailAddress: user@example.com
+                      displayName: example_value
+                      active: true
+                      timeZone: example_value
+                      accountType: atlassian
+                    body:
+                      type: doc
+                      version: 1
+                      content:
+                      - {}
+                    renderedBody: example_value
+                    updateAuthor:
+                      self: https://www.example.com
+                      accountId: '500123'
+                      emailAddress: user@example.com
+                      displayName: example_value
+                      active: true
+                      timeZone: example_value
+                      accountType: atlassian
+                    created: '2026-01-15T10:30:00Z'
+                    updated: '2026-01-15T10:30:00Z'
+                    visibility:
+                      type: group
+                      value: example_value
+                      identifier: example_value
+                    jsdPublic: true
+        '400':
+          description: The input is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollection'
+              examples:
+                Addcomment400Example:
+                  summary: Default addComment 400 response
+                  x-microcks-default: true
+                  value:
+                    errorMessages:
+                    - example_value
+                    errors: example_value
+                    status: 10
+        '401':
+          description: Authentication credentials are missing or invalid.
+        '404':
+          description: The issue was not found or the user does not have permission to view it.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    ErrorCollection:
+      type: object
+      description: Error details returned by the API.
+      properties:
+        errorMessages:
+          type: array
+          description: The list of error messages.
+          items:
+            type: string
+          example: []
+        errors:
+          type: object
+          description: Field-specific errors.
+          additionalProperties:
+            type: string
+          example: example_value
+        status:
+          type: integer
+          description: The HTTP status code.
+          example: 10
+    AtlassianDocumentFormat:
+      type: object
+      description: Atlassian Document Format (ADF) representation of rich text content. ADF is a JSON-based format used in Jira Cloud REST API v3 for description, comment, and other rich text fields.
+      required:
+      - type
+      - version
+      - content
+      properties:
+        type:
+          type: string
+          enum:
+          - doc
+          description: The root node type. Always doc.
+          example: doc
+        version:
+          type: integer
+          description: The ADF version. Currently 1.
+          enum:
+          - 1
+          example: 1
+        content:
+          type: array
+          description: The content nodes of the document.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: The node type (e.g., paragraph, heading, bulletList, orderedList, codeBlock, blockquote, table, mediaSingle, rule).
+              content:
+                type: array
+                description: Child content nodes.
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: The inline node type (e.g., text, hardBreak, mention, emoji, inlineCard).
+                    text:
+                      type: string
+                    marks:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            description: The mark type (e.g., strong, em, code, link, underline, strike, textColor).
+                          attrs:
+                            type: object
+                            additionalProperties: true
+                  additionalProperties: true
+              attrs:
+                type: object
+                additionalProperties: true
+            additionalProperties: true
+          example: []
+    UserDetails:
+      type: object
+      description: A Jira user.
+      properties:
+        self:
+          type: string
+          format: uri
+          description: The URL of the user in the REST API.
+          example: https://www.example.com
+        accountId:
+          type: string
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products.
+          maxLength: 128
+          example: '500123'
+        emailAddress:
+          type: string
+          format: email
+          description: The email address of the user (may not be available depending on privacy settings).
+          example: user@example.com
+        displayName:
+          type: string
+          description: The display name of the user.
+          example: example_value
+        active:
+          type: boolean
+          description: Whether the user account is active.
+          example: true
+        timeZone:
+          type: string
+          description: The time zone of the user.
+          example: example_value
+        accountType:
+          type: string
+          description: The type of account.
+          enum:
+          - atlassian
+          - app
+          - customer
+          example: atlassian
+        avatarUrls:
+          $ref: '#/components/schemas/AvatarUrls'
+    Comment:
+      type: object
+      description: A comment on an issue.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        body:
+          $ref: '#/components/schemas/AtlassianDocumentFormat'
+        renderedBody:
+          type: string
+          description: The rendered version of the comment body in HTML.
+          example: example_value
+        updateAuthor:
+          $ref: '#/components/schemas/UserDetails'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        updated:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+        jsdPublic:
+          type: boolean
+          description: Whether the comment is visible in Jira Service Management.
+          example: true
+    PageOfComments:
+      type: object
+      description: A paginated list of comments.
+      properties:
+        startAt:
+          type: integer
+          format: int32
+          example: 10
+        maxResults:
+          type: integer
+          format: int32
+          example: 10
+        total:
+          type: integer
+          format: int32
+          example: 10
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          example: []
+    Visibility:
+      type: object
+      description: The visibility restrictions for a comment.
+      properties:
+        type:
+          type: string
+          enum:
+          - group
+          - role
+          example: group
+        value:
+          type: string
+          description: The name of the group or role to restrict visibility to.
+          example: example_value
+        identifier:
+          type: string
+          description: The ID of the group or role.
+          example: example_value
+    AvatarUrls:
+      type: object
+      description: Avatar URLs in multiple sizes.
+      properties:
+        16x16:
+          type: string
+          format: uri
+          example: https://www.example.com
+        24x24:
+          type: string
+          format: uri
+          example: https://www.example.com
+        32x32:
+          type: string
+          format: uri
+          example: https://www.example.com
+        48x48:
+          type: string
+          format: uri
+          example: https://www.example.com
+  parameters:
+    issueIdOrKey:
+      name: issueIdOrKey
+      in: path
+      description: The ID or key of the issue (e.g., 10001 or PROJ-123).
+      required: true
+      schema:
+        type: string
+      example: PROJ-123
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'Basic authentication using an Atlassian account email and API token. Format: email:api_token, Base64 encoded. Generate API tokens at https://id.atlassian.com/manage-profile/security/api-tokens.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant (3LO) for Jira Cloud apps.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          tokenUrl: https://auth.atlassian.com/oauth/token
+          scopes:
+            read:jira-work: Read Jira project and issue data.
+            write:jira-work: Create and edit Jira issues and projects.
+            manage:jira-project: Manage Jira project settings.
+            manage:jira-configuration: Manage Jira instance configuration.
+            read:jira-user: Read Jira user information.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token authentication using a personal access token (PAT) or OAuth 2.0 access token.
+externalDocs:
+  description: Jira Cloud Platform REST API v3 Documentation
+  url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/

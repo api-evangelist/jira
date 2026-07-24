@@ -1,0 +1,347 @@
+openapi: 3.1.0
+info:
+  title: Jira Cloud Platform REST Issue Comments Issue Transitions API
+  description: The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.
+  version: '3'
+  license:
+    name: Atlassian Developer Terms
+    url: https://developer.atlassian.com/platform/marketplace/atlassian-developer-terms/
+  termsOfService: https://www.atlassian.com/legal/cloud-terms-of-service
+  contact:
+    name: Atlassian Developer Support
+    url: https://developer.atlassian.com/support
+    email: ecosystem@atlassian.com
+  x-atlassian-api-version: '3'
+servers:
+- url: https://{domain}.atlassian.net/rest/api/3
+  description: Jira Cloud instance
+  variables:
+    domain:
+      description: Your Jira Cloud site subdomain (e.g., your-company).
+      default: your-domain
+security:
+- basicAuth: []
+- oauth2: []
+- bearerAuth: []
+tags:
+- name: Issue Transitions
+  description: Retrieve and perform workflow transitions on issues.
+paths:
+  /issue/{issueIdOrKey}/transitions:
+    get:
+      summary: Jira Get Transitions
+      description: Returns either all transitions or a transition that can be performed by the user on an issue, based on the issue's status.
+      operationId: getTransitions
+      tags:
+      - Issue Transitions
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-transitions-get
+      parameters:
+      - $ref: '#/components/parameters/issueIdOrKey'
+      - name: expand
+        in: query
+        description: 'Use expand to include additional information about transitions in the response. Accepted values: transitions.fields.'
+        required: false
+        schema:
+          type: string
+        example: example_value
+      - name: transitionId
+        in: query
+        description: The ID of the transition.
+        required: false
+        schema:
+          type: string
+        example: '500123'
+      - name: skipRemoteOnlyCondition
+        in: query
+        description: Whether transitions with the condition Hide From User Condition are included in the response.
+        required: false
+        schema:
+          type: boolean
+          default: false
+        example: true
+      - name: includeUnavailableTransitions
+        in: query
+        description: Whether details of transitions that fail a condition are included.
+        required: false
+        schema:
+          type: boolean
+          default: false
+        example: true
+      responses:
+        '200':
+          description: Transitions returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transitions'
+              examples:
+                Gettransitions200Example:
+                  summary: Default getTransitions 200 response
+                  x-microcks-default: true
+                  value:
+                    expand: example_value
+                    transitions:
+                    - id: abc123
+                      name: Example Title
+                      hasScreen: true
+                      isGlobal: true
+                      isInitial: true
+                      isConditional: true
+                      fields: example_value
+        '401':
+          description: Authentication credentials are missing or invalid.
+        '404':
+          description: The issue was not found or the user does not have permission to view it.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      summary: Jira Transition Issue
+      description: Performs an issue transition and, optionally, updates the fields and adds a comment. The fields that can be set depend on the transition and the connected Jira instance configuration.
+      operationId: doTransition
+      tags:
+      - Issue Transitions
+      externalDocs:
+        description: API method documentation
+        url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-transitions-post
+      parameters:
+      - $ref: '#/components/parameters/issueIdOrKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueTransitionRequest'
+            example:
+              transition:
+                id: '5'
+              fields:
+                resolution:
+                  name: Fixed
+      responses:
+        '204':
+          description: Transition performed successfully.
+        '400':
+          description: The transition or field values are invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollection'
+              examples:
+                Dotransition400Example:
+                  summary: Default doTransition 400 response
+                  x-microcks-default: true
+                  value:
+                    errorMessages:
+                    - example_value
+                    errors: example_value
+                    status: 10
+        '401':
+          description: Authentication credentials are missing or invalid.
+        '404':
+          description: The issue was not found or the user does not have permission to view it.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    ErrorCollection:
+      type: object
+      description: Error details returned by the API.
+      properties:
+        errorMessages:
+          type: array
+          description: The list of error messages.
+          items:
+            type: string
+          example: []
+        errors:
+          type: object
+          description: Field-specific errors.
+          additionalProperties:
+            type: string
+          example: example_value
+        status:
+          type: integer
+          description: The HTTP status code.
+          example: 10
+    TransitionRef:
+      type: object
+      description: A reference to a transition by ID.
+      properties:
+        id:
+          type: string
+          description: The ID of the transition.
+          example: abc123
+      required:
+      - id
+    Transitions:
+      type: object
+      description: Available transitions for an issue.
+      properties:
+        expand:
+          type: string
+          example: example_value
+        transitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transition'
+          example: []
+    StatusCategory:
+      type: object
+      description: A status category in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: integer
+          format: int64
+          example: abc123
+        key:
+          type: string
+          description: The key of the status category (e.g., new, indeterminate, done).
+          example: example_value
+        colorName:
+          type: string
+          description: The color name for the status category.
+          example: example_value
+        name:
+          type: string
+          description: The name of the status category.
+          example: Example Title
+    StatusDetails:
+      type: object
+      description: A status in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the status (e.g., To Do, In Progress, Done).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          example: https://www.example.com
+        statusCategory:
+          $ref: '#/components/schemas/StatusCategory'
+    Transition:
+      type: object
+      description: A workflow transition.
+      properties:
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        to:
+          $ref: '#/components/schemas/StatusDetails'
+        hasScreen:
+          type: boolean
+          example: true
+        isGlobal:
+          type: boolean
+          example: true
+        isInitial:
+          type: boolean
+          example: true
+        isConditional:
+          type: boolean
+          example: true
+        fields:
+          type: object
+          description: Fields available during the transition.
+          additionalProperties: true
+          example: example_value
+    IssueTransitionRequest:
+      type: object
+      description: Request body for performing an issue transition.
+      required:
+      - transition
+      properties:
+        transition:
+          $ref: '#/components/schemas/TransitionRef'
+        fields:
+          type: object
+          description: A map of field ID to field value to set during the transition.
+          additionalProperties: true
+          example: example_value
+        update:
+          type: object
+          description: A map of operations to perform on issue fields during the transition.
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/FieldUpdateOperation'
+          example: example_value
+        historyMetadata:
+          type: object
+          description: Metadata about the history entry.
+          additionalProperties: true
+          example: example_value
+    FieldUpdateOperation:
+      type: object
+      description: An operation to perform on a field value.
+      properties:
+        add:
+          description: Value to add to the field.
+          example: example_value
+        remove:
+          description: Value to remove from the field.
+          example: example_value
+        set:
+          description: Value to set the field to.
+          example: example_value
+        edit:
+          description: Value to edit in the field.
+          example: example_value
+        copy:
+          description: Value to copy to the field.
+          example: example_value
+  parameters:
+    issueIdOrKey:
+      name: issueIdOrKey
+      in: path
+      description: The ID or key of the issue (e.g., 10001 or PROJ-123).
+      required: true
+      schema:
+        type: string
+      example: PROJ-123
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'Basic authentication using an Atlassian account email and API token. Format: email:api_token, Base64 encoded. Generate API tokens at https://id.atlassian.com/manage-profile/security/api-tokens.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant (3LO) for Jira Cloud apps.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          tokenUrl: https://auth.atlassian.com/oauth/token
+          scopes:
+            read:jira-work: Read Jira project and issue data.
+            write:jira-work: Create and edit Jira issues and projects.
+            manage:jira-project: Manage Jira project settings.
+            manage:jira-configuration: Manage Jira instance configuration.
+            read:jira-user: Read Jira user information.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token authentication using a personal access token (PAT) or OAuth 2.0 access token.
+externalDocs:
+  description: Jira Cloud Platform REST API v3 Documentation
+  url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/
