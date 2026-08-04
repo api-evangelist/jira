@@ -1,0 +1,648 @@
+{
+  "info": {
+    "_postman_id": "f9933402-a120-4602-aec5-4050081adc12",
+    "name": "Jira Cloud Platform REST Issue Comments API",
+    "description": "The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.\n\nContact Support:\n Name: Atlassian Developer Support\n Email: ecosystem@atlassian.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:59:39.000Z",
+    "updatedAt": "2026-07-28T01:59:39.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-f9933402-a120-4602-aec5-4050081adc12"
+  },
+  "item": [
+    {
+      "name": "issue",
+      "item": [
+        {
+          "name": "{issueIdOrKey}",
+          "item": [
+            {
+              "name": "comment",
+              "item": [
+                {
+                  "name": "Jira Get Comments",
+                  "id": "e4b73709-46a5-41ae-8b16-b3c61aad149c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey/comment?startAt=0&maxResults=50&orderBy=created&expand=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey",
+                        "comment"
+                      ],
+                      "query": [
+                        {
+                          "description": "The index of the first item to return in a page of results (page offset).",
+                          "key": "startAt",
+                          "value": "0"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "maxResults",
+                          "value": "50"
+                        },
+                        {
+                          "description": "The order of comments returned. Accepted values: created (ascending by default), -created (descending).",
+                          "key": "orderBy",
+                          "value": "created"
+                        },
+                        {
+                          "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody.",
+                          "key": "expand",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "c4ee0d3e-0c15-4300-b5e0-d55c515306b7",
+                          "key": "issueIdOrKey",
+                          "value": "<string>",
+                          "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                        }
+                      ]
+                    },
+                    "description": "Returns all comments for an issue. Comments are ordered by created date in ascending order by default."
+                  },
+                  "response": [
+                    {
+                      "id": "751bce3c-7b6d-4840-a0da-86fa539884b7",
+                      "name": "Comments returned successfully.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/comment?startAt=0&maxResults=50&orderBy=created&expand=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "comment"
+                          ],
+                          "query": [
+                            {
+                              "description": "The index of the first item to return in a page of results (page offset).",
+                              "key": "startAt",
+                              "value": "0"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "maxResults",
+                              "value": "50"
+                            },
+                            {
+                              "description": "The order of comments returned. Accepted values: created (ascending by default), -created (descending).",
+                              "key": "orderBy",
+                              "value": "created"
+                            },
+                            {
+                              "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody.",
+                              "key": "expand",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"startAt\": \"<integer>\",\n  \"maxResults\": \"<integer>\",\n  \"total\": \"<integer>\",\n  \"comments\": [\n    {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"author\": {\n        \"self\": \"<uri>\",\n        \"accountId\": \"<string>\",\n        \"emailAddress\": \"<email>\",\n        \"displayName\": \"<string>\",\n        \"active\": \"<boolean>\",\n        \"timeZone\": \"<string>\",\n        \"accountType\": \"atlassian\",\n        \"avatarUrls\": {\n          \"16x16\": \"<uri>\",\n          \"24x24\": \"<uri>\",\n          \"32x32\": \"<uri>\",\n          \"48x48\": \"<uri>\"\n        }\n      },\n      \"body\": {\n        \"type\": \"doc\",\n        \"version\": 1,\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"content\": [\n              {\n                \"type\": \"<string>\",\n                \"text\": \"<string>\",\n                \"marks\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"ut_41\": \"veniam aute ea\",\n                      \"autea\": 1166059.2274020016,\n                      \"qui_7f7\": -42116356.5555692\n                    }\n                  },\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"enim_6dc\": \"quis\",\n                      \"labore_0\": \"sed nostrud tempor\"\n                    }\n                  }\n                ],\n                \"dolore2\": \"culpa qui commodo Duis\"\n              },\n              {\n                \"type\": \"<string>\",\n                \"text\": \"<string>\",\n                \"marks\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"cupidatat1c\": false,\n                      \"anim_cd\": 78508739.90614241\n                    }\n                  },\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"irure_5\": -92682903\n                    }\n                  }\n                ],\n                \"exercitationa5\": 51417749.27572736,\n                \"deserunt9c2\": -63198410,\n                \"ad8b\": false\n              }\n            ],\n            \"attrs\": {\n              \"laborum_b\": false,\n              \"irure94\": \"cillum nostrud laboris dolor voluptate\"\n            },\n            \"aliqua798\": -98563086,\n            \"eua\": true\n          },\n          {\n            \"type\": \"<string>\",\n            \"content\": [\n              {\n                \"type\": \"<string>\",\n                \"text\": \"<string>\",\n                \"marks\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"nostruda1\": \"officia et\"\n                    }\n                  },\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"ad76d\": false,\n                      \"incf\": \"quis\",\n                      \"adipisicing14a\": \"proident ut occaecat qui\",\n                      \"ad0e\": -21694131\n                    }\n                  }\n                ]\n              },\n              {\n                \"type\": \"<string>\",\n                \"text\": \"<string>\",\n                \"marks\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"veniam_ca\": \"adipisicing sunt\",\n                      \"fugiat15c\": 10176757.507327631\n                    }\n                  },\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"irure_8\": -33247683.240349658\n                    }\n                  }\n                ]\n              }\n            ],\n            \"attrs\": {\n              \"voluptatee8\": \"ex ea\",\n              \"esse_a8\": \"officia ex fugiat\"\n            }\n          }\n        ]\n      },\n      \"renderedBody\": \"<string>\",\n      \"updateAuthor\": {\n        \"self\": \"<uri>\",\n        \"accountId\": \"<string>\",\n        \"emailAddress\": \"<email>\",\n        \"displayName\": \"<string>\",\n        \"active\": \"<boolean>\",\n        \"timeZone\": \"<string>\",\n        \"accountType\": \"atlassian\",\n        \"avatarUrls\": {\n          \"16x16\": \"<uri>\",\n          \"24x24\": \"<uri>\",\n          \"32x32\": \"<uri>\",\n          \"48x48\": \"<uri>\"\n        }\n      },\n      \"created\": \"<dateTime>\",\n      \"updated\": \"<dateTime>\",\n      \"visibility\": {\n        \"type\": \"group\",\n        \"value\": \"<string>\",\n        \"identifier\": \"<string>\"\n      },\n      \"jsdPublic\": \"<boolean>\"\n    },\n    {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"author\": {\n        \"self\": \"<uri>\",\n        \"accountId\": \"<string>\",\n        \"emailAddress\": \"<email>\",\n        \"displayName\": \"<string>\",\n        \"active\": \"<boolean>\",\n        \"timeZone\": \"<string>\",\n        \"accountType\": \"atlassian\",\n        \"avatarUrls\": {\n          \"16x16\": \"<uri>\",\n          \"24x24\": \"<uri>\",\n          \"32x32\": \"<uri>\",\n          \"48x48\": \"<uri>\"\n        }\n      },\n      \"body\": {\n        \"type\": \"doc\",\n        \"version\": 1,\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"content\": [\n              {\n                \"type\": \"<string>\",\n                \"text\": \"<string>\",\n                \"marks\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"fugiat04\": -49628872.208537176,\n                      \"ipsum2\": -48596809,\n                      \"officia_c64\": -8786321.234294996\n                    }\n                  },\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"qui2\": 15844341.674553335,\n                      \"amet_427\": \"laboris Duis\",\n                      \"culpa_99\": -73807071\n                    }\n                  }\n                ],\n                \"animf1\": \"cillum fugiat in dolore et\",\n                \"ex_17a\": true,\n                \"fugiat1d\": \"sint aliquip labore et\"\n              },\n              {\n                \"type\": \"<string>\",\n                \"text\": \"<string>\",\n                \"marks\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"magna45\": \"incididunt aliqua dolor des\"\n                    }\n                  },\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"occaecat_6\": \"laboris proident\"\n                    }\n                  }\n                ],\n                \"sedd18\": false,\n                \"in3f\": 12951827\n              }\n            ],\n            \"attrs\": {\n              \"aute_9\": \"proident irure\",\n              \"ea_3ad\": \"dolor irure et\"\n            },\n            \"veniam_9\": -94374255.8710635,\n            \"nostrud_c2\": false,\n            \"ut2\": true,\n            \"officia8\": \"enim deserunt commodo dolor\"\n          },\n          {\n            \"type\": \"<string>\",\n            \"content\": [\n              {\n                \"type\": \"<string>\",\n                \"text\": \"<string>\",\n                \"marks\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"laborum56\": \"Excepteur nisi\"\n                    }\n                  },\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"consecteturb8\": 94542910.77748671\n                    }\n                  }\n                ],\n                \"ullamcoc_\": 48044769.3916378\n              },\n              {\n                \"type\": \"<string>\",\n                \"text\": \"<string>\",\n                \"marks\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"ullamco_c\": \"magna labore dolore cillum\",\n                      \"fugiat_3\": false,\n                      \"consequatc\": 74596062.14892843\n                    }\n                  },\n                  {\n                    \"type\": \"<string>\",\n                    \"attrs\": {\n                      \"cillum_13\": -77300770\n                    }\n                  }\n                ],\n                \"aliqua_e\": \"qui id\",\n                \"minim4c\": -2699053.5273248404\n              }\n            ],\n            \"attrs\": {\n              \"ipsum_1\": 58572915.54965398\n            },\n            \"enim8cb\": true,\n            \"consequat_f3\": false\n          }\n        ]\n      },\n      \"renderedBody\": \"<string>\",\n      \"updateAuthor\": {\n        \"self\": \"<uri>\",\n        \"accountId\": \"<string>\",\n        \"emailAddress\": \"<email>\",\n        \"displayName\": \"<string>\",\n        \"active\": \"<boolean>\",\n        \"timeZone\": \"<string>\",\n        \"accountType\": \"atlassian\",\n        \"avatarUrls\": {\n          \"16x16\": \"<uri>\",\n          \"24x24\": \"<uri>\",\n          \"32x32\": \"<uri>\",\n          \"48x48\": \"<uri>\"\n        }\n      },\n      \"created\": \"<dateTime>\",\n      \"updated\": \"<dateTime>\",\n      \"visibility\": {\n        \"type\": \"group\",\n        \"value\": \"<string>\",\n        \"identifier\": \"<string>\"\n      },\n      \"jsdPublic\": \"<boolean>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:59:40.000Z",
+                      "updatedAt": "2026-07-28T01:59:40.000Z",
+                      "uid": "35240-751bce3c-7b6d-4840-a0da-86fa539884b7"
+                    },
+                    {
+                      "id": "9baf7bbe-4127-487c-8702-4d4f4ca34557",
+                      "name": "Authentication credentials are missing or invalid.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/comment?startAt=0&maxResults=50&orderBy=created&expand=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "comment"
+                          ],
+                          "query": [
+                            {
+                              "description": "The index of the first item to return in a page of results (page offset).",
+                              "key": "startAt",
+                              "value": "0"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "maxResults",
+                              "value": "50"
+                            },
+                            {
+                              "description": "The order of comments returned. Accepted values: created (ascending by default), -created (descending).",
+                              "key": "orderBy",
+                              "value": "created"
+                            },
+                            {
+                              "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody.",
+                              "key": "expand",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:40.000Z",
+                      "updatedAt": "2026-07-28T01:59:40.000Z",
+                      "uid": "35240-9baf7bbe-4127-487c-8702-4d4f4ca34557"
+                    },
+                    {
+                      "id": "9e0c3a54-2bc5-4ce9-85ff-aaf65e16957f",
+                      "name": "The issue was not found or the user does not have permission to view it.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/comment?startAt=0&maxResults=50&orderBy=created&expand=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "comment"
+                          ],
+                          "query": [
+                            {
+                              "description": "The index of the first item to return in a page of results (page offset).",
+                              "key": "startAt",
+                              "value": "0"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "maxResults",
+                              "value": "50"
+                            },
+                            {
+                              "description": "The order of comments returned. Accepted values: created (ascending by default), -created (descending).",
+                              "key": "orderBy",
+                              "value": "created"
+                            },
+                            {
+                              "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody.",
+                              "key": "expand",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:40.000Z",
+                      "updatedAt": "2026-07-28T01:59:40.000Z",
+                      "uid": "35240-9e0c3a54-2bc5-4ce9-85ff-aaf65e16957f"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:59:40.000Z",
+                  "updatedAt": "2026-07-28T01:59:40.000Z",
+                  "uid": "35240-e4b73709-46a5-41ae-8b16-b3c61aad149c"
+                },
+                {
+                  "name": "Jira Add Comment",
+                  "id": "a555c775-6bdd-461e-9d4d-b2678e0460d7",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"self\": \"<uri>\",\n  \"id\": \"<string>\",\n  \"author\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"minim_b1a\": true,\n                  \"elit_\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"irure1\": 85262418.6423221\n                }\n              }\n            ],\n            \"ut8\": \"proident\",\n            \"fugiat__\": true\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"et4\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"sint_20\": 20043265,\n                  \"et_\": \"id tempor\"\n                }\n              }\n            ]\n          }\n        ],\n        \"attrs\": {\n          \"consequat_90\": -86686449.92970961,\n          \"ullamco6\": 8456820\n        },\n        \"ad07\": \"sunt\",\n        \"tempor_31\": -2712960.84954305,\n        \"eta72\": 93002666.02871764,\n        \"ut3\": 24402372.153154463,\n        \"enim_5\": true\n      },\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"Ut_2\": -8551384\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"reprehenderit_a4\": \"voluptate irure laborum\"\n                }\n              }\n            ]\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"ut2_7\": 55621882.815093964,\n                  \"voluptatee\": 12584597\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"minim_c_\": true,\n                  \"id_72b\": \"magna\"\n                }\n              }\n            ],\n            \"fugiat1\": \"dolore eiusmod\",\n            \"Duisd_c\": \"elit velit qui nisi aute\",\n            \"occaecat_7d\": true\n          }\n        ],\n        \"attrs\": {\n          \"estbb\": 15726272\n        },\n        \"sit_8\": -56167178.72970152,\n        \"elit_5d\": -78202687,\n        \"elitfa9\": \"ipsum laborum\"\n      }\n    ]\n  },\n  \"renderedBody\": \"<string>\",\n  \"updateAuthor\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"created\": \"<dateTime>\",\n  \"updated\": \"<dateTime>\",\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"jsdPublic\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey/comment?expand=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey",
+                        "comment"
+                      ],
+                      "query": [
+                        {
+                          "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody.",
+                          "key": "expand",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "3853798f-0852-451e-9faf-e4509011f5b3",
+                          "key": "issueIdOrKey",
+                          "value": "<string>",
+                          "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                        }
+                      ]
+                    },
+                    "description": "Adds a comment to an issue. The comment body uses Atlassian Document Format (ADF)."
+                  },
+                  "response": [
+                    {
+                      "id": "30c1bfc5-3c8e-4f6b-a04d-f839ae116288",
+                      "name": "Comment added successfully.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"self\": \"<uri>\",\n  \"id\": \"<string>\",\n  \"author\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"minim_b1a\": true,\n                  \"elit_\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"irure1\": 85262418.6423221\n                }\n              }\n            ],\n            \"ut8\": \"proident\",\n            \"fugiat__\": true\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"et4\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"sint_20\": 20043265,\n                  \"et_\": \"id tempor\"\n                }\n              }\n            ]\n          }\n        ],\n        \"attrs\": {\n          \"consequat_90\": -86686449.92970961,\n          \"ullamco6\": 8456820\n        },\n        \"ad07\": \"sunt\",\n        \"tempor_31\": -2712960.84954305,\n        \"eta72\": 93002666.02871764,\n        \"ut3\": 24402372.153154463,\n        \"enim_5\": true\n      },\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"Ut_2\": -8551384\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"reprehenderit_a4\": \"voluptate irure laborum\"\n                }\n              }\n            ]\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"ut2_7\": 55621882.815093964,\n                  \"voluptatee\": 12584597\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"minim_c_\": true,\n                  \"id_72b\": \"magna\"\n                }\n              }\n            ],\n            \"fugiat1\": \"dolore eiusmod\",\n            \"Duisd_c\": \"elit velit qui nisi aute\",\n            \"occaecat_7d\": true\n          }\n        ],\n        \"attrs\": {\n          \"estbb\": 15726272\n        },\n        \"sit_8\": -56167178.72970152,\n        \"elit_5d\": -78202687,\n        \"elitfa9\": \"ipsum laborum\"\n      }\n    ]\n  },\n  \"renderedBody\": \"<string>\",\n  \"updateAuthor\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"created\": \"<dateTime>\",\n  \"updated\": \"<dateTime>\",\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"jsdPublic\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/comment?expand=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "comment"
+                          ],
+                          "query": [
+                            {
+                              "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody.",
+                              "key": "expand",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"self\": \"<uri>\",\n  \"id\": \"<string>\",\n  \"author\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"minim_b1a\": true,\n                  \"elit_\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"irure1\": 85262418.6423221\n                }\n              }\n            ],\n            \"ut8\": \"proident\",\n            \"fugiat__\": true\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"et4\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"sint_20\": 20043265,\n                  \"et_\": \"id tempor\"\n                }\n              }\n            ]\n          }\n        ],\n        \"attrs\": {\n          \"consequat_90\": -86686449.92970961,\n          \"ullamco6\": 8456820\n        },\n        \"ad07\": \"sunt\",\n        \"tempor_31\": -2712960.84954305,\n        \"eta72\": 93002666.02871764,\n        \"ut3\": 24402372.153154463,\n        \"enim_5\": true\n      },\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"Ut_2\": -8551384\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"reprehenderit_a4\": \"voluptate irure laborum\"\n                }\n              }\n            ]\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"ut2_7\": 55621882.815093964,\n                  \"voluptatee\": 12584597\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"minim_c_\": true,\n                  \"id_72b\": \"magna\"\n                }\n              }\n            ],\n            \"fugiat1\": \"dolore eiusmod\",\n            \"Duisd_c\": \"elit velit qui nisi aute\",\n            \"occaecat_7d\": true\n          }\n        ],\n        \"attrs\": {\n          \"estbb\": 15726272\n        },\n        \"sit_8\": -56167178.72970152,\n        \"elit_5d\": -78202687,\n        \"elitfa9\": \"ipsum laborum\"\n      }\n    ]\n  },\n  \"renderedBody\": \"<string>\",\n  \"updateAuthor\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"created\": \"<dateTime>\",\n  \"updated\": \"<dateTime>\",\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"jsdPublic\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T01:59:40.000Z",
+                      "updatedAt": "2026-07-28T01:59:40.000Z",
+                      "uid": "35240-30c1bfc5-3c8e-4f6b-a04d-f839ae116288"
+                    },
+                    {
+                      "id": "0e7cf710-e126-4146-aa49-0baa5b8165a4",
+                      "name": "The input is invalid.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"self\": \"<uri>\",\n  \"id\": \"<string>\",\n  \"author\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"minim_b1a\": true,\n                  \"elit_\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"irure1\": 85262418.6423221\n                }\n              }\n            ],\n            \"ut8\": \"proident\",\n            \"fugiat__\": true\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"et4\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"sint_20\": 20043265,\n                  \"et_\": \"id tempor\"\n                }\n              }\n            ]\n          }\n        ],\n        \"attrs\": {\n          \"consequat_90\": -86686449.92970961,\n          \"ullamco6\": 8456820\n        },\n        \"ad07\": \"sunt\",\n        \"tempor_31\": -2712960.84954305,\n        \"eta72\": 93002666.02871764,\n        \"ut3\": 24402372.153154463,\n        \"enim_5\": true\n      },\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"Ut_2\": -8551384\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"reprehenderit_a4\": \"voluptate irure laborum\"\n                }\n              }\n            ]\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"ut2_7\": 55621882.815093964,\n                  \"voluptatee\": 12584597\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"minim_c_\": true,\n                  \"id_72b\": \"magna\"\n                }\n              }\n            ],\n            \"fugiat1\": \"dolore eiusmod\",\n            \"Duisd_c\": \"elit velit qui nisi aute\",\n            \"occaecat_7d\": true\n          }\n        ],\n        \"attrs\": {\n          \"estbb\": 15726272\n        },\n        \"sit_8\": -56167178.72970152,\n        \"elit_5d\": -78202687,\n        \"elitfa9\": \"ipsum laborum\"\n      }\n    ]\n  },\n  \"renderedBody\": \"<string>\",\n  \"updateAuthor\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"created\": \"<dateTime>\",\n  \"updated\": \"<dateTime>\",\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"jsdPublic\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/comment?expand=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "comment"
+                          ],
+                          "query": [
+                            {
+                              "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody.",
+                              "key": "expand",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errorMessages\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"errors\": {\n    \"deserunt_11\": \"<string>\"\n  },\n  \"status\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T01:59:40.000Z",
+                      "updatedAt": "2026-07-28T01:59:40.000Z",
+                      "uid": "35240-0e7cf710-e126-4146-aa49-0baa5b8165a4"
+                    },
+                    {
+                      "id": "4a3c0ba6-6064-4e3c-a794-ba6552b58193",
+                      "name": "Authentication credentials are missing or invalid.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"self\": \"<uri>\",\n  \"id\": \"<string>\",\n  \"author\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"minim_b1a\": true,\n                  \"elit_\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"irure1\": 85262418.6423221\n                }\n              }\n            ],\n            \"ut8\": \"proident\",\n            \"fugiat__\": true\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"et4\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"sint_20\": 20043265,\n                  \"et_\": \"id tempor\"\n                }\n              }\n            ]\n          }\n        ],\n        \"attrs\": {\n          \"consequat_90\": -86686449.92970961,\n          \"ullamco6\": 8456820\n        },\n        \"ad07\": \"sunt\",\n        \"tempor_31\": -2712960.84954305,\n        \"eta72\": 93002666.02871764,\n        \"ut3\": 24402372.153154463,\n        \"enim_5\": true\n      },\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"Ut_2\": -8551384\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"reprehenderit_a4\": \"voluptate irure laborum\"\n                }\n              }\n            ]\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"ut2_7\": 55621882.815093964,\n                  \"voluptatee\": 12584597\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"minim_c_\": true,\n                  \"id_72b\": \"magna\"\n                }\n              }\n            ],\n            \"fugiat1\": \"dolore eiusmod\",\n            \"Duisd_c\": \"elit velit qui nisi aute\",\n            \"occaecat_7d\": true\n          }\n        ],\n        \"attrs\": {\n          \"estbb\": 15726272\n        },\n        \"sit_8\": -56167178.72970152,\n        \"elit_5d\": -78202687,\n        \"elitfa9\": \"ipsum laborum\"\n      }\n    ]\n  },\n  \"renderedBody\": \"<string>\",\n  \"updateAuthor\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"created\": \"<dateTime>\",\n  \"updated\": \"<dateTime>\",\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"jsdPublic\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/comment?expand=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "comment"
+                          ],
+                          "query": [
+                            {
+                              "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody.",
+                              "key": "expand",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:40.000Z",
+                      "updatedAt": "2026-07-28T01:59:40.000Z",
+                      "uid": "35240-4a3c0ba6-6064-4e3c-a794-ba6552b58193"
+                    },
+                    {
+                      "id": "5e35bf28-e78d-4318-95e4-6a623c588d71",
+                      "name": "The issue was not found or the user does not have permission to view it.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"self\": \"<uri>\",\n  \"id\": \"<string>\",\n  \"author\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"minim_b1a\": true,\n                  \"elit_\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"irure1\": 85262418.6423221\n                }\n              }\n            ],\n            \"ut8\": \"proident\",\n            \"fugiat__\": true\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"et4\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"sint_20\": 20043265,\n                  \"et_\": \"id tempor\"\n                }\n              }\n            ]\n          }\n        ],\n        \"attrs\": {\n          \"consequat_90\": -86686449.92970961,\n          \"ullamco6\": 8456820\n        },\n        \"ad07\": \"sunt\",\n        \"tempor_31\": -2712960.84954305,\n        \"eta72\": 93002666.02871764,\n        \"ut3\": 24402372.153154463,\n        \"enim_5\": true\n      },\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"Ut_2\": -8551384\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"reprehenderit_a4\": \"voluptate irure laborum\"\n                }\n              }\n            ]\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"ut2_7\": 55621882.815093964,\n                  \"voluptatee\": 12584597\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"minim_c_\": true,\n                  \"id_72b\": \"magna\"\n                }\n              }\n            ],\n            \"fugiat1\": \"dolore eiusmod\",\n            \"Duisd_c\": \"elit velit qui nisi aute\",\n            \"occaecat_7d\": true\n          }\n        ],\n        \"attrs\": {\n          \"estbb\": 15726272\n        },\n        \"sit_8\": -56167178.72970152,\n        \"elit_5d\": -78202687,\n        \"elitfa9\": \"ipsum laborum\"\n      }\n    ]\n  },\n  \"renderedBody\": \"<string>\",\n  \"updateAuthor\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"created\": \"<dateTime>\",\n  \"updated\": \"<dateTime>\",\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"jsdPublic\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/comment?expand=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "comment"
+                          ],
+                          "query": [
+                            {
+                              "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody.",
+                              "key": "expand",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:40.000Z",
+                      "updatedAt": "2026-07-28T01:59:40.000Z",
+                      "uid": "35240-5e35bf28-e78d-4318-95e4-6a623c588d71"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:59:40.000Z",
+                  "updatedAt": "2026-07-28T01:59:40.000Z",
+                  "uid": "35240-a555c775-6bdd-461e-9d4d-b2678e0460d7"
+                }
+              ],
+              "id": "3395ac9a-491b-490f-8188-a4236adab73b",
+              "createdAt": "2026-07-28T01:59:40.000Z",
+              "updatedAt": "2026-07-28T01:59:40.000Z",
+              "uid": "35240-3395ac9a-491b-490f-8188-a4236adab73b"
+            }
+          ],
+          "id": "1cdd8555-4814-47a6-a150-603444947e3b",
+          "createdAt": "2026-07-28T01:59:40.000Z",
+          "updatedAt": "2026-07-28T01:59:40.000Z",
+          "uid": "35240-1cdd8555-4814-47a6-a150-603444947e3b"
+        }
+      ],
+      "id": "681737c6-354f-47d4-be01-7380ccea2006",
+      "createdAt": "2026-07-28T01:59:40.000Z",
+      "updatedAt": "2026-07-28T01:59:40.000Z",
+      "uid": "35240-681737c6-354f-47d4-be01-7380ccea2006"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "domain",
+      "value": "your-domain"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{domain}}.atlassian.net/rest/api/3"
+    }
+  ]
+}

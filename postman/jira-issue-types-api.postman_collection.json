@@ -1,0 +1,154 @@
+{
+  "info": {
+    "_postman_id": "1c7f2561-5454-4e45-ab6f-227d987a7b92",
+    "name": "Jira Cloud Platform REST Issue Comments Issue Types API",
+    "description": "The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.\n\nContact Support:\n Name: Atlassian Developer Support\n Email: ecosystem@atlassian.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:59:44.000Z",
+    "updatedAt": "2026-07-28T01:59:44.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1c7f2561-5454-4e45-ab6f-227d987a7b92"
+  },
+  "item": [
+    {
+      "name": "issuetype",
+      "item": [
+        {
+          "name": "Jira Get All Issue Types for User",
+          "id": "f27fbd5e-d49d-43b6-a91d-9dd8b1efe323",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/issuetype",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "issuetype"
+              ]
+            },
+            "description": "Returns all issue types visible to the user. The list of issue types returned depends on the user's permissions."
+          },
+          "response": [
+            {
+              "id": "49147bcd-8fde-446d-a126-b34f9fd8bbad",
+              "name": "Issue types returned successfully.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/issuetype",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "issuetype"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"self\": \"<uri>\",\n    \"id\": \"<string>\",\n    \"description\": \"<string>\",\n    \"iconUrl\": \"<uri>\",\n    \"name\": \"<string>\",\n    \"subtask\": \"<boolean>\",\n    \"avatarId\": \"<long>\",\n    \"hierarchyLevel\": \"<integer>\",\n    \"scope\": {\n      \"type\": \"TEMPLATE\",\n      \"project\": {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"key\": \"<string>\",\n        \"name\": \"<string>\",\n        \"avatarUrls\": {\n          \"16x16\": \"<uri>\",\n          \"24x24\": \"<uri>\",\n          \"32x32\": \"<uri>\",\n          \"48x48\": \"<uri>\"\n        },\n        \"projectTypeKey\": \"<string>\"\n      }\n    }\n  },\n  {\n    \"self\": \"<uri>\",\n    \"id\": \"<string>\",\n    \"description\": \"<string>\",\n    \"iconUrl\": \"<uri>\",\n    \"name\": \"<string>\",\n    \"subtask\": \"<boolean>\",\n    \"avatarId\": \"<long>\",\n    \"hierarchyLevel\": \"<integer>\",\n    \"scope\": {\n      \"type\": \"TEMPLATE\",\n      \"project\": {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"key\": \"<string>\",\n        \"name\": \"<string>\",\n        \"avatarUrls\": {\n          \"16x16\": \"<uri>\",\n          \"24x24\": \"<uri>\",\n          \"32x32\": \"<uri>\",\n          \"48x48\": \"<uri>\"\n        },\n        \"projectTypeKey\": \"<string>\"\n      }\n    }\n  }\n]",
+              "createdAt": "2026-07-28T01:59:45.000Z",
+              "updatedAt": "2026-07-28T01:59:45.000Z",
+              "uid": "35240-49147bcd-8fde-446d-a126-b34f9fd8bbad"
+            },
+            {
+              "id": "0a36c135-f6f5-4812-9d18-f87e8768fcde",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/issuetype",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "issuetype"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T01:59:45.000Z",
+              "updatedAt": "2026-07-28T01:59:45.000Z",
+              "uid": "35240-0a36c135-f6f5-4812-9d18-f87e8768fcde"
+            }
+          ],
+          "createdAt": "2026-07-28T01:59:45.000Z",
+          "updatedAt": "2026-07-28T01:59:45.000Z",
+          "uid": "35240-f27fbd5e-d49d-43b6-a91d-9dd8b1efe323"
+        }
+      ],
+      "id": "5f253b7f-fb6d-4b11-b197-5740b9267b6b",
+      "createdAt": "2026-07-28T01:59:45.000Z",
+      "updatedAt": "2026-07-28T01:59:45.000Z",
+      "uid": "35240-5f253b7f-fb6d-4b11-b197-5740b9267b6b"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "domain",
+      "value": "your-domain"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{domain}}.atlassian.net/rest/api/3"
+    }
+  ]
+}

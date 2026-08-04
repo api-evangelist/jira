@@ -1,0 +1,236 @@
+{
+  "info": {
+    "_postman_id": "8c0a5939-ccd4-4732-adb5-2e9bc64a8a33",
+    "name": "Jira Cloud Platform REST Issue Comments Issue Statuses API",
+    "description": "The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.\n\nContact Support:\n Name: Atlassian Developer Support\n Email: ecosystem@atlassian.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:59:42.000Z",
+    "updatedAt": "2026-07-28T01:59:42.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-8c0a5939-ccd4-4732-adb5-2e9bc64a8a33"
+  },
+  "item": [
+    {
+      "name": "project",
+      "item": [
+        {
+          "name": "{projectIdOrKey}",
+          "item": [
+            {
+              "name": "statuses",
+              "item": [
+                {
+                  "name": "Jira Get All Statuses for Project",
+                  "id": "34b808f1-72b9-4102-a313-a3e3a583dd63",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/project/:projectIdOrKey/statuses",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "project",
+                        ":projectIdOrKey",
+                        "statuses"
+                      ],
+                      "variable": [
+                        {
+                          "id": "6a15eb6e-ea47-4555-9c2c-7c5cc1943d5c",
+                          "key": "projectIdOrKey",
+                          "value": "<string>",
+                          "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                        }
+                      ]
+                    },
+                    "description": "Returns the valid statuses for a project. The statuses are grouped by issue type, listing the allowed statuses for each issue type in the project."
+                  },
+                  "response": [
+                    {
+                      "id": "eec5bd7b-7e0c-4571-b1b9-6efefe9bdc83",
+                      "name": "Statuses returned successfully.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/project/:projectIdOrKey/statuses",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "project",
+                            ":projectIdOrKey",
+                            "statuses"
+                          ],
+                          "variable": [
+                            {
+                              "key": "projectIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"self\": \"<uri>\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"subtask\": \"<boolean>\",\n    \"statuses\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"statusCategory\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<long>\",\n          \"key\": \"<string>\",\n          \"colorName\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"statusCategory\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<long>\",\n          \"key\": \"<string>\",\n          \"colorName\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  {\n    \"self\": \"<uri>\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"subtask\": \"<boolean>\",\n    \"statuses\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"statusCategory\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<long>\",\n          \"key\": \"<string>\",\n          \"colorName\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"statusCategory\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<long>\",\n          \"key\": \"<string>\",\n          \"colorName\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  }\n]",
+                      "createdAt": "2026-07-28T01:59:43.000Z",
+                      "updatedAt": "2026-07-28T01:59:43.000Z",
+                      "uid": "35240-eec5bd7b-7e0c-4571-b1b9-6efefe9bdc83"
+                    },
+                    {
+                      "id": "9731583f-6c21-4f56-9aa5-43a9e0a10a6b",
+                      "name": "Authentication credentials are missing or invalid.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/project/:projectIdOrKey/statuses",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "project",
+                            ":projectIdOrKey",
+                            "statuses"
+                          ],
+                          "variable": [
+                            {
+                              "key": "projectIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:43.000Z",
+                      "updatedAt": "2026-07-28T01:59:43.000Z",
+                      "uid": "35240-9731583f-6c21-4f56-9aa5-43a9e0a10a6b"
+                    },
+                    {
+                      "id": "f7890f7c-87d0-4dca-a166-4f565eaa5714",
+                      "name": "The project was not found or the user does not have permission to view it.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/project/:projectIdOrKey/statuses",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "project",
+                            ":projectIdOrKey",
+                            "statuses"
+                          ],
+                          "variable": [
+                            {
+                              "key": "projectIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:43.000Z",
+                      "updatedAt": "2026-07-28T01:59:43.000Z",
+                      "uid": "35240-f7890f7c-87d0-4dca-a166-4f565eaa5714"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:59:43.000Z",
+                  "updatedAt": "2026-07-28T01:59:43.000Z",
+                  "uid": "35240-34b808f1-72b9-4102-a313-a3e3a583dd63"
+                }
+              ],
+              "id": "01be4e22-1447-4cd9-a993-bf78e19d971b",
+              "createdAt": "2026-07-28T01:59:43.000Z",
+              "updatedAt": "2026-07-28T01:59:43.000Z",
+              "uid": "35240-01be4e22-1447-4cd9-a993-bf78e19d971b"
+            }
+          ],
+          "id": "a10ada1f-88af-4b61-83f6-ec5631a39581",
+          "createdAt": "2026-07-28T01:59:43.000Z",
+          "updatedAt": "2026-07-28T01:59:43.000Z",
+          "uid": "35240-a10ada1f-88af-4b61-83f6-ec5631a39581"
+        }
+      ],
+      "id": "d304920b-de51-4e3d-91da-52883a775092",
+      "createdAt": "2026-07-28T01:59:43.000Z",
+      "updatedAt": "2026-07-28T01:59:43.000Z",
+      "uid": "35240-d304920b-de51-4e3d-91da-52883a775092"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "domain",
+      "value": "your-domain"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{domain}}.atlassian.net/rest/api/3"
+    }
+  ]
+}

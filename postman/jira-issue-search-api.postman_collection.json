@@ -1,0 +1,578 @@
+{
+  "info": {
+    "_postman_id": "52e2eada-b1cc-4567-a3eb-1f40f4c25ad3",
+    "name": "Jira Cloud Platform REST Issue Comments Issue Search API",
+    "description": "The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.\n\nContact Support:\n Name: Atlassian Developer Support\n Email: ecosystem@atlassian.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:59:41.000Z",
+    "updatedAt": "2026-07-28T01:59:41.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-52e2eada-b1cc-4567-a3eb-1f40f4c25ad3"
+  },
+  "item": [
+    {
+      "name": "search",
+      "item": [
+        {
+          "name": "Jira Search for Issues Using Jql (get)",
+          "id": "39c2fa4e-18ed-4d95-822b-3b16c2a2d743",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/search?jql=<string>&startAt=0&maxResults=50&validateQuery=strict&fields=<string>&fields=<string>&expand=<string>&properties=<string>&properties=<string>&fieldsByKeys=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search"
+              ],
+              "query": [
+                {
+                  "description": "The JQL query string. For example: project = HSP AND issuetype = Bug. See JQL documentation for syntax.",
+                  "key": "jql",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The index of the first item to return in a page of results (page offset).",
+                  "key": "startAt",
+                  "value": "0"
+                },
+                {
+                  "description": "The maximum number of items to return per page. The maximum allowed value is determined by the Jira instance configuration, typically 100.",
+                  "key": "maxResults",
+                  "value": "50"
+                },
+                {
+                  "description": "Whether to validate the JQL query and how to handle validation results. Accepted values: strict, warn, none.",
+                  "key": "validateQuery",
+                  "value": "strict"
+                },
+                {
+                  "description": "A list of fields to return for each issue. Use *all for all fields, *navigable for navigable fields only.",
+                  "key": "fields",
+                  "value": "<string>"
+                },
+                {
+                  "description": "A list of fields to return for each issue. Use *all for all fields, *navigable for navigable fields only.",
+                  "key": "fields",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Use expand to include additional information about issues in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations.",
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "description": "A list of issue properties to return for each issue.",
+                  "key": "properties",
+                  "value": "<string>"
+                },
+                {
+                  "description": "A list of issue properties to return for each issue.",
+                  "key": "properties",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Whether fields in fields are referenced by keys rather than IDs.",
+                  "key": "fieldsByKeys",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Searches for issues using JQL. If the JQL query expression is too large to be encoded as a query parameter, use the POST version of this resource. Sorting is supported via the ORDER BY clause in JQL."
+          },
+          "response": [
+            {
+              "id": "0ca9a723-b4a0-4cb5-9dba-cebb19675941",
+              "name": "Search results returned successfully.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/search?jql=<string>&startAt=0&maxResults=50&validateQuery=strict&fields=<string>&expand=<string>&properties=<string>&fieldsByKeys=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "search"
+                  ],
+                  "query": [
+                    {
+                      "description": "The JQL query string. For example: project = HSP AND issuetype = Bug. See JQL documentation for syntax.",
+                      "key": "jql",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The index of the first item to return in a page of results (page offset).",
+                      "key": "startAt",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The maximum number of items to return per page. The maximum allowed value is determined by the Jira instance configuration, typically 100.",
+                      "key": "maxResults",
+                      "value": "50"
+                    },
+                    {
+                      "description": "Whether to validate the JQL query and how to handle validation results. Accepted values: strict, warn, none.",
+                      "key": "validateQuery",
+                      "value": "strict"
+                    },
+                    {
+                      "description": "A list of fields to return for each issue. Use *all for all fields, *navigable for navigable fields only.",
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Use expand to include additional information about issues in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations.",
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A list of issue properties to return for each issue.",
+                      "key": "properties",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Whether fields in fields are referenced by keys rather than IDs.",
+                      "key": "fieldsByKeys",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"expand\": \"<string>\",\n  \"startAt\": \"<integer>\",\n  \"maxResults\": \"<integer>\",\n  \"total\": \"<integer>\",\n  \"issues\": [\n    {\n      \"id\": \"<string>\",\n      \"key\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"expand\": \"<string>\",\n      \"fields\": {\n        \"summary\": \"<string>\",\n        \"description\": {\n          \"type\": \"doc\",\n          \"version\": 1,\n          \"content\": [\n            {\n              \"type\": \"<string>\",\n              \"content\": [\n                {\n                  \"type\": \"<string>\",\n                  \"text\": \"<string>\",\n                  \"marks\": [\n                    {\n                      \"type\": \"<string>\",\n                      \"attrs\": {\n                        \"do_5\": -91738166\n                      }\n                    }\n                  ],\n                  \"ut_6\": true,\n                  \"sintd\": \"elit nulla\"\n                }\n              ],\n              \"attrs\": {\n                \"exercitation__c\": 63284586.02894074,\n                \"consequat_f\": false\n              },\n              \"qui_7\": -76562886.94253592\n            }\n          ]\n        },\n        \"issuetype\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"name\": \"<string>\",\n          \"subtask\": \"<boolean>\",\n          \"avatarId\": \"<long>\",\n          \"hierarchyLevel\": \"<integer>\",\n          \"scope\": {\n            \"type\": \"PROJECT\",\n            \"project\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"key\": \"<string>\",\n              \"name\": \"<string>\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              },\n              \"projectTypeKey\": \"<string>\"\n            }\n          }\n        },\n        \"project\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"key\": \"<string>\",\n          \"name\": \"<string>\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          },\n          \"projectTypeKey\": \"<string>\"\n        },\n        \"status\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"statusCategory\": {\n            \"self\": \"<uri>\",\n            \"id\": \"<long>\",\n            \"key\": \"<string>\",\n            \"colorName\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        },\n        \"priority\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"statusColor\": \"<string>\"\n        },\n        \"assignee\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"app\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"reporter\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"app\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"creator\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"customer\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"labels\": [\n          \"<string>\"\n        ],\n        \"components\": [\n          {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"description\": \"<string>\",\n            \"lead\": {\n              \"self\": \"<uri>\",\n              \"accountId\": \"<string>\",\n              \"emailAddress\": \"<email>\",\n              \"displayName\": \"<string>\",\n              \"active\": \"<boolean>\",\n              \"timeZone\": \"<string>\",\n              \"accountType\": \"customer\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              }\n            },\n            \"assigneeType\": \"PROJECT_DEFAULT\",\n            \"assignee\": {\n              \"self\": \"<uri>\",\n              \"accountId\": \"<string>\",\n              \"emailAddress\": \"<email>\",\n              \"displayName\": \"<string>\",\n              \"active\": \"<boolean>\",\n              \"timeZone\": \"<string>\",\n              \"accountType\": \"app\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              }\n            },\n            \"project\": \"<string>\",\n            \"projectId\": \"<long>\"\n          }\n        ],\n        \"fixVersions\": [\n          {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"description\": \"<string>\",\n            \"archived\": \"<boolean>\",\n            \"released\": \"<boolean>\",\n            \"releaseDate\": \"<date>\",\n            \"startDate\": \"<date>\",\n            \"overdue\": \"<boolean>\",\n            \"projectId\": \"<long>\"\n          }\n        ],\n        \"versions\": [\n          {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"description\": \"<string>\",\n            \"archived\": \"<boolean>\",\n            \"released\": \"<boolean>\",\n            \"releaseDate\": \"<date>\",\n            \"startDate\": \"<date>\",\n            \"overdue\": \"<boolean>\",\n            \"projectId\": \"<long>\"\n          }\n        ],\n        \"resolution\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\"\n        },\n        \"resolutiondate\": \"<string,null-date-time>\",\n        \"created\": \"<dateTime>\",\n        \"updated\": \"<dateTime>\",\n        \"duedate\": \"<string,null-date>\",\n        \"watches\": {\n          \"self\": \"<uri>\",\n          \"watchCount\": \"<integer>\",\n          \"isWatching\": \"<boolean>\"\n        },\n        \"votes\": {\n          \"self\": \"<uri>\",\n          \"votes\": \"<integer>\",\n          \"hasVoted\": \"<boolean>\"\n        },\n        \"comment\": {\n          \"startAt\": \"<integer>\",\n          \"maxResults\": \"<integer>\",\n          \"total\": \"<integer>\",\n          \"comments\": [\n            {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"author\": {\n                \"self\": \"<uri>\",\n                \"accountId\": \"<string>\",\n                \"emailAddress\": \"<email>\",\n                \"displayName\": \"<string>\",\n                \"active\": \"<boolean>\",\n                \"timeZone\": \"<string>\",\n                \"accountType\": \"customer\",\n                \"avatarUrls\": {\n                  \"16x16\": \"<uri>\",\n                  \"24x24\": \"<uri>\",\n                  \"32x32\": \"<uri>\",\n                  \"48x48\": \"<uri>\"\n                }\n              },\n              \"body\": {\n                \"type\": \"doc\",\n                \"version\": 1,\n                \"content\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"content\": [\n                      {\n                        \"type\": \"<string>\",\n                        \"text\": \"<string>\",\n                        \"marks\": [\n                          {\n                            \"type\": \"<string>\",\n                            \"attrs\": {\n                              \"eiusmod_e\": false,\n                              \"ad70_\": -24202157,\n                              \"sint__\": 70666848.58879259\n                            }\n                          }\n                        ]\n                      }\n                    ],\n                    \"attrs\": {\n                      \"et_64b\": 38917064.55589944,\n                      \"officia_9\": -48178659,\n                      \"ipsum_10\": false,\n                      \"sit_8\": false\n                    }\n                  }\n                ]\n              },\n              \"renderedBody\": \"<string>\",\n              \"updateAuthor\": {\n                \"self\": \"<uri>\",\n                \"accountId\": \"<string>\",\n                \"emailAddress\": \"<email>\",\n                \"displayName\": \"<string>\",\n                \"active\": \"<boolean>\",\n                \"timeZone\": \"<string>\",\n                \"accountType\": \"customer\",\n                \"avatarUrls\": {\n                  \"16x16\": \"<uri>\",\n                  \"24x24\": \"<uri>\",\n                  \"32x32\": \"<uri>\",\n                  \"48x48\": \"<uri>\"\n                }\n              },\n              \"created\": \"<dateTime>\",\n              \"updated\": \"<dateTime>\",\n              \"visibility\": {\n                \"type\": \"group\",\n                \"value\": \"<string>\",\n                \"identifier\": \"<string>\"\n              },\n              \"jsdPublic\": \"<boolean>\"\n            }\n          ]\n        },\n        \"worklog\": {\n          \"startAt\": \"<integer>\",\n          \"maxResults\": \"<integer>\",\n          \"total\": \"<integer>\",\n          \"worklogs\": [\n            {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"author\": {\n                \"self\": \"<uri>\",\n                \"accountId\": \"<string>\",\n                \"emailAddress\": \"<email>\",\n                \"displayName\": \"<string>\",\n                \"active\": \"<boolean>\",\n                \"timeZone\": \"<string>\",\n                \"accountType\": \"atlassian\",\n                \"avatarUrls\": {\n                  \"16x16\": \"<uri>\",\n                  \"24x24\": \"<uri>\",\n                  \"32x32\": \"<uri>\",\n                  \"48x48\": \"<uri>\"\n                }\n              },\n              \"updateAuthor\": {\n                \"self\": \"<uri>\",\n                \"accountId\": \"<string>\",\n                \"emailAddress\": \"<email>\",\n                \"displayName\": \"<string>\",\n                \"active\": \"<boolean>\",\n                \"timeZone\": \"<string>\",\n                \"accountType\": \"customer\",\n                \"avatarUrls\": {\n                  \"16x16\": \"<uri>\",\n                  \"24x24\": \"<uri>\",\n                  \"32x32\": \"<uri>\",\n                  \"48x48\": \"<uri>\"\n                }\n              },\n              \"comment\": {\n                \"type\": \"doc\",\n                \"version\": 1,\n                \"content\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"content\": [\n                      {\n                        \"type\": \"<string>\",\n                        \"text\": \"<string>\",\n                        \"marks\": [\n                          {\n                            \"type\": \"<string>\",\n                            \"attrs\": {\n                              \"eu_04\": -29773340.608661145\n                            }\n                          }\n                        ],\n                        \"in_e\": -44150320,\n                        \"esse30\": 79453703.14659509,\n                        \"id50\": 24114013\n                      }\n                    ],\n                    \"attrs\": {\n                      \"Excepteur_f_8\": 95476681.4273639\n                    }\n                  }\n                ]\n              },\n              \"created\": \"<dateTime>\",\n              \"updated\": \"<dateTime>\",\n              \"started\": \"<dateTime>\",\n              \"timeSpent\": \"<string>\",\n              \"timeSpentSeconds\": \"<long>\"\n            }\n          ]\n        },\n        \"subtasks\": [\n          {\n            \"id\": \"<string>\",\n            \"key\": \"<string>\",\n            \"self\": \"<uri>\",\n            \"fields\": {\n              \"summary\": \"<string>\",\n              \"status\": {\n                \"self\": \"<uri>\",\n                \"id\": \"<string>\",\n                \"name\": \"<string>\",\n                \"description\": \"<string>\",\n                \"iconUrl\": \"<uri>\",\n                \"statusCategory\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<long>\",\n                  \"key\": \"<string>\",\n                  \"colorName\": \"<string>\",\n                  \"name\": \"<string>\"\n                }\n              },\n              \"priority\": {\n                \"self\": \"<uri>\",\n                \"id\": \"<string>\",\n                \"name\": \"<string>\",\n                \"description\": \"<string>\",\n                \"iconUrl\": \"<uri>\",\n                \"statusColor\": \"<string>\"\n              },\n              \"issuetype\": {\n                \"self\": \"<uri>\",\n                \"id\": \"<string>\",\n                \"description\": \"<string>\",\n                \"iconUrl\": \"<uri>\",\n                \"name\": \"<string>\",\n                \"subtask\": \"<boolean>\",\n                \"avatarId\": \"<long>\",\n                \"hierarchyLevel\": \"<integer>\",\n                \"scope\": {\n                  \"type\": \"TEMPLATE\",\n                  \"project\": {\n                    \"self\": \"<uri>\",\n                    \"id\": \"<string>\",\n                    \"key\": \"<string>\",\n                    \"name\": \"<string>\",\n                    \"avatarUrls\": {\n                      \"16x16\": \"<uri>\",\n                      \"24x24\": \"<uri>\",\n                      \"32x32\": \"<uri>\",\n                      \"48x48\": \"<uri>\"\n                    },\n                    \"projectTypeKey\": \"<string>\"\n                  }\n                }\n              }\n            }\n          }\n        ],\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"key\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"fields\": {\n            \"summary\": \"<string>\",\n            \"status\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"description\": \"<string>\",\n              \"iconUrl\": \"<uri>\",\n              \"statusCategory\": {\n                \"self\": \"<uri>\",\n                \"id\": \"<long>\",\n                \"key\": \"<string>\",\n                \"colorName\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            },\n            \"priority\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"description\": \"<string>\",\n              \"iconUrl\": \"<uri>\",\n              \"statusColor\": \"<string>\"\n            },\n            \"issuetype\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"description\": \"<string>\",\n              \"iconUrl\": \"<uri>\",\n              \"name\": \"<string>\",\n              \"subtask\": \"<boolean>\",\n              \"avatarId\": \"<long>\",\n              \"hierarchyLevel\": \"<integer>\",\n              \"scope\": {\n                \"type\": \"TEMPLATE\",\n                \"project\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"key\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"avatarUrls\": {\n                    \"16x16\": \"<uri>\",\n                    \"24x24\": \"<uri>\",\n                    \"32x32\": \"<uri>\",\n                    \"48x48\": \"<uri>\"\n                  },\n                  \"projectTypeKey\": \"<string>\"\n                }\n              }\n            }\n          }\n        },\n        \"environment\": {\n          \"type\": \"doc\",\n          \"version\": 1,\n          \"content\": [\n            {\n              \"type\": \"<string>\",\n              \"content\": [\n                {\n                  \"type\": \"<string>\",\n                  \"text\": \"<string>\",\n                  \"marks\": [\n                    {\n                      \"type\": \"<string>\",\n                      \"attrs\": {\n                        \"Ut_3\": -60293203.391273886,\n                        \"occaecat___0\": -88648223\n                      }\n                    }\n                  ],\n                  \"eu79\": -28792777.61114359,\n                  \"ut3\": \"sit in esse\",\n                  \"minim_e54\": 18264501,\n                  \"culpa37\": -66588560\n                }\n              ],\n              \"attrs\": {\n                \"deserunt72\": \"ut labore est\",\n                \"commodocf0\": -78497860.09939134\n              },\n              \"nonfee\": 11926858.406962544,\n              \"in41\": -98277072.75979538\n            }\n          ]\n        },\n        \"attachment\": [\n          {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"filename\": \"<string>\",\n            \"author\": {\n              \"self\": \"<uri>\",\n              \"accountId\": \"<string>\",\n              \"emailAddress\": \"<email>\",\n              \"displayName\": \"<string>\",\n              \"active\": \"<boolean>\",\n              \"timeZone\": \"<string>\",\n              \"accountType\": \"customer\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              }\n            },\n            \"created\": \"<dateTime>\",\n            \"size\": \"<long>\",\n            \"mimeType\": \"<string>\",\n            \"content\": \"<uri>\",\n            \"thumbnail\": \"<uri>\"\n          }\n        ],\n        \"issuelinks\": [\n          {\n            \"id\": \"<string>\",\n            \"self\": \"<uri>\",\n            \"type\": {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"inward\": \"<string>\",\n              \"outward\": \"<string>\",\n              \"self\": \"<uri>\"\n            },\n            \"inwardIssue\": {\n              \"id\": \"<string>\",\n              \"key\": \"<string>\",\n              \"self\": \"<uri>\",\n              \"fields\": {\n                \"summary\": \"<string>\",\n                \"status\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"description\": \"<string>\",\n                  \"iconUrl\": \"<uri>\",\n                  \"statusCategory\": {\n                    \"self\": \"<uri>\",\n                    \"id\": \"<long>\",\n                    \"key\": \"<string>\",\n                    \"colorName\": \"<string>\",\n                    \"name\": \"<string>\"\n                  }\n                },\n                \"priority\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"description\": \"<string>\",\n                  \"iconUrl\": \"<uri>\",\n                  \"statusColor\": \"<string>\"\n                },\n                \"issuetype\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"description\": \"<string>\",\n                  \"iconUrl\": \"<uri>\",\n                  \"name\": \"<string>\",\n                  \"subtask\": \"<boolean>\",\n                  \"avatarId\": \"<long>\",\n                  \"hierarchyLevel\": \"<integer>\",\n                  \"scope\": {\n                    \"type\": \"TEMPLATE\",\n                    \"project\": {\n                      \"self\": \"<uri>\",\n                      \"id\": \"<string>\",\n                      \"key\": \"<string>\",\n                      \"name\": \"<string>\",\n                      \"avatarUrls\": {\n                        \"16x16\": \"<uri>\",\n                        \"24x24\": \"<uri>\",\n                        \"32x32\": \"<uri>\",\n                        \"48x48\": \"<uri>\"\n                      },\n                      \"projectTypeKey\": \"<string>\"\n                    }\n                  }\n                }\n              }\n            },\n            \"outwardIssue\": {\n              \"id\": \"<string>\",\n              \"key\": \"<string>\",\n              \"self\": \"<uri>\",\n              \"fields\": {\n                \"summary\": \"<string>\",\n                \"status\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"description\": \"<string>\",\n                  \"iconUrl\": \"<uri>\",\n                  \"statusCategory\": {\n                    \"self\": \"<uri>\",\n                    \"id\": \"<long>\",\n                    \"key\": \"<string>\",\n                    \"colorName\": \"<string>\",\n                    \"name\": \"<string>\"\n                  }\n                },\n                \"priority\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"description\": \"<string>\",\n                  \"iconUrl\": \"<uri>\",\n                  \"statusColor\": \"<string>\"\n                },\n                \"issuetype\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"description\": \"<string>\",\n                  \"iconUrl\": \"<uri>\",\n                  \"name\": \"<string>\",\n                  \"subtask\": \"<boolean>\",\n                  \"avatarId\": \"<long>\",\n                  \"hierarchyLevel\": \"<integer>\",\n                  \"scope\": {\n                    \"type\": \"PROJECT\",\n                    \"project\": {\n                      \"self\": \"<uri>\",\n                      \"id\": \"<string>\",\n                      \"key\": \"<string>\",\n                      \"name\": \"<string>\",\n                      \"avatarUrls\": {\n                        \"16x16\": \"<uri>\",\n                        \"24x24\": \"<uri>\",\n                        \"32x32\": \"<uri>\",\n                        \"48x48\": \"<uri>\"\n                      },\n                      \"projectTypeKey\": \"<string>\"\n                    }\n                  }\n                }\n              }\n            }\n          }\n        ]\n      },\n      \"renderedFields\": {\n        \"pariatur_9\": false\n      },\n      \"names\": {\n        \"est_70d\": \"<string>\",\n        \"consequat_5ce\": \"<string>\"\n      },\n      \"schema\": {\n        \"in_c9a\": -34639217,\n        \"exercitation_7\": 94128667.92386958,\n        \"ut_a4\": 33413746\n      },\n      \"transitions\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"to\": {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"description\": \"<string>\",\n            \"iconUrl\": \"<uri>\",\n            \"statusCategory\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<long>\",\n              \"key\": \"<string>\",\n              \"colorName\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          },\n          \"hasScreen\": \"<boolean>\",\n          \"isGlobal\": \"<boolean>\",\n          \"isInitial\": \"<boolean>\",\n          \"isConditional\": \"<boolean>\",\n          \"fields\": {\n            \"deserunt_11\": 71595978\n          }\n        }\n      ],\n      \"changelog\": {\n        \"startAt\": \"<integer>\",\n        \"maxResults\": \"<integer>\",\n        \"total\": \"<integer>\",\n        \"histories\": [\n          {\n            \"id\": \"<string>\",\n            \"author\": {\n              \"self\": \"<uri>\",\n              \"accountId\": \"<string>\",\n              \"emailAddress\": \"<email>\",\n              \"displayName\": \"<string>\",\n              \"active\": \"<boolean>\",\n              \"timeZone\": \"<string>\",\n              \"accountType\": \"atlassian\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              }\n            },\n            \"created\": \"<dateTime>\",\n            \"items\": [\n              {\n                \"field\": \"<string>\",\n                \"fieldtype\": \"<string>\",\n                \"fieldId\": \"<string>\",\n                \"from\": \"<string,null>\",\n                \"fromString\": \"<string,null>\",\n                \"to\": \"<string,null>\",\n                \"toString\": \"<string,null>\"\n              }\n            ]\n          }\n        ]\n      }\n    }\n  ],\n  \"warningMessages\": [\n    \"<string>\"\n  ],\n  \"names\": {\n    \"ea3f7\": \"<string>\"\n  },\n  \"schema\": {\n    \"cupidatat16_\": -12317308.714020476,\n    \"veniam9_\": -89207147\n  }\n}",
+              "createdAt": "2026-07-28T01:59:42.000Z",
+              "updatedAt": "2026-07-28T01:59:42.000Z",
+              "uid": "35240-0ca9a723-b4a0-4cb5-9dba-cebb19675941"
+            },
+            {
+              "id": "e16d80fe-675f-4941-b845-ebd00593a649",
+              "name": "The JQL query is invalid.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/search?jql=<string>&startAt=0&maxResults=50&validateQuery=strict&fields=<string>&expand=<string>&properties=<string>&fieldsByKeys=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "search"
+                  ],
+                  "query": [
+                    {
+                      "description": "The JQL query string. For example: project = HSP AND issuetype = Bug. See JQL documentation for syntax.",
+                      "key": "jql",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The index of the first item to return in a page of results (page offset).",
+                      "key": "startAt",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The maximum number of items to return per page. The maximum allowed value is determined by the Jira instance configuration, typically 100.",
+                      "key": "maxResults",
+                      "value": "50"
+                    },
+                    {
+                      "description": "Whether to validate the JQL query and how to handle validation results. Accepted values: strict, warn, none.",
+                      "key": "validateQuery",
+                      "value": "strict"
+                    },
+                    {
+                      "description": "A list of fields to return for each issue. Use *all for all fields, *navigable for navigable fields only.",
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Use expand to include additional information about issues in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations.",
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A list of issue properties to return for each issue.",
+                      "key": "properties",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Whether fields in fields are referenced by keys rather than IDs.",
+                      "key": "fieldsByKeys",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"errorMessages\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"errors\": {\n    \"dolore75\": \"<string>\",\n    \"dolore6\": \"<string>\",\n    \"enim_d\": \"<string>\",\n    \"dolore_f\": \"<string>\"\n  },\n  \"status\": \"<integer>\"\n}",
+              "createdAt": "2026-07-28T01:59:42.000Z",
+              "updatedAt": "2026-07-28T01:59:42.000Z",
+              "uid": "35240-e16d80fe-675f-4941-b845-ebd00593a649"
+            },
+            {
+              "id": "c8349ec6-0bcc-4f3c-bda4-24d0fdfedea8",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/search?jql=<string>&startAt=0&maxResults=50&validateQuery=strict&fields=<string>&expand=<string>&properties=<string>&fieldsByKeys=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "search"
+                  ],
+                  "query": [
+                    {
+                      "description": "The JQL query string. For example: project = HSP AND issuetype = Bug. See JQL documentation for syntax.",
+                      "key": "jql",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The index of the first item to return in a page of results (page offset).",
+                      "key": "startAt",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The maximum number of items to return per page. The maximum allowed value is determined by the Jira instance configuration, typically 100.",
+                      "key": "maxResults",
+                      "value": "50"
+                    },
+                    {
+                      "description": "Whether to validate the JQL query and how to handle validation results. Accepted values: strict, warn, none.",
+                      "key": "validateQuery",
+                      "value": "strict"
+                    },
+                    {
+                      "description": "A list of fields to return for each issue. Use *all for all fields, *navigable for navigable fields only.",
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Use expand to include additional information about issues in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations.",
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A list of issue properties to return for each issue.",
+                      "key": "properties",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Whether fields in fields are referenced by keys rather than IDs.",
+                      "key": "fieldsByKeys",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T01:59:42.000Z",
+              "updatedAt": "2026-07-28T01:59:42.000Z",
+              "uid": "35240-c8349ec6-0bcc-4f3c-bda4-24d0fdfedea8"
+            }
+          ],
+          "createdAt": "2026-07-28T01:59:42.000Z",
+          "updatedAt": "2026-07-28T01:59:42.000Z",
+          "uid": "35240-39c2fa4e-18ed-4d95-822b-3b16c2a2d743"
+        },
+        {
+          "name": "Jira Search for Issues Using Jql (post)",
+          "id": "c893e4da-718e-46cd-a19d-04f0e2e16448",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jql\": \"<string>\",\n  \"startAt\": 0,\n  \"maxResults\": 50,\n  \"validateQuery\": \"warn\",\n  \"fields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"expand\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"fieldsByKeys\": false\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/search",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search"
+              ]
+            },
+            "description": "Searches for issues using JQL. Use this endpoint when the JQL query expression is too large to send as a query parameter. This provides the same functionality as the GET version."
+          },
+          "response": [
+            {
+              "id": "75efbf5d-1ba5-4ff1-b239-3e5598b909ae",
+              "name": "Search results returned successfully.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jql\": \"<string>\",\n  \"startAt\": 0,\n  \"maxResults\": 50,\n  \"validateQuery\": \"warn\",\n  \"fields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"expand\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"fieldsByKeys\": false\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/search",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "search"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"expand\": \"<string>\",\n  \"startAt\": \"<integer>\",\n  \"maxResults\": \"<integer>\",\n  \"total\": \"<integer>\",\n  \"issues\": [\n    {\n      \"id\": \"<string>\",\n      \"key\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"expand\": \"<string>\",\n      \"fields\": {\n        \"summary\": \"<string>\",\n        \"description\": {\n          \"type\": \"doc\",\n          \"version\": 1,\n          \"content\": [\n            {\n              \"type\": \"<string>\",\n              \"content\": [\n                {\n                  \"type\": \"<string>\",\n                  \"text\": \"<string>\",\n                  \"marks\": [\n                    {\n                      \"type\": \"<string>\",\n                      \"attrs\": {\n                        \"do_5\": -91738166\n                      }\n                    }\n                  ],\n                  \"ut_6\": true,\n                  \"sintd\": \"elit nulla\"\n                }\n              ],\n              \"attrs\": {\n                \"exercitation__c\": 63284586.02894074,\n                \"consequat_f\": false\n              },\n              \"qui_7\": -76562886.94253592\n            }\n          ]\n        },\n        \"issuetype\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"name\": \"<string>\",\n          \"subtask\": \"<boolean>\",\n          \"avatarId\": \"<long>\",\n          \"hierarchyLevel\": \"<integer>\",\n          \"scope\": {\n            \"type\": \"PROJECT\",\n            \"project\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"key\": \"<string>\",\n              \"name\": \"<string>\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              },\n              \"projectTypeKey\": \"<string>\"\n            }\n          }\n        },\n        \"project\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"key\": \"<string>\",\n          \"name\": \"<string>\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          },\n          \"projectTypeKey\": \"<string>\"\n        },\n        \"status\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"statusCategory\": {\n            \"self\": \"<uri>\",\n            \"id\": \"<long>\",\n            \"key\": \"<string>\",\n            \"colorName\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        },\n        \"priority\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"statusColor\": \"<string>\"\n        },\n        \"assignee\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"app\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"reporter\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"app\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"creator\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"customer\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"labels\": [\n          \"<string>\"\n        ],\n        \"components\": [\n          {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"description\": \"<string>\",\n            \"lead\": {\n              \"self\": \"<uri>\",\n              \"accountId\": \"<string>\",\n              \"emailAddress\": \"<email>\",\n              \"displayName\": \"<string>\",\n              \"active\": \"<boolean>\",\n              \"timeZone\": \"<string>\",\n              \"accountType\": \"customer\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              }\n            },\n            \"assigneeType\": \"PROJECT_DEFAULT\",\n            \"assignee\": {\n              \"self\": \"<uri>\",\n              \"accountId\": \"<string>\",\n              \"emailAddress\": \"<email>\",\n              \"displayName\": \"<string>\",\n              \"active\": \"<boolean>\",\n              \"timeZone\": \"<string>\",\n              \"accountType\": \"app\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              }\n            },\n            \"project\": \"<string>\",\n            \"projectId\": \"<long>\"\n          }\n        ],\n        \"fixVersions\": [\n          {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"description\": \"<string>\",\n            \"archived\": \"<boolean>\",\n            \"released\": \"<boolean>\",\n            \"releaseDate\": \"<date>\",\n            \"startDate\": \"<date>\",\n            \"overdue\": \"<boolean>\",\n            \"projectId\": \"<long>\"\n          }\n        ],\n        \"versions\": [\n          {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"description\": \"<string>\",\n            \"archived\": \"<boolean>\",\n            \"released\": \"<boolean>\",\n            \"releaseDate\": \"<date>\",\n            \"startDate\": \"<date>\",\n            \"overdue\": \"<boolean>\",\n            \"projectId\": \"<long>\"\n          }\n        ],\n        \"resolution\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\"\n        },\n        \"resolutiondate\": \"<string,null-date-time>\",\n        \"created\": \"<dateTime>\",\n        \"updated\": \"<dateTime>\",\n        \"duedate\": \"<string,null-date>\",\n        \"watches\": {\n          \"self\": \"<uri>\",\n          \"watchCount\": \"<integer>\",\n          \"isWatching\": \"<boolean>\"\n        },\n        \"votes\": {\n          \"self\": \"<uri>\",\n          \"votes\": \"<integer>\",\n          \"hasVoted\": \"<boolean>\"\n        },\n        \"comment\": {\n          \"startAt\": \"<integer>\",\n          \"maxResults\": \"<integer>\",\n          \"total\": \"<integer>\",\n          \"comments\": [\n            {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"author\": {\n                \"self\": \"<uri>\",\n                \"accountId\": \"<string>\",\n                \"emailAddress\": \"<email>\",\n                \"displayName\": \"<string>\",\n                \"active\": \"<boolean>\",\n                \"timeZone\": \"<string>\",\n                \"accountType\": \"customer\",\n                \"avatarUrls\": {\n                  \"16x16\": \"<uri>\",\n                  \"24x24\": \"<uri>\",\n                  \"32x32\": \"<uri>\",\n                  \"48x48\": \"<uri>\"\n                }\n              },\n              \"body\": {\n                \"type\": \"doc\",\n                \"version\": 1,\n                \"content\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"content\": [\n                      {\n                        \"type\": \"<string>\",\n                        \"text\": \"<string>\",\n                        \"marks\": [\n                          {\n                            \"type\": \"<string>\",\n                            \"attrs\": {\n                              \"eiusmod_e\": false,\n                              \"ad70_\": -24202157,\n                              \"sint__\": 70666848.58879259\n                            }\n                          }\n                        ]\n                      }\n                    ],\n                    \"attrs\": {\n                      \"et_64b\": 38917064.55589944,\n                      \"officia_9\": -48178659,\n                      \"ipsum_10\": false,\n                      \"sit_8\": false\n                    }\n                  }\n                ]\n              },\n              \"renderedBody\": \"<string>\",\n              \"updateAuthor\": {\n                \"self\": \"<uri>\",\n                \"accountId\": \"<string>\",\n                \"emailAddress\": \"<email>\",\n                \"displayName\": \"<string>\",\n                \"active\": \"<boolean>\",\n                \"timeZone\": \"<string>\",\n                \"accountType\": \"customer\",\n                \"avatarUrls\": {\n                  \"16x16\": \"<uri>\",\n                  \"24x24\": \"<uri>\",\n                  \"32x32\": \"<uri>\",\n                  \"48x48\": \"<uri>\"\n                }\n              },\n              \"created\": \"<dateTime>\",\n              \"updated\": \"<dateTime>\",\n              \"visibility\": {\n                \"type\": \"group\",\n                \"value\": \"<string>\",\n                \"identifier\": \"<string>\"\n              },\n              \"jsdPublic\": \"<boolean>\"\n            }\n          ]\n        },\n        \"worklog\": {\n          \"startAt\": \"<integer>\",\n          \"maxResults\": \"<integer>\",\n          \"total\": \"<integer>\",\n          \"worklogs\": [\n            {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"author\": {\n                \"self\": \"<uri>\",\n                \"accountId\": \"<string>\",\n                \"emailAddress\": \"<email>\",\n                \"displayName\": \"<string>\",\n                \"active\": \"<boolean>\",\n                \"timeZone\": \"<string>\",\n                \"accountType\": \"atlassian\",\n                \"avatarUrls\": {\n                  \"16x16\": \"<uri>\",\n                  \"24x24\": \"<uri>\",\n                  \"32x32\": \"<uri>\",\n                  \"48x48\": \"<uri>\"\n                }\n              },\n              \"updateAuthor\": {\n                \"self\": \"<uri>\",\n                \"accountId\": \"<string>\",\n                \"emailAddress\": \"<email>\",\n                \"displayName\": \"<string>\",\n                \"active\": \"<boolean>\",\n                \"timeZone\": \"<string>\",\n                \"accountType\": \"customer\",\n                \"avatarUrls\": {\n                  \"16x16\": \"<uri>\",\n                  \"24x24\": \"<uri>\",\n                  \"32x32\": \"<uri>\",\n                  \"48x48\": \"<uri>\"\n                }\n              },\n              \"comment\": {\n                \"type\": \"doc\",\n                \"version\": 1,\n                \"content\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"content\": [\n                      {\n                        \"type\": \"<string>\",\n                        \"text\": \"<string>\",\n                        \"marks\": [\n                          {\n                            \"type\": \"<string>\",\n                            \"attrs\": {\n                              \"eu_04\": -29773340.608661145\n                            }\n                          }\n                        ],\n                        \"in_e\": -44150320,\n                        \"esse30\": 79453703.14659509,\n                        \"id50\": 24114013\n                      }\n                    ],\n                    \"attrs\": {\n                      \"Excepteur_f_8\": 95476681.4273639\n                    }\n                  }\n                ]\n              },\n              \"created\": \"<dateTime>\",\n              \"updated\": \"<dateTime>\",\n              \"started\": \"<dateTime>\",\n              \"timeSpent\": \"<string>\",\n              \"timeSpentSeconds\": \"<long>\"\n            }\n          ]\n        },\n        \"subtasks\": [\n          {\n            \"id\": \"<string>\",\n            \"key\": \"<string>\",\n            \"self\": \"<uri>\",\n            \"fields\": {\n              \"summary\": \"<string>\",\n              \"status\": {\n                \"self\": \"<uri>\",\n                \"id\": \"<string>\",\n                \"name\": \"<string>\",\n                \"description\": \"<string>\",\n                \"iconUrl\": \"<uri>\",\n                \"statusCategory\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<long>\",\n                  \"key\": \"<string>\",\n                  \"colorName\": \"<string>\",\n                  \"name\": \"<string>\"\n                }\n              },\n              \"priority\": {\n                \"self\": \"<uri>\",\n                \"id\": \"<string>\",\n                \"name\": \"<string>\",\n                \"description\": \"<string>\",\n                \"iconUrl\": \"<uri>\",\n                \"statusColor\": \"<string>\"\n              },\n              \"issuetype\": {\n                \"self\": \"<uri>\",\n                \"id\": \"<string>\",\n                \"description\": \"<string>\",\n                \"iconUrl\": \"<uri>\",\n                \"name\": \"<string>\",\n                \"subtask\": \"<boolean>\",\n                \"avatarId\": \"<long>\",\n                \"hierarchyLevel\": \"<integer>\",\n                \"scope\": {\n                  \"type\": \"TEMPLATE\",\n                  \"project\": {\n                    \"self\": \"<uri>\",\n                    \"id\": \"<string>\",\n                    \"key\": \"<string>\",\n                    \"name\": \"<string>\",\n                    \"avatarUrls\": {\n                      \"16x16\": \"<uri>\",\n                      \"24x24\": \"<uri>\",\n                      \"32x32\": \"<uri>\",\n                      \"48x48\": \"<uri>\"\n                    },\n                    \"projectTypeKey\": \"<string>\"\n                  }\n                }\n              }\n            }\n          }\n        ],\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"key\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"fields\": {\n            \"summary\": \"<string>\",\n            \"status\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"description\": \"<string>\",\n              \"iconUrl\": \"<uri>\",\n              \"statusCategory\": {\n                \"self\": \"<uri>\",\n                \"id\": \"<long>\",\n                \"key\": \"<string>\",\n                \"colorName\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            },\n            \"priority\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"description\": \"<string>\",\n              \"iconUrl\": \"<uri>\",\n              \"statusColor\": \"<string>\"\n            },\n            \"issuetype\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"description\": \"<string>\",\n              \"iconUrl\": \"<uri>\",\n              \"name\": \"<string>\",\n              \"subtask\": \"<boolean>\",\n              \"avatarId\": \"<long>\",\n              \"hierarchyLevel\": \"<integer>\",\n              \"scope\": {\n                \"type\": \"TEMPLATE\",\n                \"project\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"key\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"avatarUrls\": {\n                    \"16x16\": \"<uri>\",\n                    \"24x24\": \"<uri>\",\n                    \"32x32\": \"<uri>\",\n                    \"48x48\": \"<uri>\"\n                  },\n                  \"projectTypeKey\": \"<string>\"\n                }\n              }\n            }\n          }\n        },\n        \"environment\": {\n          \"type\": \"doc\",\n          \"version\": 1,\n          \"content\": [\n            {\n              \"type\": \"<string>\",\n              \"content\": [\n                {\n                  \"type\": \"<string>\",\n                  \"text\": \"<string>\",\n                  \"marks\": [\n                    {\n                      \"type\": \"<string>\",\n                      \"attrs\": {\n                        \"Ut_3\": -60293203.391273886,\n                        \"occaecat___0\": -88648223\n                      }\n                    }\n                  ],\n                  \"eu79\": -28792777.61114359,\n                  \"ut3\": \"sit in esse\",\n                  \"minim_e54\": 18264501,\n                  \"culpa37\": -66588560\n                }\n              ],\n              \"attrs\": {\n                \"deserunt72\": \"ut labore est\",\n                \"commodocf0\": -78497860.09939134\n              },\n              \"nonfee\": 11926858.406962544,\n              \"in41\": -98277072.75979538\n            }\n          ]\n        },\n        \"attachment\": [\n          {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"filename\": \"<string>\",\n            \"author\": {\n              \"self\": \"<uri>\",\n              \"accountId\": \"<string>\",\n              \"emailAddress\": \"<email>\",\n              \"displayName\": \"<string>\",\n              \"active\": \"<boolean>\",\n              \"timeZone\": \"<string>\",\n              \"accountType\": \"customer\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              }\n            },\n            \"created\": \"<dateTime>\",\n            \"size\": \"<long>\",\n            \"mimeType\": \"<string>\",\n            \"content\": \"<uri>\",\n            \"thumbnail\": \"<uri>\"\n          }\n        ],\n        \"issuelinks\": [\n          {\n            \"id\": \"<string>\",\n            \"self\": \"<uri>\",\n            \"type\": {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"inward\": \"<string>\",\n              \"outward\": \"<string>\",\n              \"self\": \"<uri>\"\n            },\n            \"inwardIssue\": {\n              \"id\": \"<string>\",\n              \"key\": \"<string>\",\n              \"self\": \"<uri>\",\n              \"fields\": {\n                \"summary\": \"<string>\",\n                \"status\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"description\": \"<string>\",\n                  \"iconUrl\": \"<uri>\",\n                  \"statusCategory\": {\n                    \"self\": \"<uri>\",\n                    \"id\": \"<long>\",\n                    \"key\": \"<string>\",\n                    \"colorName\": \"<string>\",\n                    \"name\": \"<string>\"\n                  }\n                },\n                \"priority\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"description\": \"<string>\",\n                  \"iconUrl\": \"<uri>\",\n                  \"statusColor\": \"<string>\"\n                },\n                \"issuetype\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"description\": \"<string>\",\n                  \"iconUrl\": \"<uri>\",\n                  \"name\": \"<string>\",\n                  \"subtask\": \"<boolean>\",\n                  \"avatarId\": \"<long>\",\n                  \"hierarchyLevel\": \"<integer>\",\n                  \"scope\": {\n                    \"type\": \"TEMPLATE\",\n                    \"project\": {\n                      \"self\": \"<uri>\",\n                      \"id\": \"<string>\",\n                      \"key\": \"<string>\",\n                      \"name\": \"<string>\",\n                      \"avatarUrls\": {\n                        \"16x16\": \"<uri>\",\n                        \"24x24\": \"<uri>\",\n                        \"32x32\": \"<uri>\",\n                        \"48x48\": \"<uri>\"\n                      },\n                      \"projectTypeKey\": \"<string>\"\n                    }\n                  }\n                }\n              }\n            },\n            \"outwardIssue\": {\n              \"id\": \"<string>\",\n              \"key\": \"<string>\",\n              \"self\": \"<uri>\",\n              \"fields\": {\n                \"summary\": \"<string>\",\n                \"status\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"description\": \"<string>\",\n                  \"iconUrl\": \"<uri>\",\n                  \"statusCategory\": {\n                    \"self\": \"<uri>\",\n                    \"id\": \"<long>\",\n                    \"key\": \"<string>\",\n                    \"colorName\": \"<string>\",\n                    \"name\": \"<string>\"\n                  }\n                },\n                \"priority\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"description\": \"<string>\",\n                  \"iconUrl\": \"<uri>\",\n                  \"statusColor\": \"<string>\"\n                },\n                \"issuetype\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"description\": \"<string>\",\n                  \"iconUrl\": \"<uri>\",\n                  \"name\": \"<string>\",\n                  \"subtask\": \"<boolean>\",\n                  \"avatarId\": \"<long>\",\n                  \"hierarchyLevel\": \"<integer>\",\n                  \"scope\": {\n                    \"type\": \"PROJECT\",\n                    \"project\": {\n                      \"self\": \"<uri>\",\n                      \"id\": \"<string>\",\n                      \"key\": \"<string>\",\n                      \"name\": \"<string>\",\n                      \"avatarUrls\": {\n                        \"16x16\": \"<uri>\",\n                        \"24x24\": \"<uri>\",\n                        \"32x32\": \"<uri>\",\n                        \"48x48\": \"<uri>\"\n                      },\n                      \"projectTypeKey\": \"<string>\"\n                    }\n                  }\n                }\n              }\n            }\n          }\n        ]\n      },\n      \"renderedFields\": {\n        \"pariatur_9\": false\n      },\n      \"names\": {\n        \"est_70d\": \"<string>\",\n        \"consequat_5ce\": \"<string>\"\n      },\n      \"schema\": {\n        \"in_c9a\": -34639217,\n        \"exercitation_7\": 94128667.92386958,\n        \"ut_a4\": 33413746\n      },\n      \"transitions\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"to\": {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"description\": \"<string>\",\n            \"iconUrl\": \"<uri>\",\n            \"statusCategory\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<long>\",\n              \"key\": \"<string>\",\n              \"colorName\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          },\n          \"hasScreen\": \"<boolean>\",\n          \"isGlobal\": \"<boolean>\",\n          \"isInitial\": \"<boolean>\",\n          \"isConditional\": \"<boolean>\",\n          \"fields\": {\n            \"deserunt_11\": 71595978\n          }\n        }\n      ],\n      \"changelog\": {\n        \"startAt\": \"<integer>\",\n        \"maxResults\": \"<integer>\",\n        \"total\": \"<integer>\",\n        \"histories\": [\n          {\n            \"id\": \"<string>\",\n            \"author\": {\n              \"self\": \"<uri>\",\n              \"accountId\": \"<string>\",\n              \"emailAddress\": \"<email>\",\n              \"displayName\": \"<string>\",\n              \"active\": \"<boolean>\",\n              \"timeZone\": \"<string>\",\n              \"accountType\": \"atlassian\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              }\n            },\n            \"created\": \"<dateTime>\",\n            \"items\": [\n              {\n                \"field\": \"<string>\",\n                \"fieldtype\": \"<string>\",\n                \"fieldId\": \"<string>\",\n                \"from\": \"<string,null>\",\n                \"fromString\": \"<string,null>\",\n                \"to\": \"<string,null>\",\n                \"toString\": \"<string,null>\"\n              }\n            ]\n          }\n        ]\n      }\n    }\n  ],\n  \"warningMessages\": [\n    \"<string>\"\n  ],\n  \"names\": {\n    \"ea3f7\": \"<string>\"\n  },\n  \"schema\": {\n    \"cupidatat16_\": -12317308.714020476,\n    \"veniam9_\": -89207147\n  }\n}",
+              "createdAt": "2026-07-28T01:59:42.000Z",
+              "updatedAt": "2026-07-28T01:59:42.000Z",
+              "uid": "35240-75efbf5d-1ba5-4ff1-b239-3e5598b909ae"
+            },
+            {
+              "id": "057f07ac-1df1-4bed-91b7-1e4d1e7a09bb",
+              "name": "The JQL query is invalid.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jql\": \"<string>\",\n  \"startAt\": 0,\n  \"maxResults\": 50,\n  \"validateQuery\": \"warn\",\n  \"fields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"expand\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"fieldsByKeys\": false\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/search",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "search"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"errorMessages\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"errors\": {\n    \"dolore75\": \"<string>\",\n    \"dolore6\": \"<string>\",\n    \"enim_d\": \"<string>\",\n    \"dolore_f\": \"<string>\"\n  },\n  \"status\": \"<integer>\"\n}",
+              "createdAt": "2026-07-28T01:59:42.000Z",
+              "updatedAt": "2026-07-28T01:59:42.000Z",
+              "uid": "35240-057f07ac-1df1-4bed-91b7-1e4d1e7a09bb"
+            },
+            {
+              "id": "f0fbd7f0-4f9d-44e5-a260-6d9ab49ed18a",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jql\": \"<string>\",\n  \"startAt\": 0,\n  \"maxResults\": 50,\n  \"validateQuery\": \"warn\",\n  \"fields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"expand\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"fieldsByKeys\": false\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/search",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "search"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T01:59:42.000Z",
+              "updatedAt": "2026-07-28T01:59:42.000Z",
+              "uid": "35240-f0fbd7f0-4f9d-44e5-a260-6d9ab49ed18a"
+            }
+          ],
+          "createdAt": "2026-07-28T01:59:42.000Z",
+          "updatedAt": "2026-07-28T01:59:42.000Z",
+          "uid": "35240-c893e4da-718e-46cd-a19d-04f0e2e16448"
+        }
+      ],
+      "id": "17046bbe-ff04-4c50-b3e1-c081cd3dcb18",
+      "createdAt": "2026-07-28T01:59:42.000Z",
+      "updatedAt": "2026-07-28T01:59:42.000Z",
+      "uid": "35240-17046bbe-ff04-4c50-b3e1-c081cd3dcb18"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "domain",
+      "value": "your-domain"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{domain}}.atlassian.net/rest/api/3"
+    }
+  ]
+}

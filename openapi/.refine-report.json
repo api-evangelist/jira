@@ -1,0 +1,28 @@
+{
+  "provider": "jira",
+  "sources": [
+    "jira-issue-comments-api-openapi.yml",
+    "jira-issue-priorities-api-openapi.yml",
+    "jira-issue-search-api-openapi.yml",
+    "jira-issue-statuses-api-openapi.yml",
+    "jira-issue-transitions-api-openapi.yml",
+    "jira-issue-types-api-openapi.yml",
+    "jira-issues-api-openapi.yml",
+    "jira-projects-api-openapi.yml"
+  ],
+  "outputs": [
+    "jira-issue-comments-api-openapi.yml",
+    "jira-issue-priorities-api-openapi.yml",
+    "jira-issue-search-api-openapi.yml",
+    "jira-issue-statuses-api-openapi.yml",
+    "jira-issue-transitions-api-openapi.yml",
+    "jira-issue-types-api-openapi.yml",
+    "jira-issues-api-openapi.yml",
+    "jira-projects-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

@@ -1,0 +1,154 @@
+{
+  "info": {
+    "_postman_id": "69819829-6e5f-49f0-897e-f1126377d740",
+    "name": "Jira Cloud Platform REST Issue Comments Issue Priorities API",
+    "description": "The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.\n\nContact Support:\n Name: Atlassian Developer Support\n Email: ecosystem@atlassian.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:59:40.000Z",
+    "updatedAt": "2026-07-28T01:59:40.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-69819829-6e5f-49f0-897e-f1126377d740"
+  },
+  "item": [
+    {
+      "name": "priority",
+      "item": [
+        {
+          "name": "Jira Get Priorities",
+          "id": "d596fe6a-c762-4560-a68a-a00eaf414921",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/priority",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "priority"
+              ]
+            },
+            "description": "Returns the list of all issue priorities."
+          },
+          "response": [
+            {
+              "id": "fca74273-68f4-463a-9391-c8134d6e1cd2",
+              "name": "Priorities returned successfully.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/priority",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "priority"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"self\": \"<uri>\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"iconUrl\": \"<uri>\",\n    \"statusColor\": \"<string>\"\n  },\n  {\n    \"self\": \"<uri>\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"iconUrl\": \"<uri>\",\n    \"statusColor\": \"<string>\"\n  }\n]",
+              "createdAt": "2026-07-28T01:59:41.000Z",
+              "updatedAt": "2026-07-28T01:59:41.000Z",
+              "uid": "35240-fca74273-68f4-463a-9391-c8134d6e1cd2"
+            },
+            {
+              "id": "4d6d39ab-9e35-4515-96a5-e991e0313af7",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/priority",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "priority"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T01:59:41.000Z",
+              "updatedAt": "2026-07-28T01:59:41.000Z",
+              "uid": "35240-4d6d39ab-9e35-4515-96a5-e991e0313af7"
+            }
+          ],
+          "createdAt": "2026-07-28T01:59:41.000Z",
+          "updatedAt": "2026-07-28T01:59:41.000Z",
+          "uid": "35240-d596fe6a-c762-4560-a68a-a00eaf414921"
+        }
+      ],
+      "id": "487d45e2-a563-458c-9523-73188ea6106f",
+      "createdAt": "2026-07-28T01:59:41.000Z",
+      "updatedAt": "2026-07-28T01:59:41.000Z",
+      "uid": "35240-487d45e2-a563-458c-9523-73188ea6106f"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "domain",
+      "value": "your-domain"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{domain}}.atlassian.net/rest/api/3"
+    }
+  ]
+}

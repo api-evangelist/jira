@@ -1,0 +1,962 @@
+{
+  "info": {
+    "_postman_id": "f97bc383-2ff7-4e1b-88b6-9e4822824264",
+    "name": "Jira Cloud Platform REST Issue Comments Projects API",
+    "description": "The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.\n\nContact Support:\n Name: Atlassian Developer Support\n Email: ecosystem@atlassian.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:59:47.000Z",
+    "updatedAt": "2026-07-28T01:59:47.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-f97bc383-2ff7-4e1b-88b6-9e4822824264"
+  },
+  "item": [
+    {
+      "name": "project",
+      "item": [
+        {
+          "name": "search",
+          "item": [
+            {
+              "name": "Jira Get Projects Paginated",
+              "id": "597d2560-22b4-409a-a5d7-2b7236cc7a10",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/project/search?startAt=0&maxResults=50&orderBy=key&query=<string>&typeKey=<string>&categoryId=<long>&action=view&expand=<string>&status=live&status=deleted",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "project",
+                    "search"
+                  ],
+                  "query": [
+                    {
+                      "description": "The index of the first item to return in a page of results (page offset).",
+                      "key": "startAt",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The maximum number of items to return per page.",
+                      "key": "maxResults",
+                      "value": "50"
+                    },
+                    {
+                      "description": "Order the results by a field. Accepted values: category, key, name, owner, issueCount, lastIssueUpdatedTime, archivedDate. Prefix with + or - for ascending/descending.",
+                      "key": "orderBy",
+                      "value": "key"
+                    },
+                    {
+                      "description": "Filter results using a literal string match on project name or key.",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The type key of the project. Accepted values: business, service_desk, software.",
+                      "key": "typeKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The ID of the project category to filter by.",
+                      "key": "categoryId",
+                      "value": "<long>"
+                    },
+                    {
+                      "description": "Filter results by what the user has permission to do. Accepted values: view, browse, edit, create.",
+                      "key": "action",
+                      "value": "view"
+                    },
+                    {
+                      "description": "Use expand to include additional information in the response. Accepted values: description, projectKeys, lead, issueTypes, url, insight.",
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The status of the project. Accepted values: live, archived, deleted.",
+                      "key": "status",
+                      "value": "live"
+                    },
+                    {
+                      "description": "The status of the project. Accepted values: live, archived, deleted.",
+                      "key": "status",
+                      "value": "deleted"
+                    }
+                  ]
+                },
+                "description": "Returns a paginated list of projects visible to the user. This operation can be filtered by project type, category, and action."
+              },
+              "response": [
+                {
+                  "id": "b911d242-d33a-41a1-b5ef-10d94d154911",
+                  "name": "Paginated project list returned successfully.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/project/search?startAt=0&maxResults=50&orderBy=key&query=<string>&typeKey=<string>&categoryId=<long>&action=view&expand=<string>&status=deleted",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "project",
+                        "search"
+                      ],
+                      "query": [
+                        {
+                          "description": "The index of the first item to return in a page of results (page offset).",
+                          "key": "startAt",
+                          "value": "0"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "maxResults",
+                          "value": "50"
+                        },
+                        {
+                          "description": "Order the results by a field. Accepted values: category, key, name, owner, issueCount, lastIssueUpdatedTime, archivedDate. Prefix with + or - for ascending/descending.",
+                          "key": "orderBy",
+                          "value": "key"
+                        },
+                        {
+                          "description": "Filter results using a literal string match on project name or key.",
+                          "key": "query",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The type key of the project. Accepted values: business, service_desk, software.",
+                          "key": "typeKey",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The ID of the project category to filter by.",
+                          "key": "categoryId",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "Filter results by what the user has permission to do. Accepted values: view, browse, edit, create.",
+                          "key": "action",
+                          "value": "view"
+                        },
+                        {
+                          "description": "Use expand to include additional information in the response. Accepted values: description, projectKeys, lead, issueTypes, url, insight.",
+                          "key": "expand",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The status of the project. Accepted values: live, archived, deleted.",
+                          "key": "status",
+                          "value": "deleted"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"self\": \"<uri>\",\n  \"nextPage\": \"<uri>\",\n  \"maxResults\": \"<integer>\",\n  \"startAt\": \"<long>\",\n  \"total\": \"<long>\",\n  \"isLast\": \"<boolean>\",\n  \"values\": [\n    {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"key\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"lead\": {\n        \"self\": \"<uri>\",\n        \"accountId\": \"<string>\",\n        \"emailAddress\": \"<email>\",\n        \"displayName\": \"<string>\",\n        \"active\": \"<boolean>\",\n        \"timeZone\": \"<string>\",\n        \"accountType\": \"app\",\n        \"avatarUrls\": {\n          \"16x16\": \"<uri>\",\n          \"24x24\": \"<uri>\",\n          \"32x32\": \"<uri>\",\n          \"48x48\": \"<uri>\"\n        }\n      },\n      \"components\": [\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"lead\": {\n            \"self\": \"<uri>\",\n            \"accountId\": \"<string>\",\n            \"emailAddress\": \"<email>\",\n            \"displayName\": \"<string>\",\n            \"active\": \"<boolean>\",\n            \"timeZone\": \"<string>\",\n            \"accountType\": \"atlassian\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            }\n          },\n          \"assigneeType\": \"PROJECT_DEFAULT\",\n          \"assignee\": {\n            \"self\": \"<uri>\",\n            \"accountId\": \"<string>\",\n            \"emailAddress\": \"<email>\",\n            \"displayName\": \"<string>\",\n            \"active\": \"<boolean>\",\n            \"timeZone\": \"<string>\",\n            \"accountType\": \"customer\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            }\n          },\n          \"project\": \"<string>\",\n          \"projectId\": \"<long>\"\n        },\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"lead\": {\n            \"self\": \"<uri>\",\n            \"accountId\": \"<string>\",\n            \"emailAddress\": \"<email>\",\n            \"displayName\": \"<string>\",\n            \"active\": \"<boolean>\",\n            \"timeZone\": \"<string>\",\n            \"accountType\": \"atlassian\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            }\n          },\n          \"assigneeType\": \"COMPONENT_LEAD\",\n          \"assignee\": {\n            \"self\": \"<uri>\",\n            \"accountId\": \"<string>\",\n            \"emailAddress\": \"<email>\",\n            \"displayName\": \"<string>\",\n            \"active\": \"<boolean>\",\n            \"timeZone\": \"<string>\",\n            \"accountType\": \"atlassian\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            }\n          },\n          \"project\": \"<string>\",\n          \"projectId\": \"<long>\"\n        }\n      ],\n      \"issueTypes\": [\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"name\": \"<string>\",\n          \"subtask\": \"<boolean>\",\n          \"avatarId\": \"<long>\",\n          \"hierarchyLevel\": \"<integer>\",\n          \"scope\": {\n            \"type\": \"PROJECT\",\n            \"project\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"key\": \"<string>\",\n              \"name\": \"<string>\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              },\n              \"projectTypeKey\": \"<string>\"\n            }\n          }\n        },\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"name\": \"<string>\",\n          \"subtask\": \"<boolean>\",\n          \"avatarId\": \"<long>\",\n          \"hierarchyLevel\": \"<integer>\",\n          \"scope\": {\n            \"type\": \"PROJECT\",\n            \"project\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"key\": \"<string>\",\n              \"name\": \"<string>\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              },\n              \"projectTypeKey\": \"<string>\"\n            }\n          }\n        }\n      ],\n      \"url\": \"<uri>\",\n      \"assigneeType\": \"PROJECT_LEAD\",\n      \"versions\": [\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"archived\": \"<boolean>\",\n          \"released\": \"<boolean>\",\n          \"releaseDate\": \"<date>\",\n          \"startDate\": \"<date>\",\n          \"overdue\": \"<boolean>\",\n          \"projectId\": \"<long>\"\n        },\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"archived\": \"<boolean>\",\n          \"released\": \"<boolean>\",\n          \"releaseDate\": \"<date>\",\n          \"startDate\": \"<date>\",\n          \"overdue\": \"<boolean>\",\n          \"projectId\": \"<long>\"\n        }\n      ],\n      \"roles\": {\n        \"nulla_8\": \"<uri>\"\n      },\n      \"avatarUrls\": {\n        \"16x16\": \"<uri>\",\n        \"24x24\": \"<uri>\",\n        \"32x32\": \"<uri>\",\n        \"48x48\": \"<uri>\"\n      },\n      \"projectCategory\": {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\"\n      },\n      \"projectTypeKey\": \"service_desk\",\n      \"simplified\": \"<boolean>\",\n      \"style\": \"classic\",\n      \"archived\": \"<boolean>\",\n      \"deleted\": \"<boolean>\",\n      \"insight\": {\n        \"totalIssueCount\": \"<long>\",\n        \"lastIssueUpdateTime\": \"<dateTime>\"\n      }\n    },\n    {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"key\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"lead\": {\n        \"self\": \"<uri>\",\n        \"accountId\": \"<string>\",\n        \"emailAddress\": \"<email>\",\n        \"displayName\": \"<string>\",\n        \"active\": \"<boolean>\",\n        \"timeZone\": \"<string>\",\n        \"accountType\": \"app\",\n        \"avatarUrls\": {\n          \"16x16\": \"<uri>\",\n          \"24x24\": \"<uri>\",\n          \"32x32\": \"<uri>\",\n          \"48x48\": \"<uri>\"\n        }\n      },\n      \"components\": [\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"lead\": {\n            \"self\": \"<uri>\",\n            \"accountId\": \"<string>\",\n            \"emailAddress\": \"<email>\",\n            \"displayName\": \"<string>\",\n            \"active\": \"<boolean>\",\n            \"timeZone\": \"<string>\",\n            \"accountType\": \"atlassian\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            }\n          },\n          \"assigneeType\": \"COMPONENT_LEAD\",\n          \"assignee\": {\n            \"self\": \"<uri>\",\n            \"accountId\": \"<string>\",\n            \"emailAddress\": \"<email>\",\n            \"displayName\": \"<string>\",\n            \"active\": \"<boolean>\",\n            \"timeZone\": \"<string>\",\n            \"accountType\": \"atlassian\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            }\n          },\n          \"project\": \"<string>\",\n          \"projectId\": \"<long>\"\n        },\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"lead\": {\n            \"self\": \"<uri>\",\n            \"accountId\": \"<string>\",\n            \"emailAddress\": \"<email>\",\n            \"displayName\": \"<string>\",\n            \"active\": \"<boolean>\",\n            \"timeZone\": \"<string>\",\n            \"accountType\": \"atlassian\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            }\n          },\n          \"assigneeType\": \"COMPONENT_LEAD\",\n          \"assignee\": {\n            \"self\": \"<uri>\",\n            \"accountId\": \"<string>\",\n            \"emailAddress\": \"<email>\",\n            \"displayName\": \"<string>\",\n            \"active\": \"<boolean>\",\n            \"timeZone\": \"<string>\",\n            \"accountType\": \"app\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            }\n          },\n          \"project\": \"<string>\",\n          \"projectId\": \"<long>\"\n        }\n      ],\n      \"issueTypes\": [\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"name\": \"<string>\",\n          \"subtask\": \"<boolean>\",\n          \"avatarId\": \"<long>\",\n          \"hierarchyLevel\": \"<integer>\",\n          \"scope\": {\n            \"type\": \"PROJECT\",\n            \"project\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"key\": \"<string>\",\n              \"name\": \"<string>\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              },\n              \"projectTypeKey\": \"<string>\"\n            }\n          }\n        },\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"name\": \"<string>\",\n          \"subtask\": \"<boolean>\",\n          \"avatarId\": \"<long>\",\n          \"hierarchyLevel\": \"<integer>\",\n          \"scope\": {\n            \"type\": \"TEMPLATE\",\n            \"project\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"key\": \"<string>\",\n              \"name\": \"<string>\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              },\n              \"projectTypeKey\": \"<string>\"\n            }\n          }\n        }\n      ],\n      \"url\": \"<uri>\",\n      \"assigneeType\": \"UNASSIGNED\",\n      \"versions\": [\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"archived\": \"<boolean>\",\n          \"released\": \"<boolean>\",\n          \"releaseDate\": \"<date>\",\n          \"startDate\": \"<date>\",\n          \"overdue\": \"<boolean>\",\n          \"projectId\": \"<long>\"\n        },\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"archived\": \"<boolean>\",\n          \"released\": \"<boolean>\",\n          \"releaseDate\": \"<date>\",\n          \"startDate\": \"<date>\",\n          \"overdue\": \"<boolean>\",\n          \"projectId\": \"<long>\"\n        }\n      ],\n      \"roles\": {\n        \"amet_676\": \"<uri>\"\n      },\n      \"avatarUrls\": {\n        \"16x16\": \"<uri>\",\n        \"24x24\": \"<uri>\",\n        \"32x32\": \"<uri>\",\n        \"48x48\": \"<uri>\"\n      },\n      \"projectCategory\": {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\"\n      },\n      \"projectTypeKey\": \"business\",\n      \"simplified\": \"<boolean>\",\n      \"style\": \"classic\",\n      \"archived\": \"<boolean>\",\n      \"deleted\": \"<boolean>\",\n      \"insight\": {\n        \"totalIssueCount\": \"<long>\",\n        \"lastIssueUpdateTime\": \"<dateTime>\"\n      }\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:59:48.000Z",
+                  "updatedAt": "2026-07-28T01:59:48.000Z",
+                  "uid": "35240-b911d242-d33a-41a1-b5ef-10d94d154911"
+                },
+                {
+                  "id": "f3459c01-5668-404e-a2ad-96ef712d3825",
+                  "name": "The request is invalid.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/project/search?startAt=0&maxResults=50&orderBy=key&query=<string>&typeKey=<string>&categoryId=<long>&action=view&expand=<string>&status=deleted",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "project",
+                        "search"
+                      ],
+                      "query": [
+                        {
+                          "description": "The index of the first item to return in a page of results (page offset).",
+                          "key": "startAt",
+                          "value": "0"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "maxResults",
+                          "value": "50"
+                        },
+                        {
+                          "description": "Order the results by a field. Accepted values: category, key, name, owner, issueCount, lastIssueUpdatedTime, archivedDate. Prefix with + or - for ascending/descending.",
+                          "key": "orderBy",
+                          "value": "key"
+                        },
+                        {
+                          "description": "Filter results using a literal string match on project name or key.",
+                          "key": "query",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The type key of the project. Accepted values: business, service_desk, software.",
+                          "key": "typeKey",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The ID of the project category to filter by.",
+                          "key": "categoryId",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "Filter results by what the user has permission to do. Accepted values: view, browse, edit, create.",
+                          "key": "action",
+                          "value": "view"
+                        },
+                        {
+                          "description": "Use expand to include additional information in the response. Accepted values: description, projectKeys, lead, issueTypes, url, insight.",
+                          "key": "expand",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The status of the project. Accepted values: live, archived, deleted.",
+                          "key": "status",
+                          "value": "deleted"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:48.000Z",
+                  "updatedAt": "2026-07-28T01:59:48.000Z",
+                  "uid": "35240-f3459c01-5668-404e-a2ad-96ef712d3825"
+                },
+                {
+                  "id": "b6998594-4989-4a39-bbc4-36b21bdcb0e4",
+                  "name": "Authentication credentials are missing or invalid.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/project/search?startAt=0&maxResults=50&orderBy=key&query=<string>&typeKey=<string>&categoryId=<long>&action=view&expand=<string>&status=deleted",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "project",
+                        "search"
+                      ],
+                      "query": [
+                        {
+                          "description": "The index of the first item to return in a page of results (page offset).",
+                          "key": "startAt",
+                          "value": "0"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "maxResults",
+                          "value": "50"
+                        },
+                        {
+                          "description": "Order the results by a field. Accepted values: category, key, name, owner, issueCount, lastIssueUpdatedTime, archivedDate. Prefix with + or - for ascending/descending.",
+                          "key": "orderBy",
+                          "value": "key"
+                        },
+                        {
+                          "description": "Filter results using a literal string match on project name or key.",
+                          "key": "query",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The type key of the project. Accepted values: business, service_desk, software.",
+                          "key": "typeKey",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The ID of the project category to filter by.",
+                          "key": "categoryId",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "Filter results by what the user has permission to do. Accepted values: view, browse, edit, create.",
+                          "key": "action",
+                          "value": "view"
+                        },
+                        {
+                          "description": "Use expand to include additional information in the response. Accepted values: description, projectKeys, lead, issueTypes, url, insight.",
+                          "key": "expand",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The status of the project. Accepted values: live, archived, deleted.",
+                          "key": "status",
+                          "value": "deleted"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:48.000Z",
+                  "updatedAt": "2026-07-28T01:59:48.000Z",
+                  "uid": "35240-b6998594-4989-4a39-bbc4-36b21bdcb0e4"
+                }
+              ],
+              "createdAt": "2026-07-28T01:59:48.000Z",
+              "updatedAt": "2026-07-28T01:59:48.000Z",
+              "uid": "35240-597d2560-22b4-409a-a5d7-2b7236cc7a10"
+            }
+          ],
+          "id": "49f84fcf-29dd-47e0-a422-aa46098eee54",
+          "createdAt": "2026-07-28T01:59:48.000Z",
+          "updatedAt": "2026-07-28T01:59:48.000Z",
+          "uid": "35240-49f84fcf-29dd-47e0-a422-aa46098eee54"
+        },
+        {
+          "name": "{projectIdOrKey}",
+          "item": [
+            {
+              "name": "statuses",
+              "item": [
+                {
+                  "name": "Jira Get All Statuses for Project",
+                  "id": "153d59cb-098d-4970-be19-337e0b1b28ee",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/project/:projectIdOrKey/statuses",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "project",
+                        ":projectIdOrKey",
+                        "statuses"
+                      ],
+                      "variable": [
+                        {
+                          "id": "1dac3a01-3c83-42f9-846a-a84b25cd229c",
+                          "key": "projectIdOrKey",
+                          "value": "<string>",
+                          "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                        }
+                      ]
+                    },
+                    "description": "Returns the valid statuses for a project. The statuses are grouped by issue type, listing the allowed statuses for each issue type in the project."
+                  },
+                  "response": [
+                    {
+                      "id": "9fa425b2-cfbf-4e47-8298-4e2feed0782a",
+                      "name": "Statuses returned successfully.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/project/:projectIdOrKey/statuses",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "project",
+                            ":projectIdOrKey",
+                            "statuses"
+                          ],
+                          "variable": [
+                            {
+                              "key": "projectIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"self\": \"<uri>\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"subtask\": \"<boolean>\",\n    \"statuses\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"statusCategory\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<long>\",\n          \"key\": \"<string>\",\n          \"colorName\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"statusCategory\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<long>\",\n          \"key\": \"<string>\",\n          \"colorName\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  {\n    \"self\": \"<uri>\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"subtask\": \"<boolean>\",\n    \"statuses\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"statusCategory\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<long>\",\n          \"key\": \"<string>\",\n          \"colorName\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"statusCategory\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<long>\",\n          \"key\": \"<string>\",\n          \"colorName\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  }\n]",
+                      "createdAt": "2026-07-28T01:59:48.000Z",
+                      "updatedAt": "2026-07-28T01:59:48.000Z",
+                      "uid": "35240-9fa425b2-cfbf-4e47-8298-4e2feed0782a"
+                    },
+                    {
+                      "id": "2052fdd7-5870-4755-b955-c8a948460175",
+                      "name": "Authentication credentials are missing or invalid.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/project/:projectIdOrKey/statuses",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "project",
+                            ":projectIdOrKey",
+                            "statuses"
+                          ],
+                          "variable": [
+                            {
+                              "key": "projectIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:48.000Z",
+                      "updatedAt": "2026-07-28T01:59:48.000Z",
+                      "uid": "35240-2052fdd7-5870-4755-b955-c8a948460175"
+                    },
+                    {
+                      "id": "5a75c000-d285-400d-800a-6d367824fa07",
+                      "name": "The project was not found or the user does not have permission to view it.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/project/:projectIdOrKey/statuses",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "project",
+                            ":projectIdOrKey",
+                            "statuses"
+                          ],
+                          "variable": [
+                            {
+                              "key": "projectIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:48.000Z",
+                      "updatedAt": "2026-07-28T01:59:48.000Z",
+                      "uid": "35240-5a75c000-d285-400d-800a-6d367824fa07"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:59:48.000Z",
+                  "updatedAt": "2026-07-28T01:59:48.000Z",
+                  "uid": "35240-153d59cb-098d-4970-be19-337e0b1b28ee"
+                }
+              ],
+              "id": "33bd0f6e-a774-491a-a5c2-1ea6f197af43",
+              "createdAt": "2026-07-28T01:59:48.000Z",
+              "updatedAt": "2026-07-28T01:59:48.000Z",
+              "uid": "35240-33bd0f6e-a774-491a-a5c2-1ea6f197af43"
+            },
+            {
+              "name": "Jira Get Project",
+              "id": "edeb366a-4077-4295-b25f-0ff967374b90",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/project/:projectIdOrKey?expand=<string>&properties=<string>&properties=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "project",
+                    ":projectIdOrKey"
+                  ],
+                  "query": [
+                    {
+                      "description": "Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url, insight.",
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A list of project properties to return for the project.",
+                      "key": "properties",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A list of project properties to return for the project.",
+                      "key": "properties",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "e41da9be-ec8f-4d6d-ad3b-3d20c34ccf4e",
+                      "key": "projectIdOrKey",
+                      "value": "<string>",
+                      "description": "(Required) The ID or key of the project (e.g., 10000 or PROJ)."
+                    }
+                  ]
+                },
+                "description": "Returns the project details for a project. The returned project includes additional information such as issue types, components, versions, and roles."
+              },
+              "response": [
+                {
+                  "id": "4acb6f9b-9bea-4dfa-8fb4-5935823ad855",
+                  "name": "Project details returned successfully.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/project/:projectIdOrKey?expand=<string>&properties=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "project",
+                        ":projectIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url, insight.",
+                          "key": "expand",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "A list of project properties to return for the project.",
+                          "key": "properties",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "projectIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"self\": \"<uri>\",\n  \"id\": \"<string>\",\n  \"key\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"lead\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"atlassian\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"components\": [\n    {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"lead\": {\n        \"self\": \"<uri>\",\n        \"accountId\": \"<string>\",\n        \"emailAddress\": \"<email>\",\n        \"displayName\": \"<string>\",\n        \"active\": \"<boolean>\",\n        \"timeZone\": \"<string>\",\n        \"accountType\": \"atlassian\",\n        \"avatarUrls\": {\n          \"16x16\": \"<uri>\",\n          \"24x24\": \"<uri>\",\n          \"32x32\": \"<uri>\",\n          \"48x48\": \"<uri>\"\n        }\n      },\n      \"assigneeType\": \"UNASSIGNED\",\n      \"assignee\": {\n        \"self\": \"<uri>\",\n        \"accountId\": \"<string>\",\n        \"emailAddress\": \"<email>\",\n        \"displayName\": \"<string>\",\n        \"active\": \"<boolean>\",\n        \"timeZone\": \"<string>\",\n        \"accountType\": \"app\",\n        \"avatarUrls\": {\n          \"16x16\": \"<uri>\",\n          \"24x24\": \"<uri>\",\n          \"32x32\": \"<uri>\",\n          \"48x48\": \"<uri>\"\n        }\n      },\n      \"project\": \"<string>\",\n      \"projectId\": \"<long>\"\n    },\n    {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"lead\": {\n        \"self\": \"<uri>\",\n        \"accountId\": \"<string>\",\n        \"emailAddress\": \"<email>\",\n        \"displayName\": \"<string>\",\n        \"active\": \"<boolean>\",\n        \"timeZone\": \"<string>\",\n        \"accountType\": \"app\",\n        \"avatarUrls\": {\n          \"16x16\": \"<uri>\",\n          \"24x24\": \"<uri>\",\n          \"32x32\": \"<uri>\",\n          \"48x48\": \"<uri>\"\n        }\n      },\n      \"assigneeType\": \"UNASSIGNED\",\n      \"assignee\": {\n        \"self\": \"<uri>\",\n        \"accountId\": \"<string>\",\n        \"emailAddress\": \"<email>\",\n        \"displayName\": \"<string>\",\n        \"active\": \"<boolean>\",\n        \"timeZone\": \"<string>\",\n        \"accountType\": \"customer\",\n        \"avatarUrls\": {\n          \"16x16\": \"<uri>\",\n          \"24x24\": \"<uri>\",\n          \"32x32\": \"<uri>\",\n          \"48x48\": \"<uri>\"\n        }\n      },\n      \"project\": \"<string>\",\n      \"projectId\": \"<long>\"\n    }\n  ],\n  \"issueTypes\": [\n    {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"description\": \"<string>\",\n      \"iconUrl\": \"<uri>\",\n      \"name\": \"<string>\",\n      \"subtask\": \"<boolean>\",\n      \"avatarId\": \"<long>\",\n      \"hierarchyLevel\": \"<integer>\",\n      \"scope\": {\n        \"type\": \"PROJECT\",\n        \"project\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"key\": \"<string>\",\n          \"name\": \"<string>\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          },\n          \"projectTypeKey\": \"<string>\"\n        }\n      }\n    },\n    {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"description\": \"<string>\",\n      \"iconUrl\": \"<uri>\",\n      \"name\": \"<string>\",\n      \"subtask\": \"<boolean>\",\n      \"avatarId\": \"<long>\",\n      \"hierarchyLevel\": \"<integer>\",\n      \"scope\": {\n        \"type\": \"PROJECT\",\n        \"project\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"key\": \"<string>\",\n          \"name\": \"<string>\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          },\n          \"projectTypeKey\": \"<string>\"\n        }\n      }\n    }\n  ],\n  \"url\": \"<uri>\",\n  \"assigneeType\": \"UNASSIGNED\",\n  \"versions\": [\n    {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"archived\": \"<boolean>\",\n      \"released\": \"<boolean>\",\n      \"releaseDate\": \"<date>\",\n      \"startDate\": \"<date>\",\n      \"overdue\": \"<boolean>\",\n      \"projectId\": \"<long>\"\n    },\n    {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"archived\": \"<boolean>\",\n      \"released\": \"<boolean>\",\n      \"releaseDate\": \"<date>\",\n      \"startDate\": \"<date>\",\n      \"overdue\": \"<boolean>\",\n      \"projectId\": \"<long>\"\n    }\n  ],\n  \"roles\": {\n    \"exercitation_5f\": \"<uri>\"\n  },\n  \"avatarUrls\": {\n    \"16x16\": \"<uri>\",\n    \"24x24\": \"<uri>\",\n    \"32x32\": \"<uri>\",\n    \"48x48\": \"<uri>\"\n  },\n  \"projectCategory\": {\n    \"self\": \"<uri>\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"projectTypeKey\": \"service_desk\",\n  \"simplified\": \"<boolean>\",\n  \"style\": \"classic\",\n  \"archived\": \"<boolean>\",\n  \"deleted\": \"<boolean>\",\n  \"insight\": {\n    \"totalIssueCount\": \"<long>\",\n    \"lastIssueUpdateTime\": \"<dateTime>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:59:48.000Z",
+                  "updatedAt": "2026-07-28T01:59:48.000Z",
+                  "uid": "35240-4acb6f9b-9bea-4dfa-8fb4-5935823ad855"
+                },
+                {
+                  "id": "dea0db84-62dc-444f-8478-b937a2097291",
+                  "name": "Authentication credentials are missing or invalid.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/project/:projectIdOrKey?expand=<string>&properties=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "project",
+                        ":projectIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url, insight.",
+                          "key": "expand",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "A list of project properties to return for the project.",
+                          "key": "properties",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "projectIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:48.000Z",
+                  "updatedAt": "2026-07-28T01:59:48.000Z",
+                  "uid": "35240-dea0db84-62dc-444f-8478-b937a2097291"
+                },
+                {
+                  "id": "b97daa97-11a5-44b2-8486-c17dde824390",
+                  "name": "The project was not found or the user does not have permission to view it.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/project/:projectIdOrKey?expand=<string>&properties=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "project",
+                        ":projectIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url, insight.",
+                          "key": "expand",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "A list of project properties to return for the project.",
+                          "key": "properties",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "projectIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:48.000Z",
+                  "updatedAt": "2026-07-28T01:59:48.000Z",
+                  "uid": "35240-b97daa97-11a5-44b2-8486-c17dde824390"
+                }
+              ],
+              "createdAt": "2026-07-28T01:59:48.000Z",
+              "updatedAt": "2026-07-28T01:59:48.000Z",
+              "uid": "35240-edeb366a-4077-4295-b25f-0ff967374b90"
+            }
+          ],
+          "id": "7f620410-dcb5-4f5c-a075-73dc23ead3f6",
+          "createdAt": "2026-07-28T01:59:48.000Z",
+          "updatedAt": "2026-07-28T01:59:48.000Z",
+          "uid": "35240-7f620410-dcb5-4f5c-a075-73dc23ead3f6"
+        },
+        {
+          "name": "Jira Get All Projects",
+          "id": "e046b18e-992a-4315-b712-620eee4e30a5",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/project?expand=<string>&recent=<integer>&properties=<string>&properties=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "project"
+              ],
+              "query": [
+                {
+                  "description": "Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url.",
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Returns projects the user has accessed in the last given number of projects, up to 20.",
+                  "key": "recent",
+                  "value": "<integer>"
+                },
+                {
+                  "description": "A list of project properties to return for each project.",
+                  "key": "properties",
+                  "value": "<string>"
+                },
+                {
+                  "description": "A list of project properties to return for each project.",
+                  "key": "properties",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns all projects visible to the user. Deprecated, use Get projects paginated that supports search and pagination."
+          },
+          "response": [
+            {
+              "id": "c3155714-d695-47b1-bccd-d76ac4e08a26",
+              "name": "Projects returned successfully.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/project?expand=<string>&recent=<integer>&properties=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "project"
+                  ],
+                  "query": [
+                    {
+                      "description": "Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url.",
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Returns projects the user has accessed in the last given number of projects, up to 20.",
+                      "key": "recent",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "A list of project properties to return for each project.",
+                      "key": "properties",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"self\": \"<uri>\",\n    \"id\": \"<string>\",\n    \"key\": \"<string>\",\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"lead\": {\n      \"self\": \"<uri>\",\n      \"accountId\": \"<string>\",\n      \"emailAddress\": \"<email>\",\n      \"displayName\": \"<string>\",\n      \"active\": \"<boolean>\",\n      \"timeZone\": \"<string>\",\n      \"accountType\": \"app\",\n      \"avatarUrls\": {\n        \"16x16\": \"<uri>\",\n        \"24x24\": \"<uri>\",\n        \"32x32\": \"<uri>\",\n        \"48x48\": \"<uri>\"\n      }\n    },\n    \"components\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"lead\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"app\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"assigneeType\": \"PROJECT_LEAD\",\n        \"assignee\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"app\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"project\": \"<string>\",\n        \"projectId\": \"<long>\"\n      },\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"lead\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"customer\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"assigneeType\": \"COMPONENT_LEAD\",\n        \"assignee\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"atlassian\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"project\": \"<string>\",\n        \"projectId\": \"<long>\"\n      }\n    ],\n    \"issueTypes\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"name\": \"<string>\",\n        \"subtask\": \"<boolean>\",\n        \"avatarId\": \"<long>\",\n        \"hierarchyLevel\": \"<integer>\",\n        \"scope\": {\n          \"type\": \"TEMPLATE\",\n          \"project\": {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"key\": \"<string>\",\n            \"name\": \"<string>\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            },\n            \"projectTypeKey\": \"<string>\"\n          }\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"name\": \"<string>\",\n        \"subtask\": \"<boolean>\",\n        \"avatarId\": \"<long>\",\n        \"hierarchyLevel\": \"<integer>\",\n        \"scope\": {\n          \"type\": \"PROJECT\",\n          \"project\": {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"key\": \"<string>\",\n            \"name\": \"<string>\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            },\n            \"projectTypeKey\": \"<string>\"\n          }\n        }\n      }\n    ],\n    \"url\": \"<uri>\",\n    \"assigneeType\": \"UNASSIGNED\",\n    \"versions\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"archived\": \"<boolean>\",\n        \"released\": \"<boolean>\",\n        \"releaseDate\": \"<date>\",\n        \"startDate\": \"<date>\",\n        \"overdue\": \"<boolean>\",\n        \"projectId\": \"<long>\"\n      },\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"archived\": \"<boolean>\",\n        \"released\": \"<boolean>\",\n        \"releaseDate\": \"<date>\",\n        \"startDate\": \"<date>\",\n        \"overdue\": \"<boolean>\",\n        \"projectId\": \"<long>\"\n      }\n    ],\n    \"roles\": {\n      \"adipisicing93e\": \"<uri>\"\n    },\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    },\n    \"projectCategory\": {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\"\n    },\n    \"projectTypeKey\": \"business\",\n    \"simplified\": \"<boolean>\",\n    \"style\": \"next-gen\",\n    \"archived\": \"<boolean>\",\n    \"deleted\": \"<boolean>\",\n    \"insight\": {\n      \"totalIssueCount\": \"<long>\",\n      \"lastIssueUpdateTime\": \"<dateTime>\"\n    }\n  },\n  {\n    \"self\": \"<uri>\",\n    \"id\": \"<string>\",\n    \"key\": \"<string>\",\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"lead\": {\n      \"self\": \"<uri>\",\n      \"accountId\": \"<string>\",\n      \"emailAddress\": \"<email>\",\n      \"displayName\": \"<string>\",\n      \"active\": \"<boolean>\",\n      \"timeZone\": \"<string>\",\n      \"accountType\": \"atlassian\",\n      \"avatarUrls\": {\n        \"16x16\": \"<uri>\",\n        \"24x24\": \"<uri>\",\n        \"32x32\": \"<uri>\",\n        \"48x48\": \"<uri>\"\n      }\n    },\n    \"components\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"lead\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"atlassian\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"assigneeType\": \"UNASSIGNED\",\n        \"assignee\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"atlassian\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"project\": \"<string>\",\n        \"projectId\": \"<long>\"\n      },\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"lead\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"customer\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"assigneeType\": \"PROJECT_LEAD\",\n        \"assignee\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"customer\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"project\": \"<string>\",\n        \"projectId\": \"<long>\"\n      }\n    ],\n    \"issueTypes\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"name\": \"<string>\",\n        \"subtask\": \"<boolean>\",\n        \"avatarId\": \"<long>\",\n        \"hierarchyLevel\": \"<integer>\",\n        \"scope\": {\n          \"type\": \"TEMPLATE\",\n          \"project\": {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"key\": \"<string>\",\n            \"name\": \"<string>\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            },\n            \"projectTypeKey\": \"<string>\"\n          }\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"name\": \"<string>\",\n        \"subtask\": \"<boolean>\",\n        \"avatarId\": \"<long>\",\n        \"hierarchyLevel\": \"<integer>\",\n        \"scope\": {\n          \"type\": \"TEMPLATE\",\n          \"project\": {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"key\": \"<string>\",\n            \"name\": \"<string>\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            },\n            \"projectTypeKey\": \"<string>\"\n          }\n        }\n      }\n    ],\n    \"url\": \"<uri>\",\n    \"assigneeType\": \"UNASSIGNED\",\n    \"versions\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"archived\": \"<boolean>\",\n        \"released\": \"<boolean>\",\n        \"releaseDate\": \"<date>\",\n        \"startDate\": \"<date>\",\n        \"overdue\": \"<boolean>\",\n        \"projectId\": \"<long>\"\n      },\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"archived\": \"<boolean>\",\n        \"released\": \"<boolean>\",\n        \"releaseDate\": \"<date>\",\n        \"startDate\": \"<date>\",\n        \"overdue\": \"<boolean>\",\n        \"projectId\": \"<long>\"\n      }\n    ],\n    \"roles\": {\n      \"ipsum_0\": \"<uri>\"\n    },\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    },\n    \"projectCategory\": {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\"\n    },\n    \"projectTypeKey\": \"service_desk\",\n    \"simplified\": \"<boolean>\",\n    \"style\": \"classic\",\n    \"archived\": \"<boolean>\",\n    \"deleted\": \"<boolean>\",\n    \"insight\": {\n      \"totalIssueCount\": \"<long>\",\n      \"lastIssueUpdateTime\": \"<dateTime>\"\n    }\n  }\n]",
+              "createdAt": "2026-07-28T01:59:48.000Z",
+              "updatedAt": "2026-07-28T01:59:48.000Z",
+              "uid": "35240-c3155714-d695-47b1-bccd-d76ac4e08a26"
+            },
+            {
+              "id": "8f5b7d52-c4ff-4aee-b680-cad62a2cccd8",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/project?expand=<string>&recent=<integer>&properties=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "project"
+                  ],
+                  "query": [
+                    {
+                      "description": "Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url.",
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Returns projects the user has accessed in the last given number of projects, up to 20.",
+                      "key": "recent",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "A list of project properties to return for each project.",
+                      "key": "properties",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T01:59:48.000Z",
+              "updatedAt": "2026-07-28T01:59:48.000Z",
+              "uid": "35240-8f5b7d52-c4ff-4aee-b680-cad62a2cccd8"
+            }
+          ],
+          "createdAt": "2026-07-28T01:59:48.000Z",
+          "updatedAt": "2026-07-28T01:59:48.000Z",
+          "uid": "35240-e046b18e-992a-4315-b712-620eee4e30a5"
+        }
+      ],
+      "id": "4c38763a-f4dc-4749-8d7d-4eaf4a581ba3",
+      "createdAt": "2026-07-28T01:59:48.000Z",
+      "updatedAt": "2026-07-28T01:59:48.000Z",
+      "uid": "35240-4c38763a-f4dc-4749-8d7d-4eaf4a581ba3"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "domain",
+      "value": "your-domain"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{domain}}.atlassian.net/rest/api/3"
+    }
+  ]
+}

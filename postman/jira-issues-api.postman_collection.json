@@ -1,0 +1,1309 @@
+{
+  "info": {
+    "_postman_id": "06dc99a8-dcf2-4821-9499-f86427ab7f8a",
+    "name": "Jira Cloud Platform REST Issue Comments Issues API",
+    "description": "The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.\n\nContact Support:\n Name: Atlassian Developer Support\n Email: ecosystem@atlassian.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:59:46.000Z",
+    "updatedAt": "2026-07-28T01:59:46.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-06dc99a8-dcf2-4821-9499-f86427ab7f8a"
+  },
+  "item": [
+    {
+      "name": "issue",
+      "item": [
+        {
+          "name": "{issueIdOrKey}",
+          "item": [
+            {
+              "name": "Jira Get Issue",
+              "id": "be8dfd10-c532-4f89-8976-ab89f10e9ae9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/issue/:issueIdOrKey?fields=<string>&fields=<string>&expand=<string>&properties=<string>&properties=<string>&fieldsByKeys=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "query": [
+                    {
+                      "description": "A list of fields to return for the issue. Use it to retrieve a subset of fields. Allowed values include any field name, *all for all fields, *navigable for navigable fields.",
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A list of fields to return for the issue. Use it to retrieve a subset of fields. Allowed values include any field name, *all for all fields, *navigable for navigable fields.",
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Use expand to include additional information in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations, fields.",
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A list of issue properties to return for the issue. By default no properties are returned.",
+                      "key": "properties",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A list of issue properties to return for the issue. By default no properties are returned.",
+                      "key": "properties",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Whether fields in fields are referenced by keys rather than IDs.",
+                      "key": "fieldsByKeys",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "00c82b15-3014-4b89-bc06-088d9abe7147",
+                      "key": "issueIdOrKey",
+                      "value": "<string>",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    }
+                  ]
+                },
+                "description": "Returns the details for an issue. The issue is identified by its ID or key. The returned issue includes all fields, comment count, names, schema, transitions, editmeta, changelog, and rendered fields."
+              },
+              "response": [
+                {
+                  "id": "0e01c1e5-84d2-4676-b182-f946d9366762",
+                  "name": "Issue details returned successfully.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?fields=<string>&expand=<string>&properties=<string>&fieldsByKeys=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "A list of fields to return for the issue. Use it to retrieve a subset of fields. Allowed values include any field name, *all for all fields, *navigable for navigable fields.",
+                          "key": "fields",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Use expand to include additional information in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations, fields.",
+                          "key": "expand",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "A list of issue properties to return for the issue. By default no properties are returned.",
+                          "key": "properties",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Whether fields in fields are referenced by keys rather than IDs.",
+                          "key": "fieldsByKeys",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"key\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"expand\": \"<string>\",\n  \"fields\": {\n    \"summary\": \"<string>\",\n    \"description\": {\n      \"type\": \"doc\",\n      \"version\": 1,\n      \"content\": [\n        {\n          \"type\": \"<string>\",\n          \"content\": [\n            {\n              \"type\": \"<string>\",\n              \"text\": \"<string>\",\n              \"marks\": [\n                {\n                  \"type\": \"<string>\",\n                  \"attrs\": {\n                    \"eiusmod_f24\": \"sunt culpa\"\n                  }\n                }\n              ]\n            }\n          ],\n          \"attrs\": {\n            \"nulla_a\": false\n          }\n        }\n      ]\n    },\n    \"issuetype\": {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"description\": \"<string>\",\n      \"iconUrl\": \"<uri>\",\n      \"name\": \"<string>\",\n      \"subtask\": \"<boolean>\",\n      \"avatarId\": \"<long>\",\n      \"hierarchyLevel\": \"<integer>\",\n      \"scope\": {\n        \"type\": \"TEMPLATE\",\n        \"project\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"key\": \"<string>\",\n          \"name\": \"<string>\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          },\n          \"projectTypeKey\": \"<string>\"\n        }\n      }\n    },\n    \"project\": {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"key\": \"<string>\",\n      \"name\": \"<string>\",\n      \"avatarUrls\": {\n        \"16x16\": \"<uri>\",\n        \"24x24\": \"<uri>\",\n        \"32x32\": \"<uri>\",\n        \"48x48\": \"<uri>\"\n      },\n      \"projectTypeKey\": \"<string>\"\n    },\n    \"status\": {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"iconUrl\": \"<uri>\",\n      \"statusCategory\": {\n        \"self\": \"<uri>\",\n        \"id\": \"<long>\",\n        \"key\": \"<string>\",\n        \"colorName\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    },\n    \"priority\": {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"iconUrl\": \"<uri>\",\n      \"statusColor\": \"<string>\"\n    },\n    \"assignee\": {\n      \"self\": \"<uri>\",\n      \"accountId\": \"<string>\",\n      \"emailAddress\": \"<email>\",\n      \"displayName\": \"<string>\",\n      \"active\": \"<boolean>\",\n      \"timeZone\": \"<string>\",\n      \"accountType\": \"customer\",\n      \"avatarUrls\": {\n        \"16x16\": \"<uri>\",\n        \"24x24\": \"<uri>\",\n        \"32x32\": \"<uri>\",\n        \"48x48\": \"<uri>\"\n      }\n    },\n    \"reporter\": {\n      \"self\": \"<uri>\",\n      \"accountId\": \"<string>\",\n      \"emailAddress\": \"<email>\",\n      \"displayName\": \"<string>\",\n      \"active\": \"<boolean>\",\n      \"timeZone\": \"<string>\",\n      \"accountType\": \"app\",\n      \"avatarUrls\": {\n        \"16x16\": \"<uri>\",\n        \"24x24\": \"<uri>\",\n        \"32x32\": \"<uri>\",\n        \"48x48\": \"<uri>\"\n      }\n    },\n    \"creator\": {\n      \"self\": \"<uri>\",\n      \"accountId\": \"<string>\",\n      \"emailAddress\": \"<email>\",\n      \"displayName\": \"<string>\",\n      \"active\": \"<boolean>\",\n      \"timeZone\": \"<string>\",\n      \"accountType\": \"atlassian\",\n      \"avatarUrls\": {\n        \"16x16\": \"<uri>\",\n        \"24x24\": \"<uri>\",\n        \"32x32\": \"<uri>\",\n        \"48x48\": \"<uri>\"\n      }\n    },\n    \"labels\": [\n      \"<string>\"\n    ],\n    \"components\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"lead\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"customer\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"assigneeType\": \"UNASSIGNED\",\n        \"assignee\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"atlassian\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"project\": \"<string>\",\n        \"projectId\": \"<long>\"\n      }\n    ],\n    \"fixVersions\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"archived\": \"<boolean>\",\n        \"released\": \"<boolean>\",\n        \"releaseDate\": \"<date>\",\n        \"startDate\": \"<date>\",\n        \"overdue\": \"<boolean>\",\n        \"projectId\": \"<long>\"\n      }\n    ],\n    \"versions\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"archived\": \"<boolean>\",\n        \"released\": \"<boolean>\",\n        \"releaseDate\": \"<date>\",\n        \"startDate\": \"<date>\",\n        \"overdue\": \"<boolean>\",\n        \"projectId\": \"<long>\"\n      }\n    ],\n    \"resolution\": {\n      \"self\": \"<uri>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\"\n    },\n    \"resolutiondate\": \"<string,null-date-time>\",\n    \"created\": \"<dateTime>\",\n    \"updated\": \"<dateTime>\",\n    \"duedate\": \"<string,null-date>\",\n    \"watches\": {\n      \"self\": \"<uri>\",\n      \"watchCount\": \"<integer>\",\n      \"isWatching\": \"<boolean>\"\n    },\n    \"votes\": {\n      \"self\": \"<uri>\",\n      \"votes\": \"<integer>\",\n      \"hasVoted\": \"<boolean>\"\n    },\n    \"comment\": {\n      \"startAt\": \"<integer>\",\n      \"maxResults\": \"<integer>\",\n      \"total\": \"<integer>\",\n      \"comments\": [\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"author\": {\n            \"self\": \"<uri>\",\n            \"accountId\": \"<string>\",\n            \"emailAddress\": \"<email>\",\n            \"displayName\": \"<string>\",\n            \"active\": \"<boolean>\",\n            \"timeZone\": \"<string>\",\n            \"accountType\": \"app\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            }\n          },\n          \"body\": {\n            \"type\": \"doc\",\n            \"version\": 1,\n            \"content\": [\n              {\n                \"type\": \"<string>\",\n                \"content\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"text\": \"<string>\",\n                    \"marks\": [\n                      {\n                        \"type\": \"<string>\",\n                        \"attrs\": {\n                          \"voluptatec\": -61550569\n                        }\n                      }\n                    ]\n                  }\n                ],\n                \"attrs\": {\n                  \"aliqua_6\": -74316126.95255682,\n                  \"veniam_08\": -29065879\n                }\n              }\n            ]\n          },\n          \"renderedBody\": \"<string>\",\n          \"updateAuthor\": {\n            \"self\": \"<uri>\",\n            \"accountId\": \"<string>\",\n            \"emailAddress\": \"<email>\",\n            \"displayName\": \"<string>\",\n            \"active\": \"<boolean>\",\n            \"timeZone\": \"<string>\",\n            \"accountType\": \"customer\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            }\n          },\n          \"created\": \"<dateTime>\",\n          \"updated\": \"<dateTime>\",\n          \"visibility\": {\n            \"type\": \"group\",\n            \"value\": \"<string>\",\n            \"identifier\": \"<string>\"\n          },\n          \"jsdPublic\": \"<boolean>\"\n        }\n      ]\n    },\n    \"worklog\": {\n      \"startAt\": \"<integer>\",\n      \"maxResults\": \"<integer>\",\n      \"total\": \"<integer>\",\n      \"worklogs\": [\n        {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"author\": {\n            \"self\": \"<uri>\",\n            \"accountId\": \"<string>\",\n            \"emailAddress\": \"<email>\",\n            \"displayName\": \"<string>\",\n            \"active\": \"<boolean>\",\n            \"timeZone\": \"<string>\",\n            \"accountType\": \"atlassian\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            }\n          },\n          \"updateAuthor\": {\n            \"self\": \"<uri>\",\n            \"accountId\": \"<string>\",\n            \"emailAddress\": \"<email>\",\n            \"displayName\": \"<string>\",\n            \"active\": \"<boolean>\",\n            \"timeZone\": \"<string>\",\n            \"accountType\": \"atlassian\",\n            \"avatarUrls\": {\n              \"16x16\": \"<uri>\",\n              \"24x24\": \"<uri>\",\n              \"32x32\": \"<uri>\",\n              \"48x48\": \"<uri>\"\n            }\n          },\n          \"comment\": {\n            \"type\": \"doc\",\n            \"version\": 1,\n            \"content\": [\n              {\n                \"type\": \"<string>\",\n                \"content\": [\n                  {\n                    \"type\": \"<string>\",\n                    \"text\": \"<string>\",\n                    \"marks\": [\n                      {\n                        \"type\": \"<string>\",\n                        \"attrs\": {\n                          \"officia_b\": 57916517\n                        }\n                      }\n                    ],\n                    \"incididuntef5\": true,\n                    \"magna_e4\": \"Ut\"\n                  }\n                ],\n                \"attrs\": {\n                  \"Excepteur7\": \"in proident officia aliqua consectetur\",\n                  \"nostrudd\": \"magna dolore\"\n                }\n              }\n            ]\n          },\n          \"created\": \"<dateTime>\",\n          \"updated\": \"<dateTime>\",\n          \"started\": \"<dateTime>\",\n          \"timeSpent\": \"<string>\",\n          \"timeSpentSeconds\": \"<long>\"\n        }\n      ]\n    },\n    \"subtasks\": [\n      {\n        \"id\": \"<string>\",\n        \"key\": \"<string>\",\n        \"self\": \"<uri>\",\n        \"fields\": {\n          \"summary\": \"<string>\",\n          \"status\": {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"description\": \"<string>\",\n            \"iconUrl\": \"<uri>\",\n            \"statusCategory\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<long>\",\n              \"key\": \"<string>\",\n              \"colorName\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          },\n          \"priority\": {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"description\": \"<string>\",\n            \"iconUrl\": \"<uri>\",\n            \"statusColor\": \"<string>\"\n          },\n          \"issuetype\": {\n            \"self\": \"<uri>\",\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"iconUrl\": \"<uri>\",\n            \"name\": \"<string>\",\n            \"subtask\": \"<boolean>\",\n            \"avatarId\": \"<long>\",\n            \"hierarchyLevel\": \"<integer>\",\n            \"scope\": {\n              \"type\": \"PROJECT\",\n              \"project\": {\n                \"self\": \"<uri>\",\n                \"id\": \"<string>\",\n                \"key\": \"<string>\",\n                \"name\": \"<string>\",\n                \"avatarUrls\": {\n                  \"16x16\": \"<uri>\",\n                  \"24x24\": \"<uri>\",\n                  \"32x32\": \"<uri>\",\n                  \"48x48\": \"<uri>\"\n                },\n                \"projectTypeKey\": \"<string>\"\n              }\n            }\n          }\n        }\n      }\n    ],\n    \"parent\": {\n      \"id\": \"<string>\",\n      \"key\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"fields\": {\n        \"summary\": \"<string>\",\n        \"status\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"statusCategory\": {\n            \"self\": \"<uri>\",\n            \"id\": \"<long>\",\n            \"key\": \"<string>\",\n            \"colorName\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        },\n        \"priority\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"statusColor\": \"<string>\"\n        },\n        \"issuetype\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<string>\",\n          \"description\": \"<string>\",\n          \"iconUrl\": \"<uri>\",\n          \"name\": \"<string>\",\n          \"subtask\": \"<boolean>\",\n          \"avatarId\": \"<long>\",\n          \"hierarchyLevel\": \"<integer>\",\n          \"scope\": {\n            \"type\": \"TEMPLATE\",\n            \"project\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"key\": \"<string>\",\n              \"name\": \"<string>\",\n              \"avatarUrls\": {\n                \"16x16\": \"<uri>\",\n                \"24x24\": \"<uri>\",\n                \"32x32\": \"<uri>\",\n                \"48x48\": \"<uri>\"\n              },\n              \"projectTypeKey\": \"<string>\"\n            }\n          }\n        }\n      }\n    },\n    \"environment\": {\n      \"type\": \"doc\",\n      \"version\": 1,\n      \"content\": [\n        {\n          \"type\": \"<string>\",\n          \"content\": [\n            {\n              \"type\": \"<string>\",\n              \"text\": \"<string>\",\n              \"marks\": [\n                {\n                  \"type\": \"<string>\",\n                  \"attrs\": {\n                    \"voluptate_3\": false,\n                    \"nisi_3f1\": -38415823.81016728\n                  }\n                }\n              ]\n            }\n          ],\n          \"attrs\": {\n            \"sint_97\": true,\n            \"Ut_1\": -7728930\n          },\n          \"dolor79\": 69350785,\n          \"esse_362\": -57668823.94496457\n        }\n      ]\n    },\n    \"attachment\": [\n      {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"filename\": \"<string>\",\n        \"author\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"atlassian\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"created\": \"<dateTime>\",\n        \"size\": \"<long>\",\n        \"mimeType\": \"<string>\",\n        \"content\": \"<uri>\",\n        \"thumbnail\": \"<uri>\"\n      }\n    ],\n    \"issuelinks\": [\n      {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\",\n        \"type\": {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"inward\": \"<string>\",\n          \"outward\": \"<string>\",\n          \"self\": \"<uri>\"\n        },\n        \"inwardIssue\": {\n          \"id\": \"<string>\",\n          \"key\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"fields\": {\n            \"summary\": \"<string>\",\n            \"status\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"description\": \"<string>\",\n              \"iconUrl\": \"<uri>\",\n              \"statusCategory\": {\n                \"self\": \"<uri>\",\n                \"id\": \"<long>\",\n                \"key\": \"<string>\",\n                \"colorName\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            },\n            \"priority\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"description\": \"<string>\",\n              \"iconUrl\": \"<uri>\",\n              \"statusColor\": \"<string>\"\n            },\n            \"issuetype\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"description\": \"<string>\",\n              \"iconUrl\": \"<uri>\",\n              \"name\": \"<string>\",\n              \"subtask\": \"<boolean>\",\n              \"avatarId\": \"<long>\",\n              \"hierarchyLevel\": \"<integer>\",\n              \"scope\": {\n                \"type\": \"PROJECT\",\n                \"project\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"key\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"avatarUrls\": {\n                    \"16x16\": \"<uri>\",\n                    \"24x24\": \"<uri>\",\n                    \"32x32\": \"<uri>\",\n                    \"48x48\": \"<uri>\"\n                  },\n                  \"projectTypeKey\": \"<string>\"\n                }\n              }\n            }\n          }\n        },\n        \"outwardIssue\": {\n          \"id\": \"<string>\",\n          \"key\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"fields\": {\n            \"summary\": \"<string>\",\n            \"status\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"description\": \"<string>\",\n              \"iconUrl\": \"<uri>\",\n              \"statusCategory\": {\n                \"self\": \"<uri>\",\n                \"id\": \"<long>\",\n                \"key\": \"<string>\",\n                \"colorName\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            },\n            \"priority\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"description\": \"<string>\",\n              \"iconUrl\": \"<uri>\",\n              \"statusColor\": \"<string>\"\n            },\n            \"issuetype\": {\n              \"self\": \"<uri>\",\n              \"id\": \"<string>\",\n              \"description\": \"<string>\",\n              \"iconUrl\": \"<uri>\",\n              \"name\": \"<string>\",\n              \"subtask\": \"<boolean>\",\n              \"avatarId\": \"<long>\",\n              \"hierarchyLevel\": \"<integer>\",\n              \"scope\": {\n                \"type\": \"PROJECT\",\n                \"project\": {\n                  \"self\": \"<uri>\",\n                  \"id\": \"<string>\",\n                  \"key\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"avatarUrls\": {\n                    \"16x16\": \"<uri>\",\n                    \"24x24\": \"<uri>\",\n                    \"32x32\": \"<uri>\",\n                    \"48x48\": \"<uri>\"\n                  },\n                  \"projectTypeKey\": \"<string>\"\n                }\n              }\n            }\n          }\n        }\n      }\n    ]\n  },\n  \"renderedFields\": {\n    \"labore_7c5\": 61843196.41889328,\n    \"in8\": true\n  },\n  \"names\": {\n    \"adce_\": \"<string>\",\n    \"quis24d\": \"<string>\"\n  },\n  \"schema\": {\n    \"voluptate1\": -79617394,\n    \"minim7\": -7265834,\n    \"pariatur69\": \"elit id dolore\"\n  },\n  \"transitions\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"to\": {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"statusCategory\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<long>\",\n          \"key\": \"<string>\",\n          \"colorName\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      },\n      \"hasScreen\": \"<boolean>\",\n      \"isGlobal\": \"<boolean>\",\n      \"isInitial\": \"<boolean>\",\n      \"isConditional\": \"<boolean>\",\n      \"fields\": {\n        \"fugiat5\": \"Ut pariatur\",\n        \"amet_e\": \"nisi\",\n        \"ut_8\": \"velit\"\n      }\n    }\n  ],\n  \"changelog\": {\n    \"startAt\": \"<integer>\",\n    \"maxResults\": \"<integer>\",\n    \"total\": \"<integer>\",\n    \"histories\": [\n      {\n        \"id\": \"<string>\",\n        \"author\": {\n          \"self\": \"<uri>\",\n          \"accountId\": \"<string>\",\n          \"emailAddress\": \"<email>\",\n          \"displayName\": \"<string>\",\n          \"active\": \"<boolean>\",\n          \"timeZone\": \"<string>\",\n          \"accountType\": \"customer\",\n          \"avatarUrls\": {\n            \"16x16\": \"<uri>\",\n            \"24x24\": \"<uri>\",\n            \"32x32\": \"<uri>\",\n            \"48x48\": \"<uri>\"\n          }\n        },\n        \"created\": \"<dateTime>\",\n        \"items\": [\n          {\n            \"field\": \"<string>\",\n            \"fieldtype\": \"<string>\",\n            \"fieldId\": \"<string>\",\n            \"from\": \"<string,null>\",\n            \"fromString\": \"<string,null>\",\n            \"to\": \"<string,null>\",\n            \"toString\": \"<string,null>\"\n          }\n        ]\n      }\n    ]\n  }\n}",
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-0e01c1e5-84d2-4676-b182-f946d9366762"
+                },
+                {
+                  "id": "bb8752f3-b6bb-4fbb-bacd-57ef44eee4d7",
+                  "name": "Authentication credentials are missing or invalid.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?fields=<string>&expand=<string>&properties=<string>&fieldsByKeys=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "A list of fields to return for the issue. Use it to retrieve a subset of fields. Allowed values include any field name, *all for all fields, *navigable for navigable fields.",
+                          "key": "fields",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Use expand to include additional information in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations, fields.",
+                          "key": "expand",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "A list of issue properties to return for the issue. By default no properties are returned.",
+                          "key": "properties",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Whether fields in fields are referenced by keys rather than IDs.",
+                          "key": "fieldsByKeys",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-bb8752f3-b6bb-4fbb-bacd-57ef44eee4d7"
+                },
+                {
+                  "id": "83270b36-714c-48aa-8e73-1020d319de80",
+                  "name": "The issue was not found or the user does not have permission to view it.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?fields=<string>&expand=<string>&properties=<string>&fieldsByKeys=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "A list of fields to return for the issue. Use it to retrieve a subset of fields. Allowed values include any field name, *all for all fields, *navigable for navigable fields.",
+                          "key": "fields",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Use expand to include additional information in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations, fields.",
+                          "key": "expand",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "A list of issue properties to return for the issue. By default no properties are returned.",
+                          "key": "properties",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Whether fields in fields are referenced by keys rather than IDs.",
+                          "key": "fieldsByKeys",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-83270b36-714c-48aa-8e73-1020d319de80"
+                }
+              ],
+              "createdAt": "2026-07-28T01:59:47.000Z",
+              "updatedAt": "2026-07-28T01:59:47.000Z",
+              "uid": "35240-be8dfd10-c532-4f89-8976-ab89f10e9ae9"
+            },
+            {
+              "name": "Jira Edit Issue",
+              "id": "5c3744a8-5fbe-4a73-be5f-8b2fab77998c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"update\": {\n    \"nonc8\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"nulla_c4a\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"fields\": {\n    \"ut1c\": -78006466.50591667\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"incididunt132\": true,\n    \"fugiatb_6\": true\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/issue/:issueIdOrKey?notifyUsers=true&overrideScreenSecurity=false&overrideEditableFlag=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "query": [
+                    {
+                      "description": "Whether a notification email about the issue update is sent to all watchers. Requires administer Jira global permission.",
+                      "key": "notifyUsers",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Whether screen security is overridden to enable hidden fields to be edited. Requires administer Jira global permission.",
+                      "key": "overrideScreenSecurity",
+                      "value": "false"
+                    },
+                    {
+                      "description": "Whether the non-editable flag is overridden to enable uneditable fields to be edited. Requires administer Jira global permission.",
+                      "key": "overrideEditableFlag",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "2d1ddab2-1653-4b27-80af-85bdbce9aec9",
+                      "key": "issueIdOrKey",
+                      "value": "<string>",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    }
+                  ]
+                },
+                "description": "Edits an issue. A transition may be applied and issue properties updated as part of the edit. The editable fields depend on the connected Jira instance configuration, the project, and the issue type."
+              },
+              "response": [
+                {
+                  "id": "29760848-b434-4d6e-80c2-9650700437aa",
+                  "name": "Issue updated successfully.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"update\": {\n    \"nonc8\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"nulla_c4a\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"fields\": {\n    \"ut1c\": -78006466.50591667\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"incididunt132\": true,\n    \"fugiatb_6\": true\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?notifyUsers=true&overrideScreenSecurity=false&overrideEditableFlag=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Whether a notification email about the issue update is sent to all watchers. Requires administer Jira global permission.",
+                          "key": "notifyUsers",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Whether screen security is overridden to enable hidden fields to be edited. Requires administer Jira global permission.",
+                          "key": "overrideScreenSecurity",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Whether the non-editable flag is overridden to enable uneditable fields to be edited. Requires administer Jira global permission.",
+                          "key": "overrideEditableFlag",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-29760848-b434-4d6e-80c2-9650700437aa"
+                },
+                {
+                  "id": "08b58f7f-e9aa-4cb8-bf1d-d8b466a953b8",
+                  "name": "The input is invalid.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"update\": {\n    \"nonc8\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"nulla_c4a\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"fields\": {\n    \"ut1c\": -78006466.50591667\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"incididunt132\": true,\n    \"fugiatb_6\": true\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?notifyUsers=true&overrideScreenSecurity=false&overrideEditableFlag=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Whether a notification email about the issue update is sent to all watchers. Requires administer Jira global permission.",
+                          "key": "notifyUsers",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Whether screen security is overridden to enable hidden fields to be edited. Requires administer Jira global permission.",
+                          "key": "overrideScreenSecurity",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Whether the non-editable flag is overridden to enable uneditable fields to be edited. Requires administer Jira global permission.",
+                          "key": "overrideEditableFlag",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"errorMessages\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"errors\": {\n    \"sint_29\": \"<string>\",\n    \"irure_a3\": \"<string>\"\n  },\n  \"status\": \"<integer>\"\n}",
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-08b58f7f-e9aa-4cb8-bf1d-d8b466a953b8"
+                },
+                {
+                  "id": "b049e6c9-e4e7-462a-8914-da72eb597142",
+                  "name": "Authentication credentials are missing or invalid.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"update\": {\n    \"nonc8\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"nulla_c4a\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"fields\": {\n    \"ut1c\": -78006466.50591667\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"incididunt132\": true,\n    \"fugiatb_6\": true\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?notifyUsers=true&overrideScreenSecurity=false&overrideEditableFlag=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Whether a notification email about the issue update is sent to all watchers. Requires administer Jira global permission.",
+                          "key": "notifyUsers",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Whether screen security is overridden to enable hidden fields to be edited. Requires administer Jira global permission.",
+                          "key": "overrideScreenSecurity",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Whether the non-editable flag is overridden to enable uneditable fields to be edited. Requires administer Jira global permission.",
+                          "key": "overrideEditableFlag",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-b049e6c9-e4e7-462a-8914-da72eb597142"
+                },
+                {
+                  "id": "2b38ba0c-c550-45d6-9a8a-6d0b2d4bad83",
+                  "name": "The user does not have permission to edit the issue.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"update\": {\n    \"nonc8\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"nulla_c4a\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"fields\": {\n    \"ut1c\": -78006466.50591667\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"incididunt132\": true,\n    \"fugiatb_6\": true\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?notifyUsers=true&overrideScreenSecurity=false&overrideEditableFlag=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Whether a notification email about the issue update is sent to all watchers. Requires administer Jira global permission.",
+                          "key": "notifyUsers",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Whether screen security is overridden to enable hidden fields to be edited. Requires administer Jira global permission.",
+                          "key": "overrideScreenSecurity",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Whether the non-editable flag is overridden to enable uneditable fields to be edited. Requires administer Jira global permission.",
+                          "key": "overrideEditableFlag",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-2b38ba0c-c550-45d6-9a8a-6d0b2d4bad83"
+                },
+                {
+                  "id": "f2a3e43e-3734-472d-9e6a-0af9158ea96d",
+                  "name": "The issue was not found or the user does not have permission to view it.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"update\": {\n    \"nonc8\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"nulla_c4a\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"fields\": {\n    \"ut1c\": -78006466.50591667\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"incididunt132\": true,\n    \"fugiatb_6\": true\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?notifyUsers=true&overrideScreenSecurity=false&overrideEditableFlag=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Whether a notification email about the issue update is sent to all watchers. Requires administer Jira global permission.",
+                          "key": "notifyUsers",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Whether screen security is overridden to enable hidden fields to be edited. Requires administer Jira global permission.",
+                          "key": "overrideScreenSecurity",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Whether the non-editable flag is overridden to enable uneditable fields to be edited. Requires administer Jira global permission.",
+                          "key": "overrideEditableFlag",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-f2a3e43e-3734-472d-9e6a-0af9158ea96d"
+                }
+              ],
+              "createdAt": "2026-07-28T01:59:47.000Z",
+              "updatedAt": "2026-07-28T01:59:47.000Z",
+              "uid": "35240-5c3744a8-5fbe-4a73-be5f-8b2fab77998c"
+            },
+            {
+              "name": "Jira Delete Issue",
+              "id": "1a500364-e427-4dbe-9529-75b03ec10b26",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/issue/:issueIdOrKey?deleteSubtasks=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey"
+                  ],
+                  "query": [
+                    {
+                      "description": "Whether the issue's sub-tasks are also deleted.",
+                      "key": "deleteSubtasks",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "aff6db3e-b214-4362-bb42-8549d6572259",
+                      "key": "issueIdOrKey",
+                      "value": "<string>",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    }
+                  ]
+                },
+                "description": "Deletes an issue. An issue can only be deleted if it has no sub-tasks, unless deleteSubtasks is set to true."
+              },
+              "response": [
+                {
+                  "id": "c1df88f3-504c-483c-871e-f0754cde5e8a",
+                  "name": "Issue deleted successfully.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?deleteSubtasks=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Whether the issue's sub-tasks are also deleted.",
+                          "key": "deleteSubtasks",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-c1df88f3-504c-483c-871e-f0754cde5e8a"
+                },
+                {
+                  "id": "1d3204e3-bdbc-41f5-9134-a8194c796cbb",
+                  "name": "The issue has sub-tasks and deleteSubtasks is not set to true.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?deleteSubtasks=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Whether the issue's sub-tasks are also deleted.",
+                          "key": "deleteSubtasks",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-1d3204e3-bdbc-41f5-9134-a8194c796cbb"
+                },
+                {
+                  "id": "d123516e-e774-449f-abd6-854619c857bd",
+                  "name": "Authentication credentials are missing or invalid.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?deleteSubtasks=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Whether the issue's sub-tasks are also deleted.",
+                          "key": "deleteSubtasks",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-d123516e-e774-449f-abd6-854619c857bd"
+                },
+                {
+                  "id": "eeffe8cd-7398-42c0-b583-a9a90ea2f4cb",
+                  "name": "The user does not have permission to delete the issue.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?deleteSubtasks=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Whether the issue's sub-tasks are also deleted.",
+                          "key": "deleteSubtasks",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-eeffe8cd-7398-42c0-b583-a9a90ea2f4cb"
+                },
+                {
+                  "id": "4d9df1f5-65f0-4186-bab1-9d19ff8fa467",
+                  "name": "The issue was not found or the user does not have permission to view it.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey?deleteSubtasks=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey"
+                      ],
+                      "query": [
+                        {
+                          "description": "Whether the issue's sub-tasks are also deleted.",
+                          "key": "deleteSubtasks",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "issueIdOrKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:59:47.000Z",
+                  "updatedAt": "2026-07-28T01:59:47.000Z",
+                  "uid": "35240-4d9df1f5-65f0-4186-bab1-9d19ff8fa467"
+                }
+              ],
+              "createdAt": "2026-07-28T01:59:47.000Z",
+              "updatedAt": "2026-07-28T01:59:47.000Z",
+              "uid": "35240-1a500364-e427-4dbe-9529-75b03ec10b26"
+            }
+          ],
+          "id": "59e97e4d-c510-4aa6-b29d-121895447d63",
+          "createdAt": "2026-07-28T01:59:47.000Z",
+          "updatedAt": "2026-07-28T01:59:47.000Z",
+          "uid": "35240-59e97e4d-c510-4aa6-b29d-121895447d63"
+        },
+        {
+          "name": "Jira Create Issue",
+          "id": "7bc3b713-cd86-461a-b5cb-eaef9b539f72",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fields\": {\n    \"ipsum01\": -48401000.14397768,\n    \"adipisicingaff\": 28279426\n  },\n  \"update\": {\n    \"tempor__5\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"eiusmod_01d\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"qui_1\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"cupidatat_3da\": false,\n    \"qui3ab\": -61904789.53985092\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/issue?updateHistory=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "issue"
+              ],
+              "query": [
+                {
+                  "description": "Whether the project in which the issue is created is added to the user's Recently viewed project list, as shown under Projects in Jira.",
+                  "key": "updateHistory",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Creates an issue or a sub-task from a JSON representation. The fields that can be set on an issue depend on the connected Jira instance configuration, the project, and the issue type. You can determine appropriate field values using the Create Issue Metadata endpoint."
+          },
+          "response": [
+            {
+              "id": "7622a5e9-5dec-4337-81c9-f7373996cb8e",
+              "name": "Issue created successfully.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fields\": {\n    \"ipsum01\": -48401000.14397768,\n    \"adipisicingaff\": 28279426\n  },\n  \"update\": {\n    \"tempor__5\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"eiusmod_01d\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"qui_1\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"cupidatat_3da\": false,\n    \"qui3ab\": -61904789.53985092\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/issue?updateHistory=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "issue"
+                  ],
+                  "query": [
+                    {
+                      "description": "Whether the project in which the issue is created is added to the user's Recently viewed project list, as shown under Projects in Jira.",
+                      "key": "updateHistory",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"key\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"transition\": {\n    \"status\": \"<integer>\",\n    \"errorCollection\": {\n      \"errorMessages\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"errors\": {\n        \"quisbe\": \"<string>\",\n        \"irure83d\": \"<string>\"\n      },\n      \"status\": \"<integer>\"\n    }\n  }\n}",
+              "createdAt": "2026-07-28T01:59:47.000Z",
+              "updatedAt": "2026-07-28T01:59:47.000Z",
+              "uid": "35240-7622a5e9-5dec-4337-81c9-f7373996cb8e"
+            },
+            {
+              "id": "e96a199e-8e9e-48a2-9cd8-cb7c1683ad84",
+              "name": "The input is invalid, including if the request body is missing or has invalid fields.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fields\": {\n    \"ipsum01\": -48401000.14397768,\n    \"adipisicingaff\": 28279426\n  },\n  \"update\": {\n    \"tempor__5\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"eiusmod_01d\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"qui_1\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"cupidatat_3da\": false,\n    \"qui3ab\": -61904789.53985092\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/issue?updateHistory=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "issue"
+                  ],
+                  "query": [
+                    {
+                      "description": "Whether the project in which the issue is created is added to the user's Recently viewed project list, as shown under Projects in Jira.",
+                      "key": "updateHistory",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"errorMessages\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"errors\": {\n    \"sint_29\": \"<string>\",\n    \"irure_a3\": \"<string>\"\n  },\n  \"status\": \"<integer>\"\n}",
+              "createdAt": "2026-07-28T01:59:47.000Z",
+              "updatedAt": "2026-07-28T01:59:47.000Z",
+              "uid": "35240-e96a199e-8e9e-48a2-9cd8-cb7c1683ad84"
+            },
+            {
+              "id": "ed2ec894-b308-47e1-ab02-c82c105c0ba0",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fields\": {\n    \"ipsum01\": -48401000.14397768,\n    \"adipisicingaff\": 28279426\n  },\n  \"update\": {\n    \"tempor__5\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"eiusmod_01d\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"qui_1\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"cupidatat_3da\": false,\n    \"qui3ab\": -61904789.53985092\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/issue?updateHistory=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "issue"
+                  ],
+                  "query": [
+                    {
+                      "description": "Whether the project in which the issue is created is added to the user's Recently viewed project list, as shown under Projects in Jira.",
+                      "key": "updateHistory",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T01:59:47.000Z",
+              "updatedAt": "2026-07-28T01:59:47.000Z",
+              "uid": "35240-ed2ec894-b308-47e1-ab02-c82c105c0ba0"
+            },
+            {
+              "id": "006ac13d-04b4-483d-b17a-aff5c5df9e4b",
+              "name": "The user does not have permission to create issues in the project.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fields\": {\n    \"ipsum01\": -48401000.14397768,\n    \"adipisicingaff\": 28279426\n  },\n  \"update\": {\n    \"tempor__5\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"eiusmod_01d\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"qui_1\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"historyMetadata\": {\n    \"cupidatat_3da\": false,\n    \"qui3ab\": -61904789.53985092\n  },\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": {\n        \"description\": \"The property value (any JSON value).\",\n        \"example\": \"example_value\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/issue?updateHistory=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "issue"
+                  ],
+                  "query": [
+                    {
+                      "description": "Whether the project in which the issue is created is added to the user's Recently viewed project list, as shown under Projects in Jira.",
+                      "key": "updateHistory",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T01:59:47.000Z",
+              "updatedAt": "2026-07-28T01:59:47.000Z",
+              "uid": "35240-006ac13d-04b4-483d-b17a-aff5c5df9e4b"
+            }
+          ],
+          "createdAt": "2026-07-28T01:59:47.000Z",
+          "updatedAt": "2026-07-28T01:59:47.000Z",
+          "uid": "35240-7bc3b713-cd86-461a-b5cb-eaef9b539f72"
+        }
+      ],
+      "id": "bc1ed4fe-9942-4f62-80af-8286b2aaf56f",
+      "createdAt": "2026-07-28T01:59:47.000Z",
+      "updatedAt": "2026-07-28T01:59:47.000Z",
+      "uid": "35240-bc1ed4fe-9942-4f62-80af-8286b2aaf56f"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "domain",
+      "value": "your-domain"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{domain}}.atlassian.net/rest/api/3"
+    }
+  ]
+}

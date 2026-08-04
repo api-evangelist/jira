@@ -1,0 +1,604 @@
+{
+  "info": {
+    "_postman_id": "751d8df7-817b-4ad2-9714-d4b53f09cead",
+    "name": "Jira Cloud Platform REST Issue Comments Issue Transitions API",
+    "description": "The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.\n\nContact Support:\n Name: Atlassian Developer Support\n Email: ecosystem@atlassian.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:59:43.000Z",
+    "updatedAt": "2026-07-28T01:59:44.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-751d8df7-817b-4ad2-9714-d4b53f09cead"
+  },
+  "item": [
+    {
+      "name": "issue",
+      "item": [
+        {
+          "name": "{issueIdOrKey}",
+          "item": [
+            {
+              "name": "transitions",
+              "item": [
+                {
+                  "name": "Jira Get Transitions",
+                  "id": "6971f477-3687-44b2-a129-f203de640b90",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey/transitions?expand=<string>&transitionId=<string>&skipRemoteOnlyCondition=false&includeUnavailableTransitions=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey",
+                        "transitions"
+                      ],
+                      "query": [
+                        {
+                          "description": "Use expand to include additional information about transitions in the response. Accepted values: transitions.fields.",
+                          "key": "expand",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The ID of the transition.",
+                          "key": "transitionId",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Whether transitions with the condition Hide From User Condition are included in the response.",
+                          "key": "skipRemoteOnlyCondition",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Whether details of transitions that fail a condition are included.",
+                          "key": "includeUnavailableTransitions",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "15da4be2-b9c8-423d-b205-4217e836c3d3",
+                          "key": "issueIdOrKey",
+                          "value": "<string>",
+                          "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                        }
+                      ]
+                    },
+                    "description": "Returns either all transitions or a transition that can be performed by the user on an issue, based on the issue's status."
+                  },
+                  "response": [
+                    {
+                      "id": "2fbfe896-d209-4435-b715-9a7f7bf98589",
+                      "name": "Transitions returned successfully.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/transitions?expand=<string>&transitionId=<string>&skipRemoteOnlyCondition=false&includeUnavailableTransitions=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "transitions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Use expand to include additional information about transitions in the response. Accepted values: transitions.fields.",
+                              "key": "expand",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The ID of the transition.",
+                              "key": "transitionId",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Whether transitions with the condition Hide From User Condition are included in the response.",
+                              "key": "skipRemoteOnlyCondition",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Whether details of transitions that fail a condition are included.",
+                              "key": "includeUnavailableTransitions",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"expand\": \"<string>\",\n  \"transitions\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"to\": {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"statusCategory\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<long>\",\n          \"key\": \"<string>\",\n          \"colorName\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      },\n      \"hasScreen\": \"<boolean>\",\n      \"isGlobal\": \"<boolean>\",\n      \"isInitial\": \"<boolean>\",\n      \"isConditional\": \"<boolean>\",\n      \"fields\": {\n        \"pariatur_d7\": \"irure ex esse reprehenderit qui\",\n        \"cupidatatb1c\": true\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"to\": {\n        \"self\": \"<uri>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"iconUrl\": \"<uri>\",\n        \"statusCategory\": {\n          \"self\": \"<uri>\",\n          \"id\": \"<long>\",\n          \"key\": \"<string>\",\n          \"colorName\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      },\n      \"hasScreen\": \"<boolean>\",\n      \"isGlobal\": \"<boolean>\",\n      \"isInitial\": \"<boolean>\",\n      \"isConditional\": \"<boolean>\",\n      \"fields\": {\n        \"nostrud__\": -27177843,\n        \"quis_a\": -83292604\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:59:44.000Z",
+                      "updatedAt": "2026-07-28T01:59:44.000Z",
+                      "uid": "35240-2fbfe896-d209-4435-b715-9a7f7bf98589"
+                    },
+                    {
+                      "id": "779def20-c5ea-49eb-a418-56d736aff720",
+                      "name": "Authentication credentials are missing or invalid.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/transitions?expand=<string>&transitionId=<string>&skipRemoteOnlyCondition=false&includeUnavailableTransitions=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "transitions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Use expand to include additional information about transitions in the response. Accepted values: transitions.fields.",
+                              "key": "expand",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The ID of the transition.",
+                              "key": "transitionId",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Whether transitions with the condition Hide From User Condition are included in the response.",
+                              "key": "skipRemoteOnlyCondition",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Whether details of transitions that fail a condition are included.",
+                              "key": "includeUnavailableTransitions",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:44.000Z",
+                      "updatedAt": "2026-07-28T01:59:44.000Z",
+                      "uid": "35240-779def20-c5ea-49eb-a418-56d736aff720"
+                    },
+                    {
+                      "id": "1a1f85be-5a10-4bdb-a055-8e6836a336a6",
+                      "name": "The issue was not found or the user does not have permission to view it.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/transitions?expand=<string>&transitionId=<string>&skipRemoteOnlyCondition=false&includeUnavailableTransitions=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "transitions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Use expand to include additional information about transitions in the response. Accepted values: transitions.fields.",
+                              "key": "expand",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The ID of the transition.",
+                              "key": "transitionId",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Whether transitions with the condition Hide From User Condition are included in the response.",
+                              "key": "skipRemoteOnlyCondition",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Whether details of transitions that fail a condition are included.",
+                              "key": "includeUnavailableTransitions",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:44.000Z",
+                      "updatedAt": "2026-07-28T01:59:44.000Z",
+                      "uid": "35240-1a1f85be-5a10-4bdb-a055-8e6836a336a6"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:59:44.000Z",
+                  "updatedAt": "2026-07-28T01:59:44.000Z",
+                  "uid": "35240-6971f477-3687-44b2-a129-f203de640b90"
+                },
+                {
+                  "name": "Jira Transition Issue",
+                  "id": "633247a4-8525-4ffa-bfc5-0a2df8db098f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"fields\": {\n    \"uta\": 60870644,\n    \"cillumf99\": false,\n    \"in9\": 2384104\n  },\n  \"update\": {\n    \"et93\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"Loremb\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"nisic\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"historyMetadata\": {\n    \"nostrud0cf\": 41609825,\n    \"nisi_0\": -37733432\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/issue/:issueIdOrKey/transitions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "issue",
+                        ":issueIdOrKey",
+                        "transitions"
+                      ],
+                      "variable": [
+                        {
+                          "id": "fcb306e8-53a9-405d-8e79-862603e0a2c8",
+                          "key": "issueIdOrKey",
+                          "value": "<string>",
+                          "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                        }
+                      ]
+                    },
+                    "description": "Performs an issue transition and, optionally, updates the fields and adds a comment. The fields that can be set depend on the transition and the connected Jira instance configuration."
+                  },
+                  "response": [
+                    {
+                      "id": "c7c84a56-a38e-4870-bd73-8d485667a946",
+                      "name": "Transition performed successfully.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"fields\": {\n    \"uta\": 60870644,\n    \"cillumf99\": false,\n    \"in9\": 2384104\n  },\n  \"update\": {\n    \"et93\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"Loremb\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"nisic\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"historyMetadata\": {\n    \"nostrud0cf\": 41609825,\n    \"nisi_0\": -37733432\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/transitions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "transitions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:44.000Z",
+                      "updatedAt": "2026-07-28T01:59:44.000Z",
+                      "uid": "35240-c7c84a56-a38e-4870-bd73-8d485667a946"
+                    },
+                    {
+                      "id": "20ca5c1a-c87b-4332-a5bb-30d73b42d243",
+                      "name": "The transition or field values are invalid.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"fields\": {\n    \"uta\": 60870644,\n    \"cillumf99\": false,\n    \"in9\": 2384104\n  },\n  \"update\": {\n    \"et93\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"Loremb\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"nisic\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"historyMetadata\": {\n    \"nostrud0cf\": 41609825,\n    \"nisi_0\": -37733432\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/transitions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "transitions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errorMessages\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"errors\": {\n    \"Ut20\": \"<string>\",\n    \"quisd\": \"<string>\"\n  },\n  \"status\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T01:59:44.000Z",
+                      "updatedAt": "2026-07-28T01:59:44.000Z",
+                      "uid": "35240-20ca5c1a-c87b-4332-a5bb-30d73b42d243"
+                    },
+                    {
+                      "id": "8e3a8453-31a2-47f3-878a-17559ce603bd",
+                      "name": "Authentication credentials are missing or invalid.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"fields\": {\n    \"uta\": 60870644,\n    \"cillumf99\": false,\n    \"in9\": 2384104\n  },\n  \"update\": {\n    \"et93\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"Loremb\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"nisic\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"historyMetadata\": {\n    \"nostrud0cf\": 41609825,\n    \"nisi_0\": -37733432\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/transitions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "transitions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:44.000Z",
+                      "updatedAt": "2026-07-28T01:59:44.000Z",
+                      "uid": "35240-8e3a8453-31a2-47f3-878a-17559ce603bd"
+                    },
+                    {
+                      "id": "8fe3fdc5-f84f-423e-95d0-56bcfeac1ff8",
+                      "name": "The issue was not found or the user does not have permission to view it.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"transition\": {\n    \"id\": \"<string>\"\n  },\n  \"fields\": {\n    \"uta\": 60870644,\n    \"cillumf99\": false,\n    \"in9\": 2384104\n  },\n  \"update\": {\n    \"et93\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"Loremb\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ],\n    \"nisic\": [\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      },\n      {\n        \"add\": {\n          \"description\": \"Value to add to the field.\",\n          \"example\": \"example_value\"\n        },\n        \"remove\": {\n          \"description\": \"Value to remove from the field.\",\n          \"example\": \"example_value\"\n        },\n        \"set\": {\n          \"description\": \"Value to set the field to.\",\n          \"example\": \"example_value\"\n        },\n        \"edit\": {\n          \"description\": \"Value to edit in the field.\",\n          \"example\": \"example_value\"\n        },\n        \"copy\": {\n          \"description\": \"Value to copy to the field.\",\n          \"example\": \"example_value\"\n        }\n      }\n    ]\n  },\n  \"historyMetadata\": {\n    \"nostrud0cf\": 41609825,\n    \"nisi_0\": -37733432\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/issue/:issueIdOrKey/transitions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "issue",
+                            ":issueIdOrKey",
+                            "transitions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "issueIdOrKey"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:59:44.000Z",
+                      "updatedAt": "2026-07-28T01:59:44.000Z",
+                      "uid": "35240-8fe3fdc5-f84f-423e-95d0-56bcfeac1ff8"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:59:44.000Z",
+                  "updatedAt": "2026-07-28T01:59:44.000Z",
+                  "uid": "35240-633247a4-8525-4ffa-bfc5-0a2df8db098f"
+                }
+              ],
+              "id": "e366c13d-4ad4-48fc-b403-553695491dfd",
+              "createdAt": "2026-07-28T01:59:44.000Z",
+              "updatedAt": "2026-07-28T01:59:44.000Z",
+              "uid": "35240-e366c13d-4ad4-48fc-b403-553695491dfd"
+            }
+          ],
+          "id": "61dce872-9d43-4b51-a471-61afb563930f",
+          "createdAt": "2026-07-28T01:59:44.000Z",
+          "updatedAt": "2026-07-28T01:59:44.000Z",
+          "uid": "35240-61dce872-9d43-4b51-a471-61afb563930f"
+        }
+      ],
+      "id": "7a677789-f595-4d38-94a7-2c4901dc8a13",
+      "createdAt": "2026-07-28T01:59:44.000Z",
+      "updatedAt": "2026-07-28T01:59:44.000Z",
+      "uid": "35240-7a677789-f595-4d38-94a7-2c4901dc8a13"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "domain",
+      "value": "your-domain"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{domain}}.atlassian.net/rest/api/3"
+    }
+  ]
+}
