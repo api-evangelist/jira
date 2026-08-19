@@ -1,0 +1,192 @@
+{
+  "item": [
+    {
+      "id": "e186d1e3-c719-4f18-8319-2f6f84718f32",
+      "name": "Issue Types",
+      "description": {
+        "content": "Retrieve and manage issue types for projects.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f7662d18-27fa-4a42-965a-95af13863512",
+          "name": "Jira Get All Issue Types for User",
+          "request": {
+            "name": "Jira Get All Issue Types for User",
+            "description": {
+              "content": "Returns all issue types visible to the user. The list of issue types returned depends on the user's permissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issuetype"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f5e6dd89-63de-40a4-9f9a-1ac294415ba9",
+              "name": "Issue types returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issuetype"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"self\": \"https://www.example.com\",\n    \"id\": \"abc123\",\n    \"description\": \"A sample description.\",\n    \"iconUrl\": \"https://www.example.com\",\n    \"name\": \"Example Title\",\n    \"subtask\": true,\n    \"avatarId\": \"500123\",\n    \"hierarchyLevel\": 10,\n    \"scope\": {\n      \"type\": \"PROJECT\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7e2157ca-bde5-49bf-b082-52523ff4f0b3",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issuetype"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your Jira Cloud site subdomain (e.g., your-company).",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "your-domain",
+      "key": "domain"
+    },
+    {
+      "type": "string",
+      "value": "https://{{domain}}.atlassian.net/rest/api/3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a5528620-f166-4e5c-b2b3-a31815af2b42",
+    "name": "Jira Cloud Platform REST Issue Comments Issue Types API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.\n\nContact Support:\n Name: Atlassian Developer Support\n Email: ecosystem@atlassian.com",
+      "type": "text/plain"
+    }
+  }
+}

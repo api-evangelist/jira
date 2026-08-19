@@ -1,0 +1,36 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jira Cloud Platform REST Issue Comments Issue Priorities API",
+    "version": "3"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Issue Priorities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Jira Get Priorities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{domain}.atlassian.net/rest/api/3/priority"
+          },
+          "docs": "Returns the list of all issue priorities."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

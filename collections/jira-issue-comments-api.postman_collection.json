@@ -1,0 +1,701 @@
+{
+  "item": [
+    {
+      "id": "0b2d9403-1357-4250-849b-3af5b7d2a6a5",
+      "name": "Issue Comments",
+      "description": {
+        "content": "Manage comments on issues.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d35b16c9-d857-4a5c-90ba-66b418f04ef5",
+          "name": "Jira Get Comments",
+          "request": {
+            "name": "Jira Get Comments",
+            "description": {
+              "content": "Returns all comments for an issue. Comments are ordered by created date in ascending order by default.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue",
+                ":issueIdOrKey",
+                "comment"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "startAt",
+                  "value": "0",
+                  "description": "The index of the first item to return in a page of results (page offset)."
+                },
+                {
+                  "disabled": false,
+                  "key": "maxResults",
+                  "value": "50",
+                  "description": "The maximum number of items to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "orderBy",
+                  "value": "<string>",
+                  "description": "The order of comments returned. Accepted values: created (ascending by default), -created (descending)."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "issueIdOrKey",
+                  "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                },
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2cc770f0-ddfe-4a61-ba6b-c8dcc7b6f557",
+              "name": "Comments returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startAt",
+                      "value": "10"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "10"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "created"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"startAt\": 10,\n  \"maxResults\": 10,\n  \"total\": 10,\n  \"comments\": [\n    {\n      \"self\": \"https://www.example.com\",\n      \"id\": \"abc123\",\n      \"renderedBody\": \"example_value\",\n      \"created\": \"2026-01-15T10:30:00Z\",\n      \"updated\": \"2026-01-15T10:30:00Z\",\n      \"jsdPublic\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "68d1a2e1-49e0-4412-a074-3b6382c2ec51",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startAt",
+                      "value": "10"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "10"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "created"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7eeb5d47-7f45-4ace-951c-2fd94a888d4c",
+              "name": "The issue was not found or the user does not have permission to view it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startAt",
+                      "value": "10"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "10"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "created"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b6863501-631c-4a8b-a34a-516b39c05a99",
+          "name": "Jira Add Comment",
+          "request": {
+            "name": "Jira Add Comment",
+            "description": {
+              "content": "Adds a comment to an issue. The comment body uses Atlassian Document Format (ADF).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue",
+                ":issueIdOrKey",
+                "comment"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "issueIdOrKey",
+                  "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                },
+                {
+                  "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                  "type": "any",
+                  "value": "{{domain}}",
+                  "key": "domain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"self\": \"<uri>\",\n  \"id\": \"<string>\",\n  \"author\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"<string>\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"body\": {\n    \"type\": \"<string>\",\n    \"version\": \"<integer>\",\n    \"content\": [\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": true\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": true\n                }\n              }\n            ],\n            \"key_0\": 3975\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": 6938.767620741922,\n                  \"key_1\": 2871,\n                  \"key_2\": \"string\",\n                  \"key_3\": \"string\"\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": 5146.943319877658,\n                  \"key_1\": \"string\",\n                  \"key_2\": 2365.976280412919,\n                  \"key_3\": \"string\"\n                }\n              }\n            ],\n            \"key_0\": 1365.1099338698536\n          }\n        ],\n        \"attrs\": {\n          \"key_0\": 890,\n          \"key_1\": 6011,\n          \"key_2\": false\n        }\n      },\n      {\n        \"type\": \"<string>\",\n        \"content\": [\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": 7216.555451643511\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": \"string\",\n                  \"key_1\": false\n                }\n              }\n            ],\n            \"key_0\": 9082.540991006543\n          },\n          {\n            \"type\": \"<string>\",\n            \"text\": \"<string>\",\n            \"marks\": [\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": 2151\n                }\n              },\n              {\n                \"type\": \"<string>\",\n                \"attrs\": {\n                  \"key_0\": 5700.728650376728,\n                  \"key_1\": 5794.782079002571,\n                  \"key_2\": 5423.440566985176\n                }\n              }\n            ]\n          }\n        ],\n        \"attrs\": {\n          \"key_0\": 6141\n        },\n        \"key_0\": 8954.229847089804,\n        \"key_1\": 6481\n      }\n    ]\n  },\n  \"renderedBody\": \"<string>\",\n  \"updateAuthor\": {\n    \"self\": \"<uri>\",\n    \"accountId\": \"<string>\",\n    \"emailAddress\": \"<email>\",\n    \"displayName\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"timeZone\": \"<string>\",\n    \"accountType\": \"<string>\",\n    \"avatarUrls\": {\n      \"16x16\": \"<uri>\",\n      \"24x24\": \"<uri>\",\n      \"32x32\": \"<uri>\",\n      \"48x48\": \"<uri>\"\n    }\n  },\n  \"created\": \"<dateTime>\",\n  \"updated\": \"<dateTime>\",\n  \"visibility\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"jsdPublic\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6c0b4145-4760-461f-a86c-ed17d451af58",
+              "name": "Comment added successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"paragraph\",\n        \"content\": [\n          {\n            \"type\": \"text\",\n            \"text\": \"This is a comment using Atlassian Document Format.\"\n          }\n        ]\n      }\n    ]\n  },\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"Administrators\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"self\": \"https://www.example.com\",\n  \"id\": \"abc123\",\n  \"author\": {\n    \"self\": \"https://www.example.com\",\n    \"accountId\": \"500123\",\n    \"emailAddress\": \"user@example.com\",\n    \"displayName\": \"example_value\",\n    \"active\": true,\n    \"timeZone\": \"example_value\",\n    \"accountType\": \"atlassian\"\n  },\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {}\n    ]\n  },\n  \"renderedBody\": \"example_value\",\n  \"updateAuthor\": {\n    \"self\": \"https://www.example.com\",\n    \"accountId\": \"500123\",\n    \"emailAddress\": \"user@example.com\",\n    \"displayName\": \"example_value\",\n    \"active\": true,\n    \"timeZone\": \"example_value\",\n    \"accountType\": \"atlassian\"\n  },\n  \"created\": \"2026-01-15T10:30:00Z\",\n  \"updated\": \"2026-01-15T10:30:00Z\",\n  \"visibility\": {\n    \"type\": \"group\",\n    \"value\": \"example_value\",\n    \"identifier\": \"example_value\"\n  },\n  \"jsdPublic\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "acb35616-fb11-4e53-9e0b-b19e9d61dd76",
+              "name": "The input is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"paragraph\",\n        \"content\": [\n          {\n            \"type\": \"text\",\n            \"text\": \"This is a comment using Atlassian Document Format.\"\n          }\n        ]\n      }\n    ]\n  },\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"Administrators\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorMessages\": [\n    \"example_value\"\n  ],\n  \"errors\": \"example_value\",\n  \"status\": 10\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dd11e1e9-ad9c-4ff1-a355-bf41a4d941d0",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"paragraph\",\n        \"content\": [\n          {\n            \"type\": \"text\",\n            \"text\": \"This is a comment using Atlassian Document Format.\"\n          }\n        ]\n      }\n    ]\n  },\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"Administrators\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9608f188-0460-4771-b6b4-596ed38fd041",
+              "name": "The issue was not found or the user does not have permission to view it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue",
+                    ":issueIdOrKey",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "example_value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issueIdOrKey",
+                      "description": "(Required) The ID or key of the issue (e.g., 10001 or PROJ-123)."
+                    },
+                    {
+                      "description": "Your Jira Cloud site subdomain (e.g., your-company).",
+                      "type": "any",
+                      "value": "{{domain}}",
+                      "key": "domain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"paragraph\",\n        \"content\": [\n          {\n            \"type\": \"text\",\n            \"text\": \"This is a comment using Atlassian Document Format.\"\n          }\n        ]\n      }\n    ]\n  },\n  \"visibility\": {\n    \"type\": \"role\",\n    \"value\": \"Administrators\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your Jira Cloud site subdomain (e.g., your-company).",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "your-domain",
+      "key": "domain"
+    },
+    {
+      "type": "string",
+      "value": "https://{{domain}}.atlassian.net/rest/api/3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "03823e07-b151-4aa4-acf6-736286d07b1e",
+    "name": "Jira Cloud Platform REST Issue Comments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.\n\nContact Support:\n Name: Atlassian Developer Support\n Email: ecosystem@atlassian.com",
+      "type": "text/plain"
+    }
+  }
+}

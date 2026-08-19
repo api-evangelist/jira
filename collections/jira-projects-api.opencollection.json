@@ -1,0 +1,173 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jira Cloud Platform REST Issue Comments Projects API",
+    "version": "3"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Projects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Jira Get All Projects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{domain}.atlassian.net/rest/api/3/project",
+            "params": [
+              {
+                "name": "expand",
+                "value": "example_value",
+                "type": "query",
+                "description": "Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url."
+              },
+              {
+                "name": "recent",
+                "value": "10",
+                "type": "query",
+                "description": "Returns projects the user has accessed in the last given number of projects, up to 20."
+              },
+              {
+                "name": "properties",
+                "value": "",
+                "type": "query",
+                "description": "A list of project properties to return for each project."
+              }
+            ]
+          },
+          "docs": "Returns all projects visible to the user. Deprecated, use Get projects paginated that supports search and pagination."
+        },
+        {
+          "info": {
+            "name": "Jira Get Projects Paginated",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{domain}.atlassian.net/rest/api/3/project/search",
+            "params": [
+              {
+                "name": "startAt",
+                "value": "10",
+                "type": "query",
+                "description": "The index of the first item to return in a page of results (page offset)."
+              },
+              {
+                "name": "maxResults",
+                "value": "10",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "orderBy",
+                "value": "example_value",
+                "type": "query",
+                "description": "Order the results by a field. Accepted values: category, key, name, owner, issueCount, lastIssueUpdatedTime, archivedDate. Prefix with + or - for ascending/descending."
+              },
+              {
+                "name": "query",
+                "value": "example_value",
+                "type": "query",
+                "description": "Filter results using a literal string match on project name or key."
+              },
+              {
+                "name": "typeKey",
+                "value": "example_value",
+                "type": "query",
+                "description": "The type key of the project. Accepted values: business, service_desk, software."
+              },
+              {
+                "name": "categoryId",
+                "value": "500123",
+                "type": "query",
+                "description": "The ID of the project category to filter by."
+              },
+              {
+                "name": "action",
+                "value": "example_value",
+                "type": "query",
+                "description": "Filter results by what the user has permission to do. Accepted values: view, browse, edit, create."
+              },
+              {
+                "name": "expand",
+                "value": "example_value",
+                "type": "query",
+                "description": "Use expand to include additional information in the response. Accepted values: description, projectKeys, lead, issueTypes, url, insight."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "The status of the project. Accepted values: live, archived, deleted."
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of projects visible to the user. This operation can be filtered by project type, category, and action."
+        },
+        {
+          "info": {
+            "name": "Jira Get Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{domain}.atlassian.net/rest/api/3/project/:projectIdOrKey",
+            "params": [
+              {
+                "name": "projectIdOrKey",
+                "value": "PROJ",
+                "type": "path",
+                "description": "The ID or key of the project (e.g., 10000 or PROJ)."
+              },
+              {
+                "name": "expand",
+                "value": "example_value",
+                "type": "query",
+                "description": "Use expand to include additional information in the response. Accepted values: description, issueTypes, lead, projectKeys, url, insight."
+              },
+              {
+                "name": "properties",
+                "value": "",
+                "type": "query",
+                "description": "A list of project properties to return for the project."
+              }
+            ]
+          },
+          "docs": "Returns the project details for a project. The returned project includes additional information such as issue types, components, versions, and roles."
+        },
+        {
+          "info": {
+            "name": "Jira Get All Statuses for Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{domain}.atlassian.net/rest/api/3/project/:projectIdOrKey/statuses",
+            "params": [
+              {
+                "name": "projectIdOrKey",
+                "value": "PROJ",
+                "type": "path",
+                "description": "The ID or key of the project (e.g., 10000 or PROJ)."
+              }
+            ]
+          },
+          "docs": "Returns the valid statuses for a project. The statuses are grouped by issue type, listing the allowed statuses for each issue type in the project."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

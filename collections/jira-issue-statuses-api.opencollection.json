@@ -1,0 +1,44 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jira Cloud Platform REST Issue Comments Issue Statuses API",
+    "version": "3"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Issue Statuses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Jira Get All Statuses for Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{domain}.atlassian.net/rest/api/3/project/:projectIdOrKey/statuses",
+            "params": [
+              {
+                "name": "projectIdOrKey",
+                "value": "PROJ",
+                "type": "path",
+                "description": "The ID or key of the project (e.g., 10000 or PROJ)."
+              }
+            ]
+          },
+          "docs": "Returns the valid statuses for a project. The statuses are grouped by issue type, listing the allowed statuses for each issue type in the project."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

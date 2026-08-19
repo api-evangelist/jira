@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jira Cloud Platform REST Issue Comments Issue Transitions API",
+    "version": "3"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Issue Transitions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Jira Get Transitions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{domain}.atlassian.net/rest/api/3/issue/:issueIdOrKey/transitions",
+            "params": [
+              {
+                "name": "issueIdOrKey",
+                "value": "PROJ-123",
+                "type": "path",
+                "description": "The ID or key of the issue (e.g., 10001 or PROJ-123)."
+              },
+              {
+                "name": "expand",
+                "value": "example_value",
+                "type": "query",
+                "description": "Use expand to include additional information about transitions in the response. Accepted values: transitions.fields."
+              },
+              {
+                "name": "transitionId",
+                "value": "500123",
+                "type": "query",
+                "description": "The ID of the transition."
+              },
+              {
+                "name": "skipRemoteOnlyCondition",
+                "value": "true",
+                "type": "query",
+                "description": "Whether transitions with the condition Hide From User Condition are included in the response."
+              },
+              {
+                "name": "includeUnavailableTransitions",
+                "value": "true",
+                "type": "query",
+                "description": "Whether details of transitions that fail a condition are included."
+              }
+            ]
+          },
+          "docs": "Returns either all transitions or a transition that can be performed by the user on an issue, based on the issue's status."
+        },
+        {
+          "info": {
+            "name": "Jira Transition Issue",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{domain}.atlassian.net/rest/api/3/issue/:issueIdOrKey/transitions",
+            "params": [
+              {
+                "name": "issueIdOrKey",
+                "value": "PROJ-123",
+                "type": "path",
+                "description": "The ID or key of the issue (e.g., 10001 or PROJ-123)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Performs an issue transition and, optionally, updates the fields and adds a comment. The fields that can be set depend on the transition and the connected Jira instance configuration."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

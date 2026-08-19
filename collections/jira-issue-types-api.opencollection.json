@@ -1,0 +1,36 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jira Cloud Platform REST Issue Comments Issue Types API",
+    "version": "3"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Issue Types",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Jira Get All Issue Types for User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{domain}.atlassian.net/rest/api/3/issuetype"
+          },
+          "docs": "Returns all issue types visible to the user. The list of issue types returned depends on the user's permissions."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

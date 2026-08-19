@@ -1,0 +1,97 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jira Cloud Platform REST Issue Comments API",
+    "version": "3"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Issue Comments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Jira Get Comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{domain}.atlassian.net/rest/api/3/issue/:issueIdOrKey/comment",
+            "params": [
+              {
+                "name": "issueIdOrKey",
+                "value": "PROJ-123",
+                "type": "path",
+                "description": "The ID or key of the issue (e.g., 10001 or PROJ-123)."
+              },
+              {
+                "name": "startAt",
+                "value": "10",
+                "type": "query",
+                "description": "The index of the first item to return in a page of results (page offset)."
+              },
+              {
+                "name": "maxResults",
+                "value": "10",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "orderBy",
+                "value": "created",
+                "type": "query",
+                "description": "The order of comments returned. Accepted values: created (ascending by default), -created (descending)."
+              },
+              {
+                "name": "expand",
+                "value": "example_value",
+                "type": "query",
+                "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody."
+              }
+            ]
+          },
+          "docs": "Returns all comments for an issue. Comments are ordered by created date in ascending order by default."
+        },
+        {
+          "info": {
+            "name": "Jira Add Comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{domain}.atlassian.net/rest/api/3/issue/:issueIdOrKey/comment",
+            "params": [
+              {
+                "name": "issueIdOrKey",
+                "value": "PROJ-123",
+                "type": "path",
+                "description": "The ID or key of the issue (e.g., 10001 or PROJ-123)."
+              },
+              {
+                "name": "expand",
+                "value": "example_value",
+                "type": "query",
+                "description": "Use expand to include additional information about comments in the response. Accepted values: renderedBody."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a comment to an issue. The comment body uses Atlassian Document Format (ADF)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

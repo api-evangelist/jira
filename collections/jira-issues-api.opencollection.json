@@ -1,0 +1,157 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jira Cloud Platform REST Issue Comments Issues API",
+    "version": "3"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Issues",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Jira Create Issue",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{domain}.atlassian.net/rest/api/3/issue",
+            "params": [
+              {
+                "name": "updateHistory",
+                "value": "true",
+                "type": "query",
+                "description": "Whether the project in which the issue is created is added to the user's Recently viewed project list, as shown under Projects in Jira."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an issue or a sub-task from a JSON representation. The fields that can be set on an issue depend on the connected Jira instance configuration, the project, and the issue type. You can determine appropriate field values using the Create Issue Metadata endpoint."
+        },
+        {
+          "info": {
+            "name": "Jira Get Issue",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{domain}.atlassian.net/rest/api/3/issue/:issueIdOrKey",
+            "params": [
+              {
+                "name": "issueIdOrKey",
+                "value": "PROJ-123",
+                "type": "path",
+                "description": "The ID or key of the issue (e.g., 10001 or PROJ-123)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "A list of fields to return for the issue. Use it to retrieve a subset of fields. Allowed values include any field name, *all for all fields, *navigable for navigable fields."
+              },
+              {
+                "name": "expand",
+                "value": "example_value",
+                "type": "query",
+                "description": "Use expand to include additional information in the response. Accepted values: renderedFields, names, schema, transitions, operations, editmeta, changelog, versionedRepresentations, fields."
+              },
+              {
+                "name": "properties",
+                "value": "",
+                "type": "query",
+                "description": "A list of issue properties to return for the issue. By default no properties are returned."
+              },
+              {
+                "name": "fieldsByKeys",
+                "value": "true",
+                "type": "query",
+                "description": "Whether fields in fields are referenced by keys rather than IDs."
+              }
+            ]
+          },
+          "docs": "Returns the details for an issue. The issue is identified by its ID or key. The returned issue includes all fields, comment count, names, schema, transitions, editmeta, changelog, and rendered fields."
+        },
+        {
+          "info": {
+            "name": "Jira Edit Issue",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{domain}.atlassian.net/rest/api/3/issue/:issueIdOrKey",
+            "params": [
+              {
+                "name": "issueIdOrKey",
+                "value": "PROJ-123",
+                "type": "path",
+                "description": "The ID or key of the issue (e.g., 10001 or PROJ-123)."
+              },
+              {
+                "name": "notifyUsers",
+                "value": "true",
+                "type": "query",
+                "description": "Whether a notification email about the issue update is sent to all watchers. Requires administer Jira global permission."
+              },
+              {
+                "name": "overrideScreenSecurity",
+                "value": "true",
+                "type": "query",
+                "description": "Whether screen security is overridden to enable hidden fields to be edited. Requires administer Jira global permission."
+              },
+              {
+                "name": "overrideEditableFlag",
+                "value": "true",
+                "type": "query",
+                "description": "Whether the non-editable flag is overridden to enable uneditable fields to be edited. Requires administer Jira global permission."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Edits an issue. A transition may be applied and issue properties updated as part of the edit. The editable fields depend on the connected Jira instance configuration, the project, and the issue type."
+        },
+        {
+          "info": {
+            "name": "Jira Delete Issue",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{domain}.atlassian.net/rest/api/3/issue/:issueIdOrKey",
+            "params": [
+              {
+                "name": "issueIdOrKey",
+                "value": "PROJ-123",
+                "type": "path",
+                "description": "The ID or key of the issue (e.g., 10001 or PROJ-123)."
+              },
+              {
+                "name": "deleteSubtasks",
+                "value": "true",
+                "type": "query",
+                "description": "Whether the issue's sub-tasks are also deleted."
+              }
+            ]
+          },
+          "docs": "Deletes an issue. An issue can only be deleted if it has no sub-tasks, unless deleteSubtasks is set to true."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
