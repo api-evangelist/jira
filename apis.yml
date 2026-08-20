@@ -37,6 +37,12 @@ apis:
   - Issues
   - Legacy
   - Project Management
+  - Project
+  - Workflows
+  tags_raw:
+  - Issues
+  - Legacy
+  - Project Management
   - Projects
   - Workflows
   properties:
@@ -61,6 +67,12 @@ apis:
   - Escalations
   - Incidents
   - On-Call
+  - Schedules
+  tags_raw:
+  - Alerts
+  - Escalations
+  - Incidents
+  - On-Call
   - Operations
   - Schedules
   properties:
@@ -79,6 +91,12 @@ apis:
     https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
   baseURL: https://your-domain.jiraalign.com/rest/align/api/2
   tags:
+  - Enterprise Agile
+  - Planning
+  - Portfolio
+  - Program Management
+  - SAFe
+  tags_raw:
   - Enterprise Agile
   - Planning
   - Portfolios
@@ -105,6 +123,11 @@ apis:
   humanURL: https://developer.atlassian.com/cloud/customer-service-management/
   baseURL: https://your-domain.atlassian.net
   tags:
+  - Customer Service
+  - Customers
+  - Entitlements
+  - Organization
+  tags_raw:
   - Customer Service
   - Customers
   - Entitlements
@@ -432,6 +455,8 @@ apis:
   humanURL: https://developer.atlassian.com/cloud/jira/platform/
   baseURL: https://your-domain.atlassian.net/rest/api/3
   tags:
+  - Project
+  tags_raw:
   - Projects
   properties:
   - type: OpenAPI
