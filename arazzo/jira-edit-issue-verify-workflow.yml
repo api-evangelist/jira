@@ -13,8 +13,8 @@ info:
     description.
   version: 1.0.0
 sourceDescriptions:
-- name: jiraApi
-  url: ../openapi/jira-cloud-platform-rest-api-openapi.yml
+- name: issuesApi
+  url: ../openapi/jira-issues-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: edit-issue-verify

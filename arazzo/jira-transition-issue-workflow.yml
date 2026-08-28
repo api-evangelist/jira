@@ -13,8 +13,11 @@ info:
     opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: jiraApi
-  url: ../openapi/jira-cloud-platform-rest-api-openapi.yml
+- name: issueTransitionsApi
+  url: ../openapi/jira-issue-transitions-api-openapi.yml
+  type: openapi
+- name: issuesApi
+  url: ../openapi/jira-issues-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: transition-issue

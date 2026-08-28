@@ -13,8 +13,14 @@ info:
     executed without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: jiraApi
-  url: ../openapi/jira-cloud-platform-rest-api-openapi.yml
+- name: issueCommentsApi
+  url: ../openapi/jira-issue-comments-api-openapi.yml
+  type: openapi
+- name: issueSearchApi
+  url: ../openapi/jira-issue-search-api-openapi.yml
+  type: openapi
+- name: issueTransitionsApi
+  url: ../openapi/jira-issue-transitions-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: stale-issue-sweep
