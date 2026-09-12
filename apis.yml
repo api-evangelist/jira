@@ -38,11 +38,8 @@ tags:
 - Service Management
 apis:
 - name: Jira Cloud Platform REST API v2
-  description: >-
-    Version 2 of the Jira Cloud platform REST API, offering the same operations as v3 but without Atlassian
-    Document Format support.
-  image: >-
-    https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
+  description: Version 2 of the Jira Cloud platform REST API, offering the same operations as v3 but without Atlassian Document Format support.
+  image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
   humanURL: https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/
   baseURL: https://your-domain.atlassian.net/rest/api/2
   tags:
@@ -67,11 +64,8 @@ apis:
   - type: Security
     url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
 - name: Jira Service Management Operations REST API
-  description: >-
-    Operations APIs for Jira Service Management covering schedules, on-call rotations, alerts, escalations,
-    and incident management.
-  image: >-
-    https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
+  description: Operations APIs for Jira Service Management covering schedules, on-call rotations, alerts, escalations, and incident management.
+  image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
   humanURL: https://developer.atlassian.com/cloud/jira/service-desk-ops/introduction/introduction/
   baseURL: https://api.atlassian.com/jsm/ops/api/{cloudId}
   tags:
@@ -91,16 +85,11 @@ apis:
   - type: Documentation
     url: https://developer.atlassian.com/cloud/jira/service-desk-ops/rest/v2/intro/
   - type: Authentication
-    url: >-
-      https://developer.atlassian.com/cloud/jira/service-desk-ops/security/basic-auth-for-rest-apis/
+    url: https://developer.atlassian.com/cloud/jira/service-desk-ops/security/basic-auth-for-rest-apis/
 - name: Jira Align REST API
-  description: >-
-    REST API for Jira Align enterprise agile planning platform, providing access to portfolios, epics,
-    features, and program management data.
-  image: >-
-    https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
-  humanURL: >-
-    https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
+  description: REST API for Jira Align enterprise agile planning platform, providing access to portfolios, epics, features, and program management data.
+  image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
+  humanURL: https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
   baseURL: https://your-domain.jiraalign.com/rest/align/api/2
   tags:
   - Enterprise Agile
@@ -118,20 +107,14 @@ apis:
   - type: Documentation
     url: https://help.jiraalign.com/hc/en-us/sections/360008049974-API-2-0
   - type: GettingStarted
-    url: >-
-      https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
+    url: https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
   - type: RateLimits
-    url: >-
-      https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
+    url: https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
   - type: Authentication
-    url: >-
-      https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
+    url: https://help.jiraalign.com/hc/en-us/articles/360045371954-Getting-started-with-the-REST-API-2-0
 - name: Jira Customer Service Management REST API
-  description: >-
-    REST API for Atlassian Customer Service Management providing access to customers, organizations, products,
-    and entitlements data.
-  image: >-
-    https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
+  description: REST API for Atlassian Customer Service Management providing access to customers, organizations, products, and entitlements data.
+  image: https://www.atlassian.com/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef9bbe4/jira-icon-blue.svg
   humanURL: https://developer.atlassian.com/cloud/customer-service-management/
   baseURL: https://your-domain.atlassian.net
   tags:
@@ -146,11 +129,9 @@ apis:
   - Organizations
   properties:
   - type: Documentation
-    url: >-
-      https://developer.atlassian.com/cloud/customer-service-management/rest/v1/api-group-customer/
+    url: https://developer.atlassian.com/cloud/customer-service-management/rest/v1/api-group-customer/
   - type: Authentication
-    url: >-
-      https://developer.atlassian.com/cloud/customer-service-management/apis/narratives/authentication/
+    url: https://developer.atlassian.com/cloud/customer-service-management/apis/narratives/authentication/
   - type: GettingStarted
     url: https://developer.atlassian.com/cloud/customer-service-management/
 - aid: jira:jira-issue-comments-api
@@ -507,6 +488,21 @@ apis:
     url: https://developer.atlassian.com/cloud/jira/service-desk/changelog/
   - type: Security
     url: https://developer.atlassian.com/cloud/jira/service-desk/security-overview/
+- aid: atlassian-jira:atlassian-jira-remote-mcp-server
+  name: Atlassian Remote MCP Server
+  description: Atlassian's official hosted Model Context Protocol server. An OAuth 2.1 protected endpoint that exposes Jira, Jira Service Management, Confluence, Bitbucket, Compass and Loom to MCP-capable AI clients, with 50 named Jira and JSM tools across read, write, search, delete and manage toolsets.
+  humanURL: https://www.atlassian.com/platform/remote-mcp-server
+  baseURL: https://mcp.atlassian.com/v1/mcp/authv2
+  tags:
+  - MCP
+  - AI Agents
+  properties:
+  - type: MCPServer
+    url: mcp/jira-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/jira-tool-crosswalk.yml
+  - type: Documentation
+    url: https://support.atlassian.com/atlassian-rovo-mcp-server/docs/supported-tools/
 maintainers:
 - name: Atlassian
   email: ecosystem@atlassian.com
@@ -514,6 +510,48 @@ maintainers:
 - name: Kin Lane
   email: kin@apievangelist.com
 common:
+- type: LinkedIn
+  url: https://www.linkedin.com/company/atlassian
+- type: Documentation
+  url: https://developer.atlassian.com/cloud/jira/platform/
+- type: Pricing
+  url: https://www.atlassian.com/software/jira/pricing
+- type: Community
+  url: https://community.developer.atlassian.com/
+- type: GitHubOrganization
+  url: https://github.com/atlassian
+- type: ToolCrosswalk
+  url: mcp/jira-tool-crosswalk.yml
+- type: Compliance
+  url: https://www.atlassian.com/trust/compliance
+- type: Deprecation
+  url: https://developer.atlassian.com/platform/marketplace/atlassian-rest-api-policy/
+- type: Sandbox
+  url: sandbox/jira-sandbox.yml
+- type: Webhooks
+  url: asyncapi/jira-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DeveloperPortal
+  url: https://developer.atlassian.com/
+- type: APIReference
+  url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/
+- type: Roadmap
+  url: https://www.atlassian.com/roadmap/cloud
+- type: SignUp
+  url: https://www.atlassian.com/try/cloud/signup?bundle=jira-software
+- type: HelpCenter
+  url: https://community.atlassian.com/
+- type: Trust
+  url: https://www.atlassian.com/trust
+- type: BugBounty
+  url: https://bugcrowd.com/atlassian
+- type: PostmanCollection
+  url: collections/jira.postman_collection.json
+- type: OpenCollection
+  url: collections/jira.opencollection.json
+- type: Website
+  url: https://www.atlassian.com/software/jira
 - type: PostmanWorkspace
   url: https://www.postman.com/kinlaneapi/jira/overview
 - type: Packages
@@ -648,36 +686,26 @@ common:
 - type: UseCases
   data:
   - name: Issue Tracking Automation
-    description: >-
-      Automate issue creation, assignment, and transitions based on external events from CI/CD pipelines, monitoring
-      tools, or customer feedback systems.
+    description: Automate issue creation, assignment, and transitions based on external events from CI/CD pipelines, monitoring tools, or customer feedback systems.
   - name: Sprint Management
-    description: >-
-      Programmatically manage sprints, backlogs, and board configurations for automated agile workflow
-      orchestration.
+    description: Programmatically manage sprints, backlogs, and board configurations for automated agile workflow orchestration.
   - name: Service Desk Integration
-    description: >-
-      Integrate customer support channels with Jira Service Management for automated ticket creation and SLA
-      tracking.
+    description: Integrate customer support channels with Jira Service Management for automated ticket creation and SLA tracking.
   - name: Incident Management
     description: Automate incident response workflows with on-call scheduling, alert routing, and escalation management.
   - name: Enterprise Agile Planning
-    description: >-
-      Connect portfolio planning tools with Jira Align for cross-team dependency tracking and program-level
-      reporting.
+    description: Connect portfolio planning tools with Jira Align for cross-team dependency tracking and program-level reporting.
 - type: Integrations
   data:
   - name: Confluence
-    description: >-
-      Link Jira issues to Confluence pages for seamless knowledge management and documentation alongside project
-      tracking.
+    description: Link Jira issues to Confluence pages for seamless knowledge management and documentation alongside project tracking.
   - name: Bitbucket
-    description: >-
-      Connect code repositories to Jira issues for automated status updates, smart commits, and development
-      tracking.
+    description: Connect code repositories to Jira issues for automated status updates, smart commits, and development tracking.
   - name: GitHub
     description: Link GitHub pull requests, branches, and commits to Jira issues for end-to-end development visibility.
   - name: Slack
     description: Create and manage Jira issues from Slack channels with bi-directional notifications and status updates.
   - name: Microsoft Teams
     description: Receive Jira notifications and manage issues directly from Microsoft Teams conversations.
+x-parent: atlassian
+x-relationship: product

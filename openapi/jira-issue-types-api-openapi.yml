@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Jira Cloud Platform REST Issue Comments Issue Types API
   description: The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.
@@ -110,18 +110,6 @@ components:
           example: 10
         scope:
           $ref: '#/components/schemas/Scope'
-    Scope:
-      type: object
-      description: The scope of the issue type (project or global).
-      properties:
-        type:
-          type: string
-          enum:
-          - PROJECT
-          - TEMPLATE
-          example: PROJECT
-        project:
-          $ref: '#/components/schemas/ProjectRef'
     ProjectRef:
       type: object
       description: A reference to a Jira project.
@@ -144,6 +132,18 @@ components:
         projectTypeKey:
           type: string
           example: example_value
+    Scope:
+      type: object
+      description: The scope of the issue type (project or global).
+      properties:
+        type:
+          type: string
+          enum:
+          - PROJECT
+          - TEMPLATE
+          example: PROJECT
+        project:
+          $ref: '#/components/schemas/ProjectRef'
     AvatarUrls:
       type: object
       description: Avatar URLs in multiple sizes.
