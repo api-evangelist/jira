@@ -2063,26 +2063,6 @@ apis:
     url: https://developer.atlassian.com/cloud/jira/service-desk/rest/intro/
   - type: APIReference
     url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/
-- aid: jira:jira-knowledgebase-api
-  name: Jira Knowledgebase API
-  description: The Knowledgebase API from Jira — 1 operation(s) for knowledgebase.
-  humanURL: https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/
-  baseURL: https://your-domain.atlassian.net/rest/api/2
-  tags:
-  - Knowledgebase
-  properties:
-  - type: OpenAPI
-    url: openapi/jira-knowledgebase-api-openapi.yml
-  - type: Documentation
-    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/
-  - type: Authentication
-    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#authentication
-  - type: Documentation
-    url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
-  - type: Documentation
-    url: https://developer.atlassian.com/cloud/jira/service-desk/rest/intro/
-  - type: APIReference
-    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/
 - aid: jira:jira-labels-api
   name: Jira Labels API
   description: >-
@@ -2656,26 +2636,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/jira-request-api-openapi.yml
-  - type: Documentation
-    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/
-  - type: Authentication
-    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#authentication
-  - type: Documentation
-    url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
-  - type: Documentation
-    url: https://developer.atlassian.com/cloud/jira/service-desk/rest/intro/
-  - type: APIReference
-    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/
-- aid: jira:jira-requesttype-api
-  name: Jira Requesttype API
-  description: The Requesttype API from Jira — 1 operation(s) for requesttype.
-  humanURL: https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/
-  baseURL: https://your-domain.atlassian.net/rest/api/2
-  tags:
-  - Requesttype
-  properties:
-  - type: OpenAPI
-    url: openapi/jira-requesttype-api-openapi.yml
   - type: Documentation
     url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/
   - type: Authentication
@@ -3286,6 +3246,46 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/jira-workflows-api-openapi.yml
+  - type: Documentation
+    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/
+  - type: Authentication
+    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#authentication
+  - type: Documentation
+    url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
+  - type: Documentation
+    url: https://developer.atlassian.com/cloud/jira/service-desk/rest/intro/
+  - type: APIReference
+    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/
+- aid: jira:jira-knowledge-base-api
+  name: Jira Knowledge Base API
+  description: The Knowledge Base API from Jira — 1 operation(s) for knowledge base.
+  humanURL: https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/
+  baseURL: https://your-domain.atlassian.net/rest/api/2
+  tags:
+  - Knowledge Base
+  properties:
+  - type: OpenAPI
+    url: openapi/jira-knowledge-base-api-openapi.yml
+  - type: Documentation
+    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/
+  - type: Authentication
+    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#authentication
+  - type: Documentation
+    url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
+  - type: Documentation
+    url: https://developer.atlassian.com/cloud/jira/service-desk/rest/intro/
+  - type: APIReference
+    url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/
+- aid: jira:jira-request-type-api
+  name: Jira Request Type API
+  description: The Request Type API from Jira — 1 operation(s) for request type.
+  humanURL: https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/
+  baseURL: https://your-domain.atlassian.net/rest/api/2
+  tags:
+  - Request Type
+  properties:
+  - type: OpenAPI
+    url: openapi/jira-request-type-api-openapi.yml
   - type: Documentation
     url: https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/
   - type: Authentication
