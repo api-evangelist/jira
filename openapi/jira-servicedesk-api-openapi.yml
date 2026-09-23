@@ -1,0 +1,3747 @@
+openapi: 3.2.0
+info:
+  description: Public REST API for Jira Service Management
+  termsOfService: https://www.atlassian.com/legal/customer-agreement
+  title: Service Management Public REST Servicedesk API
+  version: 1001.0.0-SNAPSHOT-82b018affa468e58f284fbe4df33536469d757df
+servers:
+- url: https://your-domain.atlassian.net
+tags:
+- name: Servicedesk
+paths:
+  /rest/servicedeskapi/servicedesk:
+    get:
+      deprecated: false
+      description: 'This method returns all the service desks in the Jira Service Management instance that the user has permission to access. Use this method where you need a list of service desks or need to locate a service desk by name or keyword.
+
+
+        **Note:** This method will be slow if the instance has hundreds of service desks. If you want to fetch a single service desk by its ID, use /rest/servicedeskapi/servicedesk/\{serviceDeskId\} instead.
+
+
+        **Permissions required**: Any'
+      operationId: getServiceDesks
+      parameters:
+      - description: 'The starting index of the returned objects. Base index: 0. See the [Pagination](#pagination) section for more details.'
+        in: query
+        name: start
+        schema:
+          format: int32
+          type: integer
+      - description: 'The maximum number of items to return per page. Default: 50. See the [Pagination](#pagination) section for more details.'
+        in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"_expands":[],"size":3,"start":3,"limit":3,"isLastPage":false,"_links":{"base":"https://your-domain.atlassian.net/rest/servicedeskapi","context":"context","next":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk?start=6&limit=3","prev":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk?start=0&limit=3"},"values":[{"id":"10001","projectId":"11001","projectName":"IT Help Desk","projectKey":"ITH","_links":{"self":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/10001"}},{"id":"10002","projectId":"11002","projectName":"HR Self Serve Desk","projectKey":"HR","_links":{"self":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/10002"}},{"id":"10003","projectId":"11003","projectName":"Foundation Leave","projectKey":"FL","_links":{"self":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/10003"}}]}'
+              schema:
+                $ref: '#/components/schemas/PagedDTOServiceDeskDTO'
+          description: Returns the service desks, on the specified page of the results.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:servicedesk-request
+      summary: Get service desks
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk-request
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk:jira-service-management
+        state: Beta
+      x-atlassian-connect-scope: READ
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}:
+    get:
+      deprecated: false
+      description: 'This method returns a service desk. Use this method to get service desk details whenever your application component is passed a service desk ID but needs to display other service desk details.
+
+
+        **Permissions required**: Permission to access the Service Desk. For example, being the Service Desk''s Administrator or one of its Agents or Users.'
+      operationId: getServiceDeskById
+      parameters:
+      - description: The ID of the service desk to return. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"id":"10001","projectId":"11001","projectName":"IT Help Desk","projectKey":"ITH","_links":{"self":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/10001"}}'
+              schema:
+                $ref: '#/components/schemas/ServiceDeskDTO'
+          description: Returns the requested service desk.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if service desk does not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:servicedesk-request
+      summary: Get service desk by id
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk-request
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk:jira-service-management
+        state: Beta
+      x-atlassian-connect-scope: READ
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/attachTemporaryFile:
+    post:
+      deprecated: false
+      description: 'This method adds one or more temporary attachments to a service desk, which can then be permanently attached to a customer request using servicedeskapi/request/\{issueIdOrKey\}/attachment.
+
+
+        **Note**: It is possible for a service desk administrator to turn off the ability to add attachments to a service desk.
+
+
+        This method expects a multipart request. The media-type multipart/form-data is defined in RFC 1867. Most client libraries have classes that make dealing with multipart posts simple. For instance, in Java the Apache HTTP Components library provides MultiPartEntity.
+
+
+        Because this method accepts multipart/form-data, it has XSRF protection on it. This means you must submit a header of X-Atlassian-Token: no-check with the request or it will be blocked.
+
+
+        The name of the multipart/form-data parameter that contains the attachments must be `file`.
+
+
+        For example, to upload a file called `myfile.txt` in the Service Desk with ID 10001 use
+
+
+        curl -D- -u customer:customer -X POST -H "X-ExperimentalApi: opt-in" -H "X-Atlassian-Token: no-check" -F "file=@myfile.txt" https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/10001/attachTemporaryFile
+
+
+        **Permissions required**: Permission to add attachments in this Service Desk.'
+      operationId: attachTemporaryFile
+      parameters:
+      - description: The ID of the Service Desk to which the file will be attached. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              items:
+                $ref: '#/components/schemas/MultipartFile'
+              type: array
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example: '{"temporaryAttachments":[{"temporaryAttachmentId":"temp8186986881700442965","fileName":"atlassian.png"},{"temporaryAttachmentId":"temp589064256337898328","fileName":"readme.txt"}]}'
+          description: Returns if the file(s) were attached.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the attachments are not valid, or exceed the maximum configured attachment size.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk does not exist.
+        '413':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if more than 60 files are requested to be uploaded.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - write:servicedesk-request
+      summary: Attach temporary file
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - write:servicedesk-request
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:request.attachment:jira-service-management
+        - write:request.attachment:jira-service-management
+        state: Beta
+      x-atlassian-connect-scope: WRITE
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/customer:
+    delete:
+      deprecated: false
+      description: 'This method removes one or more customers from a service desk. The service desk must have closed access. If any of the passed customers are not associated with the service desk, no changes will be made for those customers and the resource returns a 204 success code.
+
+
+        **Permissions required**: Services desk administrator'
+      operationId: removeCustomers
+      parameters:
+      - description: The ID of the service desk the customers should be removed from. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              accountIds:
+              - qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b
+              - qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3a01db05e2a66fa80bd
+              - qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d69abfa3980ce712caae
+              usernames:
+              - qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b
+              - qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3a01db05e2a66fa80bd
+              - qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d69abfa3980ce712caae
+            schema:
+              $ref: '#/components/schemas/ServiceDeskCustomerDTO'
+        required: true
+      responses:
+        '204':
+          description: Returned if the customers were removed from the service desk, or any of the customers were not associated with the service desk.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk has public signup or open access enabled.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk does not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - manage:servicedesk-customer
+      summary: Remove customers
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:servicedesk-customer
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk.customer:jira-service-management
+        - delete:servicedesk.customer:jira-service-management
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+    get:
+      deprecated: false
+      description: 'This method returns a list of the customers on a service desk.
+
+
+        The returned list of customers can be filtered using the `query` parameter. The parameter is matched against customers'' `displayName`, `name`, or `email`. For example, searching for "John", "Jo", "Smi", or "Smith" will match a user with display name "John Smith".
+
+
+        **Permissions required**: Permission to view this Service Desk''s customers.'
+      operationId: getCustomers
+      parameters:
+      - description: The ID of the service desk the customer list should be returned from. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: The string used to filter the customer list.
+        in: query
+        name: query
+        schema:
+          type: string
+      - description: 'The starting index of the returned objects. Base index: 0. See the [Pagination](#pagination) section for more details.'
+        in: query
+        name: start
+        schema:
+          format: int32
+          type: integer
+      - description: 'The maximum number of users to return per page. Default: 50. See the [Pagination](#pagination) section for more details.'
+        in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"_expands":[],"size":1,"start":1,"limit":1,"isLastPage":false,"_links":{"base":"https://your-domain.atlassian.net/rest/servicedeskapi","context":"context","next":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/1/customer?start=2&limit=1","prev":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/1/customer?start=0&limit=1"},"values":[{"accountId":"qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b","name":"qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b","key":"qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b","emailAddress":"fred@example.com","displayName":"Fred F. User","active":true,"timeZone":"Australia/Sydney","_links":{"jiraRest":"https://your-domain.atlassian.net/rest/api/2/user?username=qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b","avatarUrls":{"16x16":"https://avatar-cdn.atlassian.com/9bc3b5bcb0db050c6d7660b28a5b86c9?s=16&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9bc3b5bcb0db050c6d7660b28a5b86c9%3Fd%3Dmm%26s%3D16%26noRedirect%3Dtrue","24x24":"https://avatar-cdn.atlassian.com/9bc3b5bcb0db050c6d7660b28a5b86c9?s=24&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9bc3b5bcb0db050c6d7660b28a5b86c9%3Fd%3Dmm%26s%3D24%26noRedirect%3Dtrue","32x32":"https://avatar-cdn.atlassian.com/9bc3b5bcb0db050c6d7660b28a5b86c9?s=32&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9bc3b5bcb0db050c6d7660b28a5b86c9%3Fd%3Dmm%26s%3D32%26noRedirect%3Dtrue","48x48":"https://avatar-cdn.atlassian.com/9bc3b5bcb0db050c6d7660b28a5b86c9?s=48&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9bc3b5bcb0db050c6d7660b28a5b86c9%3Fd%3Dmm%26s%3D48%26noRedirect%3Dtrue"},"self":"https://your-domain.atlassian.net/rest/api/2/user?username=qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b"}}]}'
+              schema:
+                $ref: '#/components/schemas/PagedDTOUserDTO'
+          description: Returns the service desk's customer list.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk does not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - manage:servicedesk-customer
+      summary: Get customers
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:servicedesk-customer
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk.customer:jira-service-management
+        - read:user:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: READ
+    post:
+      deprecated: false
+      description: 'Adds one or more customers to a service desk. If any of the passed customers are associated with the service desk, no changes will be made for those customers and the resource returns a 204 success code.
+
+
+        **Permissions required**: Service desk administrator'
+      operationId: addCustomers
+      parameters:
+      - description: The ID of the service desk the customer list should be returned from. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              accountIds:
+              - qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b
+              - qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3a01db05e2a66fa80bd
+              - qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d69abfa3980ce712caae
+              usernames:
+              - qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b
+              - qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3a01db05e2a66fa80bd
+              - qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d69abfa3980ce712caae
+            schema:
+              $ref: '#/components/schemas/ServiceDeskCustomerDTO'
+        required: true
+      responses:
+        '204':
+          description: Returned if all the customers were added to the service desk or were already associated with the service desk.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if any of the customers do not exist. Note that any valid customers are added, but no confirmation is returned.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk does not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - manage:servicedesk-customer
+      summary: Add customers
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:servicedesk-customer
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk.customer:jira-service-management
+        - write:servicedesk.customer:jira-service-management
+        state: Beta
+      x-atlassian-connect-scope: WRITE
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/customer/invite:
+    post:
+      deprecated: false
+      description: 'This method invites a customer to a specified service desk by sending them an email invitation, creating a new customer account if one does not already exist. The display name does not need to be unique. The record''s identifiers, `name` and `key`, are automatically generated from the request details.
+
+
+        **Permissions required**: Jira Administrator Global permission & Service desk administrator'
+      operationId: inviteCustomer
+      parameters:
+      - description: The ID of the service desk to which the newly created customer should be added.
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: Optional boolean flag to return 409 Conflict status code when a customer with the same email already exists.
+        in: query
+        name: strictConflictStatusCode
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            example:
+              displayName: Fred F. User
+              email: fred@example.com
+            schema:
+              $ref: '#/components/schemas/ServiceDeskCustomerInviteDTO'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example: '{"accountId":"qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b","name":"qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b","key":"qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b","emailAddress":"fred@example.com","displayName":"Fred F. User","active":true,"timeZone":"Australia/Sydney","_links":{"jiraRest":"https://your-domain.atlassian.net/rest/api/2/user?username=qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b","avatarUrls":{"16x16":"https://avatar-cdn.atlassian.com/9bc3b5bcb0db050c6d7660b28a5b86c9?s=16&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9bc3b5bcb0db050c6d7660b28a5b86c9%3Fd%3Dmm%26s%3D16%26noRedirect%3Dtrue","24x24":"https://avatar-cdn.atlassian.com/9bc3b5bcb0db050c6d7660b28a5b86c9?s=24&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9bc3b5bcb0db050c6d7660b28a5b86c9%3Fd%3Dmm%26s%3D24%26noRedirect%3Dtrue","32x32":"https://avatar-cdn.atlassian.com/9bc3b5bcb0db050c6d7660b28a5b86c9?s=32&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9bc3b5bcb0db050c6d7660b28a5b86c9%3Fd%3Dmm%26s%3D32%26noRedirect%3Dtrue","48x48":"https://avatar-cdn.atlassian.com/9bc3b5bcb0db050c6d7660b28a5b86c9?s=48&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9bc3b5bcb0db050c6d7660b28a5b86c9%3Fd%3Dmm%26s%3D48%26noRedirect%3Dtrue"},"self":"https://your-domain.atlassian.net/rest/api/2/user?username=qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b"}}'
+          description: Returns the customer details.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the request is invalid, either because the display name is empty, or email address is empty or incorrectly formed or already exists in the database if `strictConflictStatusCode=false` or if `strictConflictStatusCode=false` parameter is not provided.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the servicedesk id does not exist or servicedesk does not belong to a JSM project.
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the request is invalid because the email address already exists in the database and `strictConflictStatusCode=true`
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - manage:servicedesk-customer
+      summary: Invite customer
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:servicedesk-customer
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:customer:jira-service-management
+        - write:servicedesk.customer:jira-service-management
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/knowledgebase/article:
+    get:
+      deprecated: false
+      description: 'Returns articles which match the given query and belong to the knowledge base linked to the service desk.
+
+
+        **Permissions required**: Permission to access the service desk.'
+      operationId: getArticles
+      parameters:
+      - in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: The string used to filter the articles (required).
+        in: query
+        name: query
+        required: true
+        schema:
+          type: string
+      - description: 'If set to true matching query term in the title and excerpt will be highlighted using the `@@@hl@@@term@@@endhl@@@` syntax. Default: false.'
+        in: query
+        name: highlight
+        schema:
+          default: false
+          type: boolean
+      - description: '(Deprecated) The starting index of the returned objects. Base index: 0.'
+        in: query
+        name: start
+        schema:
+          format: int32
+          type: integer
+      - description: 'The maximum number of items to return per page. Default: 50. See the section for more details.'
+        in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      - description: Pointer to a set of search results, returned as part of the next or prev URL from the previous search call.
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Should navigate to the previous page. Defaulted to false. Set to true as part of prev URL from the previous search call.
+        in: query
+        name: prev
+        schema:
+          default: false
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"_expands":[],"size":2,"start":2,"limit":2,"isLastPage":false,"_links":{"base":"https://your-domain.atlassian.net/rest/servicedeskapi","context":"context","next":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/%7BserviceDeskId%7D/knowledgebase/article?start=4&limit=2","prev":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/%7BserviceDeskId%7D/knowledgebase/article?start=0&limit=2"},"values":[{"title":"Stolen computer","excerpt":"assuming your computer was stolen","source":{"type":"confluence","pageId":"8786177","spaceKey":"IT"},"content":{"iframeSrc":"https://your-domain.atlassian.net/rest/servicedeskapi/knowledgebase/article/view/8786177"}},{"title":"Upgrading computer","excerpt":"each computer older then 3 years can be upgraded","source":{"type":"confluence","pageId":"8785228","spaceKey":"IT"},"content":{"iframeSrc":"https://your-domain.atlassian.net/rest/servicedeskapi/knowledgebase/article/view/8785228"}}]}'
+              schema:
+                $ref: '#/components/schemas/PagedDTOArticleDTO'
+          description: Returns the articles, on the specified page of the results.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: 'Returned if the request is invalid, for example: missing query parameter.'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:knowledgebase:jira-service-management
+      summary: Get articles
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-connect-scope: READ
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/queue:
+    get:
+      deprecated: false
+      description: 'This method returns the queues in a service desk. To include a customer request count for each queue (in the `issueCount` field) in the response, set the query parameter `includeCount` to true (its default is false).
+
+
+        **Permissions required**: service desk''s Agent.'
+      operationId: getQueues
+      parameters:
+      - description: ID of the service desk whose queues will be returned. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: Specifies whether to include each queue's customer request (issue) count in the response.
+        in: query
+        name: includeCount
+        schema:
+          default: false
+          type: boolean
+      - description: 'The starting index of the returned objects. Base index: 0. See the [Pagination](#pagination) section for more details.'
+        in: query
+        name: start
+        schema:
+          format: int32
+          type: integer
+      - description: 'The maximum number of items to return per page. Default: 50. See the [Pagination](#pagination) section for more details.'
+        in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"_expands":[],"size":2,"start":2,"limit":2,"isLastPage":false,"_links":{"base":"https://your-domain.atlassian.net/rest/servicedeskapi","context":"context","next":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/1/queue?start=4&limit=2","prev":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/1/queue?start=0&limit=2"},"values":[{"id":"10","name":"Unassigned issues","jql":"project = SD AND assignee is EMPTY AND resolution = Unresolved ORDER BY \"Time to resolution\" ASC","fields":["issuetype","issuekey","summary","created","reporter","duedate"],"issueCount":10,"_links":{"self":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/1/queue/10"}},{"id":"20","name":"Assigned to me","jql":"project = SD AND assignee = currentUser() AND resolution = Unresolved ORDER BY \"Time to resolution\" ASC","fields":["issuetype","issuekey","summary","created","reporter","duedate"],"issueCount":10,"_links":{"self":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/1/queue/20"}}]}'
+              schema:
+                $ref: '#/components/schemas/PagedDTOQueueDTO'
+          description: Returns the queues of the service desk, on the specified page of the results.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk does not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:jira-work
+      summary: Get queues
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:jira-work
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:queue:jira-service-management
+        - read:user:jira
+        - read:jql:jira
+        state: Beta
+      x-atlassian-connect-scope: READ
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/queue/{queueId}:
+    get:
+      deprecated: false
+      description: 'This method returns a specific queues in a service desk. To include a customer request count for the queue (in the `issueCount` field) in the response, set the query parameter `includeCount` to true (its default is false).
+
+
+        **Permissions required**: service desk''s Agent.'
+      operationId: getQueue
+      parameters:
+      - description: ID of the service desk whose queues will be returned. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: ID of the required queue.
+        in: path
+        name: queueId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Specifies whether to include each queue's customer request (issue) count in the response.
+        in: query
+        name: includeCount
+        schema:
+          default: false
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"id":"20","name":"Assigned to me","jql":"project = SD AND assignee = currentUser() AND resolution = Unresolved ORDER BY \"Time to resolution\" ASC","fields":["issuetype","issuekey","summary","created","reporter","duedate"],"issueCount":10,"_links":{"self":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/1/queue/20"}}'
+              schema:
+                $ref: '#/components/schemas/QueueDTO'
+          description: Returns the specific queue of the service desk.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk does not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:jira-work
+      summary: Get queue
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:jira-work
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:queue:jira-service-management
+        - read:user:jira
+        - read:jql:jira
+        state: Beta
+      x-atlassian-connect-scope: READ
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/queue/{queueId}/issue:
+    get:
+      deprecated: false
+      description: 'This method returns the customer requests in a queue. Only fields that the queue is configured to show are returned. For example, if a queue is configured to show description and due date, then only those two fields are returned for each customer request in the queue.
+
+
+        **Permissions required**: Service desk''s agent.'
+      operationId: getIssuesInQueue
+      parameters:
+      - description: The ID of the service desk containing the queue to be queried. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: The ID of the queue whose customer requests will be returned.
+        in: path
+        name: queueId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: 'The starting index of the returned objects. Base index: 0. See the [Pagination](#pagination) section for more details.'
+        in: query
+        name: start
+        schema:
+          format: int32
+          type: integer
+      - description: 'The maximum number of items to return per page. Default: 50. See the [Pagination](#pagination) section for more details.'
+        in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"_expands":[],"size":1,"start":1,"limit":1,"isLastPage":false,"_links":{"base":"https://your-domain.atlassian.net/rest/servicedeskapi","context":"context","next":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/1/queue/10/issue?start=2&limit=1","prev":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/1/queue/10/issue?start=0&limit=1"},"values":[{"fields":{"summary":"My keyboard is broken","issuetype":{"avatarId":10002,"description":"For general IT problems and questions. Created by Jira Service Management.","iconUrl":"https://your-domain.atlassian.net/servicedesk/issue-type-icons?icon=it-help","id":"13","name":"IT Help","self":"https://your-domain.atlassian.net/rest/api/2/issuetype/13","subtask":false},"duedate":"2015-11-11T14:17:13.000+0700","created":"2015-11-09T14:17:13.000+0700","reporter":{"accountId":"qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b","name":"qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b","key":"qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b","emailAddress":"fred@example.com","displayName":"Fred F. User","active":true,"timeZone":"Australia/Sydney","_links":{"jiraRest":"https://your-domain.atlassian.net/rest/api/2/user?username=qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b","avatarUrls":{"16x16":"https://avatar-cdn.atlassian.com/9bc3b5bcb0db050c6d7660b28a5b86c9?s=16&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9bc3b5bcb0db050c6d7660b28a5b86c9%3Fd%3Dmm%26s%3D16%26noRedirect%3Dtrue","24x24":"https://avatar-cdn.atlassian.com/9bc3b5bcb0db050c6d7660b28a5b86c9?s=24&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9bc3b5bcb0db050c6d7660b28a5b86c9%3Fd%3Dmm%26s%3D24%26noRedirect%3Dtrue","32x32":"https://avatar-cdn.atlassian.com/9bc3b5bcb0db050c6d7660b28a5b86c9?s=32&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9bc3b5bcb0db050c6d7660b28a5b86c9%3Fd%3Dmm%26s%3D32%26noRedirect%3Dtrue","48x48":"https://avatar-cdn.atlassian.com/9bc3b5bcb0db050c6d7660b28a5b86c9?s=48&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9bc3b5bcb0db050c6d7660b28a5b86c9%3Fd%3Dmm%26s%3D48%26noRedirect%3Dtrue"},"self":"https://your-domain.atlassian.net/rest/api/2/user?username=qm:a713c8ea-1075-4e30-9d96-891a7d181739:5ad6d3581db05e2a66fa80b"}}},"id":"10001","key":"SD-1","self":"https://your-domain.atlassian.net/rest/servicedeskapi/rest/api/2/issue/10001"}]}'
+              schema:
+                $ref: '#/components/schemas/PagedDTOIssueBean'
+          description: Returns the customer requests belonging to the queue, on the specified page of the results.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk or the queue do not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:jira-work
+      summary: Get issues in queue
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:jira-work
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:queue:jira-service-management
+        - read:user:jira
+        - read:issue:jira
+        state: Beta
+      x-atlassian-connect-scope: READ
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/requesttype:
+    get:
+      deprecated: false
+      description: 'This method returns all customer request types from a service desk. There are two parameters for filtering the returned list:
+
+
+        * `groupId` which filters the results to items in the customer request type group.
+
+        * `searchQuery` which is matched against request types'' `name` or `description`. For example, the strings "Install", "Inst", "Equi", or "Equipment" will match a request type with the *name* "Equipment Installation Request".
+
+
+        **Note:** This API by default will filter out request types hidden in the portal (i.e. request types without groups and request types where a user doesn''t have permission) when `searchQuery` is provided, unless `includeHiddenRequestTypesInSearch` is set to true. Restricted request types will not be returned for those who aren''t admins.
+
+
+        **Permissions required**: Permission to access the service desk.'
+      operationId: getRequestTypes
+      parameters:
+      - description: The ID of the service desk whose customer request types are to be returned. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: Filters results to those in a customer request type group.
+        in: query
+        name: groupId
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: expand
+        schema:
+          items:
+            default: ''
+            type: string
+          type: array
+      - description: The string to be used to filter the results.
+        in: query
+        name: searchQuery
+        schema:
+          type: string
+      - description: 'The starting index of the returned objects. Base index: 0. See the [Pagination](#pagination) section for more details.'
+        in: query
+        name: start
+        schema:
+          format: int32
+          type: integer
+      - description: 'The maximum number of items to return per page. Default: 50. See the [Pagination](#pagination) section for more details.'
+        in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      - description: Whether to include hidden request types when searching with `searchQuery`.
+        in: query
+        name: includeHiddenRequestTypesInSearch
+        schema:
+          default: false
+          type: boolean
+      - description: Request type restriction status (`open` or `restricted`) used to filter the results.
+        in: query
+        name: restrictionStatus
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"_expands":[],"size":3,"start":3,"limit":3,"isLastPage":false,"_links":{"base":"https://your-domain.atlassian.net/rest/servicedeskapi","context":"context","next":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/28/requesttype?start=6&limit=3","prev":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/28/requesttype?start=0&limit=3"},"values":[{"_expands":[],"id":"11001","_links":{"self":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/28/requesttype/11001"},"name":"Get IT Help","description":"Get IT Help","helpText":"Please tell us clearly the problem you have within 100 words.","issueTypeId":"12345","serviceDeskId":"28","portalId":"2","groupIds":["12"],"icon":{"id":"12345","_links":{"iconUrls":{"48x48":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12345?size=large","24x24":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12345?size=small","16x16":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12345?size=xsmall","32x32":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12345?size=medium"}}}},{"_expands":[],"id":"11002","_links":{"self":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/28/requesttype/11002"},"name":"Request a new account","description":"Request a new account","issueTypeId":"12345","serviceDeskId":"28","portalId":"2","groupIds":["13","14"],"icon":{"id":"12346","_links":{"iconUrls":{"48x48":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12346?size=large","24x24":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12346?size=small","16x16":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12346?size=xsmall","32x32":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12346?size=medium"}}}},{"_expands":[],"id":"11003","_links":{"self":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/28/requesttype/11003"},"name":"Hardware request","description":"Request a hardware support","issueTypeId":"12345","serviceDeskId":"28","portalId":"2","groupIds":["13"],"icon":{"id":"12347","_links":{"iconUrls":{"48x48":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12347?size=large","24x24":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12347?size=small","16x16":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12347?size=xsmall","32x32":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12347?size=medium"}}}}]}'
+              schema:
+                $ref: '#/components/schemas/PagedDTORequestTypeDTO'
+          description: Returns the requested customer request types, on the specified page of the results.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk does not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:servicedesk-request
+      summary: Get request types
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk-request
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:requesttype:jira-service-management
+        state: Beta
+      x-atlassian-connect-scope: READ
+    post:
+      deprecated: false
+      description: 'This method enables a customer request type to be added to a service desk based on an issue type. Note that not all customer request type fields can be specified in the request and these fields are given the following default values:
+
+
+        * Request type icon is given the headset icon.
+
+        * Request type groups is left empty, which means this customer request type will not be visible on the customer portal.
+
+        * Request type status mapping is left empty, so the request type has no custom status mapping but inherits the status map from the issue type upon which it is based.
+
+        * Request type field mapping is set to show the required fields as specified by the issue type used to create the customer request type.
+
+
+        These fields can be updated by a service desk administrator using the **Request types** option in **Project settings**.
+
+        Request Types are created in next-gen projects by creating Issue Types. Please use the Jira Cloud Platform Create issue type endpoint instead.
+
+
+        **Permissions required**: Service desk''s administrator'
+      operationId: createRequestType
+      parameters:
+      - description: The ID of the service desk where the customer request type is to be created. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              description: Get IT Help
+              helpText: Please tell us clearly the problem you have within 100 words.
+              issueTypeId: '12345'
+              name: Get IT Help
+            schema:
+              $ref: '#/components/schemas/RequestTypeCreateDTO'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"_expands":[],"id":"11001","_links":{"self":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/28/requesttype/11001"},"name":"Get IT Help","description":"Get IT Help","helpText":"Please tell us clearly the problem you have within 100 words.","issueTypeId":"12345","serviceDeskId":"28","portalId":"2","groupIds":["12"],"icon":{"id":"12345","_links":{"iconUrls":{"48x48":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12345?size=large","24x24":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12345?size=small","16x16":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12345?size=xsmall","32x32":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12345?size=medium"}}}}'
+              schema:
+                $ref: '#/components/schemas/RequestTypeDTO'
+          description: Returns the customer request type created.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the customer request type name is empty.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk or issue type do not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:requesttype:jira-service-management
+        - write:requesttype:jira-service-management
+      summary: Create request type
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-experimental: true
+      x-atlassian-connect-scope: PROJECT_ADMIN
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/requesttype/permissions/check:
+    post:
+      deprecated: false
+      description: 'Returns:
+
+
+        * a list of request type IDs where the given user has permission to administer.
+
+        * a list of request type IDs where the given user has permission to submit the request.
+
+
+        If no account ID is provided, the operation returns details for the logged in user.
+
+
+        Note that:
+
+
+        * invalid request type IDs are ignored.
+
+        * a maximum of 50 request types can be checked.
+
+
+        **Permissions required:**
+
+
+        * *Administer Jira* or *Project Administrator* to check the permissions for other users.
+
+
+        However, Connect apps can make a call from the app server to the product to obtain permission details for any user, without admin permission. This Connect app ability doesn''t apply to calls made using AP.request() in a browser.'
+      operationId: checkRequestTypePermissions
+      parameters:
+      - in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestTypePermissionCheckRequestDTO'
+        description: Details of the permissions to check.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestTypePermissionCheckResponse'
+          description: Returned if the request is successful.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: "Returned if:\n\n *  more than 50 request type IDs have been supplied.\n *  an invalid account identifier has been provided.\n *  no permissions have been supplied."
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have the necessary permission.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:servicedesk-request
+      - {}
+      summary: Check request type permissions
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk-request
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:requesttype:jira-service-management
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/requesttype/{requestTypeId}:
+    delete:
+      deprecated: false
+      description: 'This method deletes a customer request type from a service desk, and removes it from all customer requests.
+
+        This only supports classic projects.
+
+
+        **Permissions required**: Service desk administrator.'
+      operationId: deleteRequestType
+      parameters:
+      - description: The ID or [project identifier](#project-identifiers) of the service desk.
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: The ID of the request type.
+        in: path
+        name: requestTypeId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '204':
+          description: Returned if the request type is deleted.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the request type ID is not valid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have the necessary permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk or request type do not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - manage:jira-project
+      summary: Delete request type
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-experimental: true
+      x-atlassian-connect-scope: PROJECT_ADMIN
+    get:
+      deprecated: false
+      description: 'This method returns a customer request type from a service desk.
+
+
+        This operation can be accessed anonymously.
+
+
+        **Permissions required**: Permission to access the service desk.'
+      operationId: getRequestTypeById
+      parameters:
+      - description: The ID of the service desk whose customer request type is to be returned. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: The ID of the customer request type to be returned.
+        in: path
+        name: requestTypeId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: expand
+        schema:
+          items:
+            default: ''
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"_expands":[],"id":"11001","_links":{"self":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/28/requesttype/11001"},"name":"Get IT Help","description":"Get IT Help","helpText":"Please tell us clearly the problem you have within 100 words.","issueTypeId":"12345","serviceDeskId":"28","portalId":"2","groupIds":["12"],"icon":{"id":"12345","_links":{"iconUrls":{"48x48":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12345?size=large","24x24":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12345?size=small","16x16":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12345?size=xsmall","32x32":"https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/SD_REQTYPE/avatar/12345?size=medium"}}}}'
+              schema:
+                $ref: '#/components/schemas/RequestTypeDTO'
+          description: Returns the customer request type item.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user credentials are invalid.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk or customer request type do not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:servicedesk-request
+      - {}
+      summary: Get request type by id
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk-request
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:requesttype:jira-service-management
+        state: Beta
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/requesttype/{requestTypeId}/field:
+    get:
+      deprecated: false
+      description: 'This method returns the fields for a service desk''s customer request type.
+
+
+        Also, the following information about the user''s permissions for the request type is returned:
+
+
+        * `canRaiseOnBehalfOf` returns `true` if the user has permission to raise customer requests on behalf of other customers. Otherwise, returns `false`.
+
+        * `canAddRequestParticipants` returns `true` if the user can add customer request participants. Otherwise, returns `false`.
+
+
+        **Permissions required**: Permission to view the Service Desk. However, hidden fields would be visible to only Service desk''s Administrator.'
+      operationId: getRequestTypeFields
+      parameters:
+      - description: The ID of the service desk containing the request types whose fields are to be returned. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: The ID of the request types whose fields are to be returned.
+        in: path
+        name: requestTypeId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - description: Use [expand](#expansion) to include additional information in the response. This parameter accepts `hiddenFields` that returns hidden fields associated with the request type.
+        in: query
+        name: expand
+        schema:
+          items:
+            default: ''
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"canAddRequestParticipants":true,"canRaiseOnBehalfOf":true,"requestTypeFields":[{"fieldId":"summary","jiraSchema":{"system":"summary","type":"string"},"name":"What do you need?","required":true,"validValues":[],"visible":true},{"fieldId":"customfield_10000","jiraSchema":{"custom":"com.atlassian.jira.plugin.system.customfieldtypes:userpicker","customId":10000,"type":"user"},"name":"Nominee","required":true,"validValues":[],"visible":true},{"fieldId":"customfield_10001","jiraSchema":{"custom":"com.atlassian.jira.plugin.system.customfieldtypes:radiobuttons","customId":10001,"type":"string"},"name":"Gifts","required":true,"validValues":[{"children":[],"label":"Bottle of Wine","value":"10000"},{"children":[],"label":"Threadless Voucher","value":"10001"},{"children":[],"label":"2 Movie Tickets","value":"10002"}],"visible":false}]}'
+              schema:
+                $ref: '#/components/schemas/CustomerRequestCreateMetaDTO'
+          description: Returns the request type's fields and user permission details, on the specified page of the results.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk or request type do not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:servicedesk-request
+      summary: Get request type fields
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk-request
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:requesttype:jira-service-management
+        state: Beta
+      x-atlassian-connect-scope: READ
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/requesttype/{requestTypeId}/property:
+    get:
+      deprecated: false
+      description: 'Returns the keys of all properties for a request type.
+
+
+        Properties for a Request Type in next-gen are stored as Issue Type properties and therefore the keys of all properties for a request type are also available by calling the Jira Cloud Platform Get issue type property keys endpoint.
+
+
+        **Permissions required**: The user must have permission to view the request type.'
+      operationId: getPropertiesKeys
+      parameters:
+      - description: The ID of the request type for which keys will be retrieved.
+        in: path
+        name: requestTypeId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - description: The ID of the service desk which contains the request type. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"entityPropertyKeyBeans":[{"key":"requestType.attributes","self":"/rest/servicedeskapi/servicedesk/1/requestType/2/property/propertyKey"}]}'
+              schema:
+                $ref: '#/components/schemas/PropertyKeys'
+          description: Returned if the request type was found.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the request type ID is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the request type does not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:servicedesk-request
+      summary: Get properties keys
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk-request
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:requesttype.property:jira-service-management
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/requesttype/{requestTypeId}/property/{propertyKey}:
+    delete:
+      deprecated: false
+      description: 'Removes a property from a request type.
+
+
+        Properties for a Request Type in next-gen are stored as Issue Type properties and therefore can also be deleted by calling the Jira Cloud Platform Delete issue type property endpoint.
+
+
+        **Permissions required**: Jira project administrator with a Jira Service Management agent license.'
+      operationId: deleteProperty
+      parameters:
+      - description: The ID of the service desk which contains the request type. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: The ID of the request type for which the property will be removed.
+        in: path
+        name: requestTypeId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - description: The key of the property to remove.
+        in: path
+        name: propertyKey
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Returned if the request type property was removed.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the request type ID is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the calling user doesn't have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the request type or property do not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - manage:jira-project
+      summary: Delete property
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-project
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:requesttype.property:jira-service-management
+        - delete:requesttype.property:jira-service-management
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+    get:
+      deprecated: false
+      description: 'Returns the value of the property from a request type.
+
+
+        Properties for a Request Type in next-gen are stored as Issue Type properties and therefore also available by calling the Jira Cloud Platform Get issue type property endpoint.
+
+
+        **Permissions required**: User must have permission to view the request type.'
+      operationId: getProperty
+      parameters:
+      - description: The ID of the service desk which contains the request type. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: The ID of the request type from which the property will be retrieved.
+        in: path
+        name: requestTypeId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - description: The key of the property to return.
+        in: path
+        name: propertyKey
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"key":"organization.attributes","value":{"color":"green","priority":"high"}}'
+              schema:
+                $ref: '#/components/schemas/EntityProperty'
+          description: Returned if the request type property was returned.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the request type ID is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the request type or property do not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:servicedesk-request
+      summary: Get property
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk-request
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:requesttype.property:jira-service-management
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+    put:
+      deprecated: false
+      description: 'Sets the value of a request type property. Use this resource to store custom data against a request type.
+
+
+        Properties for a Request Type in next-gen are stored as Issue Type properties and therefore can also be set by calling the Jira Cloud Platform Set issue type property endpoint.
+
+
+        **Permissions required**: Jira project administrator with a Jira Service Management agent license.'
+      operationId: setProperty
+      parameters:
+      - description: The ID of the service desk which contains the request type. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: The ID of the request type on which the property will be set.
+        in: path
+        name: requestTypeId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - description: The key of the request type property. The maximum length of the key is 255 bytes.
+        in: path
+        name: propertyKey
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the request type property is updated.
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the request type property is created.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the request type ID is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the calling user doesn't have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the request type does not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - manage:jira-project
+      summary: Set property
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-project
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:requesttype.property:jira-service-management
+        - write:requesttype.property:jira-service-management
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/requesttypegroup:
+    get:
+      deprecated: false
+      description: 'This method returns a service desk''s customer request type groups. Jira Service Management administrators can arrange the customer request type groups in an arbitrary order for display on the customer portal; the groups are returned in this order.
+
+
+        **Permissions required**: Permission to view the service desk.'
+      operationId: getRequestTypeGroups
+      parameters:
+      - description: The ID of the service desk whose customer request type groups are to be returned. This can alternatively be a [project identifier.](#project-identifiers)
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      - description: 'The starting index of the returned objects. Base index: 0. See the [Pagination](#pagination) section for more details.'
+        in: query
+        name: start
+        schema:
+          format: int32
+          type: integer
+      - description: 'The maximum number of items to return per page. Default: 50. See the [Pagination](#pagination) section for more details.'
+        in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"_expands":[],"size":3,"start":3,"limit":3,"isLastPage":false,"_links":{"base":"https://your-domain.atlassian.net/rest/servicedeskapi","context":"context","next":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/%7BserviceDeskId%7D/requesttypegroup?start=6&limit=3","prev":"https://your-domain.atlassian.net/rest/servicedeskapi/servicedesk/%7BserviceDeskId%7D/requesttypegroup?start=0&limit=3"},"values":[{"id":"12","name":"Common Requests"},{"id":"13","name":"Logins and Accounts"},{"id":"14","name":"Servers and Infrastructure"}]}'
+              schema:
+                $ref: '#/components/schemas/PagedDTORequestTypeGroupDTO'
+          description: Returns the service desk's customer request type groups, on the specified page of the results.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user is not logged in.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the user does not have permission to complete this request.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Returned if the service desk does not exist.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error.
+      security:
+      - OAuth2:
+        - read:servicedesk-request
+      summary: Get request type groups
+      tags:
+      - Servicedesk
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: false
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk-request
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:requesttype:jira-service-management
+        state: Beta
+      x-atlassian-connect-scope: READ
+components:
+  schemas:
+    UserLinkDTO:
+      additionalProperties: false
+      properties:
+        avatarUrls:
+          additionalProperties:
+            type: string
+          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
+          type: object
+        jiraRest:
+          description: REST API URL for the customer.
+          format: uri
+          type: string
+        self:
+          format: uri
+          type: string
+      type: object
+    Scope:
+      additionalProperties: true
+      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
+      properties:
+        project:
+          allOf:
+          - $ref: '#/components/schemas/ProjectDetails'
+          description: The project the item has scope in.
+          readOnly: true
+        type:
+          description: The type of scope.
+          enum:
+          - PROJECT
+          - TEMPLATE
+          readOnly: true
+          type: string
+      type: object
+    RequestTypeDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          description: List of items that can be expanded in the response by specifying the expand query parameter.
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/SelfLinkDTO'
+          description: REST API URL for the request type.
+        canCreateRequest:
+          description: Whether the user has permission to create a request with this request type.
+          type: boolean
+        description:
+          description: Description of the request type.
+          type: string
+        fields:
+          allOf:
+          - $ref: '#/components/schemas/CustomerRequestCreateMetaDTO'
+          description: Fields and additional metadata for creating a request that uses the request type
+        groupIds:
+          description: List of the request type groups the request type belongs to.
+          items:
+            type: string
+          type: array
+        helpText:
+          description: Help text for the request type.
+          type: string
+        icon:
+          allOf:
+          - $ref: '#/components/schemas/RequestTypeIconDTO'
+          description: Links to the request type's icons.
+        id:
+          description: ID for the request type.
+          type: string
+        issueTypeId:
+          description: ID of the issue type the request type is based upon.
+          type: string
+        name:
+          description: Short name for the request type.
+          type: string
+        portalId:
+          description: ID of the customer portal associated with the service desk project.
+          type: string
+        practice:
+          description: The request type's practice
+          type: string
+        restrictionStatus:
+          description: Whether request type is restricted or not.
+          enum:
+          - OPEN
+          - RESTRICTED
+          type: string
+        serviceDeskId:
+          description: ID of the service desk the request type belongs to.
+          type: string
+      type: object
+    IssueUpdateMetadata:
+      description: A list of editable field details.
+      properties:
+        fields:
+          additionalProperties:
+            $ref: '#/components/schemas/FieldMetadata'
+          readOnly: true
+          type: object
+      type: object
+    FieldMetadata:
+      additionalProperties: false
+      description: The metadata describing an issue field.
+      properties:
+        allowedValues:
+          description: The list of values allowed in the field.
+          items:
+            readOnly: true
+          readOnly: true
+          type: array
+        autoCompleteUrl:
+          description: The URL that can be used to automatically complete the field.
+          readOnly: true
+          type: string
+        configuration:
+          additionalProperties:
+            readOnly: true
+          description: The configuration properties.
+          readOnly: true
+          type: object
+        defaultValue:
+          description: The default value of the field.
+          readOnly: true
+        hasDefaultValue:
+          description: Whether the field has a default value.
+          readOnly: true
+          type: boolean
+        key:
+          description: The key of the field.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the field.
+          readOnly: true
+          type: string
+        operations:
+          description: The list of operations that can be performed on the field.
+          items:
+            readOnly: true
+            type: string
+          readOnly: true
+          type: array
+        required:
+          description: Whether the field is required.
+          readOnly: true
+          type: boolean
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/JsonTypeBean'
+          description: The data type of the field.
+          readOnly: true
+      required:
+      - key
+      - name
+      - operations
+      - required
+      - schema
+      type: object
+      xml:
+        name: availableField
+    PagedDTORequestTypeGroupDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/RequestTypeGroupDTO'
+          type: array
+      type: object
+    CustomerRequestCreateMetaDTO:
+      additionalProperties: false
+      properties:
+        canAddRequestParticipants:
+          description: Flag indicating if participants can be added to a request (true) or not.
+          type: boolean
+        canRaiseOnBehalfOf:
+          description: Flag indicating if a request can be raised on behalf of another user (true) or not.
+          type: boolean
+        requestTypeFields:
+          description: List of the fields included in this request.
+          items:
+            $ref: '#/components/schemas/RequestTypeFieldDTO'
+          type: array
+      type: object
+    StatusCategory:
+      additionalProperties: true
+      description: A status category.
+      properties:
+        colorName:
+          description: The name of the color used to represent the status category.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the status category.
+          format: int64
+          readOnly: true
+          type: integer
+        key:
+          description: The key of the status category.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the status category.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the status category.
+          readOnly: true
+          type: string
+      type: object
+    Operations:
+      additionalProperties: true
+      description: Details of the operations that can be performed on the issue.
+      properties:
+        linkGroups:
+          description: Details of the link groups defining issue operations.
+          items:
+            $ref: '#/components/schemas/LinkGroup'
+          readOnly: true
+          type: array
+      type: object
+    IssueTransition:
+      additionalProperties: true
+      description: Details of an issue transition.
+      properties:
+        expand:
+          description: Expand options that include additional transition details in the response.
+          readOnly: true
+          type: string
+        fields:
+          additionalProperties:
+            $ref: '#/components/schemas/FieldMetadata'
+          description: Details of the fields associated with the issue transition screen. Use this information to populate `fields` and `update` in a transition request.
+          readOnly: true
+          type: object
+        hasScreen:
+          description: Whether there is a screen associated with the issue transition.
+          readOnly: true
+          type: boolean
+        id:
+          description: The ID of the issue transition. Required when specifying a transition to undertake.
+          type: string
+        isAvailable:
+          description: Whether the transition is available to be performed.
+          readOnly: true
+          type: boolean
+        isConditional:
+          description: Whether the issue has to meet criteria before the issue transition is applied.
+          readOnly: true
+          type: boolean
+        isGlobal:
+          description: Whether the issue transition is global, that is, the transition is applied to issues regardless of their status.
+          readOnly: true
+          type: boolean
+        isInitial:
+          description: Whether this is the initial issue transition for the workflow.
+          readOnly: true
+          type: boolean
+        looped:
+          type: boolean
+        name:
+          description: The name of the issue transition.
+          readOnly: true
+          type: string
+        to:
+          allOf:
+          - $ref: '#/components/schemas/StatusDetails'
+          description: Details of the issue status after the transition.
+          readOnly: true
+      type: object
+    PagedDTOServiceDeskDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/ServiceDeskDTO'
+          type: array
+      type: object
+    ServiceDeskCustomerInviteDTO:
+      additionalProperties: false
+      properties:
+        displayName:
+          description: Customer's name for display in the UI.
+          type: string
+        email:
+          description: Customer's email address.
+          type: string
+      type: object
+    PagedDTORequestTypeDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/RequestTypeDTO'
+          type: array
+      type: object
+    RequestTypePermissionCheckResponse:
+      additionalProperties: false
+      properties:
+        canAdminister:
+          description: List of request type IDs for which the user has permission to administer.
+          items:
+            format: int32
+            type: integer
+          type: array
+        canCreateRequest:
+          description: List of request type IDs for which the user can create requests.
+          items:
+            format: int32
+            type: integer
+          type: array
+      type: object
+    PagedDTOQueueDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/QueueDTO'
+          type: array
+      type: object
+    QueueDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/SelfLinkDTO'
+          description: REST API URL to the queue.
+        fields:
+          description: Fields returned for each request in the queue.
+          items:
+            type: string
+          type: array
+        id:
+          description: ID for the queue.
+          type: string
+        issueCount:
+          description: The count of customer requests in the queue.
+          format: int64
+          type: integer
+        jql:
+          description: JQL query that filters reqeusts for the queue.
+          type: string
+        name:
+          description: Short name for the queue.
+          type: string
+      type: object
+    ServiceDeskCustomerDTO:
+      additionalProperties: false
+      properties:
+        accountIds:
+          description: List of users, specified by account IDs, to add to or remove from a service desk.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        usernames:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. Use `accountIds` instead.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    ChangeDetails:
+      additionalProperties: false
+      description: A change item.
+      properties:
+        field:
+          description: The name of the field changed.
+          readOnly: true
+          type: string
+        fieldId:
+          description: The ID of the field changed.
+          readOnly: true
+          type: string
+        fieldtype:
+          description: The type of the field changed.
+          readOnly: true
+          type: string
+        from:
+          description: The details of the original value.
+          readOnly: true
+          type: string
+        fromString:
+          description: The details of the original value as a string.
+          readOnly: true
+          type: string
+        to:
+          description: The details of the new value.
+          readOnly: true
+          type: string
+        toString:
+          description: The details of the new value as a string.
+          readOnly: true
+          type: string
+      type: object
+    RequestTypeCreateDTO:
+      additionalProperties: false
+      properties:
+        description:
+          description: Description of the request type on the service desk.
+          type: string
+        helpText:
+          description: Help text for the request type on the service desk.
+          type: string
+        issueTypeId:
+          description: ID of the request type to add to the service desk.
+          type: string
+        name:
+          description: Name of the request type on the service desk.
+          type: string
+      type: object
+    RequestTypeGroupDTO:
+      additionalProperties: false
+      properties:
+        id:
+          description: ID of the request type group
+          type: string
+        name:
+          description: Name of the request type group.
+          type: string
+      type: object
+    SimpleLink:
+      additionalProperties: false
+      description: Details about the operations available in this version.
+      properties:
+        href:
+          type: string
+        iconClass:
+          type: string
+        id:
+          type: string
+        label:
+          type: string
+        styleClass:
+          type: string
+        title:
+          type: string
+        weight:
+          format: int32
+          type: integer
+      type: object
+      xml:
+        name: link
+    ArticleDTO:
+      additionalProperties: false
+      properties:
+        content:
+          $ref: '#/components/schemas/ContentDTO'
+        excerpt:
+          description: Excerpt of the article which matches the given query string.
+          type: string
+        source:
+          allOf:
+          - $ref: '#/components/schemas/SourceDTO'
+          description: Source of the article.
+        title:
+          description: Title of the article.
+          type: string
+      type: object
+    IncludedFields:
+      additionalProperties: false
+      properties:
+        actuallyIncluded:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        excluded:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        included:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    PropertyKey:
+      additionalProperties: false
+      description: Property key details.
+      properties:
+        key:
+          description: The key of the property.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the property.
+          readOnly: true
+          type: string
+      type: object
+    UserDetails:
+      additionalProperties: false
+      description: "User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
+      properties:
+        accountId:
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+          maxLength: 128
+          type: string
+        accountType:
+          description: The type of account represented by this user. This will be one of 'atlassian' (normal users), 'app' (application user) or 'customer' (Jira Service Desk customer user)
+          readOnly: true
+          type: string
+        active:
+          description: Whether the user is active.
+          readOnly: true
+          type: boolean
+        avatarUrls:
+          allOf:
+          - $ref: '#/components/schemas/AvatarUrlsBean'
+          description: The avatars of the user.
+          readOnly: true
+        displayName:
+          description: The display name of the user. Depending on the user’s privacy settings, this may return an alternative value.
+          readOnly: true
+          type: string
+        emailAddress:
+          description: The email address of the user. Depending on the user’s privacy settings, this may be returned as null.
+          readOnly: true
+          type: string
+        key:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          readOnly: true
+          type: string
+        name:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the user.
+          readOnly: true
+          type: string
+        timeZone:
+          description: The time zone specified in the user's profile. Depending on the user’s privacy settings, this may be returned as null.
+          readOnly: true
+          type: string
+      type: object
+    StatusDetails:
+      additionalProperties: true
+      description: A status.
+      properties:
+        description:
+          description: The description of the status.
+          readOnly: true
+          type: string
+        iconUrl:
+          description: The URL of the icon used to represent the status.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the status.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the status.
+          readOnly: true
+          type: string
+        scope:
+          allOf:
+          - $ref: '#/components/schemas/Scope'
+          description: The scope of the field.
+          readOnly: true
+        self:
+          description: The URL of the status.
+          readOnly: true
+          type: string
+        statusCategory:
+          allOf:
+          - $ref: '#/components/schemas/StatusCategory'
+          description: The category assigned to the status.
+          readOnly: true
+      type: object
+    HistoryMetadata:
+      additionalProperties: true
+      description: Details of issue history metadata.
+      properties:
+        activityDescription:
+          description: The activity described in the history record.
+          type: string
+        activityDescriptionKey:
+          description: The key of the activity described in the history record.
+          type: string
+        actor:
+          allOf:
+          - $ref: '#/components/schemas/HistoryMetadataParticipant'
+          description: Details of the user whose action created the history record.
+        cause:
+          allOf:
+          - $ref: '#/components/schemas/HistoryMetadataParticipant'
+          description: Details of the cause that triggered the creation the history record.
+        description:
+          description: The description of the history record.
+          type: string
+        descriptionKey:
+          description: The description key of the history record.
+          type: string
+        emailDescription:
+          description: The description of the email address associated the history record.
+          type: string
+        emailDescriptionKey:
+          description: The description key of the email address associated the history record.
+          type: string
+        extraData:
+          additionalProperties:
+            type: string
+          description: Additional arbitrary information about the history record.
+          type: object
+        generator:
+          allOf:
+          - $ref: '#/components/schemas/HistoryMetadataParticipant'
+          description: Details of the system that generated the history record.
+        type:
+          description: The type of the history record.
+          type: string
+      type: object
+    MultipartFile:
+      additionalProperties: false
+      properties:
+        bytes:
+          items:
+            format: byte
+            type: string
+          type: array
+        contentType:
+          type: string
+        empty:
+          type: boolean
+        inputStream:
+          type: object
+        name:
+          type: string
+        originalFilename:
+          type: string
+        resource:
+          $ref: '#/components/schemas/Resource'
+        size:
+          format: int64
+          type: integer
+      type: object
+    RequestTypeFieldDTO:
+      additionalProperties: false
+      properties:
+        defaultValues:
+          description: List of default values for the field.
+          items:
+            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
+          type: array
+        description:
+          description: Description of the field.
+          type: string
+        fieldId:
+          description: ID of the field.
+          type: string
+        jiraSchema:
+          allOf:
+          - $ref: '#/components/schemas/JsonTypeBean'
+          description: Jira specific implementation details for the field in the UI.
+        name:
+          description: Name of the field.
+          type: string
+        presetValues:
+          description: List of preset values for the field.
+          items:
+            type: string
+          type: array
+        required:
+          description: Indicates if the field is required (true) or not (false).
+          type: boolean
+        validValues:
+          description: List of valid values for the field.
+          items:
+            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
+          type: array
+        visible:
+          type: boolean
+      type: object
+    RequestTypeIconDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/RequestTypeIconLinkDTO'
+          description: Map of the URLs for the request type icons.
+        id:
+          description: ID of the request type icon.
+          type: string
+      type: object
+    PagedLinkDTO:
+      additionalProperties: false
+      properties:
+        base:
+          description: Base URL for the REST API calls.
+          format: uri
+          type: string
+        context:
+          type: string
+        next:
+          description: REST API URL for the next page, if there is one.
+          format: uri
+          type: string
+        prev:
+          description: REST API URL for the previous page, if there is one.
+          format: uri
+          type: string
+        self:
+          description: REST API URL for the current page.
+          format: uri
+          type: string
+      type: object
+    PagedDTOIssueBean:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/IssueBean'
+          type: array
+      type: object
+    PagedDTOUserDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/UserDTO'
+          type: array
+      type: object
+    IssueBean:
+      additionalProperties: false
+      description: Details about an issue.
+      properties:
+        changelog:
+          allOf:
+          - $ref: '#/components/schemas/PageOfChangelogs'
+          description: Details of changelogs associated with the issue.
+          readOnly: true
+        editmeta:
+          allOf:
+          - $ref: '#/components/schemas/IssueUpdateMetadata'
+          description: The metadata for the fields on the issue that can be amended.
+          readOnly: true
+        expand:
+          description: Expand options that include additional issue details in the response.
+          readOnly: true
+          type: string
+          xml:
+            attribute: true
+        fields:
+          additionalProperties: {}
+          type: object
+        fieldsToInclude:
+          $ref: '#/components/schemas/IncludedFields'
+        id:
+          description: The ID of the issue.
+          readOnly: true
+          type: string
+        key:
+          description: The key of the issue.
+          readOnly: true
+          type: string
+        names:
+          additionalProperties:
+            readOnly: true
+            type: string
+          description: The ID and name of each field present on the issue.
+          readOnly: true
+          type: object
+        operations:
+          allOf:
+          - $ref: '#/components/schemas/Operations'
+          description: The operations that can be performed on the issue.
+          readOnly: true
+        properties:
+          additionalProperties:
+            readOnly: true
+          description: Details of the issue properties identified in the request.
+          readOnly: true
+          type: object
+        renderedFields:
+          additionalProperties:
+            readOnly: true
+          description: The rendered value of each field present on the issue.
+          readOnly: true
+          type: object
+        schema:
+          additionalProperties:
+            $ref: '#/components/schemas/JsonTypeBean'
+          description: The schema describing each field present on the issue.
+          readOnly: true
+          type: object
+        self:
+          description: The URL of the issue details.
+          format: uri
+          readOnly: true
+          type: string
+        transitions:
+          description: The transitions that can be performed on the issue.
+          items:
+            $ref: '#/components/schemas/IssueTransition'
+          readOnly: true
+          type: array
+        versionedRepresentations:
+          additionalProperties:
+            additionalProperties:
+              readOnly: true
+            readOnly: true
+            type: object
+          description: The versions of each field on the issue.
+          readOnly: true
+          type: object
+      type: object
+      xml:
+        name: issue
+    I18nErrorMessage:
+      additionalProperties: false
+      properties:
+        i18nKey:
+          type: string
+        parameters:
+          items:
+            type: string
+          type: array
+      type: object
+    LinkGroup:
+      additionalProperties: false
+      description: Details a link group, which defines issue operations.
+      properties:
+        groups:
+          items:
+            $ref: '#/components/schemas/LinkGroup'
+          type: array
+        header:
+          $ref: '#/components/schemas/SimpleLink'
+        id:
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/SimpleLink'
+          type: array
+        styleClass:
+          type: string
+        weight:
+          format: int32
+          type: integer
+      type: object
+    Changelog:
+      additionalProperties: false
+      description: A log of changes made to issue fields. Changelogs related to workflow associations are currently being deprecated.
+      properties:
+        author:
+          allOf:
+          - $ref: '#/components/schemas/UserDetails'
+          description: The user who made the change.
+          readOnly: true
+        created:
+          description: The date on which the change took place.
+          format: date-time
+          readOnly: true
+          type: string
+        historyMetadata:
+          allOf:
+          - $ref: '#/components/schemas/HistoryMetadata'
+          description: The history metadata associated with the changed.
+          readOnly: true
+        id:
+          description: The ID of the changelog.
+          readOnly: true
+          type: string
+        items:
+          description: The list of items changed.
+          items:
+            $ref: '#/components/schemas/ChangeDetails'
+          readOnly: true
+          type: array
+      type: object
+    ServiceDeskDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/SelfLinkDTO'
+          description: REST API URL to the service desk.
+        id:
+          description: ID of the service desk.
+          type: string
+        projectId:
+          description: ID of the peer project for the service desk.
+          type: string
+        projectKey:
+          description: Key of the peer project of the service desk.
+          type: string
+        projectName:
+          description: Name of the project and service desk.
+          type: string
+        projectTypeKey:
+          description: Key of the project type.
+          type: string
+      type: object
+    JsonTypeBean:
+      additionalProperties: false
+      description: The schema of a field.
+      properties:
+        configuration:
+          additionalProperties:
+            readOnly: true
+          description: If the field is a custom field, the configuration of the field.
+          readOnly: true
+          type: object
+        custom:
+          description: If the field is a custom field, the URI of the field.
+          readOnly: true
+          type: string
+        customId:
+          description: If the field is a custom field, the custom ID of the field.
+          format: int64
+          readOnly: true
+          type: integer
+        items:
+          description: When the data type is an array, the name of the field items within the array.
+          readOnly: true
+          type: string
+        system:
+          description: If the field is a system field, the name of the field.
+          readOnly: true
+          type: string
+        type:
+          description: The data type of the field.
+          readOnly: true
+          type: string
+      required:
+      - type
+      type: object
+    PageOfChangelogs:
+      additionalProperties: false
+      description: A page of changelogs.
+      properties:
+        histories:
+          description: The list of changelogs.
+          items:
+            $ref: '#/components/schemas/Changelog'
+          readOnly: true
+          type: array
+        maxResults:
+          description: The maximum number of results that could be on the page.
+          format: int32
+          readOnly: true
+          type: integer
+        startAt:
+          description: The index of the first item returned on the page.
+          format: int32
+          readOnly: true
+          type: integer
+        total:
+          description: The number of results on the page.
+          format: int32
+          readOnly: true
+          type: integer
+      type: object
+    RequestTypePermissionCheckRequestDTO:
+      additionalProperties: false
+      properties:
+        accountId:
+          description: The account ID of a user.
+          type: string
+        permissions:
+          description: List of requested permissions.
+          items:
+            enum:
+            - canCreateRequest
+            - canAdminister
+            type: string
+          type: array
+        requestTypeIds:
+          description: List of request type IDs.
+          items:
+            format: int32
+            type: integer
+          type: array
+      type: object
+    ProjectDetails:
+      additionalProperties: false
+      description: Details about a project.
+      properties:
+        avatarUrls:
+          allOf:
+          - $ref: '#/components/schemas/AvatarUrlsBean'
+          description: The URLs of the project's avatars.
+          readOnly: true
+        id:
+          description: The ID of the project.
+          type: string
+        key:
+          description: The key of the project.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the project.
+          readOnly: true
+          type: string
+        projectCategory:
+          allOf:
+          - $ref: '#/components/schemas/UpdatedProjectCategory'
+          description: The category the project belongs to.
+          readOnly: true
+        projectTypeKey:
+          description: The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes) of the project.
+          enum:
+          - software
+          - service_desk
+          - business
+          - product_discovery
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the project details.
+          readOnly: true
+          type: string
+        simplified:
+          description: Whether or not the project is simplified.
+          readOnly: true
+          type: boolean
+      type: object
+    RequestTypeFieldValueDTO:
+      additionalProperties: false
+      properties:
+        children:
+          description: List of child fields.
+          items:
+            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
+          type: array
+        label:
+          description: Label for the field.
+          type: string
+        value:
+          description: Value of the field.
+          type: string
+      type: object
+    Resource:
+      additionalProperties: false
+      properties:
+        contentAsByteArray:
+          items:
+            format: byte
+            type: string
+          type: array
+        description:
+          type: string
+        file:
+          format: binary
+          type: string
+        filename:
+          type: string
+        inputStream:
+          type: object
+        open:
+          type: boolean
+        readable:
+          type: boolean
+        uri:
+          format: uri
+          type: string
+        url:
+          format: url
+          type: string
+      type: object
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+          type: string
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
+      type: object
+    SourceDTO:
+      additionalProperties: true
+      properties:
+        type:
+          description: Type of the knowledge base source
+          enum:
+          - confluence
+          type: string
+      type: object
+    UpdatedProjectCategory:
+      additionalProperties: false
+      description: A project category.
+      properties:
+        description:
+          description: The name of the project category.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the project category.
+          readOnly: true
+          type: string
+        name:
+          description: The description of the project category.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the project category.
+          readOnly: true
+          type: string
+      type: object
+    ErrorResponse:
+      additionalProperties: false
+      properties:
+        errorMessage:
+          type: string
+        i18nErrorMessage:
+          $ref: '#/components/schemas/I18nErrorMessage'
+      type: object
+    HistoryMetadataParticipant:
+      additionalProperties: true
+      description: Details of user or system associated with a issue history metadata item.
+      properties:
+        avatarUrl:
+          description: The URL to an avatar for the user or system associated with a history record.
+          type: string
+        displayName:
+          description: The display name of the user or system associated with a history record.
+          type: string
+        displayNameKey:
+          description: The key of the display name of the user or system associated with a history record.
+          type: string
+        id:
+          description: The ID of the user or system associated with a history record.
+          type: string
+        type:
+          description: The type of the user or system associated with a history record.
+          type: string
+        url:
+          description: The URL of the user or system associated with a history record.
+          type: string
+      type: object
+    EntityProperty:
+      additionalProperties: false
+      description: An entity property, for more information see [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).
+      properties:
+        key:
+          description: The key of the property. Required on create and update.
+          type: string
+        value:
+          description: The value of the property. Required on create and update.
+      type: object
+    ContentDTO:
+      additionalProperties: false
+      properties:
+        iframeSrc:
+          description: Url containing the body of the article (without title), suitable for rendering in an iframe
+          type: string
+      type: object
+    PropertyKeys:
+      additionalProperties: false
+      description: List of property keys.
+      properties:
+        keys:
+          description: Property key details.
+          items:
+            $ref: '#/components/schemas/PropertyKey'
+          readOnly: true
+          type: array
+      type: object
+    SelfLinkDTO:
+      additionalProperties: false
+      properties:
+        self:
+          format: uri
+          type: string
+      type: object
+    UserDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/UserLinkDTO'
+          description: URLs for the customer record and related items.
+        accountId:
+          description: The accountId of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+          type: string
+        active:
+          description: Indicates if the customer is active (true) or inactive (false)
+          type: boolean
+        displayName:
+          description: Customer's name for display in a UI. Depending on the customer’s privacy settings, this may return an alternative value.
+          type: string
+        emailAddress:
+          description: Customer's email address. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+        key:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        name:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        timeZone:
+          description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+      type: object
+    RequestTypeIconLinkDTO:
+      additionalProperties: false
+      properties:
+        iconUrls:
+          additionalProperties:
+            format: uri
+            type: string
+          description: URLs for the request type icons.
+          type: object
+      type: object
+    PagedDTOArticleDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/ArticleDTO'
+          type: array
+      type: object
+  securitySchemes:
+    OAuth2:
+      description: OAuth2 scopes for Jira
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          scopes:
+            delete:organization.property:jira-service-management: Allows the app to delete organisation entity properties
+            delete:organization.user:jira-service-management: Allows the app to remove members from organisations
+            delete:organization:jira-service-management: Allows the app to delete organisations
+            delete:request.feedback:jira-service-management: Allows the app to remove feedback data from requests
+            delete:request.notification:jira-service-management: Allows the app to remove the subscription status of the user from requests
+            delete:request.participant:jira-service-management: Allows the app to remove participants (user) data from requests
+            delete:requesttype.property:jira-service-management: Allows the app to delete request type entity properties
+            delete:servicedesk.customer:jira-service-management: Allows the app the delete customers from service desks
+            delete:servicedesk.organization:jira-service-management: Allows the app the delete organisations from service desks
+            delete:servicedesk.property:jira-service-management: Allows the app to delete service desk entity properties
+            manage:jira-configuration: Configure Jira settings that require the Jira administrators permission, for example, create projects and custom fields, view workflows, manage issue link types.
+            manage:jira-project: Create and edit project settings and create new project-level objects, for example, versions, components.
+            manage:jira-webhook: Manage Jira webhooks. Enables an OAuth app to register and unregister dynamic webhooks in Jira. It also provides for fetching of registered webhooks.
+            manage:servicedesk-customer: Manage Jira Service Management customers and organizations | Create, manage and delete customers and organizations.<br>Add and remove customers and organizations from service desks.
+            read:customer:jira-service-management: Allows the app to read customer accounts information
+            read:jira-user: View user information in Jira that you have access to, including usernames, email addresses, and avatars.
+            read:jira-work: Read project and issue data. Search for issues and objects associated with issues (such as attachments and worklogs).
+            read:knowledgebase:jira-service-management: Allows the app to search and list KB articles
+            read:mail-logs.connectivity:jira-service-management: Allows the app to read email connectivity logs
+            read:mail-logs.processing:jira-service-management: Allows the app to read incoming email processing logs
+            read:organization.property:jira-service-management: Allows the app to read organisation entity properties
+            read:organization.user:jira-service-management: Allows the app to read organisation membership information
+            read:organization:jira-service-management: Allows the app to read organisation information
+            read:queue:jira-service-management: Allows the app to list queues
+            read:request.action:jira-service-management: Allows the app to read which actions can be performed on requests
+            read:request.approval:jira-service-management: Allows the app to read approval data from requests
+            read:request.attachment:jira-service-management: Allows the app to read attachment data from requests
+            read:request.comment:jira-service-management: Allows the app to read comment data from requests
+            read:request.feedback:jira-service-management: Allows the app to read feedback data from requests
+            read:request.notification:jira-service-management: Allows the app to read the subscription status of the user for requests
+            read:request.participant:jira-service-management: Allows the app to read participant (user) data from requests
+            read:request.sla:jira-service-management: Allows the app to read SLA data from requests
+            read:request.status:jira-service-management: Allows the app to read status/transition data from requests
+            read:request:jira-service-management: Allows the app to list & search requests
+            read:requesttype.property:jira-service-management: Allows the app to read request type desk entity properties
+            read:requesttype:jira-service-management: Allows the app to list & search request types
+            read:servicedesk-request: Read customer request data, including approvals, attachments, comments, request participants, and status/transitions.<br>Read service desk and request types, including searching for request types and reading request type fields, properties and groups.
+            read:servicedesk.customer:jira-service-management: Allows the app the list customers of service desks
+            read:servicedesk.organization:jira-service-management: Allows the app to list organisations to service desks
+            read:servicedesk.property:jira-service-management: Allows the app to read service desk entity properties
+            read:servicedesk:jira-service-management: Allows the app to list & search service desks
+            write:customer:jira-service-management: Allows the app to create customer accounts (user)
+            write:jira-work: Create and edit issues in Jira, post comments, create worklogs, and delete issues.
+            write:organization.property:jira-service-management: Allows the app to write organisation entity properties
+            write:organization.user:jira-service-management: Allows the app to add members to organisations
+            write:organization:jira-service-management: Allows the app to create organisations
+            write:request.approval:jira-service-management: Allows the app to act on approvals of requests (e.g approve, deny, …)
+            write:request.attachment:jira-service-management: Allows the app to add attachments to requests
+            write:request.comment:jira-service-management: Allows the app to add comments to requests
+            write:request.feedback:jira-service-management: Allows the app to write feedback data on requests
+            write:request.notification:jira-service-management: Allows the app to change the subscription status of the user for requests
+            write:request.participant:jira-service-management: Allows the app to add participants (user) data from requests
+            write:request.status:jira-service-management: Allows the app to execute transitions on requests
+            write:request:jira-service-management: Allows the app to create requests
+            write:requesttype.property:jira-service-management: Allows the app to write request type entity properties
+            write:requesttype:jira-service-management: Allows the app to create or modify request types
+            write:servicedesk-request: Create and manage Jira Service Management requests | Create and edit customer requests, including add comments and attachments, approve, share (add request participants), subscribe, and transition.
+            write:servicedesk.customer:jira-service-management: Allows the app the add customers to service desks
+            write:servicedesk.organization:jira-service-management: Allows the app the add organisations to service desks
+            write:servicedesk.property:jira-service-management: Allows the app to write service desk entity properties
+            write:servicedesk:jira-service-management: Allows the app the add organisations, customers and request types to service desks
+          tokenUrl: https://auth.atlassian.com/oauth/token
+      type: oauth2
+    basicAuth:
+      description: You can access this resource via basic auth.
+      scheme: basic
+      type: http
+x-atlassian-narrative:
+  documents:
+  - anchor: about
+    body: 'The REST APIs are for developers who want to integrate Jira Service Management with other applications or administrators who want to automate their workflows and processes.
+
+      '
+    title: About
+  - anchor: jira-cloud-platform-apis
+    body: "Jira Service Management is built upon the Jira platform. As such, in Jira Service Management you have access to the Jira platform REST APIs.\n\n * [Browse the Jira platform REST APIs](/cloud/jira/platform/rest/)\n"
+    title: Jira Cloud Platform APIs
+  - anchor: permissions
+    body: 'Permissions control the level of a user''s access to the Jira Service Management instance, while roles are how the permissions are assigned to individual users.
+
+
+      For detailed information on roles and permissions, see [Permissions overview](https://support.atlassian.com/jira-service-management-cloud/docs/overview-of-jira-cloud-permissions/)
+
+      and [Setting up service management users](https://support.atlassian.com/jira-service-management-cloud/docs/set-up-service-desk-users-to-work-on-requests/).
+
+      '
+    title: Permissions and roles
+  - anchor: authentication
+    body: 'The Jira Service Management REST API uses the same authentication methods as Jira Cloud platform.
+
+
+      ### Forge apps
+
+
+      Forge apps use [REST API scopes](https://developer.atlassian.com/cloud/jira/service-desk/scopes-for-oauth-2-3LO-and-forge-apps/) when authenticating with Jira Service Management Cloud. For details see [Add scopes to call an Atlassian REST API](https://developer.atlassian.com/platform/forge/add-scopes-to-call-an-atlassian-rest-api/).
+
+
+      The URIs for Forge app REST API calls have this structure:
+
+
+      `https://<site-url>/rest/servicedeskapi/<resource-name>`
+
+
+      For example, `https://<site-url>/rest/servicedeskapi/request/DEMO-1`
+
+
+
+      ### Connect apps
+
+
+      For Connect apps, authentication (JWT-based) is built into the Connect libraries. Authorization is implemented using either scopes (shown as App scope required for operations on this page) or user impersonation. For details, see [Security for Connect apps](https://developer.atlassian.com/cloud/jira/service-desk/security-for-connect-apps/).
+
+
+      The URIs for Connect app REST API calls have this structure:
+
+
+      `https://<site-url>/rest/servicedeskapi/<resource-name>`
+
+
+      For example, `https://<site-url>/rest/servicedeskapi/request/DEMO-1`
+
+
+      ### Other integrations
+
+      For integrations that are not Forge or Connect apps, use OAuth 2.0 authorization code grants (3LO) for security (3LO scopes are shown as for operations OAuth scopes required). For details, see [OAuth 2.0 (3LO) apps](https://developer.atlassian.com/cloud/jira/service-desk/oauth-2-authorization-code-grants-3lo-for-apps/).
+
+
+      The URIs for OAuth 2.0 (3LO) app REST API calls have this structure:
+
+
+      `https://api.atlassian.com/ex/jira/<cloudId>/rest/servicedeskapi/<resource-name>`
+
+
+      For example, `https://api.atlassian.com/ex/jira/35273b54-3f06-40d2-880f-dd28cf8daafa/rest/servicedeskapi/request/DEMO-1`
+
+
+
+      ### Ad-hoc API calls
+
+
+      For personal scripts, bots, and ad-hoc execution of the REST APIs use basic authentication. For details, see [Basic auth for REST APIs](https://developer.atlassian.com/cloud/jira/service-desk/basic-auth-for-rest-apis/).
+
+
+      The URIs for basic authentication REST API calls have this structure:
+
+
+      `https://<site-url>/rest/servicedeskapi/<resource-name>`
+
+
+      For example, `https://your-domain.atlassian.net/rest/servicedeskapi/request/DEMO-1`
+
+
+
+      '
+    title: Authentication and authorization
+  - anchor: scopes
+    body: 'Your app can request access to the Jira Service Management REST APIs by using the correct scopes.
+
+
+
+
+      * [Scopes for Forge and 3LO apps](https://developer.atlassian.com/cloud/jira/service-desk/scopes-for-oauth-2-3LO-and-forge-apps/)
+
+      * [Scopes for Connect apps](https://developer.atlassian.com/cloud/jira/service-desk/scopes-for-connect-apps/).
+
+      '
+    title: Scopes
+  - anchor: desks
+    body: "It is also worth noting that the ability of Customers to raise Requests depends on the service desk type, which can be:\n\n -   Public (sign up): Anyone who has the service desk URL can submit requests, and a user (customer) is created for them when a request is submitted.\n -   Open: Any user in the system can submit requests, they don’t need to be associated with the service desk.\n -   Closed: Only users associated with the service desk can submit requests.\n\nFor more details, see [How to manage access to your Jira Service Management Cloud](https://confluence.atlassian.com/jirakb/how-to-manage-access-to-your-jira-service-desk-cloud-967872675.html) in the Jira Service Management Cloud documentation.\n\n"
+    title: Service desk types
+  - anchor: status
+    body: "\n -   <span class=\"aui-lozenge aui-lozenge-success\">Status 200</span> Returned if the requested content (GET) is returned or content is updated (PUT).\n -   <span class=\"aui-lozenge aui-lozenge-success\">Status 201</span> Returned if new records are created (PUT).\n -   <span class=\"aui-lozenge aui-lozenge-success\">Status 204</span> Returned where the request may or may not have been actioned, but the outcome is as expected. For example, the request was to remove a customer from an organization, but the customer was not associated with the organization.\n -   <span class=\"aui-lozenge aui-lozenge-error\">Status 400</span> Returned if the request was invalid.\n -   <span class=\"aui-lozenge aui-lozenge-error\">Status 401</span> Returned if the user is not logged in. Resolve by logging the user in and reissuing the call.\n -   <span class=\"aui-lozenge aui-lozenge-error\">Status 403</span> Returned if the user does not have the necessary permission to access the resource or run the method.\n -   <span class=\"aui-lozenge aui-lozenge-error\">Status 404</span> Returned if the passed path parameters do not correspond to an object in the instance, for example, no Organization exists for a passed ID.\n -   <span class=\"aui-lozenge aui-lozenge-error\">Status 412</span> Returned if the API is experimental but the `X-ExperimentalApi: opt-in` header was not passed. For more details, see [Experimental methods](#experimental).\n\nResources will return a response body in addition to the error status codes. The returned entity for errors is as follows:\n\n```json\n{\n  \"errorMessage\": \"Here is an error message\",\n  \"i18nErrorMessage\": {\n    \"i18nKey\": \"some.error.key\",\n    \"parameters\": []\n  }\n}\n```\n"
+    title: Status codes and responses
+  - anchor: experimental
+    body: 'Methods marked as <span class="aui-lozenge aui-lozenge-subtle aui-lozenge-current">experimental</span> may change without notice. To use experimental methods, you must include the `X-ExperimentalApi: opt-in` header in your requests. Use of this header indicates that you are opting into the experimental preview. Once a resource or method moves out of the experimental phase, then the header will no longer be required or checked.
+
+
+      Feedback on the experimental APIs is welcome and can be provided by submitting a feature request or suggestion through the [Atlassian Ecosystem Help Center](https://ecosystem.atlassian.net/servicedesk/customer/portals) or the [Jira Service Management Ecosystem](https://ecosystem.atlassian.net/browse/JSDECO).
+
+      '
+    title: Experimental methods
+  - anchor: expansion
+    body: "The Jira Service Management REST API uses resource expansion, which means that some parts of a resource are not returned unless specified in the request. This simplifies responses and minimizes network traffic.\n\nUse the `expand` query parameter to specify the list of entities that you want to be expanded, identifying each of them by name. For example, appending `?expand=serviceDesk&expand=requestType` to a request’s URI results in the inclusion of the service desk and request type details in the response. The following URL would be used to get that information for the request with the ID JSD-1:\n```\nhttp://host:port/context/rest/servicedeskapi/request/JSD-1?expand=serviceDesk&expand=requestType\n```\n\nAlternatively, you can pass the list of entities you want to be expanded as a single comma-separated parameter, as in:\n\n```\nhttp://host:port/context/rest/servicedeskapi/request/JSD-1?expand=serviceDesk,requestType\n```\n\nTo discover the expansion identifiers for each entity, look at the `_expands` property in the parent object. In the JSON example below, the resource declares `participant`, `status`, `sla`, `requestType`, and `serviceDesk` as expandable.\n\n```json\n{\n    \"_expands\": [\n        \"participant\",\n        \"status\",\n        \"sla\",\n        \"requestType\",\n        \"serviceDesk\"\n    ],\n    \"issueId\": \"107001\",\n    \"issueKey\": \"HELPDESK-1\",\n    \"requestTypeId\": \"11001\",\n    \"serviceDeskId\": \"10001\",\n    ...\n```\n\n"
+    title: Expansion
+  - anchor: pagination
+    body: "The Jira Service Management REST API uses pagination to improve performance. Pagination is enforced for operations that could return a large collection of items. When you make a request to a paginated resource, the response wraps the returned array of values in a JSON object with paging metadata as follows:\n**Request**\n\n```\nhttp://host:port/context/rest/api-name/resource-name?start=0&limit=10\n```\n\n**Response**\n\n```json\n{\n    \"start\" : 0,\n    \"limit\" : 10,\n    \"size\" : 7,\n    \"isLastPage\" : true,\n    \"values\": [\n        { /* result 0 */ },\n        { /* result 1 */ },\n        { /* result 2 */ }\n        { /* result 3 */ }\n        { /* result 4 */ }\n        { /* result 5 */ }\n        { /* result 6 */ }\n    ]\n}\n```\n\nWhere:\n\n - `start` is the index of the first item returned in the page of results.\n - `limit` is the total number of items that could be returned per page, subject to the maximum server enforced limit for the resource’s method. If `limit` isn’t specified the default value of the resource is used.\n - `size` is the number of items returned on this page.\n - `isLastPage` indicates whether the page is the last page of results.\n\nClients can use the `start`, `limit`, and `size` parameters to retrieve the desired number of results. Each resource or method has a unique limit on the maximum number of items returned, which cannot be exceeded. If you request `size` which is larger than the limit, the number of items returned will be capped at the limit for that resource’s method. This behavior can be identified when the first page shows `size` is less than `limit` and `isLastPage` is `false`.\n\nThe limits set for each resource’s method is an implementation detail and may be changed.\n"
+    title: Pagination
+  - anchor: request-language
+    body: "By default, responses are translated based on the requesting user's language preference, or the Jira site default \nlanguage if anonymous.\n\nUse the `requestLanguage` query parameter to have responses translated in a specific language, providing an \n[IETF BCP 47](https://tools.ietf.org/html/bcp47) language tag in the form `(language code)-(country code)` as the value. \nE.g. `?requestLanguage=en-US` for English (United States). Both static text (e.g. error messages) and dynamic \nuser-entered text (e.g. workflow status names) will be translated, if available.\n\nThe languages available are based on the installed languages in Jira. If the language tag specified does not match one \nof Jira's languages, then the query parameter will have no effect.\n\nDynamic user-entered translations can be edited in Jira administration for global objects (e.g. priority names) and \nin **Language support** under project administration for Service Desk projects (e.g. request type names)."
+    title: Request language
+  - anchor: special-headers
+    body: "The following request and response headers define important metadata for the Jira Service Management REST API resources.\n\n -   **X-Atlassian-Token** (request): Operations that accept multipart/form-data must include the `X-Atlassian-Token: no-check` header in requests.\nOtherwise the request will be blocked by XSRF protection.\n -   **X-ExperimentalApi** (request): Experimental operations must include the `X-ExperimentalApi: opt-in` header in requests.\n Otherwise the request will not be processed. See [Experimental methods](#experimental) for more details.\n-   **X-AACCOUNTID** (response): This response header contains the Atlassian account ID of the authenticated user.\n"
+    title: Special headers
+  - anchor: project-identifiers
+    body: "For convenience, any of the resources that require a `{serviceDeskId}` path parameter also accept other identifiers.\n\nFor example, if a `ServiceDesk(id: 15)` corresponds to a `Project(id: 10012, key: ABC)`, then issuing a request to any of:\n\n    /rest/servicedeskapi/servicedesk/ABC\n\n    /rest/servicedeskapi/servicedesk/projectKey:ABC\n\n    /rest/servicedeskapi/servicedesk/projectId:10012\n\n    /rest/servicedeskapi/servicedesk/serviceDeskId:15\n\nis equivalent to issuing a request to:\n\n    /rest/servicedeskapi/servicedesk/15\n"
+    title: Using project identifiers
+  - anchor: fieldformats
+    body: '**Summary** - _A single line of text._
+
+
+      ```json
+
+
+      "summary": "An explanation is one line of text."
+
+
+      ```
+
+
+      **Description** - _Multiple lines of text._
+
+
+      ```json
+
+
+      "description": "A description is multiples lines of text\n separated by\n line feeds.",
+
+
+      ```
+
+
+      **Components** - _Multiple values addressed by ''name''._
+
+
+      ```json
+
+
+      "components" : [ { "name": "Active Directory"} , { "name": "Network Switch" } ]
+
+
+      ```
+
+
+      **Due date** - _A date in ''YYYY-MM-DD'' format._
+
+
+      ```json
+
+
+      "duedate" : "2015-11-18"
+
+
+      ```
+
+
+      **Labels** - _An array of string values._
+
+
+      ```json
+
+
+      "labels" : ["examplelabelnumber1", "examplelabelnumber2"]
+
+
+      ```
+
+
+      **Checkbox custom field** - _A custom UI field that enables multiple values to be selected from a defined list of values, with values addressed by ''value'' or `id`._
+
+
+      ```json
+
+
+      "customfield_11440" : [{ "value" : "option1"}, {"value" : "option2"}]
+
+
+      or
+
+
+      "customfield_11440" : [{ "id" : 10112}, {"id" : 10115}]
+
+
+      ```
+
+
+      **Date picker custom field** - _A custom UI field that enables a date in ''YYYY-MM-DD'' format to be picked._
+
+
+      ```json
+
+
+      "customfield_11441" : "2015-11-18"
+
+
+      ```
+
+
+      **Date time picker custom field** - _A custom UI field enables a datetime in ISO 8601 (''YYYY-MM-DDThh:mm:ss.sTZD'') format to be picked._
+
+
+      ```json
+
+
+      "customfield_11442" : "2015-11-18T14:39:00.000+1100"
+
+
+      ```
+
+
+      **Labels custom field** - _A custom UI field that is an array of strings._
+
+
+      ```json
+
+
+      "customfield_11443" : [ "rest_label1", "rest_label2" ]
+
+
+      ```
+
+
+      **Number custom field** - _A custom UI field that enables a number to be entered._
+
+
+      ```json
+
+
+      "customfield_11444" : 666
+
+
+      ```
+
+
+      **Radio button custom field** - _A custom UI field that enables a single value to be selected from a defined list of values, with values addressed by `value` or `id`._
+
+
+      ```json
+
+
+      "customfield_11445" : { "value": "option2" }
+
+
+      or
+
+
+      "customfield_11445" : { "id": 10112 }
+
+
+      ```
+
+
+      **Cascading select custom field** - _A custom UI field that enables a single parent value and then a related child value to be selected, with values addressed by `value` or `id`._
+
+
+      ```json
+
+
+      "customfield_11447" : { "value": "parent_option1", "child": { "value" : "p1_child1"} }
+
+
+      or
+
+
+      "customfield_11447" : { "id": 10112, "child": { "id" : 10115 } }
+
+
+      ```
+
+
+      **Multi-select custom field** - _A custom UI field that enables multiple values to be selected from a defined list of values, with values addressed by `value` or `id`._
+
+
+      ```json
+
+
+      "customfield_11448" : [ { "value": "option1" }, { "value": "option2" } ]
+
+
+      or
+
+
+      "customfield_11448" : [ { "id": 10112 }, { "id": 10115 } ]
+
+
+      ```
+
+
+      **Single-select custom field** - _A custom UI field that enables a single value to be selected from a defined list of values, with values address by `value` or `id`._
+
+
+      ```json
+
+
+      "customfield_11449" : { "value": "option3" }
+
+
+      or
+
+
+      "customfield_11449" : { "id": 10112 }
+
+
+      ```
+
+
+      **Multi-line text custom field** - _A custom UI field that enables multiple lines of text to be entered._
+
+
+      ```json
+
+
+      "customfield_11450": "Multiples lines of text\n separated by\n line feeds"
+
+
+      ```
+
+
+      **Text custom field** - _A custom UI field that enables a single line of text to be entered._
+
+
+      ```json
+
+
+      "customfield_11450": "A single line of text."
+
+
+      ```
+
+
+      **URL custom field** - _A custom UI field that enables a URL to be entered._
+
+
+      ```json
+
+
+      "customfield_11452" : "http://www.atlassian.com",
+
+
+      ```
+
+
+      **Single-user picker custom field** - _A custom UI field that enables a single user to be selected._
+
+
+      ```json
+
+
+      "customfield_11453" : { "name":"tommytomtomahawk" },
+
+
+      ```
+
+
+      **Multi-user picker custom field** - _A custom UI field that enables multiple users to be selected._
+
+
+      ```json
+
+
+      "customfield_11458" : [ { "name":"inigomontoya" }, { "name":"tommytomtomahawk" }]
+
+
+      ```
+
+
+      **Attachment** - _Attachments, using IDs of temporary attachments as provided by the /attachTemporaryFile API._
+
+
+      ````json
+
+      "attachment" : ["4786e3a5-52be-4d5b-bf3d-5f53e54f4559", "1187b2b7-8a75-4eac-88b2-b6e43129ef5c"]
+
+
+      ````'
+    title: Field input formats
+  - anchor: overshort
+    body: 'The Jira Service Management REST API enable you to work with a range of objects from Jira Service Management. The main resources provided are:
+
+
+      | Resource      | Description                                                                                                                                                                                                                                    |
+
+      |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+      | customer      | This resource represents customers within your Jira instance. Use it to create new customers.                                                                                                                                                  |
+
+      | info          | This resource provides details of the Jira Service Management software version, builds, and related links.                                                                                                                                     |
+
+      | organization  | This resource enables you to group Jira Service Management customers together. Use it to create and delete organizations, and add and remove customers from them.                                                                              |
+
+      | request       | This resource represents the customer requests in your service desks. Use it to create new requests and update request details, such as attachments and comments as well as take actions to update request status or review SLA performance.   |
+
+      | requesttype   | This resource enables a list of customer request types, a way to categorize requests in a service desk, to be obtained.                                                                                                                        |
+
+      | servicedesk   | This resource represents a service desk. Use it to retrieve the service desks in your Jira instance, managed the requests service desks can handle, manage the associated customers and organizations, and retrieve details of request queues. |
+
+      '
+    title: Resource summary

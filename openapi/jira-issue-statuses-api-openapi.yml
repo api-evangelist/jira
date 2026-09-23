@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Jira Cloud Platform REST Issue Comments Issue Statuses API
+  title: Jira Cloud Platform REST Issue Statuses API
   description: The Jira Cloud platform REST API v3 for building apps and integrations with Atlassian Jira. This specification covers core resources including issues, projects, and search (JQL). All responses use Atlassian Document Format (ADF) for rich text fields. Authentication is via OAuth 2.0 (3LO), API tokens with basic auth, or Atlassian Connect JWT.
   version: '3'
   license:
@@ -68,52 +68,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    IssueTypeWithStatus:
-      type: object
-      description: Issue type with its valid statuses.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: string
-          example: abc123
-        name:
-          type: string
-          example: Example Title
-        subtask:
-          type: boolean
-          example: true
-        statuses:
-          type: array
-          items:
-            $ref: '#/components/schemas/StatusDetails'
-          example: []
-    StatusCategory:
-      type: object
-      description: A status category in Jira.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: integer
-          format: int64
-          example: abc123
-        key:
-          type: string
-          description: The key of the status category (e.g., new, indeterminate, done).
-          example: example_value
-        colorName:
-          type: string
-          description: The color name for the status category.
-          example: example_value
-        name:
-          type: string
-          description: The name of the status category.
-          example: Example Title
     StatusDetails:
       type: object
       description: A status in Jira.
@@ -138,6 +92,52 @@ components:
           example: https://www.example.com
         statusCategory:
           $ref: '#/components/schemas/StatusCategory'
+    StatusCategory:
+      type: object
+      description: A status category in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: integer
+          format: int64
+          example: abc123
+        key:
+          type: string
+          description: The key of the status category (e.g., new, indeterminate, done).
+          example: example_value
+        colorName:
+          type: string
+          description: The color name for the status category.
+          example: example_value
+        name:
+          type: string
+          description: The name of the status category.
+          example: Example Title
+    IssueTypeWithStatus:
+      type: object
+      description: Issue type with its valid statuses.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        subtask:
+          type: boolean
+          example: true
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusDetails'
+          example: []
   parameters:
     projectIdOrKey:
       name: projectIdOrKey

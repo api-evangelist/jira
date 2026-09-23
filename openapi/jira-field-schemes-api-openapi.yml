@@ -1,0 +1,2206 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: ecosystem@atlassian.com
+  description: Jira Cloud platform REST API documentation
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developer.atlassian.com/platform/marketplace/atlassian-developer-terms/
+  title: Jira Cloud platform REST Field schemes API
+  version: 1001.0.0-SNAPSHOT-82b018affa468e58f284fbe4df33536469d757df
+servers:
+- url: https://your-domain.atlassian.net
+tags:
+- description: 'This resource represents field schemes which are replacing field configuration schemes to control field associations. They are currently in beta and only available to customers who have opted-in to the beta program. For more information see RFC-103: Jira Field Configuration Overhaul: Admin Experience and API Changes'
+  name: Field schemes
+paths:
+  /rest/api/3/config/fieldschemes:
+    get:
+      deprecated: false
+      description: 'REST endpoint for retrieving a paginated list of field association schemes with optional filtering.
+
+
+        This endpoint allows clients to fetch field association schemes with optional filtering by project IDs and text queries. The response includes scheme details with navigation links and filter metadata when applicable.
+
+
+        Filtering Behavior:
+
+
+        * When projectId or query parameters are provided, the response includes matchedFilters metadata showing which filters were applied.
+
+        * When no filters are applied, matchedFilters is omitted from individual scheme objects
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: getFieldAssociationSchemes
+      parameters:
+      - description: (optional) List of project IDs to filter schemes by. If not provided, schemes from all projects are returned.
+        in: query
+        name: projectId
+        schema:
+          items:
+            format: int64
+            type: integer
+          type: array
+      - description: (optional) Text filter for scheme name or description matching (case-insensitive). If not provided, no text filtering is applied.
+        in: query
+        name: query
+        schema:
+          type: string
+      - description: 'Zero-based index of the first item to return (default: 0)'
+        in: query
+        name: startAt
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: 'Maximum number of items to return per page (default: 50, max: 100)'
+        in: query
+        name: maxResults
+        schema:
+          default: 50
+          format: int32
+          maximum: 100
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"description":"Field Association Scheme test description","fieldsCount":5,"id":1000,"isDefault":false,"links":{"associations":"rest/api/3/config/fieldschemes/10000/fields","projects":"rest/api/3/config/fieldschemes/10000/projects"},"matchedFilters":{"projectIds":[10001,10002],"query":"query"},"name":"Field Association Scheme test name"}'
+              schema:
+                $ref: '#/components/schemas/PageBean2GetFieldAssociationSchemeResponse'
+          description: Pagianted list of field association schemes
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollections'
+          description: Returned if the request parameters are invalid (e.g., negative startAt, maxResults exceeding limit).
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions.
+        '404':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the feature flag is disabled.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Get field schemes
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:field-configuration-scheme:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+    post:
+      deprecated: false
+      description: 'Endpoint for creating a new field association scheme.
+
+
+        A new scheme is **not** copied from, or based on, any existing field association scheme. Instead, it is initialised with a minimal default set of critical fields sourced from the instance''s own *system* and *product* fields (the fields returned by the product''s field API), rather than from a scheme you specify.
+
+
+        To create a scheme that is based on an existing one, use the *Clone field scheme* endpoint instead.
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: createFieldAssociationScheme
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              description: Field association scheme description
+              name: Field association scheme name
+            schema:
+              $ref: '#/components/schemas/CreateFieldAssociationSchemeRequest'
+        description: The request containing the name and description of the field association scheme
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"description":"Field association scheme description","id":10000,"links":{"associations":"{BASE_API_URL}/rest/api/2/config/fieldschemes/9/fields","projects":"{BASE_API_URL}/rest/api/2/config/fieldschemes/9/projects"},"name":"Field association scheme name"}'
+              schema:
+                $ref: '#/components/schemas/CreateFieldAssociationSchemeResponse'
+          description: Returned if the creation was successful.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollections'
+          description: Returned if the request is invalid. If request is malformed, returns a collection of errors.
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions
+        '404':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the feature flag is disabled or the scheme ID is not found.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Create field scheme
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:field-configuration-scheme:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/config/fieldschemes/fields:
+    delete:
+      deprecated: false
+      description: 'Remove fields associated with field association schemes.
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: removeFieldsAssociatedWithSchemes
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              customfield_10000:
+                schemeIds:
+                - 10000
+                - 10001
+              customfield_10001:
+                schemeIds:
+                - 10002
+            schema:
+              additionalProperties:
+                $ref: '#/components/schemas/RemoveFieldAssociationsRequestItem'
+              type: object
+        description: The request containing the schemes and fields to be removed.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"results":[{"fieldId":"customfield_10000","schemeId":10000,"success":true},{"fieldId":"customfield_10001","schemeId":10002,"success":true}]}'
+              schema:
+                $ref: '#/components/schemas/MinimalFieldSchemeToFieldsResponse'
+          description: Returned if the field association update was successful.
+        '204':
+          content:
+            application/json:
+              schema: {}
+          description: The request completed successfully. No additional content will be sent in the response.
+        '207':
+          content:
+            application/json:
+              example: '{"results":[{"fieldId":"customfield_10000","schemeId":10000,"success":true},{"error":"Scheme 10001 doesn''t exist","fieldId":"customfield_10001","schemeId":10001,"success":false}]}'
+              schema:
+                $ref: '#/components/schemas/MinimalFieldSchemeToFieldsResponse'
+          description: Returned if the field association update was partially successful.
+        '400':
+          content:
+            application/json:
+              example: '{"results":[{"error":"Scheme 99999 doesn''t exist","fieldId":"customfield_10000","schemeId":99999,"success":false},{"error":"Field invalid_field doesn''t exist","fieldId":"invalid_field","schemeId":10001,"success":false}]}'
+              schema:
+                $ref: '#/components/schemas/MinimalFieldSchemeToFieldsResponse'
+          description: Returned if the request is invalid. If request is malformed, returns a collection of errors. If request is well-formed but contains invalid scheme or field IDs, returns failure details.
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Remove fields associated with field schemes
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:field-configuration:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+    put:
+      deprecated: false
+      description: 'Update fields associated with field association schemes.
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: updateFieldsAssociatedWithSchemes
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              customfield_10000:
+              - restrictedToWorkTypes:
+                - 1
+                - 2
+                schemeIds:
+                - 10000
+                - 10001
+              customfield_10001:
+              - schemeIds:
+                - 10002
+            schema:
+              additionalProperties:
+                items:
+                  $ref: '#/components/schemas/UpdateFieldAssociationsRequestItem'
+                type: array
+              type: object
+        description: The request containing the schemes and work types to associate each field with.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"results":[{"fieldId":"customfield_10000","schemeId":10000,"success":true,"workTypeIds":[1,2]},{"fieldId":"customfield_10001","schemeId":10002,"success":true,"workTypeIds":[]}]}'
+              schema:
+                $ref: '#/components/schemas/FieldSchemeToFieldsResponse'
+          description: Returned if the field association update was successful.
+        '204':
+          content:
+            application/json:
+              schema: {}
+          description: The request completed successfully. No additional content will be sent in the response.
+        '207':
+          content:
+            application/json:
+              example: '{"results":[{"fieldId":"customfield_10000","schemeId":10000,"success":true,"workTypeIds":[1]},{"error":"Scheme 10001 doesn''t exist","fieldId":"customfield_10001","schemeId":10001,"success":false,"workTypeIds":[2]}]}'
+              schema:
+                $ref: '#/components/schemas/FieldSchemeToFieldsResponse'
+          description: Returned if the field association update was partially successful.
+        '400':
+          content:
+            application/json:
+              example: '{"results":[{"error":"Scheme 99999 doesn''t exist","fieldId":"customfield_10000","schemeId":99999,"success":false,"workTypeIds":[]},{"error":"Scheme 10001 doesn''t exist","fieldId":"invalid_field","schemeId":10001,"success":false,"workTypeIds":[]}]}'
+              schema:
+                $ref: '#/components/schemas/FieldSchemeToFieldsResponse'
+          description: Returned if the request is invalid. If request is malformed, returns a collection of errors. If request is well-formed but contains invalid scheme or field IDs, returns failure details.
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Update fields associated with field schemes
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:field-configuration:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/config/fieldschemes/fields/parameters:
+    delete:
+      deprecated: false
+      description: 'Remove field association parameters overrides for work types.
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: removeFieldAssociationSchemeItemParameters
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              customfield_10000:
+              - parameters:
+                - description
+                - isRequired
+                schemeId: 10000
+                workTypeIds:
+                - 1
+                - 2
+              description:
+              - parameters:
+                - description
+                schemeId: 10001
+                workTypeIds:
+                - 3
+            schema:
+              additionalProperties:
+                items:
+                  $ref: '#/components/schemas/ParameterRemovalDetails'
+                type: array
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Returned if the removal was successful.
+        '204':
+          content:
+            application/json:
+              schema: {}
+          description: The request completed successfully. No additional content will be sent in the response.
+        '207':
+          content:
+            application/json:
+              example: '{"results":[{"error":{"code":"FIELD_IS_NOT_ASSOCIATED","message":"The field ''customfield_10000'' is not associated with the scheme ''10000''."},"fieldId":"customfield_10000","schemeId":10000,"success":false,"workTypeIds":[1,2]},{"fieldId":"description","schemeId":10001,"success":true,"workTypeIds":[3]}]}'
+              schema:
+                $ref: '#/components/schemas/RemoveFieldParametersResult'
+          description: Returned if the removal was partially successful.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollections'
+          description: Returned if the request is invalid. If request is malformed, returns a collection of errors. If request is well-formed but contains invalid scheme or project IDs, returns failure details.
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Remove field parameters
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:field-configuration:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+    put:
+      deprecated: false
+      description: 'Update field association item parameters in field association schemes.
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: updateFieldAssociationSchemeItemParameters
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              customfield_10000:
+              - parameters:
+                  description: Field description
+                  isRequired: true
+                  rendererType: atlassian-wiki-renderer
+                schemeIds:
+                - 10000
+                - 10001
+                workTypeParameters:
+                - description: Description for Bug
+                  isRequired: false
+                  rendererType: jira-text-renderer
+                  workTypeId: 10002
+              customfield_10001:
+              - schemeIds:
+                - 10001
+                workTypeParameters:
+                - description: Description for Bug
+                  isRequired: false
+                  workTypeId: 10002
+                - description: Description for Task
+                  isRequired: true
+                  rendererType: atlassian-wiki-renderer
+                  workTypeId: 10003
+            schema:
+              additionalProperties:
+                items:
+                  $ref: '#/components/schemas/UpdateFieldSchemeParametersRequest'
+                type: array
+              type: object
+        description: The request containing the field association scheme id and the parameters to update.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"results":[{"fieldId":"customfield_10000","schemeId":10000,"success":true},{"fieldId":"customfield_10001","schemeId":10002,"success":true,"workTypeId":10001}]}'
+              schema:
+                $ref: '#/components/schemas/UpdateFieldSchemeParametersResponse'
+          description: Returned if the field parameter update was successful.
+        '204':
+          content:
+            application/json:
+              schema: {}
+          description: The request completed successfully. No additional content will be sent in the response.
+        '207':
+          content:
+            application/json:
+              example: '{"results":[{"fieldId":"customfield_10000","schemeId":10000,"success":true},{"error":"Scheme 10001 doesn''t exist","fieldId":"customfield_10001","schemeId":10001,"success":false,"workTypeId":10001}]}'
+              schema:
+                $ref: '#/components/schemas/UpdateFieldSchemeParametersResponse'
+          description: Returned if the field parameter update was partially successful.
+        '400':
+          content:
+            application/json:
+              example: '{"results":[{"error":"Scheme 99999 doesn''t exist","fieldId":"customfield_10000","schemeId":99999,"success":false},{"error":"Scheme 10001 doesn''t exist","fieldId":"invalid_field","schemeId":10001,"success":false}]}'
+              schema:
+                $ref: '#/components/schemas/UpdateFieldSchemeParametersResponse'
+          description: Returned if the request is invalid. If request is malformed, returns a collection of errors. If request is well-formed but contains invalid scheme or field IDs, returns failure details.
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Update field parameters
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:field-configuration:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/config/fieldschemes/projects:
+    get:
+      deprecated: false
+      description: 'Get projects with field association schemes. This will be a temporary API but useful when transitioning from the legacy field configuration APIs to the new ones.
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: getProjectsWithFieldSchemes
+      parameters:
+      - description: 'The starting index of the returned projects. Base index: 0.'
+        in: query
+        name: startAt
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: The maximum number of projects to return per page, maximum allowed value is 100.
+        in: query
+        name: maxResults
+        schema:
+          default: 50
+          format: int32
+          maximum: 100
+          type: integer
+      - description: List of project ids to filter the results by.
+        in: query
+        name: projectId
+        required: true
+        schema:
+          items:
+            format: int64
+            type: integer
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"isLast":true,"maxResults":3,"startAt":0,"total":3,"values":[{"projectId":10000,"schemeId":1},{"projectId":10001,"schemeId":1},{"projectId":10002,"schemeId":2}]}'
+              schema:
+                $ref: '#/components/schemas/PageBean2GetProjectsWithFieldSchemesResponse'
+          description: Returns the list of project with field association schemes.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollections'
+          description: Returned if the request is invalid.
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions.
+        '404':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the feature flag is disabled.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Get projects with field schemes
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:field-configuration-scheme:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+    put:
+      deprecated: false
+      description: 'Associate projects to field association schemes.
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: associateProjectsToFieldAssociationSchemes
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              '10000':
+                projectIds:
+                - 10000
+                - 10001
+              '10001':
+                projectIds:
+                - 10002
+            schema:
+              additionalProperties:
+                $ref: '#/components/schemas/FieldSchemeToProjectsRequest'
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"results":[{"projectId":10001,"schemeId":10000,"success":true},{"projectId":10002,"schemeId":10001,"success":true}]}'
+              schema:
+                $ref: '#/components/schemas/FieldSchemeToProjectsResponse'
+          description: Returned if the association was successful.
+        '204':
+          content:
+            application/json:
+              schema: {}
+          description: The request completed successfully. No additional content will be sent in the response.
+        '207':
+          content:
+            application/json:
+              example: '{"results":[{"projectId":10001,"schemeId":10000,"success":true},{"error":"Project #10001 doesn''t exist","projectId":10002,"schemeId":10001,"success":false}]}'
+              schema:
+                $ref: '#/components/schemas/FieldSchemeToProjectsResponse'
+          description: Returned if the association was partially successful.
+        '400':
+          content:
+            application/json:
+              example: '{"results":[{"error":"Field scheme #10000 doesn''t exist","projectId":10001,"schemeId":10000,"success":false},{"error":"Project #10001 doesn''t exist","projectId":10002,"schemeId":10001,"success":false}]}'
+              schema:
+                $ref: '#/components/schemas/FieldSchemeToProjectsResponse'
+          description: Returned if the request is invalid. If request is malformed, returns a collection of errors. If request is well-formed but contains invalid scheme or project IDs, returns failure details.
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Associate projects to field schemes
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:field-configuration:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/config/fieldschemes/{id}:
+    delete:
+      deprecated: false
+      description: 'Delete a specified field association scheme
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: deleteFieldAssociationScheme
+      parameters:
+      - description: The ID of the field association scheme to delete.
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"deleted":true,"id":"10000"}'
+              schema:
+                $ref: '#/components/schemas/DeleteFieldAssociationSchemeResponse'
+          description: Returned if the field association scheme deletion was successful.
+        '400':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the scheme that the user is attempting to delete is a system scheme.
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions
+        '404':
+          content:
+            application/json:
+              schema: {}
+          description: Return if the provided ID does not match any existing field association scheme
+        '409':
+          content:
+            application/json:
+              schema: {}
+          description: Return if the scheme that the user is attempting to delete is still in use.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Delete a field scheme
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:field-configuration-scheme:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+    get:
+      deprecated: false
+      description: 'Endpoint for fetching a field association scheme by its ID
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: getFieldAssociationSchemeById
+      parameters:
+      - description: The scheme id to fetch
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"description":"This is a field association scheme","fieldsCount":5,"id":"123","isDefault":false,"links":{"associations":"rest/api/3/config/fieldschemes/10000/fields","projects":"rest/api/3/config/fieldschemes/10000/projects"},"name":"Scheme"}'
+              schema:
+                $ref: '#/components/schemas/GetFieldAssociationSchemeByIdResponse'
+          description: Returned if a field association scheme matches the given scheme ID
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions
+        '404':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if provided ID does not match any field association schemes
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Get field scheme
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:field-configuration-scheme:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+    put:
+      deprecated: false
+      description: 'Endpoint for updating an existing field association scheme.
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: updateFieldAssociationScheme
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            example:
+              description: Field association scheme description
+              name: Field association scheme name
+            schema:
+              $ref: '#/components/schemas/UpdateFieldAssociationSchemeRequest'
+        description: The request containing the desired updates to the field association scheme
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"description":"Field association scheme description","id":10000,"links":{"associations":"{BASE_API_URL}/rest/api/2/config/fieldschemes/9/fields","projects":"{BASE_API_URL}/rest/api/2/config/fieldschemes/9/projects"},"name":"Field association scheme name"}'
+              schema:
+                $ref: '#/components/schemas/UpdateFieldAssociationSchemeResponse'
+          description: Returned if the update was successful.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollections'
+          description: Returned if the request is invalid. If request is malformed, returns a collection of errors.
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions
+        '404':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the feature flag is disabled or the scheme ID is not found.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Update field scheme
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:field-configuration-scheme:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/config/fieldschemes/{id}/clone:
+    post:
+      deprecated: false
+      description: 'Endpoint for cloning an existing field association scheme into a new one.
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: cloneFieldAssociationScheme
+      parameters:
+      - description: The ID of the source field association scheme to clone from
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            example:
+              description: Field association scheme description
+              name: Field association scheme name
+            schema:
+              $ref: '#/components/schemas/CreateFieldAssociationSchemeRequest'
+        description: The request containing the name and description for the new scheme
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"description":"Field association scheme description","id":10000,"links":{"associations":"{BASE_API_URL}/rest/api/2/config/fieldschemes/9/fields","projects":"{BASE_API_URL}/rest/api/2/config/fieldschemes/9/projects"},"name":"Field association scheme name"}'
+              schema:
+                $ref: '#/components/schemas/CreateFieldAssociationSchemeResponse'
+          description: Returned if the clone was successful.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollections'
+          description: Returned if the request is invalid. If request is malformed, returns a collection of errors.
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions
+        '404':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the feature flag is disabled or the source scheme ID is not found.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Clone field scheme
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:field-configuration-scheme:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/config/fieldschemes/{id}/fields:
+    get:
+      deprecated: false
+      description: 'Search for fields belonging to a given field association scheme.
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: searchFieldAssociationSchemeFields
+      parameters:
+      - description: 'The starting index of the returned fields. Base index: 0.'
+        in: query
+        name: startAt
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: The maximum number of fields to return per page, maximum allowed value is 100.
+        in: query
+        name: maxResults
+        schema:
+          default: 50
+          format: int32
+          maximum: 100
+          type: integer
+      - description: The field IDs to filter by, if empty then all fields belonging to a field association scheme will be returned
+        in: query
+        name: fieldId
+        schema:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      - description: The scheme ID to search for child fields
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"allowedOperations":["REMOVE","CHANGE_REQUIRED","CHANGE_DESCRIPTION"],"fieldId":"customfield_10000","parameters":{"description":"text","isRequired":true,"rendererType":"atlassian-wiki-renderer"},"restrictedToWorkTypes":["1","2"],"workTypeParameters":[{"description":"text","isRequired":true,"rendererType":"jira-text-renderer","workTypeId":"1"},{"description":"textarea","isRequired":false,"rendererType":"atlassian-wiki-renderer","workTypeId":"2"}]}'
+              schema:
+                $ref: '#/components/schemas/PageBean2FieldAssociationSchemeFieldSearchResult'
+          description: Returns the matching fields, at the specified page of the results.
+        '400':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the request parameters are invalid (e.g., negative startAt, maxResults exceeding limit, duplicate fieldIds).
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions.
+        '404':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the feature flag is disabled or the scheme ID is not found.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Search field scheme fields
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:field-configuration:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/config/fieldschemes/{id}/fields/{fieldId}/parameters:
+    get:
+      deprecated: false
+      description: 'Retrieve field association parameters on a field association scheme
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: getFieldAssociationSchemeItemParameters
+      parameters:
+      - description: the ID of the field association scheme to retrieve parameters for
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: the ID of the field
+        in: path
+        name: fieldId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"fieldId":"customfield_10000","parameters":{"description":"Teams field","isRequired":true,"rendererType":"atlassian-wiki-renderer"},"workTypeParameters":[{"description":"Teams field","isRequired":false,"rendererType":"jira-text-renderer","workTypeId":10010}]}'
+              schema:
+                $ref: '#/components/schemas/GetFieldAssociationParametersResponse'
+          description: Returned if the parameters fetched were successful.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorCollections'
+          description: Returned if the request is invalid. If request is malformed, returns a collection of errors.
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: Returned if the user does not have the required permissions
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Get field parameters
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:field-configuration:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/config/fieldschemes/{id}/projects:
+    get:
+      deprecated: false
+      description: 'REST Endpoint for searching for projects belonging to a given field association scheme
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: searchFieldAssociationSchemeProjects
+      parameters:
+      - description: 'The starting index of the returned projects. Base index: 0.'
+        in: query
+        name: startAt
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: The maximum number of projects to return per page, maximum allowed value is 100.
+        in: query
+        name: maxResults
+        schema:
+          default: 50
+          format: int32
+          maximum: 100
+          type: integer
+      - description: The project Ids to filter by, if empty then all projects belonging to a field association scheme will be returned
+        in: query
+        name: projectId
+        schema:
+          items:
+            format: int64
+            type: integer
+          type: array
+      - description: The scheme id to search for associated projects
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageBean2FieldAssociationSchemeProjectSearchResult'
+          description: Returns a paginated list of projects associated with the field association scheme, matching the specified filter criteria.
+        '400':
+          content:
+            application/json:
+              schema: {}
+          description: 400 response
+        '401':
+          content:
+            application/json:
+              schema: {}
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema: {}
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema: {}
+          description: 404 response
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Search field scheme projects
+      tags:
+      - Field schemes
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:field-configuration:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+components:
+  schemas:
+    UpdateFieldAssociationSchemeResponse:
+      additionalProperties: false
+      description: Response object after successfully updating an existing field association scheme.
+      properties:
+        description:
+          type: string
+        id:
+          format: int64
+          type: integer
+        links:
+          $ref: '#/components/schemas/UpdateFieldAssociationSchemeLinksBean'
+        name:
+          type: string
+      type: object
+    UpdateFieldSchemeParametersRequest:
+      additionalProperties: false
+      description: Request bean for updating field scheme parameters across multiple schemes and work types.
+      properties:
+        parameters:
+          $ref: '#/components/schemas/FieldsSchemeItemParameter'
+        schemeIds:
+          description: The list of field scheme IDs to update
+          items:
+            description: The list of field scheme IDs to update
+            format: int64
+            type: integer
+          type: array
+        workTypeParameters:
+          description: The list of work type-specific parameter overrides, may be empty if only default parameters are being updated
+          items:
+            $ref: '#/components/schemas/FieldsSchemeItemWorkTypeParameter'
+          type: array
+      type: object
+      writeOnly: true
+    GetFieldAssociationSchemeByIdResponse:
+      additionalProperties: false
+      description: Response object for getting a field association scheme by ID.
+      properties:
+        description:
+          type: string
+        fieldsCount:
+          format: int64
+          type: integer
+        id:
+          type: string
+        isDefault:
+          type: boolean
+        links:
+          $ref: '#/components/schemas/FieldAssociationSchemeLinks'
+        name:
+          type: string
+      type: object
+    ErrorCollections:
+      additionalProperties: false
+      type: object
+    RemoveFieldAssociationsRequestItem:
+      additionalProperties: false
+      description: Request item for removing field associations.
+      properties:
+        schemeIds:
+          description: Set of scheme IDs from which to remove field associations
+          items:
+            description: Set of scheme IDs from which to remove field associations
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+      required:
+      - schemeIds
+      type: object
+      writeOnly: true
+    GetFieldAssociationSchemeResponse:
+      additionalProperties: false
+      description: Response object for getting a field association scheme.
+      properties:
+        description:
+          type: string
+        fieldsCount:
+          format: int64
+          type: integer
+        id:
+          format: int64
+          type: integer
+        isDefault:
+          type: boolean
+        links:
+          $ref: '#/components/schemas/FieldAssociationSchemeLinksBean'
+        matchedFilters:
+          $ref: '#/components/schemas/FieldAssociationSchemeMatchedFilters'
+        name:
+          type: string
+      type: object
+    FieldSchemeToProjectsRequest:
+      additionalProperties: false
+      description: Request for associating field schemes to projects.
+      properties:
+        projectIds:
+          description: List of project IDs to associate with field schemes
+          items:
+            description: List of project IDs to associate with field schemes
+            format: int64
+            type: integer
+          type: array
+      required:
+      - projectIds
+      type: object
+      writeOnly: true
+    FieldAssociationSchemeFieldSearchResult:
+      additionalProperties: false
+      description: Field association scheme field search results.
+      properties:
+        allowedOperations:
+          items:
+            type: string
+          type: array
+        fieldId:
+          type: string
+        parameters:
+          $ref: '#/components/schemas/SearchResultFieldParameters'
+        restrictedToWorkTypes:
+          items:
+            type: string
+          type: array
+        workTypeParameters:
+          items:
+            $ref: '#/components/schemas/SearchResultWorkTypeParameters'
+          type: array
+      type: object
+    FieldsSchemeItemWorkTypeParameter:
+      additionalProperties: false
+      description: The list of work type-specific parameter overrides, may be empty if only default parameters are being updated
+      properties:
+        description:
+          description: The custom description for the field for this work type, null to use default or preserve current
+          type: string
+        isRequired:
+          description: Whether the field is required for this work type, null to use default or preserve current
+          type: boolean
+        rendererType:
+          description: The renderer type for the field for this work type, null to use default or preserve current
+          enum:
+          - jira-text-renderer
+          - atlassian-wiki-renderer
+          type: string
+        workTypeId:
+          description: The ID of the work type (issue type) for which these parameters apply
+          format: int64
+          type: integer
+      type: object
+    SearchResultFieldParameters:
+      additionalProperties: false
+      properties:
+        description:
+          type: string
+        isRequired:
+          type: boolean
+        rendererType:
+          type: string
+      type: object
+    FieldAssociationSchemeProjectSearchResult:
+      additionalProperties: false
+      description: Project search results for field association scheme.
+      properties:
+        avatarUrls:
+          additionalProperties:
+            type: string
+          type: object
+        deleted:
+          type: boolean
+        id:
+          type: string
+        key:
+          type: string
+        name:
+          type: string
+      type: object
+    FieldAssociationParameters:
+      additionalProperties: false
+      properties:
+        description:
+          type: string
+        isRequired:
+          type: boolean
+        rendererType:
+          type: string
+      required:
+      - isRequired
+      type: object
+    FieldAssociationSchemeMatchedFilters:
+      additionalProperties: false
+      description: Matched filters for field association scheme search.
+      properties:
+        projectIds:
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+        query:
+          type: string
+      type: object
+    FieldSchemeToProjectsPartialFailure:
+      additionalProperties: false
+      description: Partial failure result when updating field scheme to projects associations.
+      properties:
+        error:
+          type: string
+        projectId:
+          format: int64
+          type: integer
+        schemeId:
+          format: int64
+          type: integer
+        success:
+          type: boolean
+      required:
+      - projectId
+      - schemeId
+      - success
+      type: object
+    CreateFieldAssociationSchemeResponse:
+      additionalProperties: false
+      description: Response object after successfully creating a new field association scheme.
+      properties:
+        description:
+          type: string
+        id:
+          format: int64
+          type: integer
+        links:
+          $ref: '#/components/schemas/CreateFieldAssociationSchemeLinksBean'
+        name:
+          type: string
+      type: object
+    MinimalFieldSchemeToFieldsPartialFailure:
+      additionalProperties: false
+      description: Minimal partial failure result when updating field scheme to fields associations.
+      properties:
+        error:
+          type: string
+        fieldId:
+          type: string
+        schemeId:
+          format: int64
+          type: integer
+        success:
+          type: boolean
+      required:
+      - fieldId
+      - schemeId
+      - success
+      type: object
+    GetProjectsWithFieldSchemesResponse:
+      additionalProperties: false
+      description: Response item returned from get projects with field schemes.
+      properties:
+        projectId:
+          format: int64
+          type: integer
+        schemeId:
+          format: int64
+          type: integer
+      type: object
+    CreateFieldAssociationSchemeLinksBean:
+      additionalProperties: false
+      properties:
+        associations:
+          type: string
+        projects:
+          type: string
+      type: object
+    FieldSchemeToProjectsResponse:
+      additionalProperties: false
+      description: Response for updating field scheme to projects associations.
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/FieldSchemeToProjectsPartialFailure'
+          type: array
+          uniqueItems: true
+      required:
+      - results
+      type: object
+    DeleteFieldAssociationSchemeResponse:
+      additionalProperties: false
+      description: Response object after successfully deleting a field association scheme.
+      properties:
+        deleted:
+          type: boolean
+        id:
+          type: string
+      type: object
+    ParameterRemovalDetails:
+      additionalProperties: false
+      properties:
+        parameters:
+          description: Set of parameter names to remove
+          items:
+            description: Set of parameter names to remove
+            type: string
+          type: array
+          uniqueItems: true
+        schemeId:
+          description: ID of the field scheme
+          format: int64
+          type: integer
+        workTypeIds:
+          description: Set of work type (issue type) IDs
+          items:
+            description: Set of work type (issue type) IDs
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+      type: object
+    FieldAssociationSchemeLinksBean:
+      additionalProperties: false
+      properties:
+        associations:
+          type: string
+        projects:
+          type: string
+      type: object
+    RemoveFieldParametersResult:
+      additionalProperties: false
+      description: Result of remove field parameters operation.
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/SuccessOrErrorResults'
+          type: array
+      type: object
+    SearchResultWorkTypeParameters:
+      additionalProperties: false
+      properties:
+        description:
+          type: string
+        isRequired:
+          type: boolean
+        rendererType:
+          type: string
+        workTypeId:
+          type: string
+      type: object
+    RemoveFieldParametersResultError:
+      additionalProperties: false
+      description: Error during remove field parameters operation.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      type: object
+    UpdateFieldSchemeParametersPartialFailure:
+      additionalProperties: false
+      description: Result of updating field scheme parameters for a specific field, scheme, and optional work type.
+      properties:
+        error:
+          type: string
+        fieldId:
+          type: string
+        schemeId:
+          format: int64
+          type: integer
+        success:
+          type: boolean
+        workTypeId:
+          format: int64
+          type: integer
+      required:
+      - fieldId
+      - schemeId
+      - success
+      type: object
+    WorkTypeParameters:
+      additionalProperties: false
+      properties:
+        description:
+          type: string
+        isRequired:
+          type: boolean
+        rendererType:
+          type: string
+        workTypeId:
+          format: int64
+          type: integer
+      required:
+      - isRequired
+      - workTypeId
+      type: object
+    MinimalFieldSchemeToFieldsResponse:
+      additionalProperties: false
+      description: Minimal response for updating field scheme to fields associations.
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/MinimalFieldSchemeToFieldsPartialFailure'
+          type: array
+          uniqueItems: true
+      required:
+      - results
+      type: object
+    PageBean2GetFieldAssociationSchemeResponse:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/GetFieldAssociationSchemeResponse'
+          readOnly: true
+          type: array
+      type: object
+    UpdateFieldSchemeParametersResponse:
+      additionalProperties: false
+      description: Response bean for field scheme parameter update operations.
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/UpdateFieldSchemeParametersPartialFailure'
+          type: array
+          uniqueItems: true
+      required:
+      - results
+      type: object
+    GetFieldAssociationParametersResponse:
+      additionalProperties: false
+      description: Response object for getting field association parameters.
+      properties:
+        fieldId:
+          type: string
+        parameters:
+          $ref: '#/components/schemas/FieldAssociationParameters'
+        workTypeParameters:
+          items:
+            $ref: '#/components/schemas/WorkTypeParameters'
+          type: array
+      required:
+      - fieldId
+      type: object
+    PageBean2FieldAssociationSchemeProjectSearchResult:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/FieldAssociationSchemeProjectSearchResult'
+          readOnly: true
+          type: array
+      type: object
+    FieldsSchemeItemParameter:
+      additionalProperties: false
+      description: The default parameters to apply to the field across all work types in the specified schemes, may be null if only work type-specific updates are needed
+      properties:
+        description:
+          description: The custom description for the field, null to preserve current description
+          type: string
+        isRequired:
+          description: Whether the field is required, null to preserve current requirement setting
+          type: boolean
+        rendererType:
+          description: The renderer type for the field, null to preserve current renderer type
+          enum:
+          - jira-text-renderer
+          - atlassian-wiki-renderer
+          type: string
+      type: object
+    UpdateFieldAssociationSchemeRequest:
+      additionalProperties: false
+      description: Request object for updating an existing field association scheme.
+      properties:
+        description:
+          description: The description value to update
+          type: string
+        name:
+          description: The name value to update
+          type: string
+      type: object
+      writeOnly: true
+    CreateFieldAssociationSchemeRequest:
+      additionalProperties: false
+      description: Request object for creating a new field association scheme.
+      properties:
+        description:
+          description: Description of the scheme to be created
+          type: string
+        name:
+          description: The name of the scheme to be created
+          type: string
+      required:
+      - name
+      type: object
+      writeOnly: true
+    SuccessOrErrorResults:
+      additionalProperties: false
+      properties:
+        error:
+          $ref: '#/components/schemas/RemoveFieldParametersResultError'
+        fieldId:
+          type: string
+        schemeId:
+          format: int64
+          type: integer
+        success:
+          type: boolean
+        workTypeIds:
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+      type: object
+    FieldSchemeToFieldsResponse:
+      additionalProperties: false
+      description: Response for updating field associations.
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/FieldSchemeToFieldsPartialFailure'
+          type: array
+          uniqueItems: true
+      required:
+      - results
+      type: object
+    PageBean2GetProjectsWithFieldSchemesResponse:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/GetProjectsWithFieldSchemesResponse'
+          readOnly: true
+          type: array
+      type: object
+    UpdateFieldAssociationSchemeLinksBean:
+      additionalProperties: false
+      properties:
+        associations:
+          type: string
+        projects:
+          type: string
+      type: object
+    FieldAssociationSchemeLinks:
+      additionalProperties: false
+      properties:
+        associations:
+          type: string
+        projects:
+          type: string
+      type: object
+    FieldSchemeToFieldsPartialFailure:
+      additionalProperties: false
+      description: Partial failure result when updating field scheme to fields associations.
+      properties:
+        error:
+          type: string
+        fieldId:
+          type: string
+        schemeId:
+          format: int64
+          type: integer
+        success:
+          type: boolean
+        workTypeIds:
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+      required:
+      - fieldId
+      - schemeId
+      - success
+      - workTypeIds
+      type: object
+    UpdateFieldAssociationsRequestItem:
+      additionalProperties: false
+      description: Represents an association between a field and its operations.
+      properties:
+        restrictedToWorkTypes:
+          description: (optional) Work types to restrict field to. Replaces any existing work type associations for the field. If not provided, the field is associated to any work types.
+          items:
+            description: (optional) Work types to restrict field to. Replaces any existing work type associations for the field. If not provided, the field is associated to any work types.
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+        schemeIds:
+          description: Scheme IDs to associate field with
+          items:
+            description: Scheme IDs to associate field with
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+      required:
+      - schemeIds
+      type: object
+      writeOnly: true
+    PageBean2FieldAssociationSchemeFieldSearchResult:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/FieldAssociationSchemeFieldSearchResult'
+          readOnly: true
+          type: array
+      type: object
+  securitySchemes:
+    OAuth2:
+      description: OAuth2 scopes for Jira
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          scopes:
+            delete:async-task:jira: Delete asynchronous task.
+            delete:attachment:jira: Delete issue attachments.
+            delete:avatar:jira: Delete system and custom avatars.
+            delete:comment.property:jira: Delete issue comment properties.
+            delete:comment:jira: Delete issue comments.
+            delete:dashboard.property:jira: Delete dashboard properties.
+            delete:dashboard:jira: Delete dashboards.
+            delete:field-configuration-scheme:jira: Delete field configuration schemes.
+            delete:field-configuration:jira: Delete field configurations.
+            delete:field.option:jira: Delete field options.
+            delete:field:jira: Delete fields.
+            delete:filter.column:jira: Delete filter columns.
+            delete:filter:jira: Delete filters.
+            delete:group:jira: Delete user groups.
+            delete:issue-link-type:jira: Delete issue link types.
+            delete:issue-link:jira: Delete issue links.
+            delete:issue-type-scheme:jira: Delete issue type schemes.
+            delete:issue-type-screen-scheme:jira: Delete issue type screen schemes.
+            delete:issue-type.property:jira: Delete issue type properties.
+            delete:issue-type:jira: Delete issue types.
+            delete:issue-worklog.property:jira: Delete issue worklog properties.
+            delete:issue-worklog:jira: Delete issue worklogs.
+            delete:issue.property:jira: Delete issue properties.
+            delete:issue.remote-link:jira: Delete issue remote links.
+            delete:issue:jira: Delete issues.
+            delete:permission-scheme:jira: Delete permission schemes.
+            delete:permission:jira: Delete permissions.
+            delete:project-category:jira: Delete project categories.
+            delete:project-role:jira: Delete project roles.
+            delete:project-version:jira: Delete project versions.
+            delete:project.avatar:jira: Delete project avatars.
+            delete:project.component:jira: Delete project components.
+            delete:project.property:jira: Delete project properties.
+            delete:project:jira: Delete projects and their details, such as issue types, project lead, and avatars.
+            delete:screen-scheme:jira: Delete screen schemes.
+            delete:screen-tab:jira: Delete screen tabs.
+            delete:screen:jira: Delete screens.
+            delete:screenable-field:jira: Delete screenable fields.
+            delete:user-configuration:jira: Delete user configurations.
+            delete:user.property:jira: Delete user properties.
+            delete:webhook:jira: Delete webhooks.
+            delete:workflow-scheme:jira: Delete workflow schemes.
+            delete:workflow.property:jira: Delete workflow properties.
+            delete:workflow:jira: Delete workflows.
+            manage:jira-configuration: Configure Jira settings that require the Jira administrators permission, for example, create projects and custom fields, view workflows, manage issue link types.
+            manage:jira-project: Create and edit project settings and create new project-level objects, for example, versions, components.
+            manage:jira-webhook: Manage Jira webhooks. Enables an OAuth app to register and unregister dynamic webhooks in Jira. It also provides for fetching of registered webhooks.
+            read:app-data:jira: Read app data.
+            read:application-role:jira: View application roles.
+            read:attachment:jira: View issue attachments.
+            read:audit-log:jira: View audit logs.
+            read:avatar:jira: View system and custom avatars.
+            read:comment.property:jira: View issue comment properties.
+            read:comment:jira: View issue comments.
+            read:custom-field-contextual-configuration:jira: Read custom field contextual configurations.
+            read:dashboard.property:jira: View dashboard properties.
+            read:dashboard:jira: View dashboards.
+            read:email-address:jira: View email addresses of all users regardless of the user's profile visibility settings.
+            read:field-configuration-scheme:jira: View field configuration schemes.
+            read:field-configuration:jira: Read field configurations.
+            read:field.default-value:jira: View field default values.
+            read:field.option:jira: View field options.
+            read:field.options:jira: Read field options.
+            read:field:jira: View fields.
+            read:filter.column:jira: View filter columns.
+            read:filter.default-share-scope:jira: View filter default share scopes.
+            read:filter:jira: View filters.
+            read:group:jira: View user groups.
+            read:instance-configuration:jira: View instance configurations.
+            read:issue-details:jira: View issue details.
+            read:issue-event:jira: Read issue events.
+            read:issue-field-values:jira: View issue field valueses.
+            read:issue-link-type:jira: View issue link types.
+            read:issue-link:jira: View issue links.
+            read:issue-meta:jira: View issue meta.
+            read:issue-security-level:jira: View issue security levels.
+            read:issue-security-scheme:jira: View issue security schemes.
+            read:issue-status:jira: View issue statuses.
+            read:issue-type-hierarchy:jira: Read issue type hierarchies.
+            read:issue-type-scheme:jira: View issue type schemes.
+            read:issue-type-screen-scheme:jira: View issue type screen schemes.
+            read:issue-type.property:jira: View issue type properties.
+            read:issue-type:jira: View issue types.
+            read:issue-worklog.property:jira: View issue worklog properties.
+            read:issue-worklog:jira: View issue worklogs.
+            read:issue.changelog:jira: View issue changelogs.
+            read:issue.property:jira: View issue properties.
+            read:issue.remote-link:jira: View issue remote links.
+            read:issue.time-tracking:jira: View issue time trackings.
+            read:issue.transition:jira: View issue transitions.
+            read:issue.vote:jira: View issue votes.
+            read:issue.votes:jira: View issue voteses.
+            read:issue.watcher:jira: View issue watchers.
+            read:issue:jira: View issues.
+            read:jira-expressions:jira: View jira expressions.
+            read:jira-user: View user information in Jira that you have access to, including usernames, email addresses, and avatars.
+            read:jira-work: Read project and issue data. Search for issues and objects associated with issues (such as attachments and worklogs).
+            read:jql:jira: View JQL.
+            read:label:jira: View labels.
+            read:license:jira: View licenses.
+            read:notification-scheme:jira: View notification schemes.
+            read:permission-scheme:jira: View permission schemes.
+            read:permission:jira: View permissions.
+            read:priority:jira: View priorities.
+            read:project-category:jira: View project categories.
+            read:project-role:jira: View project roles.
+            read:project-type:jira: View project types.
+            read:project-version:jira: View project versions.
+            read:project.avatar:jira: Read project avatars.
+            read:project.component:jira: View project components.
+            read:project.email:jira: View project emails.
+            read:project.feature:jira: Read project features.
+            read:project.property:jira: View project properties.
+            read:project:jira: View projects.
+            read:resolution:jira: View resolutions.
+            read:role:jira: View roles.
+            read:screen-field:jira: View screen fields.
+            read:screen-scheme:jira: View screen schemes.
+            read:screen-tab:jira: View screen tabs.
+            read:screen:jira: View screens.
+            read:screenable-field:jira: View screenable fields.
+            read:status:jira: View statuses.
+            read:user-configuration:jira: View user configurations.
+            read:user.columns:jira: View user columnses.
+            read:user.property:jira: View user properties.
+            read:user:jira: View users.
+            read:webhook:jira: View webhooks.
+            read:workflow-scheme:jira: View workflow schemes.
+            read:workflow.property:jira: View workflow properties.
+            read:workflow:jira: View workflows.
+            send:notification:jira: Send notifications.
+            validate:jql:jira: Validate JQL.
+            write:app-data:jira: Write app data.
+            write:attachment:jira: Create and update issue attachments.
+            write:avatar:jira: Create and update system and custom avatars.
+            write:comment.property:jira: Create and update issue comment properties.
+            write:comment:jira: Create and update issue comments.
+            write:custom-field-contextual-configuration:jira: Save custom field contextual configurations.
+            write:dashboard.property:jira: Create and update dashboard properties.
+            write:dashboard:jira: Create and update dashboards.
+            write:field-configuration-scheme:jira: Create and update field configuration schemes.
+            write:field-configuration:jira: Save field configurations.
+            write:field.default-value:jira: Create and update field default values.
+            write:field.option:jira: Create and update field options.
+            write:field:jira: Create and update fields.
+            write:filter.column:jira: Create and update filter columns.
+            write:filter.default-share-scope:jira: Create and update filter default share scopes.
+            write:filter:jira: Create and update filters.
+            write:group:jira: Create and update user groups.
+            write:instance-configuration:jira: Create and update instance configurations.
+            write:issue-link-type:jira: Create and update issue link types.
+            write:issue-link:jira: Create and update issue links.
+            write:issue-type-scheme:jira: Create and update issue type schemes.
+            write:issue-type-screen-scheme:jira: Create and update issue type screen schemes.
+            write:issue-type.property:jira: Create and update issue type properties.
+            write:issue-type:jira: Create and update issue types.
+            write:issue-worklog.property:jira: Create and update issue worklog properties.
+            write:issue-worklog:jira: Create and update issue worklogs.
+            write:issue.property:jira: Create and update issue properties.
+            write:issue.remote-link:jira: Create and update issue remote links.
+            write:issue.time-tracking:jira: Create and update issue time trackings.
+            write:issue.vote:jira: Create and update issue votes.
+            write:issue.watcher:jira: Create and update issue watchers.
+            write:issue:jira: Create and update issues.
+            write:jira-work: Create and edit issues in Jira, post comments, create worklogs, and delete issues.
+            write:permission-scheme:jira: Create and update permission schemes.
+            write:permission:jira: Create and update permissions.
+            write:project-category:jira: Create and update project categories.
+            write:project-role:jira: Create and update project roles.
+            write:project-version:jira: Create and update project versions.
+            write:project.avatar:jira: Create and update project avatars.
+            write:project.component:jira: Create and update project components.
+            write:project.email:jira: Create and update project emails.
+            write:project.feature:jira: Save project features.
+            write:project.property:jira: Create and update project properties.
+            write:project:jira: Create and update projects.
+            write:screen-scheme:jira: Create and update screen schemes.
+            write:screen-tab:jira: Create and update screen tabs.
+            write:screen:jira: Create and update screens.
+            write:screenable-field:jira: Create and update screenable fields.
+            write:user-configuration:jira: Create and update user configurations.
+            write:user.property:jira: Create and update user properties.
+            write:webhook:jira: Create and update webhooks.
+            write:workflow-scheme:jira: Create and update workflow schemes.
+            write:workflow.property:jira: Create and update workflow properties.
+            write:workflow:jira: Create and update workflows.
+          tokenUrl: https://auth.atlassian.com/oauth/token
+      type: oauth2
+    basicAuth:
+      description: You can access this resource via basic auth.
+      scheme: basic
+      type: http
+externalDocs:
+  description: Find out more about Atlassian products and services.
+  url: http://www.atlassian.com
+x-atlassian-narrative:
+  documents:
+  - anchor: about
+    body: "The Jira REST API enables you to interact with Jira programmatically. Use this API to \n[build apps](https://developer.atlassian.com/cloud/jira/platform/integrating-with-jira-cloud/), script interactions with \nJira, or develop any other type of integration. This page documents the REST resources available in Jira Cloud, including \nthe HTTP response codes and example requests and responses."
+    title: About
+  - anchor: version
+    body: "This documentation is for **version 3** of the Jira Cloud platform REST API, which is the latest\nversion. [Version 2](https://developer.atlassian.com/cloud/jira/platform/rest/v2/) and\nversion 3 of the API offer the same collection of operations. However, version 3 provides support for\nthe [Atlassian Document Format](https://developer.atlassian.com/cloud/jira/platform/apis/document/structure/)\n(ADF) in:\n- `body` in comments, including where comments are used in issue, issue link, and transition resources.\n- `comment` in worklogs.\n- `description` and `environment` fields in issues.\n- `textarea` type custom fields (multi-line text fields) in issues. Single line custom fields\n  (`textfield`) accept a string and don't handle Atlassian Document Format content.\n"
+    title: Version
+  - anchor: authentication
+    body: "### Forge apps\n\nFor Forge apps, [REST API scopes](https://developer.atlassian.com/cloud/jira/platform/scopes-for-oauth-2-3LO-and-forge-apps/) \nare used when authenticating with Jira Cloud platform. See [Add scopes to call an Atlassian REST API](https://developer.atlassian.com/platform/forge/add-scopes-to-call-an-atlassian-rest-api/) for more details.\n\nThe URIs for Forge app REST API calls have this structure:\n\n`/rest/api/3/<resource-name>`\n\nFor example, `/rest/api/3/issue/DEMO-1`\n\n### Connect apps\n\nFor Connect apps, authentication (JWT-based) is built into the Connect libraries. Authorization is implemented using either \nscopes (shown as _App scope required_ for operations on this page) or user impersonation. See \n[Security for Connect apps](https://developer.atlassian.com/cloud/jira/platform/security-for-connect-apps/) \nfor details.\n\nThe URIs for Connect app REST API calls have this structure:\n\n`https://<site-url>/rest/api/3/<resource-name>`\n\nFor example, `https://your-domain.atlassian.net/rest/api/3/issue/DEMO-1`\n\n### Other integrations\n\nFor integrations that are not Forge or Connect apps, use OAuth 2.0 authorization code grants (3LO) for security \n(3LO scopes are shown as for operations _OAuth scopes required_). See \n[OAuth 2.0 (3LO) apps](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/) \nfor details.\n\nThe URIs for OAuth 2.0 (3LO) app REST API calls have this structure:\n\n`https://api.atlassian.com/ex/jira/<cloudId>/rest/api/3/<resource-name>`\n\nFor example, `https://api.atlassian.com/ex/jira/35273b54-3f06-40d2-880f-dd28cf8daafa/rest/api/3/issue/DEMO-1`\n\n### Ad-hoc API calls\n\nFor personal scripts, bots, and ad-hoc execution of the REST APIs use basic authentication. See [Basic auth for REST APIs](https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/) for details. \n\nThe URIs for basic authentication REST API calls have this structure:\n\n`https://<site-url>/rest/api/3/<resource-name>`\n\nFor example, `https://your-domain.atlassian.net/rest/api/3/issue/DEMO-1`\n"
+    title: Authentication and authorization
+  - anchor: permissions
+    body: "### Operation permissions\n\nMost operations in this API require permissions. The calling user must have the required permissions for an operation to \nuse it. Note that for Connect apps, the app user must have the required permissions for the operation and the app must \nhave scopes that permit the operation.\n\nA permission can be granted to a group, project role, or issue role that the user is a member of, or granted directly to a user. \nSee [Permissions overview](https://confluence.atlassian.com/x/FQiiLQ) for details. The most common permissions are:\n\n- **Administer the Cloud site**: Users in the _site-admins_ group have this \npermission. See [Manage groups](https://confluence.atlassian.com/x/24xjL) for details.\n- **Administer Jira**: Granted by the _Jira Administrators_ global permission. There is a default group for this permission. \nSee [Manage groups](https://confluence.atlassian.com/x/24xjL) and [Managing global permissions](https://confluence.atlassian.com/x/x4dKLg) for details.\n- **Administer a project in Jira**: Granted by the _Administer projects_ project permission for a project. This can be \ngranted to a user, a group, a project role, and more. \nSee [Managing project permissions](https://confluence.atlassian.com/x/yodKLg) for details.\n- **Access a project in Jira**: Granted by the _Browse projects_ project permission for a project. This can be \ngranted to a user, a group, a project role, and more. \nSee [Managing project permissions](https://confluence.atlassian.com/x/yodKLg) for details.\n- **Access Jira**: Granted by the _Jira Users_ global permission. Users in the default product access group (for example, \n_jira-software-users-acmesite_) have this permission. \nSee [Manage groups](https://confluence.atlassian.com/x/24xjL) and \n[Managing global permissions](https://confluence.atlassian.com/x/x4dKLg) for details.\n\n### Anonymous access\n\nSome operations provide support for anonymous access. However, anonymous access is only available if \nthe Jira permission needed to access the object or records returned by the operation is granted to \nthe _Public_ group. See [Allowing anonymous access to your project](https://confluence.atlassian.com/x/GDxxLg) \nfor details.\n\nIf an operation is called anonymously and anonymous access is not available, the operation will return \nan error. Note that not all operations that correspond to objects that can be given public access \nprovide for anonymous access.\n"
+    title: Permissions
+  - anchor: expansion
+    body: "### Expansion\n\nThe Jira REST API uses resource expansion, which means that some parts of a resource are not returned unless specified \nin the request. This simplifies responses and minimizes network traffic.\n\nTo expand part of a resource in a request, use the expand query parameter and specify the object(s) to be expanded. \nIf you need to expand nested objects, use the `.` dot notation. If you need to expand multiple objects, use a \ncomma-separated list. \n\nFor example, the following request expands the `names` and `renderedFields` properties for the _JRACLOUD-34423_ issue:\n\n`GET issue/JRACLOUD-34423?expand=names,renderedFields`\n\nTo discover which object can be expanded, refer to the `expand` property in the object. \nIn the JSON example below, the resource declares `widgets` as expandable.\n\n```json\n{\n  \"expand\": \"widgets\", \n  \"self\": \"https://your-domain.atlassian.net/rest/api/3/resource/KEY-1\", \n  \"widgets\": {\n    \"widgets\": [],\n    \"size\": 5\n   }\n}\n```\n\n### Pagination\n\nThe Jira REST API uses pagination to improve performance. Pagination is enforced for operations that could return a large \ncollection of items. When you make a request to a paginated resource, the response wraps the returned array of values in \na JSON object with paging metadata. For example:\n\n```json\n{\n    \"startAt\" : 0,\n    \"maxResults\" : 10,\n    \"total\": 200,\n    \"isLast\": false,\n    \"values\": [\n        { /* result 0 */ },\n        { /* result 1 */ },\n        { /* result 2 */ }\n    ]\n}\n```\n\n*   `startAt` is the index of the first item returned in the page.\n*   `maxResults` is the maximum number of items that a page can return. Each operation can have a different limit for\n    the number of items returned, and these limits may change without notice. To find the maximum number of items \n    that an operation could return, set `maxResults` to a large number—for example, over 1000—and if the returned value of `maxResults` is less than the requested value, the returned value is the maximum.\n*    `total` is the total number of items contained in all pages. This number **_may change_** as the client \nrequests the subsequent pages, therefore the client should always assume that the requested page can be empty. Note \nthat this property is not returned for all operations.\n*   `isLast` indicates whether the page returned is the last one. Note that this property is not returned for all operations.\n\n### Ordering\n\nSome operations support ordering the elements of a response by a field. Check the documentation for the operation to \nconfirm whether ordering of a response is supported and which fields can be used. Responses are listed in ascending order \nby default. You can change the order using the `orderby` query parameter with a `-` or `+` symbol. For example:\n\n*   `?orderBy=name` to order by `name` field ascending.\n*   `?orderBy=+name` to order by `name` field ascending.\n*   `?orderBy=-name` to order by `name` field descending.\n\n\n"
+    title: Expansion, pagination, and ordering
+  - anchor: timestamps
+    body: 'By default, top-level timestamps (e.g. updated and created) are returned in [ISO 8601](https://www.w3.org/TR/NOTE-datetime) format, in the system default user time zone.
+
+
+      To return date time data in the logged in user''s timezone, please refer to `renderedFields` property under the `expand` query parameter in relevant APIs.
+
+      '
+    title: Timestamps
+  - anchor: special-request-headers
+    body: 'The following request and response headers define important metadata for the Jira Cloud REST API resources.
+
+
+      -   `X-Atlassian-Token` (request): Operations that accept multipart/form-data must include the `X-Atlassian-Token: no-check`
+
+      header in requests. Otherwise the request is blocked by cross-site request forgery (CSRF/XSRF) protection.
+
+      -   `X-Force-Accept-Language` (request): controls how the standard HTTP `Accept-Language` header is processed.
+
+      By default `Accept-Language` is ignored and the response is in the language configured in the user''s profile or,
+
+      when no language is configured for the user, the default Jira instance language. For the response to recognize
+
+      `Accept-Language` send `X-Force-Accept-Language = true` as well. If `Accept-Language` requests a language that Jira
+
+      can return the response is in that language, otherwise Jira returns the response in the default language. If
+
+      `Accept-Language` is not specified the response is in the default language.
+
+      -   `X-AAccountId` (response): This response header contains the Atlassian account ID of the authenticated user.'
+    title: Special headers
+  - anchor: anonymous-operations
+    body: " Jira provides for all permissions, except the [global permission](https://confluence.atlassian.com/x/x4dKLg) Administer Jira, to be assigned to *Anyone*. Once a permission is assigned to *Anyone*, anyone knowing a project's URL is able to use the features in Jira enabled by the permission. However, the Jira REST API does not enable anonymous access for operations by default. This means that an anonymous user who may be able to perform an action through Jira, may not be able to perform the same action where it's enabled by the REST API. \n\n The operations that provide anonymous access are annotated \"This operation can be accessed anonymously.\""
+    title: Anonymous operations
+  - anchor: async-operations
+    body: "Some Jira REST API operations may trigger long-running or computationally expensive tasks. In these cases, the operation \nwill schedule an asynchronous task and return a `303 (See Other)` response, indicating the location of the queued task \nin the `Location` header. You can query this task to get progress updates.\n\nWhen the task finishes, the response object will contain the `result` field. The content of the field is specific to the \noperation that created the task. Refer to the operation’s documentation for more information.\n\nNote that asynchronous tasks are not guaranteed to be run in order. In other words, if you need your tasks to execute \nin a certain order, you should start a task only after the prerequisite task(s) have finished."
+    title: Asynchronous operations
+  - anchor: experimental
+    body: "Features and methods marked as experimental may change without notice. Feedback on experimental functionality is welcome. \nReport issues to [Developer and Marketplace support](https://developer.atlassian.com/support) (preferred) or use the \n**Give docs feedback** link at the top of this page. \n"
+    title: Experimental features
+  - anchor: status-codes
+    body: "The Jira Cloud platform REST API uses the [standard HTTP status codes](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).\n\nOperations that return an error status code may also return a response body containing details of the error or errors. \nThe schema for the response body is shown below:\n\n\n```json\n{\n  \"id\": \"https://docs.atlassian.com/jira/REST/schema/error-collection#\",\n  \"title\": \"Error Collection\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"errorMessages\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    },\n    \"errors\": {\n      \"type\": \"object\",\n      \"patternProperties\": {\n        \".+\": {\n          \"type\": \"string\"\n        }\n      },\n      \"additionalProperties\": false\n    },\n    \"status\": { \n      \"type\": \"integer\"\n    }\n  },\n  \"additionalProperties\": false\n}\n```"
+    title: Status codes

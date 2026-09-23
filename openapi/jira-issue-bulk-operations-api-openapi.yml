@@ -1,0 +1,2400 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: ecosystem@atlassian.com
+  description: Jira Cloud platform REST API documentation
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developer.atlassian.com/platform/marketplace/atlassian-developer-terms/
+  title: Jira Cloud platform REST Issue bulk operations API
+  version: 1001.0.0-SNAPSHOT-82b018affa468e58f284fbe4df33536469d757df
+servers:
+- url: https://your-domain.atlassian.net
+tags:
+- description: This resource represents the issue bulk operations.
+  name: Issue bulk operations
+paths:
+  /rest/api/3/bulk/issues/delete:
+    post:
+      deprecated: false
+      description: 'Use this API to submit a bulk delete request. You can delete up to 1,000 issues in a single operation.
+
+
+        **Permissions required:**
+
+
+        * Global bulk change permission.
+
+        * Delete issues permission in all projects that contain the selected issues.
+
+        * Browse project permission in all projects that contain the selected issues.
+
+        * If issue-level security is configured, issue-level security permission to view the issue.'
+      operationId: submitBulkDelete
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              selectedIssueIdsOrKeys:
+              - '10001'
+              - '10002'
+              sendBulkNotification: false
+            schema:
+              $ref: '#/components/schemas/IssueBulkDeletePayload'
+        description: The request body containing the issues to be deleted.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example: '{"taskId":"10641"}'
+              schema:
+                $ref: '#/components/schemas/SubmittedBulkOperation'
+          description: Returned if the request is successful.
+        '400':
+          content:
+            application/json:
+              example: '{"errors":[{"message":"Some of the issues in the issueIdsOrKeys are not valid"}]}'
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the request is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the user does not have the necessary permission.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - write:jira-work
+      summary: Bulk delete issues
+      tags:
+      - Issue bulk operations
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - write:jira-work
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:issue:jira
+        - read:issue:jira
+        state: Beta
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/bulk/issues/fields:
+    get:
+      deprecated: false
+      description: 'Use this API to get a list of fields visible to the user to perform bulk edit operations. You can pass single or multiple issues in the query to get eligible editable fields. This API uses pagination to return responses, delivering 50 fields at a time.
+
+
+        **Permissions required:**
+
+
+        * Global bulk change permission.
+
+        * Browse project permission in all projects that contain the selected issues.
+
+        * If issue-level security is configured, issue-level security permission to view the issue.
+
+        * Depending on the field, any field-specific permissions required to edit it.'
+      operationId: getBulkEditableFields
+      parameters:
+      - description: The IDs or keys of the issues to get editable fields from.
+        in: query
+        name: issueIdsOrKeys
+        required: true
+        schema:
+          type: string
+      - description: (Optional)The text to search for in the editable fields.
+        in: query
+        name: searchText
+        schema:
+          type: string
+      - description: (Optional)The end cursor for use in pagination.
+        in: query
+        name: endingBefore
+        schema:
+          type: string
+      - description: (Optional)The start cursor for use in pagination.
+        in: query
+        name: startingAfter
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"fields":[{"id":"assignee","isRequired":false,"name":"Assignee","searchUrl":"https://your-domain.atlassian.net/rest/api/3/user/assignable/multiProjectSearch?projectKeys=KAN&query=","type":"assignee"},{"id":"components","isRequired":false,"multiSelectFieldOptions":["ADD","REMOVE","REPLACE","REMOVE_ALL"],"name":"Components","type":"components","unavailableMessage":"{0}NOTE{1}: The project of the selected issue(s) does not have any components."},{"fieldOptions":[{"description":"This problem will block progress.","id":"1","priority":"Highest"},{"description":"Has the potential to affect progress.","id":"2","priority":"Lowest"},{"description":"Trivial problem with little or no impact on progress.","id":"3","priority":"Medium"}],"id":"priority","isRequired":false,"name":"Priority","type":"priority"}]}'
+              schema:
+                $ref: '#/components/schemas/BulkEditGetFields'
+          description: Returned if the request is successful.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the request is not valid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the user does not have the necessary permission.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if no editable fields are found for the provided issue IDs.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - read:jira-work
+      summary: Get bulk editable fields
+      tags:
+      - Issue bulk operations
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:jira-work
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:issue:jira
+        state: Beta
+      x-atlassian-connect-scope: INACCESSIBLE
+    post:
+      deprecated: false
+      description: 'Use this API to submit a bulk edit request and simultaneously edit multiple issues. There are limits applied to the number of issues and fields that can be edited. A single request can accommodate a maximum of 1000 issues (including subtasks) and 200 fields.
+
+
+        **Permissions required:**
+
+
+        * Global bulk change permission.
+
+        * Browse project permission in all projects that contain the selected issues.
+
+        * Edit issues permission in all projects that contain the selected issues.
+
+        * If issue-level security is configured, issue-level security permission to view the issue.'
+      operationId: submitBulkEdit
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueBulkEditPayload'
+        description: The request body containing the issues to be edited and the new field values.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example: '{"taskId":"10641"}'
+              schema:
+                $ref: '#/components/schemas/SubmittedBulkOperation'
+          description: Returned if the request is successful.
+        '400':
+          content:
+            application/json:
+              example: '{"errors":[{"message":"The following editedFieldInput values are not listed as selectedActions : issuetype"}]}'
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the request is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the authentication credentials are incorrect or missing.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - write:jira-work
+      summary: Bulk edit issues
+      tags:
+      - Issue bulk operations
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - write:jira-work
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:issue:jira
+        - read:issue:jira
+        state: Beta
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/bulk/issues/move:
+    post:
+      deprecated: false
+      description: 'Use this API to submit a bulk issue move request. You can move multiple issues from multiple projects in a single request, but they must all be moved to a single project, issue type, and parent. You can''t move more than 1000 issues (including subtasks) at once.
+
+
+        #### Scenarios: ####
+
+
+        This is an early version of the API and it doesn''t have full feature parity with the Bulk Move UI experience.
+
+
+        * Moving issue of type A to issue of type B in the same project or a different project: `SUPPORTED`
+
+        * Moving multiple issues of type A in one or more projects to multiple issues of type B in one of the source projects or a different project: `SUPPORTED`
+
+        * Moving issues of multiple issue types in one or more projects to issues of a single issue type in one of the source project or a different project: **`SUPPORTED`**
+
+        E.g. Moving issues of story and task issue types in project 1 and project 2 to issues of task issue type in project 3
+
+        * Moving a standard parent issue of type A with its multiple subtask issue types in one project to standard issue of type B and multiple subtask issue types in the same project or a different project: `SUPPORTED`
+
+        * Moving standard issues with their subtasks to a parent issue in the same project or a different project without losing their relation: `SUPPORTED`
+
+        * Moving an epic issue with its child issues to a different project without losing their relation: `SUPPORTED`
+
+        This usecase is **supported using multiple requests**. Move the epic in one request and then move the children in a separate request with target parent set to the epic issue id
+
+
+        (Alternatively, move them individually and stitch the relationship back with the Bulk Edit API)
+
+
+        #### Limits applied to bulk issue moves: ####
+
+
+        When using the bulk move, keep in mind that there are limits on the number of issues and fields you can include.
+
+
+        * You can move up to 1,000 issues in a single operation, including any subtasks.
+
+        * The total combined number of fields across all issues must not exceed 1,500,000. For example, if each issue includes 15,000 fields, then the maximum number of issues that can be moved is 100.
+
+
+        **Permissions required:**
+
+
+        * Global bulk change permission.
+
+        * Move issues permission in source projects.
+
+        * Create issues permission in destination projects.
+
+        * Browse project permission in destination projects, if moving subtasks only.
+
+        * If issue-level security is configured, issue-level security permission to view the issue.'
+      operationId: submitBulkMove
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              sendBulkNotification: true
+              targetToSourcesMapping:
+                PROJECT-KEY,10001:
+                  inferClassificationDefaults: false
+                  inferFieldDefaults: false
+                  inferStatusDefaults: false
+                  inferSubtaskTypeDefault: true
+                  issueIdsOrKeys:
+                  - ISSUE-1
+                  targetClassification:
+                  - classifications:
+                      5bfa70f7-4af1-44f5-9e12-1ce185f15a38:
+                      - bd58e74c-c31b-41a7-ba69-9673ebd9dae9
+                      - '-1'
+                  targetMandatoryFields:
+                  - fields:
+                      customfield_10000:
+                        retain: false
+                        type: raw
+                        value:
+                        - value-1
+                        - value-2
+                      description:
+                        retain: true
+                        type: adf
+                        value:
+                          content:
+                          - content:
+                            - text: New description value
+                              type: text
+                            type: paragraph
+                          type: doc
+                          version: 1
+                      fixVersions:
+                        retain: false
+                        type: raw
+                        value:
+                        - '10009'
+                      labels:
+                        retain: false
+                        type: raw
+                        value:
+                        - label-1
+                        - label-2
+                  targetStatus:
+                  - statuses:
+                      '10001':
+                      - '10002'
+                      - '10003'
+            schema:
+              $ref: '#/components/schemas/IssueBulkMovePayload'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example: '{"taskId":"10641"}'
+              schema:
+                $ref: '#/components/schemas/SubmittedBulkOperation'
+          description: Returned if the request is successful.
+        '400':
+          content:
+            application/json:
+              example: '{"errors":[{"message":"Some of the issues in the issueIdsOrKeys are not valid"}]}'
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the request is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the authentication credentials are incorrect or missing.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - write:jira-work
+      summary: Bulk move issues
+      tags:
+      - Issue bulk operations
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - write:jira-work
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:issue:jira
+        - read:issue:jira
+        state: Beta
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/bulk/issues/transition:
+    get:
+      deprecated: false
+      description: 'Use this API to retrieve a list of transitions available for the specified issues that can be used or bulk transition operations. You can submit either single or multiple issues in the query to obtain the available transitions.
+
+
+        The response will provide the available transitions for issues, organized by their respective workflows. **Only the transitions that are common among the issues within that workflow and do not involve any additional field updates will be included.** For bulk transitions that require additional field updates, please utilise the Jira Cloud UI.
+
+
+        You can request available transitions for up to 1,000 issues in a single operation. This API uses pagination to return responses, delivering 50 workflows at a time.
+
+
+        **Permissions required:**
+
+
+        * Global bulk change permission.
+
+        * Transition issues permission in all projects that contain the selected issues.
+
+        * Browse project permission in all projects that contain the selected issues.
+
+        * If issue-level security is configured, issue-level security permission to view the issue.'
+      operationId: getAvailableTransitions
+      parameters:
+      - description: Comma (,) separated Ids or keys of the issues to get transitions available for them.
+        in: query
+        name: issueIdsOrKeys
+        required: true
+        schema:
+          type: string
+      - description: (Optional)The end cursor for use in pagination.
+        in: query
+        name: endingBefore
+        schema:
+          type: string
+      - description: (Optional)The start cursor for use in pagination.
+        in: query
+        name: startingAfter
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"availableTransitions":[{"isTransitionsFiltered":false,"issues":["EPIC-1","TASK-1"],"transitions":[{"to":{"statusId":10001,"statusName":"To Do"},"transitionId":11,"transitionName":"To Do"},{"to":{"statusId":10002,"statusName":"In Progress"},"transitionId":21,"transitionName":"In Progress"},{"to":{"statusId":10003,"statusName":"Done"},"transitionId":31,"transitionName":"Done"}]},{"isTransitionsFiltered":true,"issues":["BUG-1"],"transitions":[{"to":{"statusId":10004,"statusName":"To Do bug"},"transitionId":41,"transitionName":"To Do bug"},{"to":{"statusId":10005,"statusName":"Triage"},"transitionId":51,"transitionName":"Triage"}]}]}'
+              schema:
+                $ref: '#/components/schemas/BulkTransitionGetAvailableTransitions'
+          description: Returned if the request is successful.
+        '400':
+          content:
+            application/json:
+              example: '{"errors":[{"message":"Some of the issues in the issueIdsOrKeys are not valid"}]}'
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the request is not valid. For example, if a provided issue ID or key is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the user does not have the necessary permission.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - read:jira-work
+      summary: Get available transitions
+      tags:
+      - Issue bulk operations
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:jira-work
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:issue:jira
+        state: Beta
+      x-atlassian-connect-scope: INACCESSIBLE
+    post:
+      deprecated: false
+      description: 'Use this API to submit a bulk issue status transition request. You can transition multiple issues, alongside with their valid transition Ids. You can transition up to 1,000 issues in a single operation.
+
+
+        **Permissions required:**
+
+
+        * Global bulk change permission.
+
+        * Transition issues permission in all projects that contain the selected issues.
+
+        * Browse project permission in all projects that contain the selected issues.
+
+        * If issue-level security is configured, issue-level security permission to view the issue.'
+      operationId: submitBulkTransition
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              bulkTransitionInputs:
+              - selectedIssueIdsOrKeys:
+                - '10001'
+                - '10002'
+                transitionId: '11'
+              - selectedIssueIdsOrKeys:
+                - TEST-1
+                transitionId: '2'
+              sendBulkNotification: false
+            schema:
+              $ref: '#/components/schemas/IssueBulkTransitionPayload'
+        description: The request body containing the issues to be transitioned.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example: '{"taskId":"10641"}'
+              schema:
+                $ref: '#/components/schemas/SubmittedBulkOperation'
+          description: Returned if the request is successful.
+        '400':
+          content:
+            application/json:
+              example: '{"errors":[{"message":"Some of the issues in the issueIdsOrKeys are not valid"}]}'
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the request is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the user does not have the necessary permission.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - write:jira-work
+      summary: Bulk transition issue statuses
+      tags:
+      - Issue bulk operations
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - write:jira-work
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:issue:jira
+        - read:issue:jira
+        state: Beta
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/bulk/issues/unwatch:
+    post:
+      deprecated: false
+      description: 'Use this API to submit a bulk unwatch request. You can unwatch up to 1,000 issues in a single operation.
+
+
+        **Permissions required:**
+
+
+        * Global bulk change permission.
+
+        * Browse project permission in all projects that contain the selected issues.
+
+        * If issue-level security is configured, issue-level security permission to view the issue.'
+      operationId: submitBulkUnwatch
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              selectedIssueIdsOrKeys:
+              - '10001'
+              - '10002'
+            schema:
+              $ref: '#/components/schemas/IssueBulkWatchOrUnwatchPayload'
+        description: The request body containing the issues to be unwatched.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example: '{"taskId":"10641"}'
+              schema:
+                $ref: '#/components/schemas/SubmittedBulkOperation'
+          description: Returned if the request is successful.
+        '400':
+          content:
+            application/json:
+              example: '{"errors":[{"message":"Some of the issues in the issueIdsOrKeys are not valid"}]}'
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the request is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the user does not have the necessary permission.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - write:jira-work
+      summary: Bulk unwatch issues
+      tags:
+      - Issue bulk operations
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - write:jira-work
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:issue:jira
+        - read:issue:jira
+        state: Beta
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/bulk/issues/watch:
+    post:
+      deprecated: false
+      description: 'Use this API to submit a bulk watch request. You can watch up to 1,000 issues in a single operation.
+
+
+        **Permissions required:**
+
+
+        * Global bulk change permission.
+
+        * Browse project permission in all projects that contain the selected issues.
+
+        * If issue-level security is configured, issue-level security permission to view the issue.'
+      operationId: submitBulkWatch
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              selectedIssueIdsOrKeys:
+              - '10001'
+              - '10002'
+            schema:
+              $ref: '#/components/schemas/IssueBulkWatchOrUnwatchPayload'
+        description: The request body containing the issues to be watched.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example: '{"taskId":"10641"}'
+              schema:
+                $ref: '#/components/schemas/SubmittedBulkOperation'
+          description: Returned if the request is successful.
+        '400':
+          content:
+            application/json:
+              example: '{"errors":[{"message":"Some of the issues in the issueIdsOrKeys are not valid"}]}'
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the request is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the authentication credentials are incorrect or missing.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the user does not have the necessary permission.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - write:jira-work
+      summary: Bulk watch issues
+      tags:
+      - Issue bulk operations
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - write:jira-work
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:issue:jira
+        - read:issue:jira
+        state: Beta
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/bulk/queue/{taskId}:
+    get:
+      deprecated: false
+      description: 'Use this to get the progress state for the specified bulk operation `taskId`.
+
+
+        **Permissions required:**
+
+
+        * Global bulk change permission.
+
+
+        If the task is running, this resource will return:
+
+
+        {"taskId":"10779","status":"RUNNING","progressPercent":65,"submittedBy":{"accountId":"5b10a2844c20165700ede21g"},"created":1690180055963,"started":1690180056206,"updated":169018005829}
+
+
+        If the task has completed, then this resource will return:
+
+
+        {"processedAccessibleIssues":[10001,10002],"created":1709189449954,"progressPercent":100,"started":1709189450154,"status":"COMPLETE","submittedBy":{"accountId":"5b10a2844c20165700ede21g"},"invalidOrInaccessibleIssueCount":0,"taskId":"10000","totalIssueCount":2,"updated":1709189450354}
+
+
+        **Note:** You can view task progress for up to 14 days from creation.'
+      operationId: getBulkOperationProgress
+      parameters:
+      - description: The ID of the task.
+        in: path
+        name: taskId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example: '{"created":1704110400000,"invalidOrInaccessibleIssueCount":0,"processedAccessibleIssues":[10001,10002],"progressPercent":100,"started":1704110460000,"status":"COMPLETE","submittedBy":{"accountId":"5b10a2844c20165700ede21g"},"taskId":"10000","totalIssueCount":2,"updated":1704110520000}'
+              schema:
+                $ref: '#/components/schemas/BulkOperationProgress'
+          description: Returned if the request is successful.
+        '400':
+          content:
+            application/json:
+              example: '{"errorMessages":["The task associated with this taskId is not a bulk operation task"],"errors":{},"httpStatusCode":{"empty":false,"present":true}}'
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the request is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationErrorResponse'
+          description: Returned if the authentication credentials are incorrect or missing.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - read:jira-work
+      summary: Get bulk issue operation progress
+      tags:
+      - Issue bulk operations
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:jira-work
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:issue:jira
+        state: Beta
+      x-atlassian-connect-scope: INACCESSIBLE
+components:
+  schemas:
+    JiraDateField:
+      additionalProperties: false
+      properties:
+        date:
+          $ref: '#/components/schemas/JiraDateInput'
+        fieldId:
+          type: string
+      required:
+      - fieldId
+      type: object
+    targetClassification:
+      additionalProperties: false
+      description: Classification mapping for classifications in source issues to respective target classification.
+      properties:
+        classifications:
+          additionalProperties:
+            items:
+              type: string
+              writeOnly: true
+            type: array
+            writeOnly: true
+          description: An object with the key as the ID of the target classification and value with the list of the IDs of the current source classifications.
+          type: object
+          writeOnly: true
+        issueType:
+          description: ID of the source issueType to which issues present in `issueIdOrKeys` belongs.
+          type: string
+          writeOnly: true
+        projectKeyOrId:
+          description: ID or key of the source project to which issues present in `issueIdOrKeys` belongs.
+          type: string
+          writeOnly: true
+      required:
+      - classifications
+      type:
+      - object
+      - 'null'
+      writeOnly: true
+    targetToSourcesMapping:
+      additionalProperties: false
+      description: An object representing the mapping of issues and data related to destination entities, like fields and statuses, that are required during a bulk move.
+      properties:
+        inferClassificationDefaults:
+          description: 'If `true`, when issues are moved into this target group, they will adopt the target project''s default classification, if they don''t have a classification already. If they do have a classification, it will be kept the same even after the move. Leave `targetClassification` empty when using this.
+
+
+            If `false`, you must provide a `targetClassification` mapping for each classification associated with the selected issues.
+
+
+            [Benefit from data classification](https://support.atlassian.com/security-and-access-policies/docs/what-is-data-classification/)'
+          type: boolean
+          writeOnly: true
+        inferFieldDefaults:
+          description: 'If `true`, values from the source issues will be retained for the mandatory fields in the field configuration of the destination project. The `targetMandatoryFields` property shouldn''t be defined.
+
+
+            If `false`, the user is required to set values for mandatory fields present in the field configuration of the destination project. Provide input by defining the `targetMandatoryFields` property'
+          type: boolean
+          writeOnly: true
+        inferStatusDefaults:
+          description: 'If `true`, the statuses of issues being moved in this target group that are not present in the target workflow will be changed to the default status of the target workflow (see below). Leave `targetStatus` empty when using this.
+
+
+            If `false`, you must provide a `targetStatus` for each status not present in the target workflow.
+
+
+            The default status in a workflow is referred to as the "initial status". Each workflow has its own unique initial status. When an issue is created, it is automatically assigned to this initial status. Read more about configuring initial statuses: [Configure the initial status | Atlassian Support.](https://support.atlassian.com/jira-cloud-administration/docs/configure-the-initial-status/)'
+          type: boolean
+          writeOnly: true
+        inferSubtaskTypeDefault:
+          description: "When an issue is moved, its subtasks (if there are any) need to be moved with it. `inferSubtaskTypeDefault` helps with moving the subtasks by picking a random subtask type in the target project.\n\nIf `true`, subtasks will automatically move to the same project as their parent.\n\nWhen they move:\n\n *  Their `issueType` will be set to the default for subtasks in the target project.\n *  Values for mandatory fields will be retained from the source issues\n *  Specifying separate mapping for implicit subtasks won’t be allowed.\n\nIf `false`, you must manually move the subtasks. They will retain the parent which they had in the current project after being moved."
+          type: boolean
+          writeOnly: true
+        issueIdsOrKeys:
+          description: List of issue IDs or keys to be moved.
+          items:
+            type: string
+            writeOnly: true
+          type: array
+          writeOnly: true
+        targetClassification:
+          description: "List of the objects containing classifications in the source issues and their new values which need to be set during the bulk move operation.\n\nIt is mandatory to provide source classification to target classification mapping when the source classification is invalid for the target project and issue type.\n\n *  **You should only define this property when `inferClassificationDefaults` is `false`.**\n *  **In order to provide mapping for issues which don't have a classification, use `\"-1\"`.**"
+          items:
+            $ref: '#/components/schemas/targetClassification'
+          type:
+          - array
+          - 'null'
+          writeOnly: true
+        targetMandatoryFields:
+          description: 'List of objects containing mandatory fields in the target field configuration and new values that need to be set during the bulk move operation.
+
+
+            The new values will only be applied if the field is mandatory in the target project and at least one issue from the source has that field empty, or if the field context is different in the target project (e.g. project-scoped version fields).
+
+
+            **You should only define this property when `inferFieldDefaults` is `false`.**'
+          items:
+            $ref: '#/components/schemas/targetMandatoryFields'
+          type:
+          - array
+          - 'null'
+          writeOnly: true
+        targetStatus:
+          description: 'List of the objects containing statuses in the source workflow and their new values which need to be set during the bulk move operation.
+
+
+            The new values will only be applied if the source status is invalid for the target project and issue type.
+
+
+            It is mandatory to provide source status to target status mapping when the source status is invalid for the target project and issue type.
+
+
+            **You should only define this property when `inferStatusDefaults` is `false`.**'
+          items:
+            $ref: '#/components/schemas/targetStatus'
+          type:
+          - array
+          - 'null'
+          writeOnly: true
+      required:
+      - inferClassificationDefaults
+      - inferFieldDefaults
+      - inferStatusDefaults
+      - inferSubtaskTypeDefault
+      - issueIdOrKeys
+      type: object
+    JiraSingleSelectField:
+      additionalProperties: false
+      description: "Add or clear a single select field:\n\n *  To add, specify the option with an `optionId`.\n *  To clear, pass an option with `optionId` as `-1`."
+      properties:
+        fieldId:
+          type: string
+        option:
+          $ref: '#/components/schemas/JiraSelectedOptionField'
+      required:
+      - fieldId
+      - option
+      type: object
+    JiraTimeTrackingField:
+      additionalProperties: false
+      properties:
+        timeRemaining:
+          type: string
+      required:
+      - timeRemaining
+      type: object
+    SimpleListWrapperApplicationRole:
+      additionalProperties: false
+      properties:
+        callback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        items:
+          items:
+            $ref: '#/components/schemas/ApplicationRole'
+          type: array
+        max-results:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+            name: max-results
+        pagingCallback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        size:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+      type: object
+      xml:
+        name: list
+    IssueBulkEditPayload:
+      additionalProperties: false
+      description: Issue Bulk Edit Payload
+      properties:
+        editedFieldsInput:
+          allOf:
+          - $ref: '#/components/schemas/JiraIssueFields'
+          description: An object that defines the values to be updated in specified fields of an issue. The structure and content of this parameter vary depending on the type of field being edited. Although the order is not significant, ensure that field IDs align with those in selectedActions.
+        selectedActions:
+          description: List of all the field IDs that are to be bulk edited. Each field ID in this list corresponds to a specific attribute of an issue that is set to be modified in the bulk edit operation. The relevant field ID can be obtained by calling the Bulk Edit Get Fields REST API (documentation available on this page itself).
+          items:
+            type: string
+            writeOnly: true
+          type: array
+          writeOnly: true
+        selectedIssueIdsOrKeys:
+          description: List of issue IDs or keys which are to be bulk edited. These IDs or keys can be from different projects and issue types.
+          items:
+            type: string
+            writeOnly: true
+          type: array
+          writeOnly: true
+        sendBulkNotification:
+          default: true
+          description: 'A boolean value that indicates whether to send a bulk change notification when the issues are being edited.
+
+
+            If `true`, dispatches a bulk notification email to users about the updates.'
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+      required:
+      - editedFieldsInput
+      - selectedActions
+      - selectedIssueIdsOrKeys
+      type: object
+    fields:
+      additionalProperties: false
+      anyOf:
+      - $ref: '#/components/schemas/MandatoryFieldValue'
+      - $ref: '#/components/schemas/MandatoryFieldValueForADF'
+      description: Can contain multiple field values of following types depending on `type` key
+      discriminator:
+        mapping:
+          mandatoryField: '#/components/schemas/MandatoryFieldValue'
+          mandatoryFieldForADF: '#/components/schemas/MandatoryFieldValueForADF'
+        propertyName: type
+      properties:
+        retain:
+          default: true
+          description: If `true`, will try to retain original non-null issue field values on move.
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        type:
+          enum:
+          - adf
+          - raw
+          type: string
+        value:
+          type: object
+      type: object
+      writeOnly: true
+    JiraIssueFields:
+      additionalProperties: false
+      properties:
+        cascadingSelectFields:
+          description: "Add or clear a cascading select field:\n\n *  To add, specify `optionId` for both parent and child.\n *  To clear the child, set its `optionId` to null.\n *  To clear both, set the parent's `optionId` to null."
+          items:
+            $ref: '#/components/schemas/JiraCascadingSelectField'
+          type: array
+        clearableNumberFields:
+          description: "Add or clear a number field:\n\n *  To add, specify a numeric `value`.\n *  To clear, set `value` to `null`."
+          items:
+            $ref: '#/components/schemas/JiraNumberField'
+          type: array
+        colorFields:
+          description: "Add or clear a color field:\n\n *  To add, specify the color `name`. Available colors are: `purple`, `blue`, `green`, `teal`, `yellow`, `orange`, `grey`, `dark purple`, `dark blue`, `dark green`, `dark teal`, `dark yellow`, `dark orange`, `dark grey`.\n *  To clear, set the color `name` to an empty string."
+          items:
+            $ref: '#/components/schemas/JiraColorField'
+          type: array
+        datePickerFields:
+          description: "Add or clear a date picker field:\n\n *  To add, specify the date in `d/mmm/yy` format or ISO format `dd-mm-yyyy`.\n *  To clear, set `formattedDate` to an empty string."
+          items:
+            $ref: '#/components/schemas/JiraDateField'
+          type: array
+        dateTimePickerFields:
+          description: "Add or clear the planned start date and time:\n\n *  To add, specify the date and time in ISO format for `formattedDateTime`.\n *  To clear, provide an empty string for `formattedDateTime`."
+          items:
+            $ref: '#/components/schemas/JiraDateTimeField'
+          type: array
+        issueType:
+          allOf:
+          - $ref: '#/components/schemas/JiraIssueTypeField'
+          description: Set the issue type field by providing an `issueTypeId`.
+        labelsFields:
+          description: "Edit a labels field:\n\n *  Options include `ADD`, `REPLACE`, `REMOVE`, or `REMOVE_ALL` for bulk edits.\n *  To clear labels, use the `REMOVE_ALL` option with an empty `labels` array."
+          items:
+            $ref: '#/components/schemas/JiraLabelsField'
+          type: array
+        multipleGroupPickerFields:
+          description: "Add or clear a multi-group picker field:\n\n *  To add groups, provide an array of groups with `groupName`s.\n *  To clear all groups, use an empty `groups` array."
+          items:
+            $ref: '#/components/schemas/JiraMultipleGroupPickerField'
+          type: array
+        multipleSelectClearableUserPickerFields:
+          description: "Assign or unassign multiple users to/from a field:\n\n *  To assign, provide an array of user `accountId`s.\n *  To clear, set `users` to `null`."
+          items:
+            $ref: '#/components/schemas/JiraMultipleSelectUserPickerField'
+          type: array
+        multipleSelectFields:
+          description: "Add or clear a multi-select field:\n\n *  To add, provide an array of options with `optionId`s.\n *  To clear, use an empty `options` array."
+          items:
+            $ref: '#/components/schemas/JiraMultipleSelectField'
+          type: array
+        multipleVersionPickerFields:
+          description: "Edit a multi-version picker field like Fix Versions/Affects Versions:\n\n *  Options include `ADD`, `REPLACE`, `REMOVE`, or `REMOVE_ALL` for bulk edits.\n *  To clear the field, use the `REMOVE_ALL` option with an empty `versions` array."
+          items:
+            $ref: '#/components/schemas/JiraMultipleVersionPickerField'
+          type: array
+        multiselectComponents:
+          allOf:
+          - $ref: '#/components/schemas/JiraMultiSelectComponentField'
+          description: "Edit a multi select components field:\n\n *  Options include `ADD`, `REPLACE`, `REMOVE`, or `REMOVE_ALL` for bulk edits.\n *  To clear, use the `REMOVE_ALL` option with an empty `components` array."
+        originalEstimateField:
+          allOf:
+          - $ref: '#/components/schemas/JiraDurationField'
+          description: Edit the original estimate field.
+        priority:
+          allOf:
+          - $ref: '#/components/schemas/JiraPriorityField'
+          description: Set the priority of an issue by specifying a `priorityId`.
+        richTextFields:
+          description: "Add or clear a rich text field:\n\n *  To add, provide `adfValue`. Note that rich text fields only support ADF values.\n *  To clear, use an empty `richText` object.\n\nFor ADF format details, refer to: [Atlassian Document Format](https://developer.atlassian.com/cloud/jira/platform/apis/document/structure)."
+          items:
+            $ref: '#/components/schemas/JiraRichTextField'
+          type: array
+        singleGroupPickerFields:
+          description: "Add or clear a single group picker field:\n\n *  To add, specify the group with `groupName`.\n *  To clear, set `groupName` to an empty string."
+          items:
+            $ref: '#/components/schemas/JiraSingleGroupPickerField'
+          type: array
+        singleLineTextFields:
+          description: "Add or clear a single line text field:\n\n *  To add, provide the `text` value.\n *  To clear, set `text` to an empty string."
+          items:
+            $ref: '#/components/schemas/JiraSingleLineTextField'
+          type: array
+        singleSelectClearableUserPickerFields:
+          description: "Edit assignment for single select user picker fields like Assignee/Reporter:\n\n *  To assign an issue, specify the user's `accountId`.\n *  To unassign an issue, set `user` to `null`.\n *  For automatic assignment, set `accountId` to `-1`."
+          items:
+            $ref: '#/components/schemas/JiraSingleSelectUserPickerField'
+          type: array
+        singleSelectFields:
+          description: "Add or clear a single select field:\n\n *  To add, specify the option with an `optionId`.\n *  To clear, pass an option with `optionId` as `-1`."
+          items:
+            $ref: '#/components/schemas/JiraSingleSelectField'
+          type: array
+        singleVersionPickerFields:
+          description: "Add or clear a single version picker field:\n\n *  To add, specify the version with a `versionId`.\n *  To clear, set `versionId` to `-1`."
+          items:
+            $ref: '#/components/schemas/JiraSingleVersionPickerField'
+          type: array
+        status:
+          $ref: '#/components/schemas/JiraStatusInput'
+        timeTrackingField:
+          allOf:
+          - $ref: '#/components/schemas/JiraTimeTrackingField'
+          description: Edit the time tracking field.
+        urlFields:
+          description: "Add or clear a URL field:\n\n *  To add, provide the `url` with the desired URL value.\n *  To clear, set `url` to an empty string."
+          items:
+            $ref: '#/components/schemas/JiraUrlField'
+          type: array
+      type: object
+      writeOnly: true
+    JiraPriorityField:
+      additionalProperties: false
+      properties:
+        priorityId:
+          type: string
+      required:
+      - priorityId
+      type: object
+    ApplicationRole:
+      additionalProperties: false
+      description: Details of an application role.
+      properties:
+        defaultGroups:
+          description: The groups that are granted default access for this application role. As a group's name can change, use of `defaultGroupsDetails` is recommended to identify a groups.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        defaultGroupsDetails:
+          description: The groups that are granted default access for this application role.
+          items:
+            $ref: '#/components/schemas/GroupName'
+          type: array
+        defined:
+          description: Deprecated.
+          type: boolean
+        groupDetails:
+          description: The groups associated with the application role.
+          items:
+            $ref: '#/components/schemas/GroupName'
+          type: array
+        groups:
+          description: The groups associated with the application role. As a group's name can change, use of `groupDetails` is recommended to identify a groups.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        hasUnlimitedSeats:
+          type: boolean
+        key:
+          description: The key of the application role.
+          type: string
+        name:
+          description: The display name of the application role.
+          type: string
+        numberOfSeats:
+          description: The maximum count of users on your license.
+          format: int32
+          type: integer
+        platform:
+          description: Indicates if the application role belongs to Jira platform (`jira-core`).
+          type: boolean
+        remainingSeats:
+          description: The count of users remaining on your license.
+          format: int32
+          type: integer
+        selectedByDefault:
+          description: Determines whether this application role should be selected by default on user creation.
+          type: boolean
+        userCount:
+          description: The number of users counting against your license.
+          format: int32
+          type: integer
+        userCountDescription:
+          description: The [type of users](https://confluence.atlassian.com/x/lRW3Ng) being counted against your license.
+          type: string
+      type: object
+    BulkOperationProgress:
+      additionalProperties: false
+      properties:
+        created:
+          description: A timestamp of when the task was submitted.
+          format: date-time
+          type: string
+        failedAccessibleIssues:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: Map of issue IDs for which the operation failed and that the user has permission to view, to their one or more reasons for failure. These reasons are open-ended text descriptions of the error and are not selected from a predefined list of standard reasons.
+          type: object
+        invalidOrInaccessibleIssueCount:
+          description: The number of issues that are either invalid or issues that the user doesn't have permission to view, regardless of the success or failure of the operation.
+          format: int32
+          type: integer
+        processedAccessibleIssues:
+          description: List of issue IDs for which the operation was successful and that the user has permission to view.
+          items:
+            format: int64
+            type: integer
+          type: array
+        progressPercent:
+          description: Progress of the task as a percentage.
+          format: int64
+          type: integer
+        started:
+          description: A timestamp of when the task was started.
+          format: date-time
+          type: string
+        status:
+          description: The status of the task.
+          enum:
+          - ENQUEUED
+          - RUNNING
+          - COMPLETE
+          - FAILED
+          - CANCEL_REQUESTED
+          - CANCELLED
+          - DEAD
+          type: string
+        submittedBy:
+          $ref: '#/components/schemas/User'
+        taskId:
+          description: The ID of the task.
+          readOnly: true
+          type: string
+        totalIssueCount:
+          description: The number of issues that the bulk operation was attempted on.
+          format: int32
+          type: integer
+        updated:
+          description: A timestamp of when the task progress was last updated.
+          format: date-time
+          type: string
+      type: object
+    User:
+      additionalProperties: false
+      description: "A user with details as permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
+      properties:
+        accountId:
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*. Required in requests.
+          maxLength: 128
+          type: string
+        accountType:
+          description: "The user account type. Can take the following values:\n\n *  `atlassian` regular Atlassian user account\n *  `app` system account used for Connect applications and OAuth to represent external systems\n *  `customer` Jira Service Desk account representing an external service desk"
+          enum:
+          - atlassian
+          - app
+          - customer
+          - unknown
+          readOnly: true
+          type: string
+        active:
+          description: Whether the user is active.
+          readOnly: true
+          type: boolean
+        appType:
+          description: "The app type of the user account when accountType is 'app'. Can take the following values:\n\n *  `service` Service Account\n *  `agent` Rovo Agent Account\n *  `unknown` Unknown app type"
+          readOnly: true
+          type: string
+        applicationRoles:
+          allOf:
+          - $ref: '#/components/schemas/SimpleListWrapperApplicationRole'
+          description: The application roles the user is assigned to.
+          readOnly: true
+        avatarUrls:
+          allOf:
+          - $ref: '#/components/schemas/AvatarUrlsBean'
+          description: The avatars of the user.
+          readOnly: true
+        displayName:
+          description: The display name of the user. Depending on the user’s privacy setting, this may return an alternative value.
+          readOnly: true
+          type: string
+        emailAddress:
+          description: The email address of the user. Depending on the user’s privacy setting, this may be returned as null.
+          readOnly: true
+          type: string
+        expand:
+          description: Expand options that include additional user details in the response.
+          readOnly: true
+          type: string
+          xml:
+            attribute: true
+        groups:
+          allOf:
+          - $ref: '#/components/schemas/SimpleListWrapperGroupName'
+          description: The groups that the user belongs to.
+          readOnly: true
+        guest:
+          description: Whether the user is a guest.
+          readOnly: true
+          type: boolean
+        key:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        locale:
+          description: The locale of the user. Depending on the user’s privacy setting, this may be returned as null.
+          readOnly: true
+          type: string
+        name:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        self:
+          description: The URL of the user.
+          format: uri
+          readOnly: true
+          type: string
+        timeZone:
+          description: The time zone specified in the user's profile. If the user's time zone is not visible to the current user (due to user's profile setting), or if a time zone has not been set, the instance's default time zone will be returned.
+          readOnly: true
+          type: string
+      type: object
+      xml:
+        name: user
+    IssueBulkDeletePayload:
+      additionalProperties: false
+      description: Issue Bulk Delete Payload
+      properties:
+        selectedIssueIdsOrKeys:
+          description: List of issue IDs or keys which are to be bulk deleted. These IDs or keys can be from different projects and issue types.
+          items:
+            type: string
+            writeOnly: true
+          type: array
+          writeOnly: true
+        sendBulkNotification:
+          default: true
+          description: 'A boolean value that indicates whether to send a bulk change notification when the issues are being deleted.
+
+
+            If `true`, dispatches a bulk notification email to users about the updates.'
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+      required:
+      - selectedIssueIdsOrKeys
+      type: object
+    SimplifiedIssueTransition:
+      additionalProperties: false
+      properties:
+        to:
+          allOf:
+          - $ref: '#/components/schemas/IssueTransitionStatus'
+          description: The issue status change of the transition.
+          readOnly: true
+        transitionId:
+          description: The unique ID of the transition.
+          format: int32
+          readOnly: true
+          type: integer
+        transitionName:
+          description: The name of the transition.
+          readOnly: true
+          type: string
+      type: object
+    JiraNumberField:
+      additionalProperties: false
+      properties:
+        fieldId:
+          type: string
+        value:
+          format: double
+          type: number
+      required:
+      - fieldId
+      type: object
+    IssueBulkMovePayload:
+      additionalProperties: false
+      description: Issue Bulk Move Payload
+      properties:
+        sendBulkNotification:
+          default: true
+          description: 'A boolean value that indicates whether to send a bulk change notification when the issues are being moved.
+
+
+            If `true`, dispatches a bulk notification email to users about the updates.'
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        targetToSourcesMapping:
+          additionalProperties:
+            $ref: '#/components/schemas/targetToSourcesMapping'
+          description: "An object representing the mapping of issues and data related to destination entities, like fields and statuses, that are required during a bulk move.\n\nThe key is a string that is created by concatenating the following three entities in order, separated by commas. The format is `<project ID or key>,<issueType ID>,<parent ID or key>`. It should be unique across mappings provided in the payload. If you provide multiple mappings for the same key, only one will be processed. However, the operation won't fail, so the error may be hard to track down.\n\n *  ***Destination project*** (Required): ID or key of the project to which the issues are being moved.\n *  ***Destination issueType*** (Required): ID of the issueType to which the issues are being moved.\n *  ***Destination parent ID or key*** (Optional): ID or key of the issue which will become the parent of the issues being moved. Only required when the destination issueType is a subtask."
+          type: object
+      required:
+      - targetToMultipleSourceMapping
+      type: object
+    targetMandatoryFields:
+      additionalProperties: false
+      description: Field mapping for mandatory fields in target
+      properties:
+        fields:
+          additionalProperties:
+            $ref: '#/components/schemas/fields'
+          description: Contains the value of mandatory fields
+          type: object
+          writeOnly: true
+      required:
+      - fields
+      type:
+      - object
+      - 'null'
+      writeOnly: true
+    targetStatus:
+      additionalProperties: false
+      description: Status mapping for statuses in source workflow to respective target status in target workflow.
+      properties:
+        statuses:
+          additionalProperties:
+            items:
+              type: string
+              writeOnly: true
+            type: array
+            writeOnly: true
+          description: An object with the key as the ID of the target status and value with the list of the IDs of the current source statuses.
+          type: object
+          writeOnly: true
+      required:
+      - statuses
+      type:
+      - object
+      - 'null'
+      writeOnly: true
+    IssueTransitionStatus:
+      additionalProperties: false
+      properties:
+        statusId:
+          description: The unique ID of the status.
+          format: int32
+          readOnly: true
+          type: integer
+        statusName:
+          description: The name of the status.
+          readOnly: true
+          type: string
+      type: object
+    JiraLabelsInput:
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    JiraGroupInput:
+      additionalProperties: false
+      properties:
+        groupName:
+          type: string
+      required:
+      - groupName
+      type: object
+    JiraUrlField:
+      additionalProperties: false
+      properties:
+        fieldId:
+          type: string
+        url:
+          type: string
+      required:
+      - fieldId
+      - url
+      type: object
+    JiraMultipleVersionPickerField:
+      additionalProperties: false
+      properties:
+        bulkEditMultiSelectFieldOption:
+          enum:
+          - ADD
+          - REMOVE
+          - REPLACE
+          - REMOVE_ALL
+          type: string
+        fieldId:
+          type: string
+        versions:
+          items:
+            $ref: '#/components/schemas/JiraVersionField'
+          type: array
+      required:
+      - bulkEditMultiSelectFieldOption
+      - fieldId
+      - versions
+      type: object
+    SubmittedBulkOperation:
+      additionalProperties: false
+      properties:
+        taskId:
+          type: string
+      type: object
+    JiraMultiSelectComponentField:
+      additionalProperties: false
+      properties:
+        bulkEditMultiSelectFieldOption:
+          enum:
+          - ADD
+          - REMOVE
+          - REPLACE
+          - REMOVE_ALL
+          type: string
+        components:
+          items:
+            $ref: '#/components/schemas/JiraComponentField'
+          type: array
+        fieldId:
+          type: string
+      required:
+      - bulkEditMultiSelectFieldOption
+      - components
+      - fieldId
+      type: object
+    GroupName:
+      additionalProperties: false
+      description: Details about a group.
+      properties:
+        groupId:
+          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The name of group.
+          type: string
+        self:
+          description: The URL for these group details.
+          format: uri
+          readOnly: true
+          type: string
+      type: object
+    JiraVersionField:
+      additionalProperties: false
+      properties:
+        versionId:
+          type: string
+      type: object
+    JiraMultipleSelectField:
+      additionalProperties: false
+      properties:
+        fieldId:
+          type: string
+        options:
+          items:
+            $ref: '#/components/schemas/JiraSelectedOptionField'
+          type: array
+      required:
+      - fieldId
+      - options
+      type: object
+    JiraSingleGroupPickerField:
+      additionalProperties: false
+      properties:
+        fieldId:
+          type: string
+        group:
+          $ref: '#/components/schemas/JiraGroupInput'
+      required:
+      - fieldId
+      - group
+      type: object
+    JiraRichTextInput:
+      additionalProperties: false
+      properties:
+        adfValue:
+          additionalProperties: {}
+          type: object
+      type: object
+    BulkTransitionGetAvailableTransitions:
+      additionalProperties: false
+      description: Bulk Transition Get Available Transitions Response.
+      properties:
+        availableTransitions:
+          description: List of available transitions for bulk transition operation for requested issues grouped by workflow
+          items:
+            $ref: '#/components/schemas/IssueBulkTransitionForWorkflow'
+          readOnly: true
+          type: array
+        endingBefore:
+          description: The end cursor for use in pagination.
+          readOnly: true
+          type: string
+        startingAfter:
+          description: The start cursor for use in pagination.
+          readOnly: true
+          type: string
+      type: object
+    JiraColorInput:
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    JiraStatusInput:
+      additionalProperties: false
+      properties:
+        statusId:
+          type: string
+      required:
+      - statusId
+      type: object
+    JiraDateInput:
+      additionalProperties: false
+      properties:
+        formattedDate:
+          type: string
+      required:
+      - formattedDate
+      type: object
+    BulkTransitionSubmitInput:
+      additionalProperties: false
+      properties:
+        selectedIssueIdsOrKeys:
+          description: List of all the issue IDs or keys that are to be bulk transitioned.
+          items:
+            type: string
+            writeOnly: true
+          type: array
+          writeOnly: true
+        transitionId:
+          description: The ID of the transition that is to be performed on the issues.
+          type: string
+          writeOnly: true
+      required:
+      - selectedIssueIdsOrKeys
+      - transitionId
+      type: object
+      writeOnly: true
+    IssueBulkTransitionPayload:
+      additionalProperties: false
+      description: Issue Bulk Transition Payload
+      properties:
+        bulkTransitionInputs:
+          description: "List of objects and each object has two properties:\n\n *  Issues that will be bulk transitioned.\n *  TransitionId that corresponds to a specific transition of issues that share the same workflow."
+          items:
+            $ref: '#/components/schemas/BulkTransitionSubmitInput'
+          type: array
+          writeOnly: true
+        sendBulkNotification:
+          default: true
+          description: 'A boolean value that indicates whether to send a bulk change notification when the issues are being transitioned.
+
+
+            If `true`, dispatches a bulk notification email to users about the updates.'
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+      required:
+      - bulkTransitionInputs
+      type: object
+    JiraDurationField:
+      additionalProperties: false
+      properties:
+        originalEstimateField:
+          type: string
+      required:
+      - originalEstimateField
+      type: object
+    JiraMultipleGroupPickerField:
+      additionalProperties: false
+      properties:
+        fieldId:
+          type: string
+        groups:
+          items:
+            $ref: '#/components/schemas/JiraGroupInput'
+          type: array
+      required:
+      - fieldId
+      - groups
+      type: object
+    ListWrapperCallbackGroupName:
+      additionalProperties: false
+      type: object
+    IssueBulkEditField:
+      additionalProperties: false
+      properties:
+        description:
+          description: Description of the field.
+          type: string
+        fieldOptions:
+          description: A list of options related to the field, applicable in contexts where multiple selections are allowed.
+          items:
+            $ref: '#/components/schemas/IssueBulkOperationsFieldOption'
+          type: array
+        id:
+          description: The unique ID of the field.
+          type: string
+        isRequired:
+          description: Indicates whether the field is mandatory for the operation.
+          type: boolean
+        multiSelectFieldOptions:
+          description: Specifies supported actions (like add, replace, remove) on multi-select fields via an enum.
+          items:
+            enum:
+            - ADD
+            - REMOVE
+            - REPLACE
+            - REMOVE_ALL
+            type: string
+          type: array
+        name:
+          description: The display name of the field.
+          type: string
+        searchUrl:
+          description: A URL to fetch additional data for the field
+          type: string
+        type:
+          description: The type of the field.
+          type: string
+        unavailableMessage:
+          description: A message indicating why the field is unavailable for editing.
+          type: string
+      type: object
+    BulkOperationErrorResponse:
+      additionalProperties: false
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/ErrorMessage'
+          type: array
+      type: object
+    IssueBulkWatchOrUnwatchPayload:
+      additionalProperties: false
+      description: Issue Bulk Watch Or Unwatch Payload
+      properties:
+        selectedIssueIdsOrKeys:
+          description: List of issue IDs or keys which are to be bulk watched or unwatched. These IDs or keys can be from different projects and issue types.
+          items:
+            type: string
+            writeOnly: true
+          type: array
+          writeOnly: true
+      required:
+      - selectedIssueIdsOrKeys
+      type: object
+    JiraSelectedOptionField:
+      additionalProperties: false
+      properties:
+        optionId:
+          format: int64
+          type: integer
+      type: object
+    JiraComponentField:
+      additionalProperties: false
+      properties:
+        componentId:
+          format: int64
+          type: integer
+      required:
+      - componentId
+      type: object
+    MandatoryFieldValue:
+      description: List of string of inputs
+      properties:
+        retain:
+          default: true
+          description: If `true`, will try to retain original non-null issue field values on move.
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        type:
+          default: raw
+          description: Will treat as `MandatoryFieldValue` if type is `raw` or `empty`
+          enum:
+          - adf
+          - raw
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        value:
+          description: Value for each field. Provide a `list of strings` for non-ADF fields.
+          items:
+            description: Value for each field. Provide a <code>list of strings</code> for non-ADF fields.
+            type: string
+            writeOnly: true
+          type: array
+          writeOnly: true
+      required:
+      - value
+      type: object
+    JiraSingleSelectUserPickerField:
+      additionalProperties: false
+      properties:
+        fieldId:
+          type: string
+        user:
+          $ref: '#/components/schemas/JiraUserField'
+      required:
+      - fieldId
+      type: object
+    JiraRichTextField:
+      additionalProperties: false
+      properties:
+        fieldId:
+          type: string
+        richText:
+          $ref: '#/components/schemas/JiraRichTextInput'
+      required:
+      - fieldId
+      - richText
+      type: object
+    MandatoryFieldValueForADF:
+      description: An object notation input
+      properties:
+        retain:
+          default: true
+          description: If `true`, will try to retain original non-null issue field values on move.
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        type:
+          default: raw
+          description: Will treat as `MandatoryFieldValueForADF` if type is `adf`
+          enum:
+          - adf
+          - raw
+          type: string
+          writeOnly: true
+        value:
+          description: 'Value for each field. Accepts Atlassian Document Format (ADF) for rich text fields like `description`, `environments`. For ADF format details, refer to: [Atlassian Document Format](https://developer.atlassian.com/cloud/jira/platform/apis/document/structure)'
+          type: object
+          writeOnly: true
+      required:
+      - type
+      - value
+      type: object
+    SimpleListWrapperGroupName:
+      additionalProperties: false
+      properties:
+        callback:
+          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
+        items:
+          items:
+            $ref: '#/components/schemas/GroupName'
+          type: array
+        max-results:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+            name: max-results
+        pagingCallback:
+          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
+        size:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+      type: object
+      xml:
+        name: list
+    JiraLabelPropertiesInputJackson1:
+      additionalProperties: false
+      properties:
+        color:
+          enum:
+          - GREY_LIGHTEST
+          - GREY_LIGHTER
+          - GREY
+          - GREY_DARKER
+          - GREY_DARKEST
+          - PURPLE_LIGHTEST
+          - PURPLE_LIGHTER
+          - PURPLE
+          - PURPLE_DARKER
+          - PURPLE_DARKEST
+          - BLUE_LIGHTEST
+          - BLUE_LIGHTER
+          - BLUE
+          - BLUE_DARKER
+          - BLUE_DARKEST
+          - TEAL_LIGHTEST
+          - TEAL_LIGHTER
+          - TEAL
+          - TEAL_DARKER
+          - TEAL_DARKEST
+          - GREEN_LIGHTEST
+          - GREEN_LIGHTER
+          - GREEN
+          - GREEN_DARKER
+          - GREEN_DARKEST
+          - LIME_LIGHTEST
+          - LIME_LIGHTER
+          - LIME
+          - LIME_DARKER
+          - LIME_DARKEST
+          - YELLOW_LIGHTEST
+          - YELLOW_LIGHTER
+          - YELLOW
+          - YELLOW_DARKER
+          - YELLOW_DARKEST
+          - ORANGE_LIGHTEST
+          - ORANGE_LIGHTER
+          - ORANGE
+          - ORANGE_DARKER
+          - ORANGE_DARKEST
+          - RED_LIGHTEST
+          - RED_LIGHTER
+          - RED
+          - RED_DARKER
+          - RED_DARKEST
+          - MAGENTA_LIGHTEST
+          - MAGENTA_LIGHTER
+          - MAGENTA
+          - MAGENTA_DARKER
+          - MAGENTA_DARKEST
+          type: string
+        name:
+          type: string
+      type: object
+    JiraIssueTypeField:
+      additionalProperties: false
+      properties:
+        issueTypeId:
+          type: string
+      required:
+      - issueTypeId
+      type: object
+    JiraDateTimeInput:
+      additionalProperties: false
+      properties:
+        formattedDateTime:
+          type: string
+      required:
+      - formattedDateTime
+      type: object
+    JiraLabelsField:
+      additionalProperties: false
+      properties:
+        bulkEditMultiSelectFieldOption:
+          enum:
+          - ADD
+          - REMOVE
+          - REPLACE
+          - REMOVE_ALL
+          type: string
+        fieldId:
+          type: string
+        labelProperties:
+          items:
+            $ref: '#/components/schemas/JiraLabelPropertiesInputJackson1'
+          type: array
+        labels:
+          items:
+            $ref: '#/components/schemas/JiraLabelsInput'
+          type: array
+      required:
+      - bulkEditMultiSelectFieldOption
+      - fieldId
+      - labels
+      type: object
+    JiraMultipleSelectUserPickerField:
+      additionalProperties: false
+      properties:
+        fieldId:
+          type: string
+        users:
+          items:
+            $ref: '#/components/schemas/JiraUserField'
+          type: array
+      required:
+      - fieldId
+      type: object
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+          type: string
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
+      type: object
+    JiraSingleLineTextField:
+      additionalProperties: false
+      properties:
+        fieldId:
+          type: string
+        text:
+          type: string
+      required:
+      - fieldId
+      - text
+      type: object
+    JiraUserField:
+      additionalProperties: false
+      properties:
+        accountId:
+          type: string
+      required:
+      - accountId
+      type: object
+    BulkEditGetFields:
+      additionalProperties: false
+      description: Bulk Edit Get Fields Response.
+      properties:
+        endingBefore:
+          description: The end cursor for use in pagination.
+          readOnly: true
+          type: string
+        fields:
+          description: List of all the fields
+          items:
+            $ref: '#/components/schemas/IssueBulkEditField'
+          readOnly: true
+          type: array
+        startingAfter:
+          description: The start cursor for use in pagination.
+          readOnly: true
+          type: string
+      type: object
+    JiraDateTimeField:
+      additionalProperties: false
+      properties:
+        dateTime:
+          $ref: '#/components/schemas/JiraDateTimeInput'
+        fieldId:
+          type: string
+      required:
+      - dateTime
+      - fieldId
+      type: object
+    IssueBulkTransitionForWorkflow:
+      additionalProperties: false
+      properties:
+        isTransitionsFiltered:
+          description: Indicates whether all the transitions of this workflow are available in the transitions list or not.
+          readOnly: true
+          type: boolean
+        issues:
+          description: List of issue keys from the request which are associated with this workflow.
+          items:
+            readOnly: true
+            type: string
+          readOnly: true
+          type: array
+        transitions:
+          description: "List of transitions available for issues from the request which are associated with this workflow.\n\n **This list includes only those transitions that are common across the issues in this workflow and do not involve any additional field updates.** "
+          items:
+            $ref: '#/components/schemas/SimplifiedIssueTransition'
+          readOnly: true
+          type: array
+      type: object
+    ListWrapperCallbackApplicationRole:
+      additionalProperties: false
+      type: object
+    JiraColorField:
+      additionalProperties: false
+      properties:
+        color:
+          $ref: '#/components/schemas/JiraColorInput'
+        fieldId:
+          type: string
+      required:
+      - color
+      - fieldId
+      type: object
+    IssueBulkOperationsFieldOption:
+      additionalProperties: false
+      type: object
+    JiraCascadingSelectField:
+      additionalProperties: false
+      properties:
+        childOptionValue:
+          $ref: '#/components/schemas/JiraSelectedOptionField'
+        fieldId:
+          type: string
+        parentOptionValue:
+          $ref: '#/components/schemas/JiraSelectedOptionField'
+      required:
+      - fieldId
+      - parentOptionValue
+      type: object
+    JiraSingleVersionPickerField:
+      additionalProperties: false
+      properties:
+        fieldId:
+          type: string
+        version:
+          $ref: '#/components/schemas/JiraVersionField'
+      required:
+      - fieldId
+      - version
+      type: object
+    ErrorMessage:
+      additionalProperties: false
+      properties:
+        message:
+          type: string
+      type: object
+  securitySchemes:
+    OAuth2:
+      description: OAuth2 scopes for Jira
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          scopes:
+            delete:async-task:jira: Delete asynchronous task.
+            delete:attachment:jira: Delete issue attachments.
+            delete:avatar:jira: Delete system and custom avatars.
+            delete:comment.property:jira: Delete issue comment properties.
+            delete:comment:jira: Delete issue comments.
+            delete:dashboard.property:jira: Delete dashboard properties.
+            delete:dashboard:jira: Delete dashboards.
+            delete:field-configuration-scheme:jira: Delete field configuration schemes.
+            delete:field-configuration:jira: Delete field configurations.
+            delete:field.option:jira: Delete field options.
+            delete:field:jira: Delete fields.
+            delete:filter.column:jira: Delete filter columns.
+            delete:filter:jira: Delete filters.
+            delete:group:jira: Delete user groups.
+            delete:issue-link-type:jira: Delete issue link types.
+            delete:issue-link:jira: Delete issue links.
+            delete:issue-type-scheme:jira: Delete issue type schemes.
+            delete:issue-type-screen-scheme:jira: Delete issue type screen schemes.
+            delete:issue-type.property:jira: Delete issue type properties.
+            delete:issue-type:jira: Delete issue types.
+            delete:issue-worklog.property:jira: Delete issue worklog properties.
+            delete:issue-worklog:jira: Delete issue worklogs.
+            delete:issue.property:jira: Delete issue properties.
+            delete:issue.remote-link:jira: Delete issue remote links.
+            delete:issue:jira: Delete issues.
+            delete:permission-scheme:jira: Delete permission schemes.
+            delete:permission:jira: Delete permissions.
+            delete:project-category:jira: Delete project categories.
+            delete:project-role:jira: Delete project roles.
+            delete:project-version:jira: Delete project versions.
+            delete:project.avatar:jira: Delete project avatars.
+            delete:project.component:jira: Delete project components.
+            delete:project.property:jira: Delete project properties.
+            delete:project:jira: Delete projects and their details, such as issue types, project lead, and avatars.
+            delete:screen-scheme:jira: Delete screen schemes.
+            delete:screen-tab:jira: Delete screen tabs.
+            delete:screen:jira: Delete screens.
+            delete:screenable-field:jira: Delete screenable fields.
+            delete:user-configuration:jira: Delete user configurations.
+            delete:user.property:jira: Delete user properties.
+            delete:webhook:jira: Delete webhooks.
+            delete:workflow-scheme:jira: Delete workflow schemes.
+            delete:workflow.property:jira: Delete workflow properties.
+            delete:workflow:jira: Delete workflows.
+            manage:jira-configuration: Configure Jira settings that require the Jira administrators permission, for example, create projects and custom fields, view workflows, manage issue link types.
+            manage:jira-project: Create and edit project settings and create new project-level objects, for example, versions, components.
+            manage:jira-webhook: Manage Jira webhooks. Enables an OAuth app to register and unregister dynamic webhooks in Jira. It also provides for fetching of registered webhooks.
+            read:app-data:jira: Read app data.
+            read:application-role:jira: View application roles.
+            read:attachment:jira: View issue attachments.
+            read:audit-log:jira: View audit logs.
+            read:avatar:jira: View system and custom avatars.
+            read:comment.property:jira: View issue comment properties.
+            read:comment:jira: View issue comments.
+            read:custom-field-contextual-configuration:jira: Read custom field contextual configurations.
+            read:dashboard.property:jira: View dashboard properties.
+            read:dashboard:jira: View dashboards.
+            read:email-address:jira: View email addresses of all users regardless of the user's profile visibility settings.
+            read:field-configuration-scheme:jira: View field configuration schemes.
+            read:field-configuration:jira: Read field configurations.
+            read:field.default-value:jira: View field default values.
+            read:field.option:jira: View field options.
+            read:field.options:jira: Read field options.
+            read:field:jira: View fields.
+            read:filter.column:jira: View filter columns.
+            read:filter.default-share-scope:jira: View filter default share scopes.
+            read:filter:jira: View filters.
+            read:group:jira: View user groups.
+            read:instance-configuration:jira: View instance configurations.
+            read:issue-details:jira: View issue details.
+            read:issue-event:jira: Read issue events.
+            read:issue-field-values:jira: View issue field valueses.
+            read:issue-link-type:jira: View issue link types.
+            read:issue-link:jira: View issue links.
+            read:issue-meta:jira: View issue meta.
+            read:issue-security-level:jira: View issue security levels.
+            read:issue-security-scheme:jira: View issue security schemes.
+            read:issue-status:jira: View issue statuses.
+            read:issue-type-hierarchy:jira: Read issue type hierarchies.
+            read:issue-type-scheme:jira: View issue type schemes.
+            read:issue-type-screen-scheme:jira: View issue type screen schemes.
+            read:issue-type.property:jira: View issue type properties.
+            read:issue-type:jira: View issue types.
+            read:issue-worklog.property:jira: View issue worklog properties.
+            read:issue-worklog:jira: View issue worklogs.
+            read:issue.changelog:jira: View issue changelogs.
+            read:issue.property:jira: View issue properties.
+            read:issue.remote-link:jira: View issue remote links.
+            read:issue.time-tracking:jira: View issue time trackings.
+            read:issue.transition:jira: View issue transitions.
+            read:issue.vote:jira: View issue votes.
+            read:issue.votes:jira: View issue voteses.
+            read:issue.watcher:jira: View issue watchers.
+            read:issue:jira: View issues.
+            read:jira-expressions:jira: View jira expressions.
+            read:jira-user: View user information in Jira that you have access to, including usernames, email addresses, and avatars.
+            read:jira-work: Read project and issue data. Search for issues and objects associated with issues (such as attachments and worklogs).
+            read:jql:jira: View JQL.
+            read:label:jira: View labels.
+            read:license:jira: View licenses.
+            read:notification-scheme:jira: View notification schemes.
+            read:permission-scheme:jira: View permission schemes.
+            read:permission:jira: View permissions.
+            read:priority:jira: View priorities.
+            read:project-category:jira: View project categories.
+            read:project-role:jira: View project roles.
+            read:project-type:jira: View project types.
+            read:project-version:jira: View project versions.
+            read:project.avatar:jira: Read project avatars.
+            read:project.component:jira: View project components.
+            read:project.email:jira: View project emails.
+            read:project.feature:jira: Read project features.
+            read:project.property:jira: View project properties.
+            read:project:jira: View projects.
+            read:resolution:jira: View resolutions.
+            read:role:jira: View roles.
+            read:screen-field:jira: View screen fields.
+            read:screen-scheme:jira: View screen schemes.
+            read:screen-tab:jira: View screen tabs.
+            read:screen:jira: View screens.
+            read:screenable-field:jira: View screenable fields.
+            read:status:jira: View statuses.
+            read:user-configuration:jira: View user configurations.
+            read:user.columns:jira: View user columnses.
+            read:user.property:jira: View user properties.
+            read:user:jira: View users.
+            read:webhook:jira: View webhooks.
+            read:workflow-scheme:jira: View workflow schemes.
+            read:workflow.property:jira: View workflow properties.
+            read:workflow:jira: View workflows.
+            send:notification:jira: Send notifications.
+            validate:jql:jira: Validate JQL.
+            write:app-data:jira: Write app data.
+            write:attachment:jira: Create and update issue attachments.
+            write:avatar:jira: Create and update system and custom avatars.
+            write:comment.property:jira: Create and update issue comment properties.
+            write:comment:jira: Create and update issue comments.
+            write:custom-field-contextual-configuration:jira: Save custom field contextual configurations.
+            write:dashboard.property:jira: Create and update dashboard properties.
+            write:dashboard:jira: Create and update dashboards.
+            write:field-configuration-scheme:jira: Create and update field configuration schemes.
+            write:field-configuration:jira: Save field configurations.
+            write:field.default-value:jira: Create and update field default values.
+            write:field.option:jira: Create and update field options.
+            write:field:jira: Create and update fields.
+            write:filter.column:jira: Create and update filter columns.
+            write:filter.default-share-scope:jira: Create and update filter default share scopes.
+            write:filter:jira: Create and update filters.
+            write:group:jira: Create and update user groups.
+            write:instance-configuration:jira: Create and update instance configurations.
+            write:issue-link-type:jira: Create and update issue link types.
+            write:issue-link:jira: Create and update issue links.
+            write:issue-type-scheme:jira: Create and update issue type schemes.
+            write:issue-type-screen-scheme:jira: Create and update issue type screen schemes.
+            write:issue-type.property:jira: Create and update issue type properties.
+            write:issue-type:jira: Create and update issue types.
+            write:issue-worklog.property:jira: Create and update issue worklog properties.
+            write:issue-worklog:jira: Create and update issue worklogs.
+            write:issue.property:jira: Create and update issue properties.
+            write:issue.remote-link:jira: Create and update issue remote links.
+            write:issue.time-tracking:jira: Create and update issue time trackings.
+            write:issue.vote:jira: Create and update issue votes.
+            write:issue.watcher:jira: Create and update issue watchers.
+            write:issue:jira: Create and update issues.
+            write:jira-work: Create and edit issues in Jira, post comments, create worklogs, and delete issues.
+            write:permission-scheme:jira: Create and update permission schemes.
+            write:permission:jira: Create and update permissions.
+            write:project-category:jira: Create and update project categories.
+            write:project-role:jira: Create and update project roles.
+            write:project-version:jira: Create and update project versions.
+            write:project.avatar:jira: Create and update project avatars.
+            write:project.component:jira: Create and update project components.
+            write:project.email:jira: Create and update project emails.
+            write:project.feature:jira: Save project features.
+            write:project.property:jira: Create and update project properties.
+            write:project:jira: Create and update projects.
+            write:screen-scheme:jira: Create and update screen schemes.
+            write:screen-tab:jira: Create and update screen tabs.
+            write:screen:jira: Create and update screens.
+            write:screenable-field:jira: Create and update screenable fields.
+            write:user-configuration:jira: Create and update user configurations.
+            write:user.property:jira: Create and update user properties.
+            write:webhook:jira: Create and update webhooks.
+            write:workflow-scheme:jira: Create and update workflow schemes.
+            write:workflow.property:jira: Create and update workflow properties.
+            write:workflow:jira: Create and update workflows.
+          tokenUrl: https://auth.atlassian.com/oauth/token
+      type: oauth2
+    basicAuth:
+      description: You can access this resource via basic auth.
+      scheme: basic
+      type: http
+externalDocs:
+  description: Find out more about Atlassian products and services.
+  url: http://www.atlassian.com
+x-atlassian-narrative:
+  documents:
+  - anchor: about
+    body: "The Jira REST API enables you to interact with Jira programmatically. Use this API to \n[build apps](https://developer.atlassian.com/cloud/jira/platform/integrating-with-jira-cloud/), script interactions with \nJira, or develop any other type of integration. This page documents the REST resources available in Jira Cloud, including \nthe HTTP response codes and example requests and responses."
+    title: About
+  - anchor: version
+    body: "This documentation is for **version 3** of the Jira Cloud platform REST API, which is the latest\nversion. [Version 2](https://developer.atlassian.com/cloud/jira/platform/rest/v2/) and\nversion 3 of the API offer the same collection of operations. However, version 3 provides support for\nthe [Atlassian Document Format](https://developer.atlassian.com/cloud/jira/platform/apis/document/structure/)\n(ADF) in:\n- `body` in comments, including where comments are used in issue, issue link, and transition resources.\n- `comment` in worklogs.\n- `description` and `environment` fields in issues.\n- `textarea` type custom fields (multi-line text fields) in issues. Single line custom fields\n  (`textfield`) accept a string and don't handle Atlassian Document Format content.\n"
+    title: Version
+  - anchor: authentication
+    body: "### Forge apps\n\nFor Forge apps, [REST API scopes](https://developer.atlassian.com/cloud/jira/platform/scopes-for-oauth-2-3LO-and-forge-apps/) \nare used when authenticating with Jira Cloud platform. See [Add scopes to call an Atlassian REST API](https://developer.atlassian.com/platform/forge/add-scopes-to-call-an-atlassian-rest-api/) for more details.\n\nThe URIs for Forge app REST API calls have this structure:\n\n`/rest/api/3/<resource-name>`\n\nFor example, `/rest/api/3/issue/DEMO-1`\n\n### Connect apps\n\nFor Connect apps, authentication (JWT-based) is built into the Connect libraries. Authorization is implemented using either \nscopes (shown as _App scope required_ for operations on this page) or user impersonation. See \n[Security for Connect apps](https://developer.atlassian.com/cloud/jira/platform/security-for-connect-apps/) \nfor details.\n\nThe URIs for Connect app REST API calls have this structure:\n\n`https://<site-url>/rest/api/3/<resource-name>`\n\nFor example, `https://your-domain.atlassian.net/rest/api/3/issue/DEMO-1`\n\n### Other integrations\n\nFor integrations that are not Forge or Connect apps, use OAuth 2.0 authorization code grants (3LO) for security \n(3LO scopes are shown as for operations _OAuth scopes required_). See \n[OAuth 2.0 (3LO) apps](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/) \nfor details.\n\nThe URIs for OAuth 2.0 (3LO) app REST API calls have this structure:\n\n`https://api.atlassian.com/ex/jira/<cloudId>/rest/api/3/<resource-name>`\n\nFor example, `https://api.atlassian.com/ex/jira/35273b54-3f06-40d2-880f-dd28cf8daafa/rest/api/3/issue/DEMO-1`\n\n### Ad-hoc API calls\n\nFor personal scripts, bots, and ad-hoc execution of the REST APIs use basic authentication. See [Basic auth for REST APIs](https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/) for details. \n\nThe URIs for basic authentication REST API calls have this structure:\n\n`https://<site-url>/rest/api/3/<resource-name>`\n\nFor example, `https://your-domain.atlassian.net/rest/api/3/issue/DEMO-1`\n"
+    title: Authentication and authorization
+  - anchor: permissions
+    body: "### Operation permissions\n\nMost operations in this API require permissions. The calling user must have the required permissions for an operation to \nuse it. Note that for Connect apps, the app user must have the required permissions for the operation and the app must \nhave scopes that permit the operation.\n\nA permission can be granted to a group, project role, or issue role that the user is a member of, or granted directly to a user. \nSee [Permissions overview](https://confluence.atlassian.com/x/FQiiLQ) for details. The most common permissions are:\n\n- **Administer the Cloud site**: Users in the _site-admins_ group have this \npermission. See [Manage groups](https://confluence.atlassian.com/x/24xjL) for details.\n- **Administer Jira**: Granted by the _Jira Administrators_ global permission. There is a default group for this permission. \nSee [Manage groups](https://confluence.atlassian.com/x/24xjL) and [Managing global permissions](https://confluence.atlassian.com/x/x4dKLg) for details.\n- **Administer a project in Jira**: Granted by the _Administer projects_ project permission for a project. This can be \ngranted to a user, a group, a project role, and more. \nSee [Managing project permissions](https://confluence.atlassian.com/x/yodKLg) for details.\n- **Access a project in Jira**: Granted by the _Browse projects_ project permission for a project. This can be \ngranted to a user, a group, a project role, and more. \nSee [Managing project permissions](https://confluence.atlassian.com/x/yodKLg) for details.\n- **Access Jira**: Granted by the _Jira Users_ global permission. Users in the default product access group (for example, \n_jira-software-users-acmesite_) have this permission. \nSee [Manage groups](https://confluence.atlassian.com/x/24xjL) and \n[Managing global permissions](https://confluence.atlassian.com/x/x4dKLg) for details.\n\n### Anonymous access\n\nSome operations provide support for anonymous access. However, anonymous access is only available if \nthe Jira permission needed to access the object or records returned by the operation is granted to \nthe _Public_ group. See [Allowing anonymous access to your project](https://confluence.atlassian.com/x/GDxxLg) \nfor details.\n\nIf an operation is called anonymously and anonymous access is not available, the operation will return \nan error. Note that not all operations that correspond to objects that can be given public access \nprovide for anonymous access.\n"
+    title: Permissions
+  - anchor: expansion
+    body: "### Expansion\n\nThe Jira REST API uses resource expansion, which means that some parts of a resource are not returned unless specified \nin the request. This simplifies responses and minimizes network traffic.\n\nTo expand part of a resource in a request, use the expand query parameter and specify the object(s) to be expanded. \nIf you need to expand nested objects, use the `.` dot notation. If you need to expand multiple objects, use a \ncomma-separated list. \n\nFor example, the following request expands the `names` and `renderedFields` properties for the _JRACLOUD-34423_ issue:\n\n`GET issue/JRACLOUD-34423?expand=names,renderedFields`\n\nTo discover which object can be expanded, refer to the `expand` property in the object. \nIn the JSON example below, the resource declares `widgets` as expandable.\n\n```json\n{\n  \"expand\": \"widgets\", \n  \"self\": \"https://your-domain.atlassian.net/rest/api/3/resource/KEY-1\", \n  \"widgets\": {\n    \"widgets\": [],\n    \"size\": 5\n   }\n}\n```\n\n### Pagination\n\nThe Jira REST API uses pagination to improve performance. Pagination is enforced for operations that could return a large \ncollection of items. When you make a request to a paginated resource, the response wraps the returned array of values in \na JSON object with paging metadata. For example:\n\n```json\n{\n    \"startAt\" : 0,\n    \"maxResults\" : 10,\n    \"total\": 200,\n    \"isLast\": false,\n    \"values\": [\n        { /* result 0 */ },\n        { /* result 1 */ },\n        { /* result 2 */ }\n    ]\n}\n```\n\n*   `startAt` is the index of the first item returned in the page.\n*   `maxResults` is the maximum number of items that a page can return. Each operation can have a different limit for\n    the number of items returned, and these limits may change without notice. To find the maximum number of items \n    that an operation could return, set `maxResults` to a large number—for example, over 1000—and if the returned value of `maxResults` is less than the requested value, the returned value is the maximum.\n*    `total` is the total number of items contained in all pages. This number **_may change_** as the client \nrequests the subsequent pages, therefore the client should always assume that the requested page can be empty. Note \nthat this property is not returned for all operations.\n*   `isLast` indicates whether the page returned is the last one. Note that this property is not returned for all operations.\n\n### Ordering\n\nSome operations support ordering the elements of a response by a field. Check the documentation for the operation to \nconfirm whether ordering of a response is supported and which fields can be used. Responses are listed in ascending order \nby default. You can change the order using the `orderby` query parameter with a `-` or `+` symbol. For example:\n\n*   `?orderBy=name` to order by `name` field ascending.\n*   `?orderBy=+name` to order by `name` field ascending.\n*   `?orderBy=-name` to order by `name` field descending.\n\n\n"
+    title: Expansion, pagination, and ordering
+  - anchor: timestamps
+    body: 'By default, top-level timestamps (e.g. updated and created) are returned in [ISO 8601](https://www.w3.org/TR/NOTE-datetime) format, in the system default user time zone.
+
+
+      To return date time data in the logged in user''s timezone, please refer to `renderedFields` property under the `expand` query parameter in relevant APIs.
+
+      '
+    title: Timestamps
+  - anchor: special-request-headers
+    body: 'The following request and response headers define important metadata for the Jira Cloud REST API resources.
+
+
+      -   `X-Atlassian-Token` (request): Operations that accept multipart/form-data must include the `X-Atlassian-Token: no-check`
+
+      header in requests. Otherwise the request is blocked by cross-site request forgery (CSRF/XSRF) protection.
+
+      -   `X-Force-Accept-Language` (request): controls how the standard HTTP `Accept-Language` header is processed.
+
+      By default `Accept-Language` is ignored and the response is in the language configured in the user''s profile or,
+
+      when no language is configured for the user, the default Jira instance language. For the response to recognize
+
+      `Accept-Language` send `X-Force-Accept-Language = true` as well. If `Accept-Language` requests a language that Jira
+
+      can return the response is in that language, otherwise Jira returns the response in the default language. If
+
+      `Accept-Language` is not specified the response is in the default language.
+
+      -   `X-AAccountId` (response): This response header contains the Atlassian account ID of the authenticated user.'
+    title: Special headers
+  - anchor: anonymous-operations
+    body: " Jira provides for all permissions, except the [global permission](https://confluence.atlassian.com/x/x4dKLg) Administer Jira, to be assigned to *Anyone*. Once a permission is assigned to *Anyone*, anyone knowing a project's URL is able to use the features in Jira enabled by the permission. However, the Jira REST API does not enable anonymous access for operations by default. This means that an anonymous user who may be able to perform an action through Jira, may not be able to perform the same action where it's enabled by the REST API. \n\n The operations that provide anonymous access are annotated \"This operation can be accessed anonymously.\""
+    title: Anonymous operations
+  - anchor: async-operations
+    body: "Some Jira REST API operations may trigger long-running or computationally expensive tasks. In these cases, the operation \nwill schedule an asynchronous task and return a `303 (See Other)` response, indicating the location of the queued task \nin the `Location` header. You can query this task to get progress updates.\n\nWhen the task finishes, the response object will contain the `result` field. The content of the field is specific to the \noperation that created the task. Refer to the operation’s documentation for more information.\n\nNote that asynchronous tasks are not guaranteed to be run in order. In other words, if you need your tasks to execute \nin a certain order, you should start a task only after the prerequisite task(s) have finished."
+    title: Asynchronous operations
+  - anchor: experimental
+    body: "Features and methods marked as experimental may change without notice. Feedback on experimental functionality is welcome. \nReport issues to [Developer and Marketplace support](https://developer.atlassian.com/support) (preferred) or use the \n**Give docs feedback** link at the top of this page. \n"
+    title: Experimental features
+  - anchor: status-codes
+    body: "The Jira Cloud platform REST API uses the [standard HTTP status codes](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).\n\nOperations that return an error status code may also return a response body containing details of the error or errors. \nThe schema for the response body is shown below:\n\n\n```json\n{\n  \"id\": \"https://docs.atlassian.com/jira/REST/schema/error-collection#\",\n  \"title\": \"Error Collection\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"errorMessages\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    },\n    \"errors\": {\n      \"type\": \"object\",\n      \"patternProperties\": {\n        \".+\": {\n          \"type\": \"string\"\n        }\n      },\n      \"additionalProperties\": false\n    },\n    \"status\": { \n      \"type\": \"integer\"\n    }\n  },\n  \"additionalProperties\": false\n}\n```"
+    title: Status codes

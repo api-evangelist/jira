@@ -1,0 +1,2326 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: ecosystem@atlassian.com
+  description: Jira Cloud platform REST API documentation
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developer.atlassian.com/platform/marketplace/atlassian-developer-terms/
+  title: Jira Cloud platform REST Project templates API
+  version: 1001.0.0-SNAPSHOT-82b018affa468e58f284fbe4df33536469d757df
+servers:
+- url: https://your-domain.atlassian.net
+tags:
+- description: This resource represents project templates. Use it to create a new project from a custom template.
+  name: Project Templates
+paths:
+  /rest/api/3/project-template:
+    post:
+      deprecated: false
+      description: 'Creates a project based on a custom template provided in the request.
+
+
+        The request body should contain the project details and the capabilities that comprise the project:
+
+
+        * `details` \- represents the project details settings
+
+        * `template` \- represents a list of capabilities responsible for creating specific parts of a project
+
+
+        A capability is defined as a unit of configuration for the project you want to create.
+
+
+        This operation is:
+
+
+        * asynchronous. Follow the `Location` link in the response header to determine the status of the task and use Get task to obtain subsequent updates.
+
+
+        ***Note: This API is only supported for Jira Enterprise edition.***
+
+
+        **Permissions required:** *Administer Jira* global permission.'
+      operationId: createProjectWithCustomTemplate
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              details:
+                additionalProperties: {}
+                assigneeType: PROJECT_LEAD
+                avatarId: 1
+                categoryId: 1
+                currencyCode: USD
+                description: description
+                enableComponents: false
+                key: key
+                language: EN-US
+                leadAccountId: leadAccountId
+                name: name
+                projectTypeKey: software
+                url: url
+                useSystemDefaultPermissionSchemeAndRole: false
+              template:
+                boardFeatures:
+                  boardFeatures:
+                    pcri:board:ref:board1:
+                    - featureKey: SPRINTS
+                      state: true
+                boards:
+                  boards:
+                  - boardFilterJQL: project = 'My Project'
+                    cardLayout:
+                      showDaysInColumn: true
+                    columns:
+                    - name: TODO
+                      statusIds:
+                      - pcri:status:ref:todo
+                    name: My Board
+                    pcri: pcri:board:ref:board1
+                    quickFilters:
+                    - description: This is a quick filter for my project
+                      jqlQuery: project = 'My Project'
+                      name: My Quick Filter
+                    supportsSprint: true
+                    swimlanes:
+                      customSwimlanes:
+                      - description: This is a swimlane for my project
+                        jqlQuery: project = 'My Project'
+                        name: My Swimlane
+                      defaultCustomSwimlaneName: My Swimlane
+                      swimlaneStrategy: none
+                field:
+                  customFieldDefinitions:
+                  - cfType: com.atlassian.jira.plugin.system.customfieldtypes:textfield
+                    description: This is a custom field
+                    name: Custom Field 1
+                    onConflict: FAIL
+                    pcri: pcri:field:ref:customField1
+                    searcherKey: com.atlassian.jira.plugin.system.customfieldtypes:textsearcher
+                  fieldContexts: []
+                  fieldLayoutScheme:
+                    defaultFieldLayout: pcri:fieldLayout:ref:fieldLayout1
+                    description: This is a field layout scheme
+                    explicitMappings:
+                      pcri:issueType:ref:default: pcri:fieldLayout:ref:fieldLayout2
+                    name: Field Layout Scheme 1
+                    pcri: pcri:fieldLayoutScheme:ref:fls1
+                  fieldLayouts:
+                  - configuration:
+                    - pcri: pcri:field:id:summary
+                      required: false
+                      show: true
+                    description: This is a field layout
+                    name: Field Layout 1
+                    pcri: pcri:fieldLayout:ref:fieldLayout1
+                  fieldScheme:
+                    description: This is a field scheme
+                    items: []
+                    name: Field Scheme 1
+                    onConflict: USE
+                    pcri: pcri:fieldScheme:id:fieldScheme1
+                  issueLayouts:
+                  - containerId: pcri:issueType:ref:epic
+                    issueLayoutType: ISSUE_VIEW
+                    items:
+                    - itemKey: pcri:field:id:summary
+                      properties:
+                        jsd.field.displayName: sd.premade.project.servicedesk.common.requesttype.email.field.summary
+                      sectionType: content
+                      type: FIELD
+                    pcri: pcri:issueLayout:ref:issueLayout1
+                  issueTypeScreenScheme:
+                    defaultScreenScheme: pcri:screenScheme:ref:defaultScreenScheme
+                    description: This is an issue type screen scheme
+                    explicitMappings:
+                      pcri:issueType:ref:issueType1: pcri:screenScheme:ref:screenScheme1
+                    name: Issue Type Screen Scheme 1
+                    pcri: pcri:issuetypeScreenScheme:ref:issuetypeScreenSchemeRef1
+                  projectTemplateSource: LIVE
+                  screenScheme:
+                  - defaultScreen: pcri:screen:ref:default
+                    description: This is a screen scheme
+                    explicitMappings:
+                      create: pcri:screen:ref:createScreen
+                      edit: pcri:screen:ref:editScreen
+                      view: pcri:screen:ref:viewScreen
+                    name: Screen Scheme 1
+                    pcri: pcri:screenScheme:ref:screenScheme1
+                  screens:
+                  - description: This is a screen
+                    name: Screen 1
+                    pcri: pcri:screen:ref:screen1
+                    tabs:
+                    - fields:
+                      - pcri:field:ref:field1
+                      - pcri:field:ref:field2
+                      name: Tab 1
+                issueType:
+                  issueTypeHierarchy:
+                  - hierarchyLevel: 0
+                    name: Task issue type hierachy
+                    onConflict: USE
+                    pcri: pcri:issueTypeHierachy:ref:issueTypeHierachy1
+                  issueTypeScheme:
+                    defaultIssueTypeId: pcri:issueType:ref:default
+                    description: Test Issue Type Scheme description
+                    issueTypeIds:
+                    - pcri:issueType:ref:default
+                    - pcri:issueType:id:10000
+                    name: Test Issue Type Scheme
+                    pcri: pcri:issueTypeScheme:ref:its
+                  issueTypes:
+                  - avatarId: 10
+                    description: Test issue type description
+                    hierarchyLevel: 0
+                    name: Test issue type
+                    onConflict: USE
+                    pcri: pcri:issueType:ref:default
+                    permitedOperations:
+                      deletable: false
+                      editable: true
+                notification:
+                  description: Description
+                  name: Simplified Notification Scheme
+                  notificationSchemeEvents:
+                  - event:
+                      id: '1'
+                    notifications:
+                    - notificationType: CurrentAssignee
+                  onConflict: USE
+                  pcri: pcri:notificationScheme:ref:notification1
+                permissionScheme:
+                  addAddonRole: true
+                  description: This is an example permission scheme
+                  grants:
+                  - applicationAccess: []
+                    groupCustomFields: []
+                    groups: []
+                    permissionKeys:
+                    - ADMINISTER_PROJECTS
+                    - BROWSE_PROJECTS
+                    projectRoles:
+                    - pcri:role:ref:admin
+                    specialGrants: []
+                    userCustomFields: []
+                    users: []
+                  name: Example Permission Scheme
+                  onConflict: USE
+                  pcri: pcri:permissionScheme:ref:scheme
+                project:
+                  fieldLayoutSchemeId: pcri:fieldLayoutScheme:id:10001
+                  issueSecuritySchemeId: pcri:issueSecurityScheme:id:10001
+                  issueTypeSchemeId: pcri:issueTypeScheme:id:10001
+                  issueTypeScreenSchemeId: pcri:issueTypeScreenScheme:id:10001
+                  notificationSchemeId: pcri:notificationScheme:id:10001
+                  pcri: pcri:project:ref:newProject1
+                  permissionSchemeId: pcri:permissionScheme:id:10001
+                  projectTypeKey: software
+                  workflowSchemeId: pcri:workflowScheme:id:10001
+                role:
+                  roleToProjectActors:
+                    pcri:role:ref:role1:
+                    - pcri:user:id:1
+                    pcri:role:ref:role2:
+                    - pcri:user:id:2
+                  roles:
+                  - defaultActors:
+                    - pcri:user:id:1
+                    - pcri:user:id:2
+                    description: Administrator role with all permissions
+                    name: Admin Role
+                    onConflict: FAIL
+                    pcri: pcri:role:ref:role1
+                    type: EDITABLE
+                  - description: Regular user role with limited permissions
+                    name: User Role
+                    onConflict: FAIL
+                    pcri: pcri:role:ref:role2
+                    type: VIEWABLE
+                scope:
+                  type: GLOBAL
+                security:
+                  description: Newly created issue security scheme
+                  name: New Security Scheme
+                  pcri: pcri:issueSecurityScheme:ref:newIssueSecurityScheme
+                  securityLevels:
+                  - description: Newly created issue security level
+                    isDefault: true
+                    name: New Security Level
+                    pcri: pcri:issueSecurityLevel:ref:new-security-level
+                    securityLevelMembers:
+                    - parameter: administrators
+                      type: group
+                workflow:
+                  statuses:
+                  - description: To Do Status
+                    name: To Do
+                    onConflict: USE
+                    pcri: pcri:status:ref:todo
+                    statusCategory: TODO
+                  - description: In Progress Status
+                    name: In Progress
+                    onConflict: USE
+                    pcri: pcri:status:ref:inprogress
+                    statusCategory: IN_PROGRESS
+                  - description: Done Status
+                    name: Done
+                    onConflict: USE
+                    pcri: pcri:status:ref:done
+                    statusCategory: DONE
+                  workflowScheme:
+                    defaultWorkflow: pcri:workflow:ref:workflow1
+                    description: Description
+                    name: New Workflow scheme for Project Custom Template
+                    pcri: pcri:workflowScheme:ref:workflowSchemeRef1
+                  workflows:
+                  - description: a software workflow
+                    loopedTransitionContainerLayout:
+                      x: 1
+                      y: 2
+                    name: Software Simplified Workflow for Project
+                    onConflict: NEW
+                    pcri: pcri:workflow:ref:workflow
+                    startPointLayout:
+                      x: 1
+                      y: 2
+                    statuses:
+                    - layout:
+                        x: 1
+                        y: 2
+                      pcri: pcri:status:ref:todo
+                      properties:
+                        key: value
+                    transitions:
+                    - actions: []
+                      description: To do transition
+                      from: []
+                      id: 11
+                      name: To Do
+                      properties:
+                        jira.i18n.title: gh.workflow.preset.todo
+                      to:
+                        status: pcri:status:ref:todo
+                      triggers: []
+                      type: GLOBAL
+                      validators: []
+                    - actions: []
+                      description: In Progress Transition
+                      from: []
+                      id: 21
+                      name: In Progress
+                      properties:
+                        jira.i18n.title: gh.workflow.preset.inprogress
+                      to:
+                        status: pcri:status:ref:inprogress
+                      triggers: []
+                      type: GLOBAL
+                      validators: []
+                    - actions: []
+                      description: Done Transition
+                      from: []
+                      id: 31
+                      name: Done
+                      properties:
+                        jira.i18n.title: gh.workflow.preset.done
+                      to:
+                        status: pcri:status:ref:done
+                      triggers: []
+                      type: GLOBAL
+                      validators: []
+                    - actions: []
+                      description: Start transition
+                      from: []
+                      id: 1
+                      name: Create
+                      properties:
+                        jira.i18n.title: gh.workflow.preset.todo
+                      to:
+                        status: pcri:status:ref:todo
+                      triggers: []
+                      type: INITIAL
+                      validators: []
+            schema:
+              $ref: '#/components/schemas/ProjectCustomTemplateCreateRequestDTO'
+        description: The JSON payload containing the project details and capabilities
+        required: true
+      responses:
+        '303':
+          content:
+            application/json:
+              schema: {}
+          description: The project creation task has been queued for execution
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Create custom project
+      tags:
+      - Project Templates
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:project:jira
+        - read:project:jira
+        state: Beta
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/project-template/edit-template:
+    put:
+      deprecated: false
+      description: 'Edit custom template
+
+
+        This API endpoint allows you to edit an existing customised template.
+
+
+        ***Note: Custom Templates are only supported for Jira Enterprise edition.***'
+      operationId: editTemplate
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditTemplateRequest'
+        description: 'The object containing the updated template details: name, description'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: 200 response
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Edit a custom project template
+      tags:
+      - Project Templates
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:project:jira
+        - read:project:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/project-template/live-template:
+    get:
+      deprecated: false
+      description: 'Get custom template
+
+
+        This API endpoint allows you to get a live custom project template details by either templateKey or projectId
+
+
+        ***Note: Custom Templates are only supported for Jira Enterprise edition.***'
+      operationId: liveTemplate
+      parameters:
+      - description: optional - The \{@link String\} containing the project key linked to the custom template to retrieve
+        in: query
+        name: projectId
+        schema:
+          type: string
+      - description: optional - The \{@link String\} containing the key of the custom template to retrieve
+        in: query
+        name: templateKey
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectTemplateModel'
+          description: 200 response
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Gets a custom project template
+      tags:
+      - Project Templates
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:project:jira
+        - read:project:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/project-template/remove-template:
+    delete:
+      deprecated: false
+      description: 'Remove custom template
+
+
+        This API endpoint allows you to remove a specified customised template
+
+
+        ***Note: Custom Templates are only supported for Jira Enterprise edition.***'
+      operationId: removeTemplate
+      parameters:
+      - description: The \{@link String\} containing the key of the custom template to remove
+        in: query
+        name: templateKey
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: 200 response
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Deletes a custom project template
+      tags:
+      - Project Templates
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:project:jira
+        - read:project:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+  /rest/api/3/project-template/save-template:
+    post:
+      deprecated: false
+      description: 'Save custom template
+
+
+        This API endpoint allows you to save a customised template
+
+
+        ***Note: Custom Templates are only supported for Jira Enterprise edition.***'
+      operationId: saveTemplate
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveTemplateRequest'
+        description: 'The object containing the template basic details: name, description'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaveTemplateResponse'
+          description: 200 response
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - manage:jira-configuration
+      summary: Save a custom project template
+      tags:
+      - Project Templates
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - manage:jira-configuration
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - write:project:jira
+        - read:project:jira
+        state: Beta
+      x-experimental: true
+      x-atlassian-connect-scope: INACCESSIBLE
+components:
+  schemas:
+    ProjectCustomTemplateCreateRequestDTO:
+      additionalProperties: false
+      description: Request to create a project using a custom template
+      properties:
+        details:
+          $ref: '#/components/schemas/CustomTemplatesProjectDetails'
+        template:
+          $ref: '#/components/schemas/CustomTemplateRequestDTO'
+      type: object
+    FieldLayoutPayload:
+      additionalProperties: false
+      deprecated: true
+      description: Defines the payload for the field layouts. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-field-configurations/\#api-group-issue-field-configurations" + fieldlayout is what users would see as "Field Configuration" in Jira's UI - https://support.atlassian.com/jira-cloud-administration/docs/manage-issue-field-configurations/
+      properties:
+        configuration:
+          description: The field layout configuration. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-field-configurations/\#api-rest-api-3-fieldconfiguration-post
+          items:
+            $ref: '#/components/schemas/FieldLayoutConfiguration'
+          type: array
+        description:
+          description: The description of the field layout
+          example: This is a field layout
+          type: string
+        name:
+          description: The name of the field layout
+          example: My Field Layout
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type:
+      - object
+      - 'null'
+    FieldCapabilityPayload:
+      additionalProperties: false
+      description: Defines the payload for the fields, screens, screen schemes, issue type screen schemes, field layouts, and field layout schemes
+      properties:
+        customFieldDefinitions:
+          description: The custom field definitions. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-fields/\#api-rest-api-3-field-post
+          items:
+            $ref: '#/components/schemas/CustomFieldPayload'
+          type:
+          - array
+          - 'null'
+        fieldLayoutScheme:
+          $ref: '#/components/schemas/FieldLayoutSchemePayload'
+        fieldLayouts:
+          deprecated: true
+          description: The field layouts configuration.
+          items:
+            $ref: '#/components/schemas/FieldLayoutPayload'
+          type:
+          - array
+          - 'null'
+        fieldScheme:
+          $ref: '#/components/schemas/FieldSchemePayload'
+        issueLayouts:
+          description: The issue layouts configuration
+          items:
+            $ref: '#/components/schemas/IssueLayoutPayload'
+          type:
+          - array
+          - 'null'
+        issueTypeScreenScheme:
+          $ref: '#/components/schemas/IssueTypeScreenSchemePayload'
+        screenScheme:
+          description: The screen schemes See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-schemes/\#api-rest-api-3-screenscheme-post
+          items:
+            $ref: '#/components/schemas/ScreenSchemePayload'
+          type:
+          - array
+          - 'null'
+        screens:
+          description: The screens. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screens/\#api-rest-api-3-screens-post
+          items:
+            $ref: '#/components/schemas/ScreenPayload'
+          type:
+          - array
+          - 'null'
+      type:
+      - object
+      - 'null'
+    CardLayout:
+      additionalProperties: false
+      description: Card layout configuration.
+      properties:
+        showDaysInColumn:
+          default: false
+          description: Whether to show days in column
+          enum:
+          - true
+          - false
+          type: boolean
+      type: object
+    SecurityLevelMemberPayload:
+      additionalProperties: false
+      description: The payload for creating a security level member. See https://support.atlassian.com/jira-cloud-administration/docs/configure-issue-security-schemes/
+      properties:
+        parameter:
+          description: Defines the value associated with the type. For reporter this would be \{"null"\}; for users this would be the names of specific users); for group this would be group names like \{"administrators", "jira-administrators", "jira-users"\}
+          type: string
+        type:
+          description: The type of the security level member
+          enum:
+          - group
+          - reporter
+          - users
+          type: string
+      type: object
+    WorkflowStatusLayoutPayload:
+      additionalProperties: false
+      description: The layout of the workflow status.
+      properties:
+        x:
+          description: The x coordinate of the status.
+          example: 1
+          format: double
+          type: number
+        y:
+          description: The y coordinate of the status.
+          example: 2
+          format: double
+          type: number
+      type: object
+    IssueLayoutItemPayload:
+      additionalProperties: false
+      description: Defines the payload to configure the issue layout item for a project.
+      properties:
+        itemKey:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        properties:
+          additionalProperties:
+            description: Additional properties for this item. This field is only used when the type is FIELD.
+          description: Additional properties for this item. This field is only used when the type is FIELD.
+          type: object
+        sectionType:
+          description: The item section type
+          enum:
+          - content
+          - primaryContext
+          - secondaryContext
+          type: string
+        type:
+          description: The item type. Currently only support FIELD
+          enum:
+          - FIELD
+          type: string
+      type: object
+    SaveTemplateRequest:
+      additionalProperties: false
+      description: Request to save a custom template
+      properties:
+        templateDescription:
+          description: The description of the template
+          maxLength: 150
+          type: string
+        templateFromProjectRequest:
+          $ref: '#/components/schemas/SaveProjectTemplateRequest'
+        templateName:
+          description: The name of the template
+          maxLength: 50
+          type: string
+      type: object
+    BoardColumnPayload:
+      additionalProperties: false
+      description: The payload for creating a board column
+      properties:
+        maximumIssueConstraint:
+          description: The maximum issue constraint for the column
+          format: int64
+          type: integer
+        minimumIssueConstraint:
+          description: The minimum issue constraint for the column
+          format: int64
+          type: integer
+        name:
+          description: The name of the column
+          example: TODO
+          type: string
+        statusIds:
+          description: The status IDs for the column
+          example: pcri:status:ref:done
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+      type: object
+    BoardsPayload:
+      additionalProperties: false
+      properties:
+        boards:
+          description: The boards to be associated with the project.
+          items:
+            $ref: '#/components/schemas/BoardPayload'
+          type: array
+      type:
+      - object
+      - 'null'
+    WorkflowPayload:
+      additionalProperties: false
+      description: The payload for creating workflow, see https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflows/\#api-rest-api-3-workflows-create-post
+      properties:
+        description:
+          description: The description of the workflow
+          example: a software workflow
+          type: string
+        loopedTransitionContainerLayout:
+          $ref: '#/components/schemas/WorkflowStatusLayoutPayload'
+        name:
+          description: The name of the workflow
+          example: Software Simplified Workflow
+          type: string
+        onConflict:
+          default: NEW
+          description: The strategy to use if there is a conflict with another workflow
+          enum:
+          - FAIL
+          - USE
+          - NEW
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        startPointLayout:
+          $ref: '#/components/schemas/WorkflowStatusLayoutPayload'
+        statuses:
+          description: The statuses to be used in the workflow
+          items:
+            $ref: '#/components/schemas/WorkflowStatusPayload'
+          type: array
+        transitions:
+          description: The transitions for the workflow
+          items:
+            $ref: '#/components/schemas/TransitionPayload'
+          type: array
+      type: object
+    CustomFieldPayload:
+      additionalProperties: false
+      description: Defines the payload for the custom field definitions. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-fields/\#api-rest-api-3-field-post
+      properties:
+        cfType:
+          description: The type of the custom field
+          example: See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-fields/#api-rest-api-3-field-post `type` for values
+          type: string
+        description:
+          description: The description of the custom field
+          example: This is a custom field
+          type: string
+        name:
+          description: The name of the custom field
+          example: My Custom Field
+          type: string
+        onConflict:
+          description: The strategy to use when there is a conflict with an existing custom field. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
+          enum:
+          - FAIL
+          - USE
+          - NEW
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        scope:
+          description: Allows an overwrite to declare the new Custom Field to be created as a GLOBAL-scoped field. Leave this as empty or null to use the project's default scope.
+          enum:
+          - GLOBAL
+          - TEMPLATE
+          - PROJECT
+          type: string
+        searcherKey:
+          description: The searcher key of the custom field
+          example: See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-fields/#api-rest-api-3-field-post `searcherKey` for values
+          type: string
+      type:
+      - object
+      - 'null'
+    ScopePayload:
+      additionalProperties: false
+      description: The payload for creating a scope. Defines if a project is team-managed project or company-managed project
+      properties:
+        type:
+          description: The type of the scope. Use `GLOBAL` or empty for company-managed project, and `PROJECT` for team-managed project
+          enum:
+          - GLOBAL
+          - PROJECT
+          type: string
+      type:
+      - object
+      - 'null'
+    SwimlanesPayload:
+      additionalProperties: false
+      description: The payload for customising a swimlanes on a board
+      properties:
+        customSwimlanes:
+          description: The custom swimlane definitions.
+          items:
+            $ref: '#/components/schemas/SwimlanePayload'
+          type: array
+        defaultCustomSwimlaneName:
+          description: The name of the custom swimlane to use for work items that don't match any other swimlanes.
+          type: string
+        swimlaneStrategy:
+          description: The swimlane strategy for the board.
+          enum:
+          - none
+          - custom
+          - parentChild
+          - assignee
+          - assigneeUnassignedFirst
+          - epic
+          - project
+          - issueparent
+          - issuechildren
+          - request_type
+          type: string
+      type: object
+    WorkflowCapabilityPayload:
+      additionalProperties: false
+      description: The payload for creating a workflows. See https://www.atlassian.com/software/jira/guides/workflows/overview\#what-is-a-jira-workflow
+      properties:
+        statuses:
+          description: The statuses for the workflow
+          items:
+            $ref: '#/components/schemas/StatusPayload'
+          type: array
+        workflowScheme:
+          $ref: '#/components/schemas/WorkflowSchemePayload'
+        workflows:
+          description: The transitions for the workflow
+          items:
+            $ref: '#/components/schemas/WorkflowPayload'
+          type: array
+      type:
+      - object
+      - 'null'
+    SwimlanePayload:
+      additionalProperties: false
+      description: The payload for custom swimlanes
+      properties:
+        description:
+          description: The description of the quick filter
+          type: string
+        jqlQuery:
+          description: The jql query for the quick filter
+          type: string
+        name:
+          description: The name of the quick filter
+          type: string
+      type: object
+    FieldSchemePayload:
+      additionalProperties: false
+      description: Defines the payload to configure the field scheme for a project. See [Field schemes](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-field-schemes/#api-group-field-schemes).
+      properties:
+        description:
+          description: The description of the field scheme
+          example: This is a field scheme
+          type: string
+        items:
+          description: The field association items for this field scheme.
+          items:
+            $ref: '#/components/schemas/FieldAssociationItemPayload'
+          type: array
+        name:
+          description: The name of the field scheme
+          example: My Field Scheme
+          type: string
+        onConflict:
+          description: The strategy to use when there is a conflict with an existing field scheme. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
+          enum:
+          - FAIL
+          - USE
+          - NEW
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type:
+      - object
+      - 'null'
+    SecurityLevelPayload:
+      additionalProperties: false
+      description: The payload for creating a security level. See https://support.atlassian.com/jira-cloud-administration/docs/configure-issue-security-schemes/
+      properties:
+        description:
+          description: The description of the security level
+          example: Newly created issue security level
+          type: string
+        isDefault:
+          description: Whether the security level is default for the security scheme
+          enum:
+          - true
+          - false
+          type: boolean
+        name:
+          description: The name of the security level
+          example: New Security Level
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        securityLevelMembers:
+          description: The members of the security level
+          items:
+            $ref: '#/components/schemas/SecurityLevelMemberPayload'
+          type: array
+      type: object
+    RulePayload:
+      additionalProperties: false
+      description: The payload for creating rules in a workflow
+      properties:
+        parameters:
+          additionalProperties:
+            description: The parameters of the rule
+            type: string
+          description: The parameters of the rule
+          type: object
+        ruleKey:
+          description: The key of the rule. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflows/\#api-rest-api-3-workflows-capabilities-get
+          example: system:update-field
+          type: string
+      type: object
+    SaveProjectTemplateRequest:
+      additionalProperties: false
+      description: The request details to generate template from a project
+      properties:
+        projectId:
+          description: The ID of the target project
+          format: int64
+          type: integer
+        templateGenerationOptions:
+          $ref: '#/components/schemas/CustomTemplateOptions'
+        templateType:
+          description: 'The type of the template: LIVE | SNAPSHOT'
+          enum:
+          - LIVE
+          - SNAPSHOT
+          type: string
+      type: object
+    PermissionGrantDTO:
+      additionalProperties: false
+      description: List of permission grants
+      properties:
+        applicationAccess:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        groupCustomFields:
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+          uniqueItems: true
+        groups:
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+          uniqueItems: true
+        permissionKeys:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        projectRoles:
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+          uniqueItems: true
+        specialGrants:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        userCustomFields:
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+          uniqueItems: true
+        users:
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+          uniqueItems: true
+      type: object
+    ToLayoutPayload:
+      additionalProperties: false
+      description: The payload for the layout details for the destination end of a transition
+      properties:
+        port:
+          description: Defines where the transition line will be connected to a status. Port 0 to 7 are acceptable values.
+          example: 1
+          format: int32
+          type: integer
+        status:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type: object
+    RolesCapabilityPayload:
+      additionalProperties: false
+      properties:
+        roleToProjectActors:
+          additionalProperties:
+            description: A map of role PCRI (can be ID or REF) to a list of user or group PCRI IDs to associate with the role and project.
+            items:
+              $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+            type: array
+          description: A map of role PCRI (can be ID or REF) to a list of user or group PCRI IDs to associate with the role and project.
+          type: object
+        roles:
+          description: The list of roles to create.
+          items:
+            $ref: '#/components/schemas/RolePayload'
+          type: array
+      type:
+      - object
+      - 'null'
+    ProjectCreateResourceIdentifier:
+      additionalProperties: false
+      description: 'Every project-created entity has an ID that must be unique within the scope of the project creation. PCRI (Project Create Resource Identifier) is a standard format for creating IDs and references to other project entities. PCRI format is defined as follows: pcri:\[entityType\]:\[type\]:\[entityId\] entityType - the type of an entity, e.g. status, role, workflow type - PCRI type, either `id` - The ID of an entity that already exists in the target site, or `ref` - A unique reference to an entity that is being created entityId - entity identifier, if type is `id` - must be an existing entity ID that exists in the Jira site, if `ref` - must be unique across all entities in the scope of this project template creation'
+      example: pcri:permissionScheme:id:10001
+      properties:
+        anID:
+          type: boolean
+        areference:
+          type: boolean
+        entityId:
+          type: string
+        entityType:
+          type: string
+        id:
+          type: string
+        type:
+          enum:
+          - id
+          - ref
+          type: string
+      type: object
+    RolePayload:
+      additionalProperties: false
+      description: The payload used to create a project role. It is optional for CMP projects, as a default role actor will be provided. TMP will add new role actors to the table.
+      properties:
+        defaultActors:
+          description: The default actors for the role. By adding default actors, the role will be added to any future projects created
+          example: '[pcri:user:id:1234]'
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+        description:
+          description: The description of the role
+          type: string
+        name:
+          description: The name of the role
+          type: string
+        onConflict:
+          default: USE
+          description: The strategy to use when there is a conflict with an existing project role. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
+          enum:
+          - FAIL
+          - USE
+          - NEW
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        type:
+          description: The type of the role. Only used by project-scoped project
+          enum:
+          - HIDDEN
+          - VIEWABLE
+          - AI_AGENT
+          - EDITABLE
+          - GUEST
+          example: EDITABLE
+          type: string
+      type: object
+    NonWorkingDay:
+      additionalProperties: false
+      properties:
+        id:
+          format: int64
+          type: integer
+        iso8601Date:
+          type: string
+      type: object
+    CardLayoutField:
+      additionalProperties: false
+      description: Card layout settings of the board
+      properties:
+        fieldId:
+          type: string
+        id:
+          format: int64
+          type: integer
+        mode:
+          enum:
+          - PLAN
+          - WORK
+          type: string
+        position:
+          format: int32
+          type: integer
+      type: object
+    ScreenPayload:
+      additionalProperties: false
+      description: Defines the payload for the field screens. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screens/\#api-rest-api-3-screens-post
+      properties:
+        description:
+          description: The description of the screen
+          example: This is a screen
+          type: string
+        name:
+          description: The name of the screen
+          example: My Screen
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        tabs:
+          description: The tabs of the screen. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-tab-fields/\#api-rest-api-3-screens-screenid-tabs-tabid-fields-post
+          items:
+            $ref: '#/components/schemas/TabPayload'
+          type: array
+      type:
+      - object
+      - 'null'
+    NotificationSchemeEventIDPayload:
+      additionalProperties: false
+      description: The event ID to use for reference in the payload
+      properties:
+        id:
+          description: The event ID to use for reference in the payload
+          example: '1'
+          type: string
+      type: object
+    TabPayload:
+      additionalProperties: false
+      description: Defines the payload for the tabs of the screen. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-tab-fields/\#api-rest-api-3-screens-screenid-tabs-tabid-fields-post
+      properties:
+        fields:
+          description: The list of resource identifier of the field associated to the tab. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-tab-fields/\#api-rest-api-3-screens-screenid-tabs-tabid-fields-post
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+        name:
+          description: The name of the tab
+          type: string
+      type: object
+    IssueLayoutPayload:
+      additionalProperties: false
+      description: Defines the payload to configure the issue layouts for a project.
+      properties:
+        containerId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        issueLayoutType:
+          description: The issue layout type
+          enum:
+          - ISSUE_VIEW
+          - ISSUE_CREATE
+          - REQUEST_FORM
+          type: string
+        items:
+          description: The configuration of items in the issue layout
+          items:
+            $ref: '#/components/schemas/IssueLayoutItemPayload'
+          type: array
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type:
+      - object
+      - 'null'
+    ScreenSchemePayload:
+      additionalProperties: false
+      description: Defines the payload for the screen schemes. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-schemes/\#api-rest-api-3-screenscheme-post
+      properties:
+        defaultScreen:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        description:
+          description: The description of the screen scheme
+          example: This is a screen scheme
+          type: string
+        name:
+          description: The name of the screen scheme
+          example: My Screen Scheme
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        screens:
+          additionalProperties:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          description: 'Similar to the field layout scheme those mappings allow users to set different screens for different operations: default - always there, applied to all operations that don''t have an explicit mapping `create`, `view`, `edit` - specific operations that are available and users can assign a different screen for each one of them https://support.atlassian.com/jira-cloud-administration/docs/manage-screen-schemes/\#Associating-a-screen-with-an-issue-operation'
+          type: object
+      type:
+      - object
+      - 'null'
+    BoardFeaturePayload:
+      additionalProperties: false
+      description: The payload for setting a board feature
+      properties:
+        featureKey:
+          description: The key of the feature
+          enum:
+          - ESTIMATION
+          - SPRINTS
+          type: string
+        state:
+          description: Whether the feature should be turned on or off
+          enum:
+          - true
+          - false
+          type: boolean
+      type: object
+    FromLayoutPayload:
+      additionalProperties: false
+      description: The payload for the layout details for the start end of a transition
+      properties:
+        fromPort:
+          description: The port that the transition can be made from
+          format: int32
+          type: integer
+        status:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        toPortOverride:
+          description: The port that the transition goes to
+          format: int32
+          type: integer
+      type: object
+    IssueTypePayload:
+      additionalProperties: false
+      description: The payload for creating an issue type
+      properties:
+        avatarId:
+          description: The avatar ID of the issue type. Go to https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-avatars/\#api-rest-api-3-avatar-type-system-get to choose an avatarId existing in Jira
+          format: int64
+          type:
+          - integer
+          - 'null'
+        description:
+          description: The description of the issue type
+          type:
+          - string
+          - 'null'
+        hierarchyLevel:
+          description: The hierarchy level of the issue type. 0, 1, 2, 3 .. n; Negative values for subtasks
+          format: int32
+          type: integer
+        name:
+          description: The name of the issue type
+          type: string
+        onConflict:
+          description: The conflict strategy to use when the issue type already exists. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
+          enum:
+          - FAIL
+          - USE
+          - NEW
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type:
+      - object
+      - 'null'
+    CustomTemplateOptions:
+      additionalProperties: false
+      properties:
+        enableScreenDelegatedAdminSupport:
+          description: Enable screen delegated admin support for the template. This means screen and associated schemes will be copied rather than referenced.
+          type: boolean
+        enableWorkflowDelegatedAdminSupport:
+          description: Enable workflow delegated admin support for the template. This means workflows and workflow schemes will be copied rather than referenced.
+          type: boolean
+      type: object
+    BoardPayload:
+      additionalProperties: false
+      description: The payload for creating a board
+      properties:
+        boardFilterJQL:
+          description: Takes in a JQL string to create a new filter. If no value is provided, it'll default to a JQL filter for the project creating
+          example: project = 'My Project'
+          type: string
+        cardColorStrategy:
+          description: Card color settings of the board
+          enum:
+          - ISSUE_TYPE
+          - REQUEST_TYPE
+          - ASSIGNEE
+          - PRIORITY
+          - NONE
+          - CUSTOM
+          type: string
+        cardLayout:
+          $ref: '#/components/schemas/CardLayout'
+        cardLayouts:
+          description: Card layout settings of the board
+          items:
+            $ref: '#/components/schemas/CardLayoutField'
+          type: array
+        columns:
+          description: The columns of the board
+          items:
+            $ref: '#/components/schemas/BoardColumnPayload'
+          type: array
+        enableCardCover:
+          description: Whether to enable the card cover option on this board
+          type: boolean
+        features:
+          deprecated: true
+          description: 'Feature settings for the board. Deprecated: use boardFeatures capability instead.'
+          items:
+            $ref: '#/components/schemas/BoardFeaturePayload'
+          type: array
+        name:
+          description: The name of the board
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        quickFilters:
+          description: The quick filters for the board.
+          items:
+            $ref: '#/components/schemas/QuickFilterPayload'
+          type: array
+        supportsSprint:
+          default: true
+          description: Whether sprints are supported on the board
+          type: boolean
+        swimlanes:
+          $ref: '#/components/schemas/SwimlanesPayload'
+        workingDaysConfig:
+          $ref: '#/components/schemas/WorkingDaysConfig'
+      type: object
+    IssueTypeSchemePayload:
+      additionalProperties: false
+      description: The payload for creating issue type schemes
+      properties:
+        defaultIssueTypeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        description:
+          description: The description of the issue type scheme
+          type:
+          - string
+          - 'null'
+        issueTypeIds:
+          description: The issue type IDs for the issue type scheme
+          example: pcri:issueType:id:10001
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+        name:
+          description: The name of the issue type scheme
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type: object
+    IssueTypeScreenSchemePayload:
+      additionalProperties: false
+      description: Defines the payload for the issue type screen schemes. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-type-screen-schemes/\#api-rest-api-3-issuetypescreenscheme-post
+      properties:
+        defaultScreenScheme:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        description:
+          description: The description of the issue type screen scheme
+          example: This is an issue type screen scheme
+          type: string
+        explicitMappings:
+          additionalProperties:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          description: The IDs of the screen schemes for the issue type IDs and default. A default entry is required to create an issue type screen scheme, it defines the mapping for all issue types without a screen scheme.
+          type: object
+        name:
+          description: The name of the issue type screen scheme
+          example: My Issue Type Screen Scheme
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type:
+      - object
+      - 'null'
+    ConditionGroupPayload:
+      additionalProperties: false
+      description: The payload for creating a condition group in a workflow
+      properties:
+        conditionGroup:
+          description: The nested conditions of the condition group.
+          items:
+            $ref: '#/components/schemas/ConditionGroupPayload'
+          type: array
+        conditions:
+          description: The rules for this condition.
+          items:
+            $ref: '#/components/schemas/RulePayload'
+          type: array
+        operation:
+          description: Determines how the conditions in the group are evaluated. Accepts either `ANY` or `ALL`. If `ANY` is used, at least one condition in the group must be true for the group to evaluate to true. If `ALL` is used, all conditions in the group must be true for the group to evaluate to true.
+          enum:
+          - ANY
+          - ALL
+          type: string
+      type: object
+    SecuritySchemePayload:
+      additionalProperties: false
+      description: The payload for creating a security scheme. See https://support.atlassian.com/jira-cloud-administration/docs/configure-issue-security-schemes/
+      properties:
+        description:
+          description: The description of the security scheme
+          example: Newly created issue security scheme
+          type: string
+        name:
+          description: The name of the security scheme
+          example: New Security Scheme
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        securityLevels:
+          description: The security levels for the security scheme
+          items:
+            $ref: '#/components/schemas/SecurityLevelPayload'
+          type: array
+      type:
+      - object
+      - 'null'
+    WorkflowSchemePayload:
+      additionalProperties: false
+      description: The payload for creating a workflow scheme. See https://www.atlassian.com/software/jira/guides/workflows/overview\#what-is-a-jira-workflow-scheme
+      properties:
+        defaultWorkflow:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        description:
+          description: The description of the workflow scheme
+          type: string
+        explicitMappings:
+          additionalProperties:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          description: Association between issuetypes and workflows
+          type: object
+        name:
+          description: The name of the workflow scheme
+          type: string
+        onConflict:
+          description: The strategy to use if there is a conflict with another workflow scheme
+          enum:
+          - FAIL
+          - USE
+          - NEW
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type: object
+    NotificationSchemePayload:
+      additionalProperties: false
+      description: The payload for creating a notification scheme. The user has to supply the ID for the default notification scheme. For CMP this is provided in the project payload and should be left empty, for TMP it's provided using this payload
+      example: "CMP:  \"project\": {\n                 \"pcri\": \"pcri:project:ref:new-project1\",\n                 \"notificationSchemeId\": \"pcri:notificationScheme:id:10000\",\n                 ...\n              }\nTMP: \"notification\": {\n       \"pcri\": \"pcri:notificationScheme:ref:notification1\",\n       \"name\": \"Simplified Notification Scheme\",\n       \"notificationSchemeEvents\": [\n         {\n           \"event\": {\n             \"id\": \"1\"\n           },\n           \"notifications\": [\n             {\n               \"notificationType\": \"CurrentAssignee\"\n             },\n             {\n               \"notificationType\": \"Reporter\"\n             },\n             {\n               \"notificationType\": \"AllWatchers\"\n             }\n           ]\n         },\n         {\n           \"event\": {\n             \"id\": \"2\"\n           },\n           \"notifications\": [\n             {\n               \"notificationType\": \"CurrentAssignee\"\n             },\n             {\n               \"notificationType\": \"Reporter\"\n             },\n             {\n               \"notificationType\": \"AllWatchers\"\n             }\n           ]\n         },...\n       ]\n     }\n"
+      properties:
+        description:
+          description: The description of the notification scheme
+          type: string
+        name:
+          description: The name of the notification scheme
+          type: string
+        notificationSchemeEvents:
+          description: The events and notifications for the notification scheme
+          items:
+            $ref: '#/components/schemas/NotificationSchemeEventPayload'
+          type: array
+        onConflict:
+          description: The strategy to use when there is a conflict with an existing entity
+          enum:
+          - FAIL
+          - USE
+          - NEW
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type:
+      - object
+      - 'null'
+    ProjectTemplateKey:
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        uuid:
+          format: uuid
+          type: string
+      type: object
+    NotificationSchemeEventPayload:
+      additionalProperties: false
+      description: The payload for creating a notification scheme event. Defines which notifications should be sent for a specific event
+      properties:
+        event:
+          $ref: '#/components/schemas/NotificationSchemeEventIDPayload'
+        notifications:
+          description: The configuration for notification recipents
+          items:
+            $ref: '#/components/schemas/NotificationSchemeNotificationDetailsPayload'
+          type: array
+      type: object
+    CustomTemplatesProjectDetails:
+      additionalProperties: false
+      description: Project Details
+      properties:
+        accessLevel:
+          description: The access level of the project. Only used by team-managed project
+          enum:
+          - open
+          - limited
+          - private
+          - free
+          example: private
+          type: string
+        additionalProperties:
+          additionalProperties:
+            description: Additional properties of the project
+            type: string
+          description: Additional properties of the project
+          type: object
+        assigneeType:
+          description: The default assignee when creating issues in the project
+          enum:
+          - PROJECT_DEFAULT
+          - COMPONENT_LEAD
+          - PROJECT_LEAD
+          - UNASSIGNED
+          example: PROJECT_LEAD
+          type: string
+        avatarId:
+          description: The ID of the project's avatar. Use the \[Get project avatars\](\#api-rest-api-3-project-projectIdOrKey-avatar-get) operation to list the available avatars in a project.
+          example: 10200
+          format: int64
+          type: integer
+        categoryId:
+          description: The ID of the project's category. A complete list of category IDs is found using the [Get all project categories](#api-rest-api-3-projectCategory-get) operation.
+          format: int64
+          type: integer
+        description:
+          description: Brief description of the project
+          example: This is a project for Foo Bar
+          type: string
+        enableComponents:
+          default: false
+          description: Whether components are enabled for the project. Only used by company-managed project
+          example: false
+          type: boolean
+        key:
+          description: Project keys must be unique and start with an uppercase letter followed by one or more uppercase alphanumeric characters. The maximum length is 10 characters.
+          example: PRJ
+          type: string
+        language:
+          description: The default language for the project
+          example: en
+          type: string
+        leadAccountId:
+          description: The account ID of the project lead. Either `lead` or `leadAccountId` must be set when creating a project. Cannot be provided with `lead`.
+          example: '1234567890'
+          type: string
+        name:
+          description: Name of the project
+          example: Project Foo Bar
+          type: string
+        url:
+          description: A link to information about this project, such as project documentation
+          example: https://www.example.com
+          type: string
+      type: object
+    ProjectArchetype:
+      additionalProperties: false
+      properties:
+        realType:
+          enum:
+          - BUSINESS
+          - SOFTWARE
+          - PRODUCT_DISCOVERY
+          - SERVICE_DESK
+          - CUSTOMER_SERVICE
+          - OPS
+          type: string
+        style:
+          enum:
+          - classic
+          - next-gen
+          type: string
+        type:
+          enum:
+          - BUSINESS
+          - SOFTWARE
+          - PRODUCT_DISCOVERY
+          - SERVICE_DESK
+          - CUSTOMER_SERVICE
+          - OPS
+          type: string
+      type: object
+    QuickFilterPayload:
+      additionalProperties: false
+      description: The payload for defining quick filters
+      properties:
+        description:
+          description: The description of the quick filter
+          type: string
+        jqlQuery:
+          description: The jql query for the quick filter
+          type: string
+        name:
+          description: The name of the quick filter
+          type: string
+      type: object
+    WorkflowStatusPayload:
+      additionalProperties: false
+      description: The statuses to be used in the workflow
+      properties:
+        layout:
+          $ref: '#/components/schemas/WorkflowStatusLayoutPayload'
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        properties:
+          additionalProperties:
+            description: The properties of the workflow status.
+            type: string
+          description: The properties of the workflow status.
+          type: object
+      type: object
+    SaveTemplateResponse:
+      additionalProperties: false
+      properties:
+        projectTemplateKey:
+          $ref: '#/components/schemas/ProjectTemplateKey'
+      type: object
+    WorkingDaysConfig:
+      additionalProperties: false
+      description: Working days configuration
+      properties:
+        friday:
+          type: boolean
+        id:
+          format: int64
+          type: integer
+        monday:
+          type: boolean
+        nonWorkingDays:
+          items:
+            $ref: '#/components/schemas/NonWorkingDay'
+          type: array
+          uniqueItems: true
+        saturday:
+          type: boolean
+        sunday:
+          type: boolean
+        thursday:
+          type: boolean
+        timezoneId:
+          type: string
+        tuesday:
+          type: boolean
+        wednesday:
+          type: boolean
+      type: object
+    StatusPayload:
+      additionalProperties: false
+      description: The payload for creating a status
+      properties:
+        description:
+          description: The description of the status
+          type: string
+        name:
+          description: The name of the status
+          type: string
+        onConflict:
+          description: The conflict strategy for the status already exists. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters; NEW - Create a new entity
+          enum:
+          - FAIL
+          - USE
+          - NEW
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        scope:
+          description: The scope of the status. Set to GLOBAL to make the status shared across projects. Leave null for the default (project-scoped) behaviour.
+          enum:
+          - GLOBAL
+          type: string
+        statusCategory:
+          description: The status category of the status. The value is case-sensitive.
+          enum:
+          - TODO
+          - IN_PROGRESS
+          - DONE
+          type: string
+      type: object
+    ProjectTemplateModel:
+      additionalProperties: false
+      properties:
+        archetype:
+          $ref: '#/components/schemas/ProjectArchetype'
+        defaultBoardView:
+          type: string
+        description:
+          type: string
+        liveTemplateProjectIdReference:
+          format: int64
+          type: integer
+        name:
+          type: string
+        projectTemplateKey:
+          $ref: '#/components/schemas/ProjectTemplateKey'
+        snapshotTemplate:
+          additionalProperties: {}
+          type: object
+        templateGenerationOptions:
+          $ref: '#/components/schemas/CustomTemplateOptions'
+        type:
+          enum:
+          - LIVE
+          - SNAPSHOT
+          type: string
+      type: object
+    PermissionPayloadDTO:
+      additionalProperties: false
+      description: The payload to create a permission scheme
+      properties:
+        addAddonRole:
+          description: Configuration to generate addon role. Default is false if null. Only applies to GLOBAL-scoped permission scheme
+          type: boolean
+        description:
+          description: The description of the permission scheme
+          type: string
+        grants:
+          description: List of permission grants
+          items:
+            $ref: '#/components/schemas/PermissionGrantDTO'
+          type: array
+          uniqueItems: true
+        name:
+          description: The name of the permission scheme
+          type: string
+        onConflict:
+          default: FAIL
+          description: The strategy to use when there is a conflict with an existing permission scheme. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters; NEW - If the entity exist, try and create a new one with a different name
+          enum:
+          - FAIL
+          - USE
+          - NEW
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type:
+      - object
+      - 'null'
+    FieldLayoutSchemePayload:
+      additionalProperties: false
+      deprecated: true
+      description: 'Deprecated use [fieldAssociationScheme](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-field-schemes/#api-group-field-schemes) instead Defines the payload for the field layout schemes. See [ Field configuration scheme](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-field-configurations/#api-rest-api-3-fieldconfigurationscheme-post).
+
+
+        [ How to configure a field configuration scheme](https://support.atlassian.com/jira-cloud-administration/docs/configure-a-field-configuration-scheme/).'
+      properties:
+        defaultFieldLayout:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        description:
+          description: The description of the field layout scheme
+          example: This is a field layout scheme
+          type: string
+        explicitMappings:
+          additionalProperties:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          description: There is a default configuration "fieldlayout" that is applied to all issue types using this scheme that don't have an explicit mapping users can create (or re-use existing) configurations for other issue types and map them to this scheme
+          type: object
+        name:
+          description: The name of the field layout scheme
+          example: My Field Layout Scheme
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type:
+      - object
+      - 'null'
+    IssueTypeProjectCreatePayload:
+      additionalProperties: false
+      description: The payload for creating issue types in a project
+      properties:
+        issueTypeHierarchy:
+          description: Defines the issue type hierarhy to be created and used during this project creation. This will only add new levels if there isn't an existing level
+          items:
+            $ref: '#/components/schemas/IssueTypeHierarchyPayload'
+          type:
+          - array
+          - 'null'
+        issueTypeScheme:
+          $ref: '#/components/schemas/IssueTypeSchemePayload'
+        issueTypes:
+          description: Only needed if you want to create issue types, you can otherwise use the ids of issue types in the scheme configuration
+          items:
+            $ref: '#/components/schemas/IssueTypePayload'
+          type:
+          - array
+          - 'null'
+      type:
+      - object
+      - 'null'
+    EditTemplateRequest:
+      additionalProperties: false
+      description: Request to edit a custom template
+      properties:
+        templateDescription:
+          description: The description of the template
+          maxLength: 150
+          type: string
+        templateGenerationOptions:
+          $ref: '#/components/schemas/CustomTemplateOptions'
+        templateKey:
+          description: The unique identifier of the template
+          type: string
+        templateName:
+          description: The name of the template
+          maxLength: 50
+          type: string
+      type: object
+    NotificationSchemeNotificationDetailsPayload:
+      additionalProperties: false
+      description: The configuration for notification recipents
+      properties:
+        notificationType:
+          description: The type of notification.
+          type: string
+        parameter:
+          description: The parameter of the notification, should be eiither null if not required, or PCRI.
+          type: string
+      type: object
+    IssueTypeHierarchyPayload:
+      additionalProperties: false
+      description: The payload for creating an issue type hierarchy
+      properties:
+        hierarchyLevel:
+          description: The hierarchy level of the issue type. 0, 1, 2, 3 .. n; Negative values for subtasks
+          format: int32
+          type: integer
+        name:
+          description: The name of the issue type
+          type: string
+        onConflict:
+          description: The conflict strategy to use when the issue type already exists. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
+          enum:
+          - FAIL
+          - USE
+          - NEW
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type:
+      - object
+      - 'null'
+    CustomTemplateRequestDTO:
+      additionalProperties: false
+      description: The specific request object for creating a project with template.
+      properties:
+        boardFeatures:
+          $ref: '#/components/schemas/BoardFeaturesPayload'
+        boards:
+          $ref: '#/components/schemas/BoardsPayload'
+        field:
+          $ref: '#/components/schemas/FieldCapabilityPayload'
+        issueType:
+          $ref: '#/components/schemas/IssueTypeProjectCreatePayload'
+        notification:
+          $ref: '#/components/schemas/NotificationSchemePayload'
+        permissionScheme:
+          $ref: '#/components/schemas/PermissionPayloadDTO'
+        project:
+          $ref: '#/components/schemas/ProjectPayload'
+        role:
+          $ref: '#/components/schemas/RolesCapabilityPayload'
+        scope:
+          $ref: '#/components/schemas/ScopePayload'
+        security:
+          $ref: '#/components/schemas/SecuritySchemePayload'
+        workflow:
+          $ref: '#/components/schemas/WorkflowCapabilityPayload'
+      type: object
+    TransitionPayload:
+      additionalProperties: false
+      description: The payload for creating a transition in a workflow. Can be DIRECTED, GLOBAL, SELF-LOOPED, GLOBAL LOOPED
+      properties:
+        actions:
+          description: The actions that are performed when the transition is made
+          items:
+            $ref: '#/components/schemas/RulePayload'
+          type: array
+        conditions:
+          $ref: '#/components/schemas/ConditionGroupPayload'
+        customIssueEventId:
+          description: Mechanism in Jira for triggering certain actions, like notifications, automations, etc. Unless a custom notification scheme is configure, it's better not to provide any value here
+          type: string
+        description:
+          description: The description of the transition
+          type: string
+        from:
+          description: The statuses that the transition can be made from
+          items:
+            $ref: '#/components/schemas/FromLayoutPayload'
+          type: array
+        id:
+          description: The id of the transition
+          format: int32
+          type: integer
+        name:
+          description: The name of the transition
+          type: string
+        properties:
+          additionalProperties:
+            description: The properties of the transition
+            type: string
+          description: The properties of the transition
+          type: object
+        to:
+          $ref: '#/components/schemas/ToLayoutPayload'
+        transitionScreen:
+          $ref: '#/components/schemas/RulePayload'
+        triggers:
+          description: The triggers that are performed when the transition is made
+          items:
+            $ref: '#/components/schemas/RulePayload'
+          type: array
+        type:
+          description: The type of the transition
+          enum:
+          - global
+          - initial
+          - directed
+          type: string
+        validators:
+          description: The validators that are performed when the transition is made
+          items:
+            $ref: '#/components/schemas/RulePayload'
+          type: array
+      type: object
+    BoardFeaturesPayload:
+      additionalProperties: false
+      description: Configuration of features for one or more boards. Replaces the deprecated features field on BoardPayload
+      properties:
+        boardFeatures:
+          additionalProperties:
+            description: A map of board PCRIs to the list of features to enable on each board.
+            items:
+              $ref: '#/components/schemas/BoardFeaturePayload'
+            type: array
+          description: A map of board PCRIs to the list of features to enable on each board.
+          type: object
+      type:
+      - object
+      - 'null'
+    FieldLayoutConfiguration:
+      additionalProperties: false
+      description: Defines the payload for the field layout configuration. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-field-configurations/\#api-rest-api-3-fieldconfiguration-post
+      properties:
+        field:
+          description: Whether to show the field
+          type: boolean
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        required:
+          description: Whether the field is required
+          type: boolean
+      type: object
+    FieldAssociationItemPayload:
+      additionalProperties: false
+      description: Defines the payload for the field association scheme.
+      properties:
+        description:
+          description: The description of the field association item
+          example: The description of the field association item
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        qualifierId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        qualifierType:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        rendererType:
+          description: The renderer type of the field
+          example: jira-text-renderer
+          type: string
+        required:
+          description: Whether the field is required
+          type: boolean
+      type: object
+    ProjectPayload:
+      additionalProperties: false
+      description: The payload for creating a project
+      properties:
+        fieldLayoutSchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        issueSecuritySchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        issueTypeSchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        issueTypeScreenSchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        notificationSchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        permissionSchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        projectTypeKey:
+          description: The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes), which defines the application-specific feature set. If you don't specify the project template you have to specify the project type.
+          enum:
+          - software
+          - business
+          - service_desk
+          - product_discovery
+          example: software
+          type: string
+        workflowSchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type: object
+  securitySchemes:
+    OAuth2:
+      description: OAuth2 scopes for Jira
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          scopes:
+            delete:async-task:jira: Delete asynchronous task.
+            delete:attachment:jira: Delete issue attachments.
+            delete:avatar:jira: Delete system and custom avatars.
+            delete:comment.property:jira: Delete issue comment properties.
+            delete:comment:jira: Delete issue comments.
+            delete:dashboard.property:jira: Delete dashboard properties.
+            delete:dashboard:jira: Delete dashboards.
+            delete:field-configuration-scheme:jira: Delete field configuration schemes.
+            delete:field-configuration:jira: Delete field configurations.
+            delete:field.option:jira: Delete field options.
+            delete:field:jira: Delete fields.
+            delete:filter.column:jira: Delete filter columns.
+            delete:filter:jira: Delete filters.
+            delete:group:jira: Delete user groups.
+            delete:issue-link-type:jira: Delete issue link types.
+            delete:issue-link:jira: Delete issue links.
+            delete:issue-type-scheme:jira: Delete issue type schemes.
+            delete:issue-type-screen-scheme:jira: Delete issue type screen schemes.
+            delete:issue-type.property:jira: Delete issue type properties.
+            delete:issue-type:jira: Delete issue types.
+            delete:issue-worklog.property:jira: Delete issue worklog properties.
+            delete:issue-worklog:jira: Delete issue worklogs.
+            delete:issue.property:jira: Delete issue properties.
+            delete:issue.remote-link:jira: Delete issue remote links.
+            delete:issue:jira: Delete issues.
+            delete:permission-scheme:jira: Delete permission schemes.
+            delete:permission:jira: Delete permissions.
+            delete:project-category:jira: Delete project categories.
+            delete:project-role:jira: Delete project roles.
+            delete:project-version:jira: Delete project versions.
+            delete:project.avatar:jira: Delete project avatars.
+            delete:project.component:jira: Delete project components.
+            delete:project.property:jira: Delete project properties.
+            delete:project:jira: Delete projects and their details, such as issue types, project lead, and avatars.
+            delete:screen-scheme:jira: Delete screen schemes.
+            delete:screen-tab:jira: Delete screen tabs.
+            delete:screen:jira: Delete screens.
+            delete:screenable-field:jira: Delete screenable fields.
+            delete:user-configuration:jira: Delete user configurations.
+            delete:user.property:jira: Delete user properties.
+            delete:webhook:jira: Delete webhooks.
+            delete:workflow-scheme:jira: Delete workflow schemes.
+            delete:workflow.property:jira: Delete workflow properties.
+            delete:workflow:jira: Delete workflows.
+            manage:jira-configuration: Configure Jira settings that require the Jira administrators permission, for example, create projects and custom fields, view workflows, manage issue link types.
+            manage:jira-project: Create and edit project settings and create new project-level objects, for example, versions, components.
+            manage:jira-webhook: Manage Jira webhooks. Enables an OAuth app to register and unregister dynamic webhooks in Jira. It also provides for fetching of registered webhooks.
+            read:app-data:jira: Read app data.
+            read:application-role:jira: View application roles.
+            read:attachment:jira: View issue attachments.
+            read:audit-log:jira: View audit logs.
+            read:avatar:jira: View system and custom avatars.
+            read:comment.property:jira: View issue comment properties.
+            read:comment:jira: View issue comments.
+            read:custom-field-contextual-configuration:jira: Read custom field contextual configurations.
+            read:dashboard.property:jira: View dashboard properties.
+            read:dashboard:jira: View dashboards.
+            read:email-address:jira: View email addresses of all users regardless of the user's profile visibility settings.
+            read:field-configuration-scheme:jira: View field configuration schemes.
+            read:field-configuration:jira: Read field configurations.
+            read:field.default-value:jira: View field default values.
+            read:field.option:jira: View field options.
+            read:field.options:jira: Read field options.
+            read:field:jira: View fields.
+            read:filter.column:jira: View filter columns.
+            read:filter.default-share-scope:jira: View filter default share scopes.
+            read:filter:jira: View filters.
+            read:group:jira: View user groups.
+            read:instance-configuration:jira: View instance configurations.
+            read:issue-details:jira: View issue details.
+            read:issue-event:jira: Read issue events.
+            read:issue-field-values:jira: View issue field valueses.
+            read:issue-link-type:jira: View issue link types.
+            read:issue-link:jira: View issue links.
+            read:issue-meta:jira: View issue meta.
+            read:issue-security-level:jira: View issue security levels.
+            read:issue-security-scheme:jira: View issue security schemes.
+            read:issue-status:jira: View issue statuses.
+            read:issue-type-hierarchy:jira: Read issue type hierarchies.
+            read:issue-type-scheme:jira: View issue type schemes.
+            read:issue-type-screen-scheme:jira: View issue type screen schemes.
+            read:issue-type.property:jira: View issue type properties.
+            read:issue-type:jira: View issue types.
+            read:issue-worklog.property:jira: View issue worklog properties.
+            read:issue-worklog:jira: View issue worklogs.
+            read:issue.changelog:jira: View issue changelogs.
+            read:issue.property:jira: View issue properties.
+            read:issue.remote-link:jira: View issue remote links.
+            read:issue.time-tracking:jira: View issue time trackings.
+            read:issue.transition:jira: View issue transitions.
+            read:issue.vote:jira: View issue votes.
+            read:issue.votes:jira: View issue voteses.
+            read:issue.watcher:jira: View issue watchers.
+            read:issue:jira: View issues.
+            read:jira-expressions:jira: View jira expressions.
+            read:jira-user: View user information in Jira that you have access to, including usernames, email addresses, and avatars.
+            read:jira-work: Read project and issue data. Search for issues and objects associated with issues (such as attachments and worklogs).
+            read:jql:jira: View JQL.
+            read:label:jira: View labels.
+            read:license:jira: View licenses.
+            read:notification-scheme:jira: View notification schemes.
+            read:permission-scheme:jira: View permission schemes.
+            read:permission:jira: View permissions.
+            read:priority:jira: View priorities.
+            read:project-category:jira: View project categories.
+            read:project-role:jira: View project roles.
+            read:project-type:jira: View project types.
+            read:project-version:jira: View project versions.
+            read:project.avatar:jira: Read project avatars.
+            read:project.component:jira: View project components.
+            read:project.email:jira: View project emails.
+            read:project.feature:jira: Read project features.
+            read:project.property:jira: View project properties.
+            read:project:jira: View projects.
+            read:resolution:jira: View resolutions.
+            read:role:jira: View roles.
+            read:screen-field:jira: View screen fields.
+            read:screen-scheme:jira: View screen schemes.
+            read:screen-tab:jira: View screen tabs.
+            read:screen:jira: View screens.
+            read:screenable-field:jira: View screenable fields.
+            read:status:jira: View statuses.
+            read:user-configuration:jira: View user configurations.
+            read:user.columns:jira: View user columnses.
+            read:user.property:jira: View user properties.
+            read:user:jira: View users.
+            read:webhook:jira: View webhooks.
+            read:workflow-scheme:jira: View workflow schemes.
+            read:workflow.property:jira: View workflow properties.
+            read:workflow:jira: View workflows.
+            send:notification:jira: Send notifications.
+            validate:jql:jira: Validate JQL.
+            write:app-data:jira: Write app data.
+            write:attachment:jira: Create and update issue attachments.
+            write:avatar:jira: Create and update system and custom avatars.
+            write:comment.property:jira: Create and update issue comment properties.
+            write:comment:jira: Create and update issue comments.
+            write:custom-field-contextual-configuration:jira: Save custom field contextual configurations.
+            write:dashboard.property:jira: Create and update dashboard properties.
+            write:dashboard:jira: Create and update dashboards.
+            write:field-configuration-scheme:jira: Create and update field configuration schemes.
+            write:field-configuration:jira: Save field configurations.
+            write:field.default-value:jira: Create and update field default values.
+            write:field.option:jira: Create and update field options.
+            write:field:jira: Create and update fields.
+            write:filter.column:jira: Create and update filter columns.
+            write:filter.default-share-scope:jira: Create and update filter default share scopes.
+            write:filter:jira: Create and update filters.
+            write:group:jira: Create and update user groups.
+            write:instance-configuration:jira: Create and update instance configurations.
+            write:issue-link-type:jira: Create and update issue link types.
+            write:issue-link:jira: Create and update issue links.
+            write:issue-type-scheme:jira: Create and update issue type schemes.
+            write:issue-type-screen-scheme:jira: Create and update issue type screen schemes.
+            write:issue-type.property:jira: Create and update issue type properties.
+            write:issue-type:jira: Create and update issue types.
+            write:issue-worklog.property:jira: Create and update issue worklog properties.
+            write:issue-worklog:jira: Create and update issue worklogs.
+            write:issue.property:jira: Create and update issue properties.
+            write:issue.remote-link:jira: Create and update issue remote links.
+            write:issue.time-tracking:jira: Create and update issue time trackings.
+            write:issue.vote:jira: Create and update issue votes.
+            write:issue.watcher:jira: Create and update issue watchers.
+            write:issue:jira: Create and update issues.
+            write:jira-work: Create and edit issues in Jira, post comments, create worklogs, and delete issues.
+            write:permission-scheme:jira: Create and update permission schemes.
+            write:permission:jira: Create and update permissions.
+            write:project-category:jira: Create and update project categories.
+            write:project-role:jira: Create and update project roles.
+            write:project-version:jira: Create and update project versions.
+            write:project.avatar:jira: Create and update project avatars.
+            write:project.component:jira: Create and update project components.
+            write:project.email:jira: Create and update project emails.
+            write:project.feature:jira: Save project features.
+            write:project.property:jira: Create and update project properties.
+            write:project:jira: Create and update projects.
+            write:screen-scheme:jira: Create and update screen schemes.
+            write:screen-tab:jira: Create and update screen tabs.
+            write:screen:jira: Create and update screens.
+            write:screenable-field:jira: Create and update screenable fields.
+            write:user-configuration:jira: Create and update user configurations.
+            write:user.property:jira: Create and update user properties.
+            write:webhook:jira: Create and update webhooks.
+            write:workflow-scheme:jira: Create and update workflow schemes.
+            write:workflow.property:jira: Create and update workflow properties.
+            write:workflow:jira: Create and update workflows.
+          tokenUrl: https://auth.atlassian.com/oauth/token
+      type: oauth2
+    basicAuth:
+      description: You can access this resource via basic auth.
+      scheme: basic
+      type: http
+externalDocs:
+  description: Find out more about Atlassian products and services.
+  url: http://www.atlassian.com
+x-atlassian-narrative:
+  documents:
+  - anchor: about
+    body: "The Jira REST API enables you to interact with Jira programmatically. Use this API to \n[build apps](https://developer.atlassian.com/cloud/jira/platform/integrating-with-jira-cloud/), script interactions with \nJira, or develop any other type of integration. This page documents the REST resources available in Jira Cloud, including \nthe HTTP response codes and example requests and responses."
+    title: About
+  - anchor: version
+    body: "This documentation is for **version 3** of the Jira Cloud platform REST API, which is the latest\nversion. [Version 2](https://developer.atlassian.com/cloud/jira/platform/rest/v2/) and\nversion 3 of the API offer the same collection of operations. However, version 3 provides support for\nthe [Atlassian Document Format](https://developer.atlassian.com/cloud/jira/platform/apis/document/structure/)\n(ADF) in:\n- `body` in comments, including where comments are used in issue, issue link, and transition resources.\n- `comment` in worklogs.\n- `description` and `environment` fields in issues.\n- `textarea` type custom fields (multi-line text fields) in issues. Single line custom fields\n  (`textfield`) accept a string and don't handle Atlassian Document Format content.\n"
+    title: Version
+  - anchor: authentication
+    body: "### Forge apps\n\nFor Forge apps, [REST API scopes](https://developer.atlassian.com/cloud/jira/platform/scopes-for-oauth-2-3LO-and-forge-apps/) \nare used when authenticating with Jira Cloud platform. See [Add scopes to call an Atlassian REST API](https://developer.atlassian.com/platform/forge/add-scopes-to-call-an-atlassian-rest-api/) for more details.\n\nThe URIs for Forge app REST API calls have this structure:\n\n`/rest/api/3/<resource-name>`\n\nFor example, `/rest/api/3/issue/DEMO-1`\n\n### Connect apps\n\nFor Connect apps, authentication (JWT-based) is built into the Connect libraries. Authorization is implemented using either \nscopes (shown as _App scope required_ for operations on this page) or user impersonation. See \n[Security for Connect apps](https://developer.atlassian.com/cloud/jira/platform/security-for-connect-apps/) \nfor details.\n\nThe URIs for Connect app REST API calls have this structure:\n\n`https://<site-url>/rest/api/3/<resource-name>`\n\nFor example, `https://your-domain.atlassian.net/rest/api/3/issue/DEMO-1`\n\n### Other integrations\n\nFor integrations that are not Forge or Connect apps, use OAuth 2.0 authorization code grants (3LO) for security \n(3LO scopes are shown as for operations _OAuth scopes required_). See \n[OAuth 2.0 (3LO) apps](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/) \nfor details.\n\nThe URIs for OAuth 2.0 (3LO) app REST API calls have this structure:\n\n`https://api.atlassian.com/ex/jira/<cloudId>/rest/api/3/<resource-name>`\n\nFor example, `https://api.atlassian.com/ex/jira/35273b54-3f06-40d2-880f-dd28cf8daafa/rest/api/3/issue/DEMO-1`\n\n### Ad-hoc API calls\n\nFor personal scripts, bots, and ad-hoc execution of the REST APIs use basic authentication. See [Basic auth for REST APIs](https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/) for details. \n\nThe URIs for basic authentication REST API calls have this structure:\n\n`https://<site-url>/rest/api/3/<resource-name>`\n\nFor example, `https://your-domain.atlassian.net/rest/api/3/issue/DEMO-1`\n"
+    title: Authentication and authorization
+  - anchor: permissions
+    body: "### Operation permissions\n\nMost operations in this API require permissions. The calling user must have the required permissions for an operation to \nuse it. Note that for Connect apps, the app user must have the required permissions for the operation and the app must \nhave scopes that permit the operation.\n\nA permission can be granted to a group, project role, or issue role that the user is a member of, or granted directly to a user. \nSee [Permissions overview](https://confluence.atlassian.com/x/FQiiLQ) for details. The most common permissions are:\n\n- **Administer the Cloud site**: Users in the _site-admins_ group have this \npermission. See [Manage groups](https://confluence.atlassian.com/x/24xjL) for details.\n- **Administer Jira**: Granted by the _Jira Administrators_ global permission. There is a default group for this permission. \nSee [Manage groups](https://confluence.atlassian.com/x/24xjL) and [Managing global permissions](https://confluence.atlassian.com/x/x4dKLg) for details.\n- **Administer a project in Jira**: Granted by the _Administer projects_ project permission for a project. This can be \ngranted to a user, a group, a project role, and more. \nSee [Managing project permissions](https://confluence.atlassian.com/x/yodKLg) for details.\n- **Access a project in Jira**: Granted by the _Browse projects_ project permission for a project. This can be \ngranted to a user, a group, a project role, and more. \nSee [Managing project permissions](https://confluence.atlassian.com/x/yodKLg) for details.\n- **Access Jira**: Granted by the _Jira Users_ global permission. Users in the default product access group (for example, \n_jira-software-users-acmesite_) have this permission. \nSee [Manage groups](https://confluence.atlassian.com/x/24xjL) and \n[Managing global permissions](https://confluence.atlassian.com/x/x4dKLg) for details.\n\n### Anonymous access\n\nSome operations provide support for anonymous access. However, anonymous access is only available if \nthe Jira permission needed to access the object or records returned by the operation is granted to \nthe _Public_ group. See [Allowing anonymous access to your project](https://confluence.atlassian.com/x/GDxxLg) \nfor details.\n\nIf an operation is called anonymously and anonymous access is not available, the operation will return \nan error. Note that not all operations that correspond to objects that can be given public access \nprovide for anonymous access.\n"
+    title: Permissions
+  - anchor: expansion
+    body: "### Expansion\n\nThe Jira REST API uses resource expansion, which means that some parts of a resource are not returned unless specified \nin the request. This simplifies responses and minimizes network traffic.\n\nTo expand part of a resource in a request, use the expand query parameter and specify the object(s) to be expanded. \nIf you need to expand nested objects, use the `.` dot notation. If you need to expand multiple objects, use a \ncomma-separated list. \n\nFor example, the following request expands the `names` and `renderedFields` properties for the _JRACLOUD-34423_ issue:\n\n`GET issue/JRACLOUD-34423?expand=names,renderedFields`\n\nTo discover which object can be expanded, refer to the `expand` property in the object. \nIn the JSON example below, the resource declares `widgets` as expandable.\n\n```json\n{\n  \"expand\": \"widgets\", \n  \"self\": \"https://your-domain.atlassian.net/rest/api/3/resource/KEY-1\", \n  \"widgets\": {\n    \"widgets\": [],\n    \"size\": 5\n   }\n}\n```\n\n### Pagination\n\nThe Jira REST API uses pagination to improve performance. Pagination is enforced for operations that could return a large \ncollection of items. When you make a request to a paginated resource, the response wraps the returned array of values in \na JSON object with paging metadata. For example:\n\n```json\n{\n    \"startAt\" : 0,\n    \"maxResults\" : 10,\n    \"total\": 200,\n    \"isLast\": false,\n    \"values\": [\n        { /* result 0 */ },\n        { /* result 1 */ },\n        { /* result 2 */ }\n    ]\n}\n```\n\n*   `startAt` is the index of the first item returned in the page.\n*   `maxResults` is the maximum number of items that a page can return. Each operation can have a different limit for\n    the number of items returned, and these limits may change without notice. To find the maximum number of items \n    that an operation could return, set `maxResults` to a large number—for example, over 1000—and if the returned value of `maxResults` is less than the requested value, the returned value is the maximum.\n*    `total` is the total number of items contained in all pages. This number **_may change_** as the client \nrequests the subsequent pages, therefore the client should always assume that the requested page can be empty. Note \nthat this property is not returned for all operations.\n*   `isLast` indicates whether the page returned is the last one. Note that this property is not returned for all operations.\n\n### Ordering\n\nSome operations support ordering the elements of a response by a field. Check the documentation for the operation to \nconfirm whether ordering of a response is supported and which fields can be used. Responses are listed in ascending order \nby default. You can change the order using the `orderby` query parameter with a `-` or `+` symbol. For example:\n\n*   `?orderBy=name` to order by `name` field ascending.\n*   `?orderBy=+name` to order by `name` field ascending.\n*   `?orderBy=-name` to order by `name` field descending.\n\n\n"
+    title: Expansion, pagination, and ordering
+  - anchor: timestamps
+    body: 'By default, top-level timestamps (e.g. updated and created) are returned in [ISO 8601](https://www.w3.org/TR/NOTE-datetime) format, in the system default user time zone.
+
+
+      To return date time data in the logged in user''s timezone, please refer to `renderedFields` property under the `expand` query parameter in relevant APIs.
+
+      '
+    title: Timestamps
+  - anchor: special-request-headers
+    body: 'The following request and response headers define important metadata for the Jira Cloud REST API resources.
+
+
+      -   `X-Atlassian-Token` (request): Operations that accept multipart/form-data must include the `X-Atlassian-Token: no-check`
+
+      header in requests. Otherwise the request is blocked by cross-site request forgery (CSRF/XSRF) protection.
+
+      -   `X-Force-Accept-Language` (request): controls how the standard HTTP `Accept-Language` header is processed.
+
+      By default `Accept-Language` is ignored and the response is in the language configured in the user''s profile or,
+
+      when no language is configured for the user, the default Jira instance language. For the response to recognize
+
+      `Accept-Language` send `X-Force-Accept-Language = true` as well. If `Accept-Language` requests a language that Jira
+
+      can return the response is in that language, otherwise Jira returns the response in the default language. If
+
+      `Accept-Language` is not specified the response is in the default language.
+
+      -   `X-AAccountId` (response): This response header contains the Atlassian account ID of the authenticated user.'
+    title: Special headers
+  - anchor: anonymous-operations
+    body: " Jira provides for all permissions, except the [global permission](https://confluence.atlassian.com/x/x4dKLg) Administer Jira, to be assigned to *Anyone*. Once a permission is assigned to *Anyone*, anyone knowing a project's URL is able to use the features in Jira enabled by the permission. However, the Jira REST API does not enable anonymous access for operations by default. This means that an anonymous user who may be able to perform an action through Jira, may not be able to perform the same action where it's enabled by the REST API. \n\n The operations that provide anonymous access are annotated \"This operation can be accessed anonymously.\""
+    title: Anonymous operations
+  - anchor: async-operations
+    body: "Some Jira REST API operations may trigger long-running or computationally expensive tasks. In these cases, the operation \nwill schedule an asynchronous task and return a `303 (See Other)` response, indicating the location of the queued task \nin the `Location` header. You can query this task to get progress updates.\n\nWhen the task finishes, the response object will contain the `result` field. The content of the field is specific to the \noperation that created the task. Refer to the operation’s documentation for more information.\n\nNote that asynchronous tasks are not guaranteed to be run in order. In other words, if you need your tasks to execute \nin a certain order, you should start a task only after the prerequisite task(s) have finished."
+    title: Asynchronous operations
+  - anchor: experimental
+    body: "Features and methods marked as experimental may change without notice. Feedback on experimental functionality is welcome. \nReport issues to [Developer and Marketplace support](https://developer.atlassian.com/support) (preferred) or use the \n**Give docs feedback** link at the top of this page. \n"
+    title: Experimental features
+  - anchor: status-codes
+    body: "The Jira Cloud platform REST API uses the [standard HTTP status codes](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).\n\nOperations that return an error status code may also return a response body containing details of the error or errors. \nThe schema for the response body is shown below:\n\n\n```json\n{\n  \"id\": \"https://docs.atlassian.com/jira/REST/schema/error-collection#\",\n  \"title\": \"Error Collection\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"errorMessages\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    },\n    \"errors\": {\n      \"type\": \"object\",\n      \"patternProperties\": {\n        \".+\": {\n          \"type\": \"string\"\n        }\n      },\n      \"additionalProperties\": false\n    },\n    \"status\": { \n      \"type\": \"integer\"\n    }\n  },\n  \"additionalProperties\": false\n}\n```"
+    title: Status codes

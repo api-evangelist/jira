@@ -1,0 +1,499 @@
+openapi: 3.2.0
+info:
+  title: Jira Rest API
+  version: 1001.0.0-SNAPSHOT-82b018affa468e58f284fbe4df33536469d757df
+  description: 'Operations tagged Rest across 2 of this provider''s published API definitions: jira-platform-openapi.json, jira-service-management-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://your-domain.atlassian.net
+tags:
+- name: Rest
+paths:
+  /rest/internal/api/latest/worklog/bulk:
+    post:
+      deprecated: false
+      description: 'Returns worklog details for a list of issue ID and worklog ID pairs.
+
+
+        This is an internal API for bulk fetching worklogs by their issue and worklog IDs. Worklogs that don''t exist will be filtered out from the response.
+
+
+        The returned list of worklogs is limited to 1000 items.
+
+
+        **Permissions required:** This is an internal service-to-service API that requires ASAP authentication. No user permission checks are performed as this bypasses normal user context.'
+      operationId: getWorklogsByIssueIdAndWorklogId
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkWorklogKeyRequestBean'
+        description: A JSON object containing a list of issue ID and worklog ID pairs.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkWorklogKeyResponseBean'
+          description: Returned if the request is successful.
+        '400':
+          description: Returned if the request contains more than 1000 worklog pairs, is empty, or has invalid format.
+        '401':
+          description: Returned if the authentication credentials are incorrect or missing.
+        '500':
+          description: Returned if there is an internal server error.
+      security:
+      - basicAuth: []
+      summary: Get worklogs by issue id and worklog id
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-connect-scope: INACCESSIBLE
+      tags:
+      - Rest
+    servers:
+    - url: https://your-domain.atlassian.net
+  /rest/servicedeskapi/customer/skip-permission-check:
+    post:
+      deprecated: false
+      description: 'Creates a customer account on behalf of jsd-nutmeg.
+
+
+        This endpoint is restricted to jsd-nutmeg via ASAP authentication. It provides the same capability as the public \{@code POST /servicedeskapi/customer\} endpoint, but does not require a User Context Token (UCT) or Connect app user \\u2014 authorization is enforced entirely via the ASAP token.
+
+
+        No user permission checks are performed; \{@code null\} is passed as the acting user to bypass the permission check in the underlying service.'
+      operationId: createCustomer
+      parameters:
+      - description: Optional boolean flag; when \{@code true\}, returns 409 Conflict for duplicate email instead of the default 400.
+        in: query
+        name: strictConflictStatusCode
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerCreateDTO'
+        description: JSON body containing the email address and display name of the customer to create.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+          description: 201 response
+      summary: Create customer
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-connect-scope: INACCESSIBLE
+      tags:
+      - Rest
+    servers:
+    - url: https://your-domain.atlassian.net
+  /rest/servicedeskapi/knowledgebase/article/view/{pageId}:
+    get:
+      deprecated: false
+      description: ''
+      operationId: viewArticle
+      parameters:
+      - in: path
+        name: pageId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: 200 response
+      security:
+      - OAuth2:
+        - read:servicedesk-request
+      - {}
+      summary: View knowledge base article
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-oauth2-scopes:
+      - scheme: OAuth2
+        scopes:
+        - read:servicedesk-request
+        state: Current
+      - scheme: OAuth2
+        scopes:
+        - read:knowledgebase:jira-service-management
+        state: Beta
+      x-atlassian-connect-scope: READ
+      tags:
+      - Rest
+    servers:
+    - url: https://your-domain.atlassian.net
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/customer/skip-permission-check:
+    post:
+      deprecated: false
+      description: 'Adds one or more customers to a service desk on behalf of jsd-nutmeg.
+
+
+        This endpoint is restricted to jsd-nutmeg via ASAP authentication. It provides the same capability as the public \{@code POST /servicedeskapi/servicedesk/\{serviceDeskId\}/customer\} endpoint, but does not require a User Context Token (UCT) or Connect app user \\u2014 authorization is enforced entirely via the ASAP token.
+
+
+        No user permission checks are performed; \{@code null\} is passed as the acting user to bypass the permission check in the underlying service.
+
+
+        If any of the passed customers are already associated with the service desk, no changes will be made for those customers and the resource returns a 204 success code.'
+      operationId: addCustomers
+      parameters:
+      - description: The ID of the service desk to add customers to. This can alternatively be a project identifier.
+        in: path
+        name: serviceDeskId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceDeskCustomerDTO'
+        description: JSON body containing the account IDs of customers to add.
+        required: true
+      responses:
+        '204':
+          content:
+            application/json:
+              schema: {}
+          description: The request completed successfully. No additional content will be sent in the response.
+      summary: Add customers
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-connect-scope: INACCESSIBLE
+      tags:
+      - Rest
+    servers:
+    - url: https://your-domain.atlassian.net
+components:
+  schemas:
+    WorklogKeyResult:
+      additionalProperties: false
+      properties:
+        issueId:
+          description: The issue ID.
+          format: int64
+          type: integer
+        worklogId:
+          description: The worklog ID.
+          format: int64
+          type: integer
+      type: object
+    WorklogCompositeKey:
+      additionalProperties: false
+      properties:
+        issueId:
+          description: The issue ID.
+          format: int64
+          type: integer
+        worklogId:
+          description: The worklog ID.
+          format: int64
+          type: integer
+      type: object
+    BulkWorklogKeyRequestBean:
+      additionalProperties: false
+      properties:
+        requests:
+          description: A list of issue and worklog ID pairs.
+          items:
+            $ref: '#/components/schemas/WorklogCompositeKey'
+          type: array
+      type: object
+    BulkWorklogKeyResponseBean:
+      additionalProperties: false
+      properties:
+        worklogs:
+          description: A list of successfully retrieved worklogs with their issue and worklog IDs.
+          items:
+            $ref: '#/components/schemas/WorklogKeyResult'
+          type: array
+      type: object
+    UserLinkDTO:
+      additionalProperties: false
+      properties:
+        avatarUrls:
+          additionalProperties:
+            type: string
+          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
+          type: object
+        jiraRest:
+          description: REST API URL for the customer.
+          format: uri
+          type: string
+        self:
+          format: uri
+          type: string
+      type: object
+    UserDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/UserLinkDTO'
+          description: URLs for the customer record and related items.
+        accountId:
+          description: The accountId of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+          type: string
+        active:
+          description: Indicates if the customer is active (true) or inactive (false)
+          type: boolean
+        displayName:
+          description: Customer's name for display in a UI. Depending on the customer’s privacy settings, this may return an alternative value.
+          type: string
+        emailAddress:
+          description: Customer's email address. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+        key:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        name:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        timeZone:
+          description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+      type: object
+    CustomerCreateDTO:
+      additionalProperties: false
+      properties:
+        displayName:
+          description: Customer's name for display in the UI.
+          type: string
+        email:
+          description: Customer's email address.
+          type: string
+        fullName:
+          description: Deprecated, please use 'displayName'.
+          type: string
+      type: object
+    ServiceDeskCustomerDTO:
+      additionalProperties: false
+      properties:
+        accountIds:
+          description: List of users, specified by account IDs, to add to or remove from a service desk.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        usernames:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. Use `accountIds` instead.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+  securitySchemes:
+    OAuth2:
+      description: OAuth2 scopes for Jira
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          scopes:
+            delete:async-task:jira: Delete asynchronous task.
+            delete:attachment:jira: Delete issue attachments.
+            delete:avatar:jira: Delete system and custom avatars.
+            delete:comment.property:jira: Delete issue comment properties.
+            delete:comment:jira: Delete issue comments.
+            delete:dashboard.property:jira: Delete dashboard properties.
+            delete:dashboard:jira: Delete dashboards.
+            delete:field-configuration-scheme:jira: Delete field configuration schemes.
+            delete:field-configuration:jira: Delete field configurations.
+            delete:field.option:jira: Delete field options.
+            delete:field:jira: Delete fields.
+            delete:filter.column:jira: Delete filter columns.
+            delete:filter:jira: Delete filters.
+            delete:group:jira: Delete user groups.
+            delete:issue-link-type:jira: Delete issue link types.
+            delete:issue-link:jira: Delete issue links.
+            delete:issue-type-scheme:jira: Delete issue type schemes.
+            delete:issue-type-screen-scheme:jira: Delete issue type screen schemes.
+            delete:issue-type.property:jira: Delete issue type properties.
+            delete:issue-type:jira: Delete issue types.
+            delete:issue-worklog.property:jira: Delete issue worklog properties.
+            delete:issue-worklog:jira: Delete issue worklogs.
+            delete:issue.property:jira: Delete issue properties.
+            delete:issue.remote-link:jira: Delete issue remote links.
+            delete:issue:jira: Delete issues.
+            delete:permission-scheme:jira: Delete permission schemes.
+            delete:permission:jira: Delete permissions.
+            delete:project-category:jira: Delete project categories.
+            delete:project-role:jira: Delete project roles.
+            delete:project-version:jira: Delete project versions.
+            delete:project.avatar:jira: Delete project avatars.
+            delete:project.component:jira: Delete project components.
+            delete:project.property:jira: Delete project properties.
+            delete:project:jira: Delete projects and their details, such as issue types, project lead, and avatars.
+            delete:screen-scheme:jira: Delete screen schemes.
+            delete:screen-tab:jira: Delete screen tabs.
+            delete:screen:jira: Delete screens.
+            delete:screenable-field:jira: Delete screenable fields.
+            delete:user-configuration:jira: Delete user configurations.
+            delete:user.property:jira: Delete user properties.
+            delete:webhook:jira: Delete webhooks.
+            delete:workflow-scheme:jira: Delete workflow schemes.
+            delete:workflow.property:jira: Delete workflow properties.
+            delete:workflow:jira: Delete workflows.
+            manage:jira-configuration: Configure Jira settings that require the Jira administrators permission, for example, create projects and custom fields, view workflows, manage issue link types.
+            manage:jira-project: Create and edit project settings and create new project-level objects, for example, versions, components.
+            manage:jira-webhook: Manage Jira webhooks. Enables an OAuth app to register and unregister dynamic webhooks in Jira. It also provides for fetching of registered webhooks.
+            read:app-data:jira: Read app data.
+            read:application-role:jira: View application roles.
+            read:attachment:jira: View issue attachments.
+            read:audit-log:jira: View audit logs.
+            read:avatar:jira: View system and custom avatars.
+            read:comment.property:jira: View issue comment properties.
+            read:comment:jira: View issue comments.
+            read:custom-field-contextual-configuration:jira: Read custom field contextual configurations.
+            read:dashboard.property:jira: View dashboard properties.
+            read:dashboard:jira: View dashboards.
+            read:email-address:jira: View email addresses of all users regardless of the user's profile visibility settings.
+            read:field-configuration-scheme:jira: View field configuration schemes.
+            read:field-configuration:jira: Read field configurations.
+            read:field.default-value:jira: View field default values.
+            read:field.option:jira: View field options.
+            read:field.options:jira: Read field options.
+            read:field:jira: View fields.
+            read:filter.column:jira: View filter columns.
+            read:filter.default-share-scope:jira: View filter default share scopes.
+            read:filter:jira: View filters.
+            read:group:jira: View user groups.
+            read:instance-configuration:jira: View instance configurations.
+            read:issue-details:jira: View issue details.
+            read:issue-event:jira: Read issue events.
+            read:issue-field-values:jira: View issue field valueses.
+            read:issue-link-type:jira: View issue link types.
+            read:issue-link:jira: View issue links.
+            read:issue-meta:jira: View issue meta.
+            read:issue-security-level:jira: View issue security levels.
+            read:issue-security-scheme:jira: View issue security schemes.
+            read:issue-status:jira: View issue statuses.
+            read:issue-type-hierarchy:jira: Read issue type hierarchies.
+            read:issue-type-scheme:jira: View issue type schemes.
+            read:issue-type-screen-scheme:jira: View issue type screen schemes.
+            read:issue-type.property:jira: View issue type properties.
+            read:issue-type:jira: View issue types.
+            read:issue-worklog.property:jira: View issue worklog properties.
+            read:issue-worklog:jira: View issue worklogs.
+            read:issue.changelog:jira: View issue changelogs.
+            read:issue.property:jira: View issue properties.
+            read:issue.remote-link:jira: View issue remote links.
+            read:issue.time-tracking:jira: View issue time trackings.
+            read:issue.transition:jira: View issue transitions.
+            read:issue.vote:jira: View issue votes.
+            read:issue.votes:jira: View issue voteses.
+            read:issue.watcher:jira: View issue watchers.
+            read:issue:jira: View issues.
+            read:jira-expressions:jira: View jira expressions.
+            read:jira-user: View user information in Jira that you have access to, including usernames, email addresses, and avatars.
+            read:jira-work: Read project and issue data. Search for issues and objects associated with issues (such as attachments and worklogs).
+            read:jql:jira: View JQL.
+            read:label:jira: View labels.
+            read:license:jira: View licenses.
+            read:notification-scheme:jira: View notification schemes.
+            read:permission-scheme:jira: View permission schemes.
+            read:permission:jira: View permissions.
+            read:priority:jira: View priorities.
+            read:project-category:jira: View project categories.
+            read:project-role:jira: View project roles.
+            read:project-type:jira: View project types.
+            read:project-version:jira: View project versions.
+            read:project.avatar:jira: Read project avatars.
+            read:project.component:jira: View project components.
+            read:project.email:jira: View project emails.
+            read:project.feature:jira: Read project features.
+            read:project.property:jira: View project properties.
+            read:project:jira: View projects.
+            read:resolution:jira: View resolutions.
+            read:role:jira: View roles.
+            read:screen-field:jira: View screen fields.
+            read:screen-scheme:jira: View screen schemes.
+            read:screen-tab:jira: View screen tabs.
+            read:screen:jira: View screens.
+            read:screenable-field:jira: View screenable fields.
+            read:status:jira: View statuses.
+            read:user-configuration:jira: View user configurations.
+            read:user.columns:jira: View user columnses.
+            read:user.property:jira: View user properties.
+            read:user:jira: View users.
+            read:webhook:jira: View webhooks.
+            read:workflow-scheme:jira: View workflow schemes.
+            read:workflow.property:jira: View workflow properties.
+            read:workflow:jira: View workflows.
+            send:notification:jira: Send notifications.
+            validate:jql:jira: Validate JQL.
+            write:app-data:jira: Write app data.
+            write:attachment:jira: Create and update issue attachments.
+            write:avatar:jira: Create and update system and custom avatars.
+            write:comment.property:jira: Create and update issue comment properties.
+            write:comment:jira: Create and update issue comments.
+            write:custom-field-contextual-configuration:jira: Save custom field contextual configurations.
+            write:dashboard.property:jira: Create and update dashboard properties.
+            write:dashboard:jira: Create and update dashboards.
+            write:field-configuration-scheme:jira: Create and update field configuration schemes.
+            write:field-configuration:jira: Save field configurations.
+            write:field.default-value:jira: Create and update field default values.
+            write:field.option:jira: Create and update field options.
+            write:field:jira: Create and update fields.
+            write:filter.column:jira: Create and update filter columns.
+            write:filter.default-share-scope:jira: Create and update filter default share scopes.
+            write:filter:jira: Create and update filters.
+            write:group:jira: Create and update user groups.
+            write:instance-configuration:jira: Create and update instance configurations.
+            write:issue-link-type:jira: Create and update issue link types.
+            write:issue-link:jira: Create and update issue links.
+            write:issue-type-scheme:jira: Create and update issue type schemes.
+            write:issue-type-screen-scheme:jira: Create and update issue type screen schemes.
+            write:issue-type.property:jira: Create and update issue type properties.
+            write:issue-type:jira: Create and update issue types.
+            write:issue-worklog.property:jira: Create and update issue worklog properties.
+            write:issue-worklog:jira: Create and update issue worklogs.
+            write:issue.property:jira: Create and update issue properties.
+            write:issue.remote-link:jira: Create and update issue remote links.
+            write:issue.time-tracking:jira: Create and update issue time trackings.
+            write:issue.vote:jira: Create and update issue votes.
+            write:issue.watcher:jira: Create and update issue watchers.
+            write:issue:jira: Create and update issues.
+            write:jira-work: Create and edit issues in Jira, post comments, create worklogs, and delete issues.
+            write:permission-scheme:jira: Create and update permission schemes.
+            write:permission:jira: Create and update permissions.
+            write:project-category:jira: Create and update project categories.
+            write:project-role:jira: Create and update project roles.
+            write:project-version:jira: Create and update project versions.
+            write:project.avatar:jira: Create and update project avatars.
+            write:project.component:jira: Create and update project components.
+            write:project.email:jira: Create and update project emails.
+            write:project.feature:jira: Save project features.
+            write:project.property:jira: Create and update project properties.
+            write:project:jira: Create and update projects.
+            write:screen-scheme:jira: Create and update screen schemes.
+            write:screen-tab:jira: Create and update screen tabs.
+            write:screen:jira: Create and update screens.
+            write:screenable-field:jira: Create and update screenable fields.
+            write:user-configuration:jira: Create and update user configurations.
+            write:user.property:jira: Create and update user properties.
+            write:webhook:jira: Create and update webhooks.
+            write:workflow-scheme:jira: Create and update workflow schemes.
+            write:workflow.property:jira: Create and update workflow properties.
+            write:workflow:jira: Create and update workflows.
+          tokenUrl: https://auth.atlassian.com/oauth/token
+      type: oauth2
+    basicAuth:
+      description: You can access this resource via basic auth.
+      scheme: basic
+      type: http
+externalDocs:
+  description: Find out more about Atlassian products and services.
+  url: http://www.atlassian.com
+x-refined-from:
+- jira-platform-openapi.json
+- jira-service-management-openapi.json

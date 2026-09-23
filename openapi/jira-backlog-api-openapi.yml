@@ -1,0 +1,197 @@
+openapi: 3.2.0
+info:
+  contact:
+    url: https://getsupport.atlassian.com
+  description: Jira Software Cloud REST API documentation
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://atlassian.com/terms/
+  title: Jira Software Cloud Backlog API
+  version: 1001.0.0
+servers:
+- url: https://your-domain.atlassian.net
+tags:
+- description: Apis related to the backlog
+  name: Backlog
+paths:
+  /rest/agile/1.0/backlog/issue:
+    post:
+      deprecated: false
+      description: 'Move issues to the backlog.
+
+        This operation is equivalent to remove future and active sprints from a given set of issues. At most 50 issues may be moved at once.'
+      operationId: moveIssuesToBacklog
+      requestBody:
+        content:
+          application/json:
+            example:
+              issues:
+              - '10001'
+              - PR-1
+              - PR-3
+            schema:
+              additionalProperties: false
+              properties:
+                issues:
+                  items:
+                    type: string
+                  type: array
+                  uniqueItems: true
+              type: object
+        required: true
+      responses:
+        '204':
+          description: Empty response is returned if operation was successful.
+        '400':
+          description: Returned if the request is invalid.
+        '401':
+          description: Returned if the user is not logged in.
+        '403':
+          description: Returned if the user does not have a valid license or does not have permission to assign issues.
+        '404':
+          description: Returned if sprint does not exist or the user cannot view it.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - write:board-scope:jira-software
+      summary: Move issues to backlog
+      tags:
+      - Backlog
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-connect-scope: WRITE
+  /rest/agile/1.0/backlog/{boardId}/issue:
+    post:
+      deprecated: false
+      description: 'Move issues to the backlog of a particular board (if they are already on that board).
+
+        This operation is equivalent to remove future and active sprints from a given set of issues if the board has sprints If the board does not have sprints this will put the issues back into the backlog from the board. At most 50 issues may be moved at once.'
+      operationId: moveIssuesToBacklogForBoard
+      parameters:
+      - in: path
+        name: boardId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            example:
+              issues:
+              - PR-1
+              - '10001'
+              - PR-3
+              rankBeforeIssue: PR-4
+              rankCustomFieldId: 10521
+            schema:
+              additionalProperties: false
+              properties:
+                issues:
+                  items:
+                    type: string
+                  type: array
+                rankAfterIssue:
+                  type: string
+                rankBeforeIssue:
+                  type: string
+                rankCustomFieldId:
+                  format: int64
+                  type: integer
+              type: object
+        required: true
+      responses:
+        '204':
+          description: Empty response is returned if operation was successful.
+        '207':
+          content:
+            application/json:
+              example: '{"entries":[{"issueId":10000,"issueKey":"PR-1","status":200},{"issueId":10001,"issueKey":"PR-2","status":200},{"errors":["JIRA Agile cannot execute the rank operation at this time. Please try again later."],"issueId":10002,"issueKey":"PR-3","status":503}]}'
+          description: Returns the list of issue with status of rank operation.
+        '400':
+          description: Returned if the request is invalid.
+        '401':
+          description: Returned if the user is not logged in.
+        '403':
+          description: Returned if the user does not have a valid license or does not have permission to assign issues.
+        '404':
+          description: Returned if sprint does not exist or the user cannot view it.
+      security:
+      - basicAuth: []
+      - OAuth2:
+        - write:board-scope:jira-software
+      summary: Move issues to backlog for board
+      tags:
+      - Backlog
+      x-atlassian-data-security-policy:
+      - app-access-rule-exempt: true
+      x-atlassian-connect-scope: WRITE
+components:
+  securitySchemes:
+    OAuth2:
+      description: OAuth2 scopes for Jira
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          scopes:
+            delete:board-scope.admin:jira-software: Remove board configuration, features, and properties.
+            delete:sprint:jira-software: Delete sprints and their properties.
+            manage:jira-configuration: Configure Jira settings that require the Jira administrators permission, for example, create projects and custom fields, view workflows, manage issue link types.
+            manage:jira-project: Create and edit project settings and create new project-level objects, for example, versions, components.
+            manage:jira-webhook: Manage Jira webhooks. Enables an OAuth app to register and unregister dynamic webhooks in Jira. It also provides for fetching of registered webhooks.
+            read:board-scope.admin:jira-software: View configuration, features, filters, project, properties and quick filters related to the given board.
+            read:board-scope:jira-software: View board and issues from a board, view issues from a backlog and view reports and versions.
+            read:build:jira-software: View builds.
+            read:deployment:jira-software: View deployments.
+            read:epic:jira-software: View and search for epics, view issues related to an epic and issues without an epic.
+            read:feature-flag:jira-software: View feature flags.
+            read:issue:jira-software: View issues, issue estimations and field used for estimations.
+            read:jira-user: View user information in Jira that you have access to, including usernames, email addresses, and avatars.
+            read:jira-work: Read project and issue data. Search for issues and objects associated with issues (such as attachments and worklogs).
+            read:remote-link:jira-software: View remote links.
+            read:source-code:jira-software: View repositories and check if data exists for the supplied properties.
+            read:sprint:jira-software: View sprints and sprint related issues and properties.
+            write:board-scope.admin:jira-software: Create board, toggle features and set and delete properties.
+            write:board-scope:jira-software: Move issues to a backlog and move issues from a backlog to a board.
+            write:build:jira-software: Submit and delete build.
+            write:deployment:jira-software: Submit and delete deployment.
+            write:epic:jira-software: Remove issues from epic, move issues to epic, rank epics and partially update epics. A partial update means that fields not present in the request JSON will not be updated.
+            write:feature-flag:jira-software: Submit and delete feature flag.
+            write:issue:jira-software: Move (rank) issues and update estimation of the issue.
+            write:jira-work: Create and edit issues in Jira, post comments, create worklogs, and delete issues.
+            write:remote-link:jira-software: Submit and delete remote link.
+            write:source-code:jira-software: Store and delete development information, delete repository and delete development information entity.
+            write:sprint:jira-software: Save, move issues to sprints, and change the order of sprints.
+            read:dev-info:jira: Read development information
+            write:dev-info:jira: Write development information
+            delete:dev-info:jira: Delete development information
+            read:feature-flag-info:jira: Read feature flag information
+            write:feature-flag-info:jira: Write feature flag information
+            delete:feature-flag-info:jira: Delete feature flag information
+            read:deployment-info:jira: Read deployment information
+            write:deployment-info:jira: Write deployment information
+            delete:deployment-info:jira: Delete deployment information
+            read:build-info:jira: Read build information
+            write:build-info:jira: Write build information
+            delete:build-info:jira: Delete build information
+            read:remote-link-info:jira: Read remote link information
+            write:remote-link-info:jira: Write remote link information
+            delete:remote-link-info:jira: Delete remote link information
+            read:security:jira: Read security information
+            write:security:jira: Write security information
+            delete:security:jira: Delete security information
+          tokenUrl: https://auth.atlassian.com/oauth/token
+      type: oauth2
+    basicAuth:
+      description: Basic authentication using email and API token
+      scheme: basic
+      type: http
+externalDocs:
+  description: Find out more about Atlassian products and services.
+  url: http://www.atlassian.com
+x-atlassian-narrative:
+  documents:
+  - anchor: introduction
+    body: "Welcome to the Jira Software Cloud REST API reference. You can use this REST API to build add-ons for Jira Software,\ndevelop integrations between Jira Software and other applications, or script interactions with Jira Software. This page\ndocuments the REST resources available in Jira Software Cloud, along with expected HTTP response codes and sample\nrequests.\n\nJira Software is built on the Jira platform. As such, there is an overlap in functionality\nbetween what is provided by Jira Software and what is provided by the Jira platform. The REST API reference for the\nJira Cloud platform is here: [Jira Cloud platform REST API](https://developer.atlassian.com/cloud/jira/platform/rest).\n\n## Authentication\n\n### Authentication for Atlassian Connect add-ons\n\nIf you are integrating with the Jira REST APIs via an Atlassian Connect add-on, API calls are authenticated via JWT\n(JSON Web Tokens). This is built into the supported Atlassian Connect libraries. At a high level, authentication works\nby the add-on exchanging a security context with the application. This context is used to create and validate JWT\ntokens, embedded in API calls. To learn more, read the [Atlassian Connect authentication documentation](https://developer.atlassian.com/cloud/jira/platform/authentication-for-apps/).\n\nSome integration APIs such as [Feature Flags](#api-group-Feature-Flags) are only available to Atlassian Connect apps that\ndefine the relevant [module](https://developer.atlassian.com/cloud/jira/platform/about-jira-modules/) related to that API.\nOther APIs, such as the [Development Information](#api-group-Development-Information), [Builds](#api-group-Builds), and [Deployments](#api-group-Deployments) APIs\nare available to both Atlassian Connect apps and on-premises tools using Jira Software's\n[OAuth credentials](https://developer.atlassian.com/cloud/jira/software/integrate-jsw-cloud-with-onpremises-tools/) for system-to-system integration.\n\n### Authentication for REST API requests\n\nIf you are integrating directly with the REST APIs, rather than via an Atlassian Connect add-on, use one of the\nauthentication methods listed below:\n* [OAuth 2.0](https://developer.atlassian.com/cloud/jira/software/scopes-for-oauth-2-3LO-and-forge-apps/) -\n  This token-based method is the recommended method. It is more flexible and secure than other options.\n * [OAuth 1.0a](https://developer.atlassian.com/cloud/jira/platform/jira-rest-api-oauth-authentication) -\n This is a legacy authentication method and, therefore, isn't recommended. Instead use OAuth 2.0.\n * [Basic HTTP](https://developer.atlassian.com/cloud/jira/platform/jira-rest-api-basic-authentication/) -\n This method is only recommended for tools like scripts or bots. It is easier to implement, but much less secure.\n\nNote, Jira itself uses cookie-based authentication in the browser, so you can call REST from Javascript on the page and\nrely on the authentication that the browser has established. To reproduce the behavior of the Jira log-in page (for\nexample, to display authentication error messages to users) can `POST` to the `/auth/1/session` [resource](https://docs.atlassian.com/jira/REST/cloud/#auth/1/session).\n\n### Authentication for on-premises integrations\n\nIf you are integrating an on-premises app with the Jira REST APIs, API calls are authenticated via an OAuth token.\nTo obtain a token, create a set of OAuth credentials with permissions for the APIs that app needs to access.\nUse the credentials to request a token by calling `https://api.atlassian.com/oauth/token`.\nSee [Integrating Jira Software Cloud with on-premises tools](https://developer.atlassian.com/cloud/jira/software/integrate-jsw-cloud-with-onpremises-tools/) for details.\nNote that only the [Development Information](#api-group-Development-Information), [Builds](#api-group-Builds), and [Deployments](#api-group-Deployments) APIs are currently available for on-premises integrations.\nTo simplify development, we have a separate [downloadable API spec](https://developer.atlassian.com/cloud/jira/software/on-premise-swagger.json).\n\nAtlassian has developed an [open source plugin for Jenkins](https://github.com/jenkinsci/atlassian-jira-software-cloud-plugin), which you can use to bootstrap development.\nThis plugin uses the authentication method described above and calls the Builds and Deployments APIs.\n\n\n#### Base URL differences\n\nWhen building an on-premises integration, the base URL for API operations is different to the base URL used for Connect apps. This is because requests from on-premises integrations (OAuth) need to be sent via the Atlassian API proxy at `https://api.atlassian.com`.\n\nThis document does not display the base URLs used by on-premises integrations. Therefore, when using an operation, you must replace `https://your-domain.atlassian.net/rest/{type}/{version}/{operation}`\nwith `https://api.atlassian.com/jira/{type}/{version}/cloud/{cloudId}/{operation}`.\n\nFor example:\n* Builds API: Change the path from `https://your-domain.atlassian.net/rest/builds/0.1/bulk` to `https://api.atlassian.com/jira/builds/0.1/cloud/{cloudId}/bulk`.\n* Development Information: Change the path from `https://your-domain.atlassian.net/rest/devinfo/0.10/bulk` to `https://api.atlassian.com/jira/devinfo/0.1/cloud/{cloudId}/bulk`. Note the version change.\n* Deployments: Change the path from `https://your-domain.atlassian.net/rest/deployments/0.1/bulk` to `https://api.atlassian.com/jira/deployments/0.1/cloud/{cloudId}/bulk`.\n\nNote, get the `cloudId` for a Jira instance by calling `https://your-domain.atlassian.net/_edge/tenant_info`.\n\n\n## URI structure\n\nJira Agile's REST APIs provide access to resources (data entities) via URI paths. To use a REST API, your application\nwill make an HTTP request and parse the response. The Jira Agile REST API uses [JSON](http://en.wikipedia.org/wiki/JSON)\nas its communication format, and the standard HTTP methods like `GET`, `PUT`, `POST` and `DELETE` (see API descriptions\nbelow for which methods are available for each resource). URIs for Jira Agile's REST API resource have the following\nstructure:\n\n    http://host:port/context/rest/api-name/api-version/resource-name\n\nCurrently there are two API names available, which will be discussed further below:\n\n * `auth` - for authentication-related operations, and\n * `api` - for everything else.\n\nThe current API version is `1`. However, there is also a symbolic version, called `latest`, which resolves to the\nlatest version supported by the given Jira Software Cloud instance. For example, if you wanted to retrieve the JSON\nrepresentation of a board with `boardId=123`, from a Jira Software Cloud instance at `https://jira.atlassian.net`, you\nwould access:\n\n    https://jira.atlassian.net/rest/agile/latest/board/123\n\n## Pagination\n\nPagination is used for the Jira REST APIs to conserve server resources and limit response size for resources that\nreturn potentially large collection of items. A request to a pages API will result in a values array wrapped in a JSON\nobject with some paging metadata, like this:\n\n#### Request\n\n    http://host:port/context/rest/api-name/api-version/resource-name?startAt=0&maxResults=10\n\n#### Response\n\n```javascript\n{\n    \"startAt\" : 0,\n    \"maxResults\" : 10,\n    \"total\": 200,\n    \"values\": [\n        { /* result 0 */ },\n        { /* result 1 */ },\n        { /* result 2 */ }\n    ]\n}\n```\n\n * `startAt` - the item used as the first item in the page of results.\n * `maxResults` - how many results to return per page.\n * `total` - the number of items that the calling user has permissions for. This number *may change* while the client requests the next pages. A client should always assume that the requested page can be empty. REST API consumers should also consider the field to be optional. This value may not be included in the response, if it is too expensive to calculate.\n\nClients can use the `startAt`, `maxResults`, and `total` parameters to retrieve the desired number of results. Note,\neach API resource or method may have a different limit on the number of items returned, which means you can ask for\nmore than you are given. The actual number of items returned is an implementation detail and this can be changed over\ntime.\n\n## Experimental methods\n\nMethods marked as experimental may change without an earlier notice. We are looking for your feedback for these methods.\n\n## Query parameters\n\nAll query parameters for the resources described below are optional, unless specified otherwise.\n\n## Special Request and Response headers\n\n -   **X-Atlassian-Token** (request): Operations that accept multipart/form-data must include the `X-Atlassian-Token: no-check` header in requests.\nOtherwise the request will be blocked by XSRF protection.\n-   **X-AACCOUNTID** (response): This response header contains the Atlassian account ID of the authenticated user.\n\n## Jira Software field input formats\n\nJira Software provides a number of custom fields, which are made available in the Jira platform REST API. The custom\nfields are: `Sprint`, `Epic link`, `Epic name`, and `Story points`.\n\nYou can read and edit these custom fields via the [issue resource](https://docs.atlassian.com/jira/REST/cloud/#api/2/issue)\nof the Jira Platform REST API. In order to identify the custom field that you want to read or edit, you'll need the\ncustom field id. To obtain the custom field id, retrieve the list of fields from the [fields resource](https://docs.atlassian.com/jira/REST/latest/#api/2/field-getFields)\nand search for the custom field. It's better to find the field based on the schema where possible (e.g. the Sprint\nfield is identified by \"`com.pyxis.greenhopper.jira:gh-sprint`\"), as custom field names are mutable. The custom field\nid will be in the id, (e.g. `id: customfield_10007`).\n\nIf you only need to get the value of the custom field for a single issue, you may want to use the [issue resource](https://docs.atlassian.com/jira-software/REST/cloud/#agile/1.0/issue-getIssue)\nprovided by the Jira Software REST API instead. This resource returns the issue with all Jira Software-specific fields,\nincluding the fields listed above. These fields will also be formatted as proper fields with keys, in the response.\n\nNote, Jira Software also has a number of internal custom fields, which are: `Epic Color`, `Epic Status`, `Flag`, `Rank`.\nThese internal fields shouldn't be read or updated using the REST API and are not documented below.\n\n##### Sprint custom field\n\nThe Sprint custom field contains a list of sprints for a given issue. This list includes the active/future sprint that\nthe issue is currently in, as well as any closed sprints that the issue was in previously.\n\nFor legacy reasons, the [Get issue (Jira platform) method](https://docs.atlassian.com/jira/REST/cloud/#api/2/issue-getIssue)\nreturns the Sprint custom field with sprints in a `toString` format, which is difficult to parse. See the example below.\n\n_**Deprecation notice:** The `toString` representation of sprints in the Sprint custom field that is returned by Get\nissue (Jira platform) will soon be removed. See the [notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-tostring-representation-of-sprints-in-get-issue-response/)._\n\n###### Example - Get issue (Jira platform) response\n\n```javascript\ncustomfield_11458\": [\n    \"com.atlassian.greenhopper.service.sprint.Sprint@1bf75fd[id=1,rapidViewId=1,state=CLOSED,name=Sprint 1,goal=Sprint 1 goal,startDate=2016-06-06T21:30:53.537+10:00,endDate=2016-06-20T21:30:00.000+10:00,completeDate=2016-06-06T21:30:57.523+10:00,sequence=1]\",\n    \"com.atlassian.greenhopper.service.sprint.Sprint@1689feb[id=2,rapidViewId=1,state=FUTURE,name=Sprint 2,goal=Sprint 2 goal,startDate=<null>,endDate=<null>,completeDate=<null>,sequence=2]\"\n]\n```\n\nIf you want to parse the sprint information, use either the [Get issue (Jira Software) method](https://docs.atlassian.com/jira-software/REST/cloud/#agile/1.0/issue-getIssue)\nor [Get issue (Jira platform) method](https://docs.atlassian.com/jira/REST/cloud/#api/2/issue-getIssue) with expanded\n`versionedRepresentations` instead, both of which return sprints in a proper format. See the example below.\n\n###### Example - Get issue (Jira platform) response with expanded versionedRepresentations\n\n```javascript\n\"customfield_10021\": {\n    \"1\": [\n        \"com.atlassian.greenhopper.service.sprint.Sprint@1bf75fd[id=1,rapidViewId=1,state=CLOSED,name=Sprint 1,goal=Sprint 1 goal,startDate=2016-06-06T21:30:53.537+10:00,endDate=2016-06-20T21:30:00.000+10:00,completeDate=2016-06-06T21:30:57.523+10:00,sequence=1]\",\n        \"com.atlassian.greenhopper.service.sprint.Sprint@1689feb[id=2,rapidViewId=1,state=FUTURE,name=Sprint 2,goal=Sprint 2 goal,startDate=<null>,endDate=<null>,completeDate=<null>,sequence=2]\"\n    ],\n    \"2\": [\n        {\n            \"id\": 1,\n            \"name\": \"Sprint 1\",\n            \"state\": \"closed\",\n            \"boardId\": 1\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Sprint 2\",\n            \"state\": \"future\",\n            \"boardId\": 1\n        }\n    ]\n}\n```\n\nIf you want to update a sprint, you need to know the sprint id, which is a number. See the example below. Note, an\nissue can only be in one active or future sprint at a time, and only the active/future sprint can edited.\n\n###### Example - Update issue request\n\n```javascript\n\"customfield_10021\": 2\n```\n\n##### Epic link custom field\n\nThe Epic link custom field contains the key of an epic that a given issue belongs to. Be aware that only the issue key\nof the existing epic can be set. Also, the Epic link cannot be set for sub-tasks and epics.\n\n###### Example\n\n```javascript\n\"customfield_11458\": \"EPIC-1\"\n```\n\n##### Epic Name\n\nThe Epic name custom field contains the name of an epic that a given issue belongs to. Be aware that only the issue key\nof the existing epic can be set. Also, the epic link cannot be set for sub-tasks and epics.\n\n###### Example\n\n```javascript\n\"customfield_11410\": \"Epic Name\"\n```\n\n##### Estimation\n\nJira Software provides a `Story Points` custom field, however the field is just a regular numeric field. The type of\nestimation and field used for estimation is determined by the board configuration. You can get this from the\n[board configuration resource](https://docs.atlassian.com/jira-software/REST/cloud/#agile/1.0/board-getConfiguration).\nNote that if the estimation field is not on a screen, it cannot be edited, and you should use the\n[Estimate issue for board method](https://docs.atlassian.com/jira-software/REST/cloud/#agile/1.0/issue-estimateIssueForBoard) instead.\n"
+    title: Introduction
