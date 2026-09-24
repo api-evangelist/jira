@@ -178,8 +178,6 @@ apis:
     url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
   - type: GettingStarted
     url: https://developer.atlassian.com/cloud/jira/platform/getting-started/
-  - type: GraphQL
-    url: graphql/jira-graphql.md
   - type: Documentation
     url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
   - type: CodeExamples
@@ -222,8 +220,6 @@ apis:
     url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
   - type: GettingStarted
     url: https://developer.atlassian.com/cloud/jira/platform/getting-started/
-  - type: GraphQL
-    url: graphql/jira-graphql.md
   - type: Documentation
     url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
   - type: CodeExamples
@@ -266,8 +262,6 @@ apis:
     url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
   - type: GettingStarted
     url: https://developer.atlassian.com/cloud/jira/platform/getting-started/
-  - type: GraphQL
-    url: graphql/jira-graphql.md
   - type: Documentation
     url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
   - type: CodeExamples
@@ -310,8 +304,6 @@ apis:
     url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
   - type: GettingStarted
     url: https://developer.atlassian.com/cloud/jira/platform/getting-started/
-  - type: GraphQL
-    url: graphql/jira-graphql.md
   - type: Documentation
     url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
   - type: CodeExamples
@@ -354,8 +346,6 @@ apis:
     url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
   - type: GettingStarted
     url: https://developer.atlassian.com/cloud/jira/platform/getting-started/
-  - type: GraphQL
-    url: graphql/jira-graphql.md
   - type: Documentation
     url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
   - type: CodeExamples
@@ -398,8 +388,6 @@ apis:
     url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
   - type: GettingStarted
     url: https://developer.atlassian.com/cloud/jira/platform/getting-started/
-  - type: GraphQL
-    url: graphql/jira-graphql.md
   - type: Documentation
     url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
   - type: CodeExamples
@@ -442,8 +430,6 @@ apis:
     url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
   - type: GettingStarted
     url: https://developer.atlassian.com/cloud/jira/platform/getting-started/
-  - type: GraphQL
-    url: graphql/jira-graphql.md
   - type: Documentation
     url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
   - type: CodeExamples
@@ -488,8 +474,6 @@ apis:
     url: https://developer.atlassian.com/cloud/jira/platform/security-overview/
   - type: GettingStarted
     url: https://developer.atlassian.com/cloud/jira/platform/getting-started/
-  - type: GraphQL
-    url: graphql/jira-graphql.md
   - type: Documentation
     url: https://developer.atlassian.com/cloud/jira/software/rest/intro/
   - type: CodeExamples
