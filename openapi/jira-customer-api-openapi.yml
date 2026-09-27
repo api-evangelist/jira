@@ -171,6 +171,35 @@ components:
           format: uri
           type: string
       type: object
+    UserDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/UserLinkDTO'
+          description: URLs for the customer record and related items.
+        accountId:
+          description: The accountId of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+          type: string
+        active:
+          description: Indicates if the customer is active (true) or inactive (false)
+          type: boolean
+        displayName:
+          description: Customer's name for display in a UI. Depending on the customer’s privacy settings, this may return an alternative value.
+          type: string
+        emailAddress:
+          description: Customer's email address. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+        key:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        name:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        timeZone:
+          description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+      type: object
     CustomerCreateDTO:
       additionalProperties: false
       properties:
@@ -201,35 +230,6 @@ components:
           items:
             type: string
           type: array
-      type: object
-    UserDTO:
-      additionalProperties: false
-      properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/UserLinkDTO'
-          description: URLs for the customer record and related items.
-        accountId:
-          description: The accountId of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
-          type: string
-        active:
-          description: Indicates if the customer is active (true) or inactive (false)
-          type: boolean
-        displayName:
-          description: Customer's name for display in a UI. Depending on the customer’s privacy settings, this may return an alternative value.
-          type: string
-        emailAddress:
-          description: Customer's email address. Depending on the customer’s privacy settings, this may be returned as null.
-          type: string
-        key:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        name:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        timeZone:
-          description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
-          type: string
       type: object
   securitySchemes:
     OAuth2:

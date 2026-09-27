@@ -279,26 +279,6 @@ components:
           readOnly: true
           type: string
       type: object
-    JqlFunctionPrecomputationUpdateErrorResponse:
-      additionalProperties: false
-      description: Error response returned updating JQL Function precomputations fails.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation.
-          items:
-            readOnly: true
-            type: string
-          readOnly: true
-          type: array
-        notFoundPrecomputationIDs:
-          description: List of precomputations that were not found.
-          items:
-            readOnly: true
-            type: string
-          readOnly: true
-          type: array
-          uniqueItems: true
-      type: object
     JqlFunctionPrecomputationUpdateResponse:
       additionalProperties: false
       description: Result of updating JQL Function precomputations.
@@ -352,6 +332,26 @@ components:
           readOnly: true
           type: array
       type: object
+    JqlFunctionPrecomputationUpdateErrorResponse:
+      additionalProperties: false
+      description: Error response returned updating JQL Function precomputations fails.
+      properties:
+        errorMessages:
+          description: The list of error messages produced by this operation.
+          items:
+            readOnly: true
+            type: string
+          readOnly: true
+          type: array
+        notFoundPrecomputationIDs:
+          description: List of precomputations that were not found.
+          items:
+            readOnly: true
+            type: string
+          readOnly: true
+          type: array
+          uniqueItems: true
+      type: object
     JqlFunctionPrecomputationUpdateRequestBean:
       additionalProperties: false
       description: List of pairs (id and value) for precomputation updates.
@@ -360,36 +360,6 @@ components:
           items:
             $ref: '#/components/schemas/JqlFunctionPrecomputationUpdateBean'
           type: array
-      type: object
-      writeOnly: true
-    JqlFunctionPrecomputationGetByIdResponse:
-      additionalProperties: false
-      description: Get precomputations by ID response.
-      properties:
-        notFoundPrecomputationIDs:
-          description: List of precomputations that were not found.
-          items:
-            readOnly: true
-            type: string
-          readOnly: true
-          type: array
-        precomputations:
-          description: The list of precomputations.
-          items:
-            $ref: '#/components/schemas/JqlFunctionPrecomputationBean'
-          readOnly: true
-          type: array
-      type: object
-    JqlFunctionPrecomputationGetByIdRequest:
-      additionalProperties: false
-      description: Request to fetch precomputations by ID.
-      properties:
-        precomputationIDs:
-          items:
-            type: string
-            writeOnly: true
-          type: array
-          writeOnly: true
       type: object
       writeOnly: true
     JqlFunctionPrecomputationUpdateBean:
@@ -412,6 +382,36 @@ components:
       - id
       type: object
       writeOnly: true
+    JqlFunctionPrecomputationGetByIdRequest:
+      additionalProperties: false
+      description: Request to fetch precomputations by ID.
+      properties:
+        precomputationIDs:
+          items:
+            type: string
+            writeOnly: true
+          type: array
+          writeOnly: true
+      type: object
+      writeOnly: true
+    JqlFunctionPrecomputationGetByIdResponse:
+      additionalProperties: false
+      description: Get precomputations by ID response.
+      properties:
+        notFoundPrecomputationIDs:
+          description: List of precomputations that were not found.
+          items:
+            readOnly: true
+            type: string
+          readOnly: true
+          type: array
+        precomputations:
+          description: The list of precomputations.
+          items:
+            $ref: '#/components/schemas/JqlFunctionPrecomputationBean'
+          readOnly: true
+          type: array
+      type: object
   securitySchemes:
     OAuth2:
       description: OAuth2 scopes for Jira

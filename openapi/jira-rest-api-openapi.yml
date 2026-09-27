@@ -176,19 +176,16 @@ paths:
     - url: https://your-domain.atlassian.net
 components:
   schemas:
-    WorklogKeyResult:
+    BulkWorklogKeyResponseBean:
       additionalProperties: false
       properties:
-        issueId:
-          description: The issue ID.
-          format: int64
-          type: integer
-        worklogId:
-          description: The worklog ID.
-          format: int64
-          type: integer
+        worklogs:
+          description: A list of successfully retrieved worklogs with their issue and worklog IDs.
+          items:
+            $ref: '#/components/schemas/WorklogKeyResult'
+          type: array
       type: object
-    WorklogCompositeKey:
+    WorklogKeyResult:
       additionalProperties: false
       properties:
         issueId:
@@ -209,30 +206,17 @@ components:
             $ref: '#/components/schemas/WorklogCompositeKey'
           type: array
       type: object
-    BulkWorklogKeyResponseBean:
+    WorklogCompositeKey:
       additionalProperties: false
       properties:
-        worklogs:
-          description: A list of successfully retrieved worklogs with their issue and worklog IDs.
-          items:
-            $ref: '#/components/schemas/WorklogKeyResult'
-          type: array
-      type: object
-    UserLinkDTO:
-      additionalProperties: false
-      properties:
-        avatarUrls:
-          additionalProperties:
-            type: string
-          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
-          type: object
-        jiraRest:
-          description: REST API URL for the customer.
-          format: uri
-          type: string
-        self:
-          format: uri
-          type: string
+        issueId:
+          description: The issue ID.
+          format: int64
+          type: integer
+        worklogId:
+          description: The worklog ID.
+          format: int64
+          type: integer
       type: object
     UserDTO:
       additionalProperties: false
@@ -274,6 +258,22 @@ components:
           type: string
         fullName:
           description: Deprecated, please use 'displayName'.
+          type: string
+      type: object
+    UserLinkDTO:
+      additionalProperties: false
+      properties:
+        avatarUrls:
+          additionalProperties:
+            type: string
+          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
+          type: object
+        jiraRest:
+          description: REST API URL for the customer.
+          format: uri
+          type: string
+        self:
+          format: uri
           type: string
       type: object
     ServiceDeskCustomerDTO:

@@ -211,54 +211,6 @@ paths:
       x-atlassian-connect-scope: NONE
 components:
   schemas:
-    WorkflowRulesSearch:
-      description: Details of the workflow and its transition rules.
-      properties:
-        expand:
-          description: Use expand to include additional information in the response. This parameter accepts `transition` which, for each rule, returns information about the transition the rule is assigned to.
-          example: transition
-          type: string
-        ruleIds:
-          description: The list of workflow rule IDs.
-          items:
-            description: Workflow rule ID.
-            example: 55d44f1d-c859-42e5-9c27-2c5ec3f340b1
-            format: uuid
-            type: string
-          maxItems: 10
-          minItems: 1
-          type: array
-        workflowEntityId:
-          description: The workflow ID.
-          example: a498d711-685d-428d-8c3e-bc03bb450ea7
-          format: uuid
-          type: string
-      required:
-      - ruleIds
-      - workflowEntityId
-      type: object
-    WorkflowRulesSearchDetails:
-      description: Details of workflow transition rules.
-      properties:
-        invalidRules:
-          description: List of workflow rule IDs that do not belong to the workflow or can not be found.
-          items:
-            description: Workflow rule ID.
-            example: 55d44f1d-c859-42e5-9c27-2c5ec3f340b1
-            format: uuid
-            type: string
-          type: array
-        validRules:
-          description: List of valid workflow transition rules.
-          items:
-            $ref: '#/components/schemas/WorkflowTransitionRules'
-          type: array
-        workflowEntityId:
-          description: The workflow ID.
-          example: a498d711-685d-428d-8c3e-bc03bb450ea7
-          format: uuid
-          type: string
-      type: object
     ConnectCustomFieldValues:
       additionalProperties: false
       description: Details of updates for a custom field.
@@ -313,56 +265,6 @@ components:
       - key
       - value
       type: object
-    AppWorkflowTransitionRule:
-      additionalProperties: false
-      description: A workflow transition rule.
-      properties:
-        configuration:
-          $ref: '#/components/schemas/RuleConfiguration'
-        id:
-          description: The ID of the transition rule.
-          type: string
-        key:
-          description: The key of the rule, as defined in the Connect or the Forge app descriptor.
-          readOnly: true
-          type: string
-        transition:
-          allOf:
-          - $ref: '#/components/schemas/WorkflowTransition'
-          readOnly: true
-      required:
-      - configuration
-      - id
-      - key
-      type: object
-    WorkflowId:
-      additionalProperties: false
-      description: Properties that identify a workflow.
-      properties:
-        draft:
-          description: '**Deprecated:** Whether the workflow is in the draft state. The ''draft'' parameter will be removed from this API on [November 2, 2026](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-3147).'
-          type: boolean
-        name:
-          description: The name of the workflow.
-          type: string
-      required:
-      - name
-      type: object
-    WorkflowTransition:
-      additionalProperties: false
-      description: A workflow transition.
-      properties:
-        id:
-          description: The transition ID.
-          format: int32
-          type: integer
-        name:
-          description: The transition name.
-          type: string
-      required:
-      - id
-      - name
-      type: object
     ConnectCustomFieldValue:
       description: A list of custom field details.
       properties:
@@ -406,6 +308,50 @@ components:
       - issueID
       type: object
       writeOnly: true
+    AppWorkflowTransitionRule:
+      additionalProperties: false
+      description: A workflow transition rule.
+      properties:
+        configuration:
+          $ref: '#/components/schemas/RuleConfiguration'
+        id:
+          description: The ID of the transition rule.
+          type: string
+        key:
+          description: The key of the rule, as defined in the Connect or the Forge app descriptor.
+          readOnly: true
+          type: string
+        transition:
+          allOf:
+          - $ref: '#/components/schemas/WorkflowTransition'
+          readOnly: true
+      required:
+      - configuration
+      - id
+      - key
+      type: object
+    WorkflowRulesSearchDetails:
+      description: Details of workflow transition rules.
+      properties:
+        invalidRules:
+          description: List of workflow rule IDs that do not belong to the workflow or can not be found.
+          items:
+            description: Workflow rule ID.
+            example: 55d44f1d-c859-42e5-9c27-2c5ec3f340b1
+            format: uuid
+            type: string
+          type: array
+        validRules:
+          description: List of valid workflow transition rules.
+          items:
+            $ref: '#/components/schemas/WorkflowTransitionRules'
+          type: array
+        workflowEntityId:
+          description: The workflow ID.
+          example: a498d711-685d-428d-8c3e-bc03bb450ea7
+          format: uuid
+          type: string
+      type: object
     RuleConfiguration:
       additionalProperties: false
       description: A rule configuration.
@@ -423,6 +369,60 @@ components:
           type: string
       required:
       - value
+      type: object
+    WorkflowId:
+      additionalProperties: false
+      description: Properties that identify a workflow.
+      properties:
+        draft:
+          description: '**Deprecated:** Whether the workflow is in the draft state. The ''draft'' parameter will be removed from this API on [November 2, 2026](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-3147).'
+          type: boolean
+        name:
+          description: The name of the workflow.
+          type: string
+      required:
+      - name
+      type: object
+    WorkflowRulesSearch:
+      description: Details of the workflow and its transition rules.
+      properties:
+        expand:
+          description: Use expand to include additional information in the response. This parameter accepts `transition` which, for each rule, returns information about the transition the rule is assigned to.
+          example: transition
+          type: string
+        ruleIds:
+          description: The list of workflow rule IDs.
+          items:
+            description: Workflow rule ID.
+            example: 55d44f1d-c859-42e5-9c27-2c5ec3f340b1
+            format: uuid
+            type: string
+          maxItems: 10
+          minItems: 1
+          type: array
+        workflowEntityId:
+          description: The workflow ID.
+          example: a498d711-685d-428d-8c3e-bc03bb450ea7
+          format: uuid
+          type: string
+      required:
+      - ruleIds
+      - workflowEntityId
+      type: object
+    WorkflowTransition:
+      additionalProperties: false
+      description: A workflow transition.
+      properties:
+        id:
+          description: The transition ID.
+          format: int32
+          type: integer
+        name:
+          description: The transition name.
+          type: string
+      required:
+      - id
+      - name
       type: object
   securitySchemes:
     OAuth2:

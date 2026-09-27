@@ -387,66 +387,22 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    UpdateUiModificationDetails:
+    UiModificationIdentifiers:
       additionalProperties: false
-      description: The details of a UI modification.
-      properties:
-        contexts:
-          description: List of contexts of the UI modification. The maximum number of contexts is 1000. If provided, replaces all existing contexts.
-          items:
-            $ref: '#/components/schemas/UiModificationContextDetails'
-          type: array
-          writeOnly: true
-        data:
-          description: The data of the UI modification. The maximum size of the data is 50000 characters.
-          type: string
-          writeOnly: true
-        description:
-          description: The description of the UI modification. The maximum length is 255 characters.
-          type: string
-          writeOnly: true
-        name:
-          description: The name of the UI modification. The maximum length is 255 characters.
-          type: string
-          writeOnly: true
-      type: object
-    UiModificationContextDetails:
-      additionalProperties: false
-      description: The details of a UI modification's context, which define where to activate the UI modification.
+      description: Identifiers for a UI modification.
       properties:
         id:
-          description: The ID of the UI modification context.
+          description: The ID of the UI modification.
           readOnly: true
           type: string
-        isAvailable:
-          description: Whether a context is available. For example, when a project is deleted the context becomes unavailable.
+        self:
+          description: The URL of the UI modification.
           readOnly: true
-          type: boolean
-        issueTypeId:
-          description: The issue type ID of the context. Null is treated as a wildcard, meaning the UI modification will be applied to all issue types. Each UI modification context can have a maximum of one wildcard.
           type: string
-        portalId:
-          description: The portal ID of the context. Only required for Jira Service Management request create portal view (`JSMRequestCreate`).
-          type: string
-        projectId:
-          description: The project ID of the context. Null is treated as a wildcard, meaning the UI modification will be applied to all projects. Each UI modification context can have a maximum of one wildcard.
-          type: string
-        requestTypeId:
-          description: 'The request type ID of the context. Required for Jira Service Management request create portal view (`JSMRequestCreate`). Optional for Agent view types (`GICAgentView`, `IssueViewAgentView`, `IssueTransitionAgentView`): when set on an agent view context, the UI modification applies only to issues with that request type. Omitting `requestTypeId` does not create a wildcard — it means the context is not scoped to any specific request type.'
-          type: string
-        viewType:
-          description: "The view type of the context.  \nSupported values:\n\n *  `GIC` \\- Jira global issue create\n *  `IssueView` \\- Jira issue view\n *  `IssueTransition` \\- Jira issue transition\n *  `JSMRequestCreate` \\- Jira Service Management request create portal view\n *  `GICAgentView` \\- Agent view variant of Jira global issue create\n *  `IssueViewAgentView` \\- Agent view variant of Jira issue view\n *  `IssueTransitionAgentView` \\- Agent view variant of Jira issue transition\n\nFor Jira and Agent view types (`GIC`, `IssueView`, `IssueTransition`, `GICAgentView`, `IssueViewAgentView`, `IssueTransitionAgentView`), null is treated as a wildcard, meaning the UI modification will be applied to all view types. Each Jira or Agent context can have a maximum of one wildcard.  \n  \nAgent view contexts use `projectId` and `issueTypeId` like Jira contexts, and may optionally also set `requestTypeId`. Agent view contexts must not set `portalId`.  \n  \nWildcards are not applicable for JSM contexts."
-          enum:
-          - GIC
-          - IssueView
-          - IssueTransition
-          - JSMRequestCreate
-          - GICAgentView
-          - IssueViewAgentView
-          - IssueTransitionAgentView
-          type: string
+      required:
+      - id
+      - self
       type: object
-      writeOnly: true
     PageBeanUiModificationDetails:
       additionalProperties: false
       description: A page of items.
@@ -487,22 +443,6 @@ components:
           readOnly: true
           type: array
       type: object
-    UiModificationIdentifiers:
-      additionalProperties: false
-      description: Identifiers for a UI modification.
-      properties:
-        id:
-          description: The ID of the UI modification.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the UI modification.
-          readOnly: true
-          type: string
-      required:
-      - id
-      - self
-      type: object
     UiModificationDetails:
       additionalProperties: false
       description: The details of a UI modification.
@@ -537,6 +477,29 @@ components:
       - id
       - name
       - self
+      type: object
+    UpdateUiModificationDetails:
+      additionalProperties: false
+      description: The details of a UI modification.
+      properties:
+        contexts:
+          description: List of contexts of the UI modification. The maximum number of contexts is 1000. If provided, replaces all existing contexts.
+          items:
+            $ref: '#/components/schemas/UiModificationContextDetails'
+          type: array
+          writeOnly: true
+        data:
+          description: The data of the UI modification. The maximum size of the data is 50000 characters.
+          type: string
+          writeOnly: true
+        description:
+          description: The description of the UI modification. The maximum length is 255 characters.
+          type: string
+          writeOnly: true
+        name:
+          description: The name of the UI modification. The maximum length is 255 characters.
+          type: string
+          writeOnly: true
       type: object
     CreateUiModificationDetails:
       additionalProperties: false
@@ -581,6 +544,43 @@ components:
           description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
           type: object
       type: object
+    UiModificationContextDetails:
+      additionalProperties: false
+      description: The details of a UI modification's context, which define where to activate the UI modification.
+      properties:
+        id:
+          description: The ID of the UI modification context.
+          readOnly: true
+          type: string
+        isAvailable:
+          description: Whether a context is available. For example, when a project is deleted the context becomes unavailable.
+          readOnly: true
+          type: boolean
+        issueTypeId:
+          description: The issue type ID of the context. Null is treated as a wildcard, meaning the UI modification will be applied to all issue types. Each UI modification context can have a maximum of one wildcard.
+          type: string
+        portalId:
+          description: The portal ID of the context. Only required for Jira Service Management request create portal view (`JSMRequestCreate`).
+          type: string
+        projectId:
+          description: The project ID of the context. Null is treated as a wildcard, meaning the UI modification will be applied to all projects. Each UI modification context can have a maximum of one wildcard.
+          type: string
+        requestTypeId:
+          description: 'The request type ID of the context. Required for Jira Service Management request create portal view (`JSMRequestCreate`). Optional for Agent view types (`GICAgentView`, `IssueViewAgentView`, `IssueTransitionAgentView`): when set on an agent view context, the UI modification applies only to issues with that request type. Omitting `requestTypeId` does not create a wildcard — it means the context is not scoped to any specific request type.'
+          type: string
+        viewType:
+          description: "The view type of the context.  \nSupported values:\n\n *  `GIC` \\- Jira global issue create\n *  `IssueView` \\- Jira issue view\n *  `IssueTransition` \\- Jira issue transition\n *  `JSMRequestCreate` \\- Jira Service Management request create portal view\n *  `GICAgentView` \\- Agent view variant of Jira global issue create\n *  `IssueViewAgentView` \\- Agent view variant of Jira issue view\n *  `IssueTransitionAgentView` \\- Agent view variant of Jira issue transition\n\nFor Jira and Agent view types (`GIC`, `IssueView`, `IssueTransition`, `GICAgentView`, `IssueViewAgentView`, `IssueTransitionAgentView`), null is treated as a wildcard, meaning the UI modification will be applied to all view types. Each Jira or Agent context can have a maximum of one wildcard.  \n  \nAgent view contexts use `projectId` and `issueTypeId` like Jira contexts, and may optionally also set `requestTypeId`. Agent view contexts must not set `portalId`.  \n  \nWildcards are not applicable for JSM contexts."
+          enum:
+          - GIC
+          - IssueView
+          - IssueTransition
+          - JSMRequestCreate
+          - GICAgentView
+          - IssueViewAgentView
+          - IssueTransitionAgentView
+          type: string
+      type: object
+      writeOnly: true
   securitySchemes:
     OAuth2:
       description: OAuth2 scopes for Jira

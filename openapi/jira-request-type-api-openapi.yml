@@ -111,17 +111,6 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
-    RequestTypeIconDTO:
-      additionalProperties: false
-      properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/RequestTypeIconLinkDTO'
-          description: Map of the URLs for the request type icons.
-        id:
-          description: ID of the request type icon.
-          type: string
-      type: object
     RequestTypeFieldDTO:
       additionalProperties: false
       properties:
@@ -158,6 +147,53 @@ components:
           type: array
         visible:
           type: boolean
+      type: object
+    SelfLinkDTO:
+      additionalProperties: false
+      properties:
+        self:
+          format: uri
+          type: string
+      type: object
+    CustomerRequestCreateMetaDTO:
+      additionalProperties: false
+      properties:
+        canAddRequestParticipants:
+          description: Flag indicating if participants can be added to a request (true) or not.
+          type: boolean
+        canRaiseOnBehalfOf:
+          description: Flag indicating if a request can be raised on behalf of another user (true) or not.
+          type: boolean
+        requestTypeFields:
+          description: List of the fields included in this request.
+          items:
+            $ref: '#/components/schemas/RequestTypeFieldDTO'
+          type: array
+      type: object
+    RequestTypeFieldValueDTO:
+      additionalProperties: false
+      properties:
+        children:
+          description: List of child fields.
+          items:
+            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
+          type: array
+        label:
+          description: Label for the field.
+          type: string
+        value:
+          description: Value of the field.
+          type: string
+      type: object
+    RequestTypeIconLinkDTO:
+      additionalProperties: false
+      properties:
+        iconUrls:
+          additionalProperties:
+            format: uri
+            type: string
+          description: URLs for the request type icons.
+          type: object
       type: object
     RequestTypeDTO:
       additionalProperties: false
@@ -218,6 +254,67 @@ components:
           description: ID of the service desk the request type belongs to.
           type: string
       type: object
+    RequestTypeIconDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/RequestTypeIconLinkDTO'
+          description: Map of the URLs for the request type icons.
+        id:
+          description: ID of the request type icon.
+          type: string
+      type: object
+    ErrorResponse:
+      additionalProperties: false
+      properties:
+        errorMessage:
+          type: string
+        i18nErrorMessage:
+          $ref: '#/components/schemas/I18nErrorMessage'
+      type: object
+    I18nErrorMessage:
+      additionalProperties: false
+      properties:
+        i18nKey:
+          type: string
+        parameters:
+          items:
+            type: string
+          type: array
+      type: object
+    PagedDTORequestTypeDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/RequestTypeDTO'
+          type: array
+      type: object
     PagedLinkDTO:
       additionalProperties: false
       properties:
@@ -239,46 +336,6 @@ components:
           description: REST API URL for the current page.
           format: uri
           type: string
-      type: object
-    CustomerRequestCreateMetaDTO:
-      additionalProperties: false
-      properties:
-        canAddRequestParticipants:
-          description: Flag indicating if participants can be added to a request (true) or not.
-          type: boolean
-        canRaiseOnBehalfOf:
-          description: Flag indicating if a request can be raised on behalf of another user (true) or not.
-          type: boolean
-        requestTypeFields:
-          description: List of the fields included in this request.
-          items:
-            $ref: '#/components/schemas/RequestTypeFieldDTO'
-          type: array
-      type: object
-    ErrorResponse:
-      additionalProperties: false
-      properties:
-        errorMessage:
-          type: string
-        i18nErrorMessage:
-          $ref: '#/components/schemas/I18nErrorMessage'
-      type: object
-    SelfLinkDTO:
-      additionalProperties: false
-      properties:
-        self:
-          format: uri
-          type: string
-      type: object
-    I18nErrorMessage:
-      additionalProperties: false
-      properties:
-        i18nKey:
-          type: string
-        parameters:
-          items:
-            type: string
-          type: array
       type: object
     JsonTypeBean:
       additionalProperties: false
@@ -313,63 +370,6 @@ components:
           type: string
       required:
       - type
-      type: object
-    RequestTypeIconLinkDTO:
-      additionalProperties: false
-      properties:
-        iconUrls:
-          additionalProperties:
-            format: uri
-            type: string
-          description: URLs for the request type icons.
-          type: object
-      type: object
-    PagedDTORequestTypeDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/RequestTypeDTO'
-          type: array
-      type: object
-    RequestTypeFieldValueDTO:
-      additionalProperties: false
-      properties:
-        children:
-          description: List of child fields.
-          items:
-            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
-          type: array
-        label:
-          description: Label for the field.
-          type: string
-        value:
-          description: Value of the field.
-          type: string
       type: object
   securitySchemes:
     OAuth2:

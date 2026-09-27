@@ -167,35 +167,6 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    LicenseMetric:
-      additionalProperties: false
-      description: A metric that provides insight into the active licence details
-      properties:
-        key:
-          description: The key of a specific license metric.
-          type: string
-        value:
-          description: The calculated value of a licence metric linked to the key. An example licence metric is the approximate number of user accounts.
-          type: string
-      type: object
-    ErrorCollection:
-      additionalProperties: false
-      description: Error messages from an operation.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        status:
-          format: int32
-          type: integer
-      type: object
     ErrorCollections:
       additionalProperties: false
       type: object
@@ -231,6 +202,35 @@ components:
           type: array
       required:
       - applications
+      type: object
+    LicenseMetric:
+      additionalProperties: false
+      description: A metric that provides insight into the active licence details
+      properties:
+        key:
+          description: The key of a specific license metric.
+          type: string
+        value:
+          description: The calculated value of a licence metric linked to the key. An example licence metric is the approximate number of user accounts.
+          type: string
+      type: object
+    ErrorCollection:
+      additionalProperties: false
+      description: Error messages from an operation.
+      properties:
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
+          format: int32
+          type: integer
       type: object
   securitySchemes:
     OAuth2:

@@ -122,23 +122,17 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    ErrorCollection:
+    RedactionJobStatusResponse:
       additionalProperties: false
-      description: Error messages from an operation.
       properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        status:
-          format: int32
-          type: integer
+        bulkRedactionResponse:
+          $ref: '#/components/schemas/BulkRedactionResponse'
+        jobStatus:
+          enum:
+          - PENDING
+          - IN_PROGRESS
+          - COMPLETED
+          type: string
       type: object
     ContentItem:
       additionalProperties: false
@@ -176,21 +170,6 @@ components:
       required:
       - results
       type: object
-    SingleRedactionResponse:
-      additionalProperties: false
-      description: Result for requested redactions
-      properties:
-        externalId:
-          description: An unique id for the redaction request
-          format: uuid
-          type: string
-        successful:
-          description: Indicates if redaction was success/failure
-          type: boolean
-      required:
-      - externalId
-      - successful
-      type: object
     BulkRedactionRequest:
       additionalProperties: false
       properties:
@@ -227,17 +206,20 @@ components:
       - from
       - to
       type: object
-    RedactionJobStatusResponse:
+    SingleRedactionResponse:
       additionalProperties: false
+      description: Result for requested redactions
       properties:
-        bulkRedactionResponse:
-          $ref: '#/components/schemas/BulkRedactionResponse'
-        jobStatus:
-          enum:
-          - PENDING
-          - IN_PROGRESS
-          - COMPLETED
+        externalId:
+          description: An unique id for the redaction request
+          format: uuid
           type: string
+        successful:
+          description: Indicates if redaction was success/failure
+          type: boolean
+      required:
+      - externalId
+      - successful
       type: object
     SingleRedactionRequest:
       additionalProperties: false
@@ -260,6 +242,24 @@ components:
       - externalId
       - reason
       - redactionPosition
+      type: object
+    ErrorCollection:
+      additionalProperties: false
+      description: Error messages from an operation.
+      properties:
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
+          format: int32
+          type: integer
       type: object
   securitySchemes:
     OAuth2:

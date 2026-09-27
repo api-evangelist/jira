@@ -106,24 +106,6 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    ErrorCollection:
-      additionalProperties: false
-      description: Error messages from an operation.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        status:
-          format: int32
-          type: integer
-      type: object
     ProjectWithDataPolicy:
       additionalProperties: false
       description: Details about data policies for a project.
@@ -138,6 +120,15 @@ components:
           format: int64
           readOnly: true
           type: integer
+      type: object
+    ProjectDataPolicy:
+      additionalProperties: false
+      description: Details about data policy.
+      properties:
+        anyContentBlocked:
+          description: Whether the project contains any content inaccessible to the requesting application.
+          readOnly: true
+          type: boolean
       type: object
     WorkspaceDataPolicy:
       additionalProperties: false
@@ -159,14 +150,23 @@ components:
           readOnly: true
           type: array
       type: object
-    ProjectDataPolicy:
+    ErrorCollection:
       additionalProperties: false
-      description: Details about data policy.
+      description: Error messages from an operation.
       properties:
-        anyContentBlocked:
-          description: Whether the project contains any content inaccessible to the requesting application.
-          readOnly: true
-          type: boolean
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
+          format: int32
+          type: integer
       type: object
   securitySchemes:
     OAuth2:

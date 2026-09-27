@@ -272,76 +272,6 @@ paths:
       x-atlassian-connect-scope: WRITE
 components:
   schemas:
-    BulkIssueIsWatching:
-      additionalProperties: false
-      description: A container for the watch status of a list of issues.
-      properties:
-        issuesIsWatching:
-          additionalProperties:
-            readOnly: true
-            type: boolean
-          description: The map of issue ID to boolean watch status.
-          readOnly: true
-          type: object
-      type: object
-    AvatarUrlsBean:
-      additionalProperties: false
-      properties:
-        16x16:
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
-          type: string
-        24x24:
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
-          type: string
-        32x32:
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-          type: string
-        48x48:
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
-          type: string
-      type: object
-    IssueList:
-      additionalProperties: false
-      description: A list of issue IDs.
-      properties:
-        issueIds:
-          description: The list of issue IDs.
-          items:
-            type: string
-          type: array
-      required:
-      - issueIds
-      type: object
-    Watchers:
-      additionalProperties: false
-      description: The details of watchers on an issue.
-      properties:
-        isWatching:
-          description: Whether the calling user is watching this issue.
-          readOnly: true
-          type: boolean
-        self:
-          description: The URL of these issue watcher details.
-          readOnly: true
-          type: string
-        watchCount:
-          description: The number of users watching this issue.
-          format: int32
-          readOnly: true
-          type: integer
-        watchers:
-          description: Details of the users watching this issue.
-          items:
-            $ref: '#/components/schemas/UserDetails'
-          readOnly: true
-          type: array
-      type: object
-      xml:
-        name: watchers
     UserDetails:
       additionalProperties: false
       description: "User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
@@ -387,6 +317,76 @@ components:
           description: The time zone specified in the user's profile. Depending on the user’s privacy settings, this may be returned as null.
           readOnly: true
           type: string
+      type: object
+    IssueList:
+      additionalProperties: false
+      description: A list of issue IDs.
+      properties:
+        issueIds:
+          description: The list of issue IDs.
+          items:
+            type: string
+          type: array
+      required:
+      - issueIds
+      type: object
+    Watchers:
+      additionalProperties: false
+      description: The details of watchers on an issue.
+      properties:
+        isWatching:
+          description: Whether the calling user is watching this issue.
+          readOnly: true
+          type: boolean
+        self:
+          description: The URL of these issue watcher details.
+          readOnly: true
+          type: string
+        watchCount:
+          description: The number of users watching this issue.
+          format: int32
+          readOnly: true
+          type: integer
+        watchers:
+          description: Details of the users watching this issue.
+          items:
+            $ref: '#/components/schemas/UserDetails'
+          readOnly: true
+          type: array
+      type: object
+      xml:
+        name: watchers
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+          type: string
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
+      type: object
+    BulkIssueIsWatching:
+      additionalProperties: false
+      description: A container for the watch status of a list of issues.
+      properties:
+        issuesIsWatching:
+          additionalProperties:
+            readOnly: true
+            type: boolean
+          description: The map of issue ID to boolean watch status.
+          readOnly: true
+          type: object
       type: object
   securitySchemes:
     OAuth2:

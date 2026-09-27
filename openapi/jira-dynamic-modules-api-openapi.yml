@@ -167,6 +167,12 @@ components:
       required:
       - modules
       type: object
+    ErrorMessage:
+      additionalProperties: false
+      properties:
+        message:
+          type: string
+      type: object
     ConnectModule:
       description: 'A [Connect module](https://developer.atlassian.com/cloud/jira/platform/about-jira-modules/) in the same format as in the
 
@@ -182,12 +188,6 @@ components:
         name:
           value: Team
         key: team-field
-      type: object
-    ErrorMessage:
-      additionalProperties: false
-      properties:
-        message:
-          type: string
       type: object
   securitySchemes:
     OAuth2:

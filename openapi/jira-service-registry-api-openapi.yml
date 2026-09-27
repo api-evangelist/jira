@@ -67,6 +67,29 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
+    ServiceRegistry:
+      properties:
+        description:
+          description: service description
+          type:
+          - string
+          - 'null'
+        id:
+          description: service ID
+          format: uuid
+          type: string
+        name:
+          description: service name
+          type: string
+        organizationId:
+          description: organization ID
+          type: string
+        revision:
+          description: service revision
+          type: string
+        serviceTier:
+          $ref: '#/components/schemas/ServiceRegistryTier'
+      type: object
     ServiceRegistryTier:
       properties:
         description:
@@ -90,29 +113,6 @@ components:
           description: name key of the tier
           example: service-registry.tier1.name
           type: string
-      type: object
-    ServiceRegistry:
-      properties:
-        description:
-          description: service description
-          type:
-          - string
-          - 'null'
-        id:
-          description: service ID
-          format: uuid
-          type: string
-        name:
-          description: service name
-          type: string
-        organizationId:
-          description: organization ID
-          type: string
-        revision:
-          description: service revision
-          type: string
-        serviceTier:
-          $ref: '#/components/schemas/ServiceRegistryTier'
       type: object
   securitySchemes:
     OAuth2:

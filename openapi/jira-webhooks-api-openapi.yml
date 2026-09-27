@@ -358,24 +358,6 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
-    ErrorCollection:
-      additionalProperties: false
-      description: Error messages from an operation.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        status:
-          format: int32
-          type: integer
-      type: object
     RegisteredWebhook:
       additionalProperties: false
       description: ID of a registered webhook or error messages explaining why a webhook wasn't registered.
@@ -391,31 +373,26 @@ components:
             type: string
           type: array
       type: object
-    ContainerForWebhookIDs:
+    FailedWebhooks:
       additionalProperties: false
-      description: Container for a list of webhook IDs.
+      description: A page of failed webhooks.
       properties:
-        webhookIds:
-          description: A list of webhook IDs.
+        maxResults:
+          description: The maximum number of items on the page. If the list of values is shorter than this number, then there are no more pages.
+          format: int32
+          type: integer
+        next:
+          description: The URL to the next page of results. Present only if the request returned at least one result.The next page may be empty at the time of receiving the response, but new failed webhooks may appear in time. You can save the URL to the next page and query for new results periodically (for example, every hour).
+          format: uri
+          type: string
+        values:
+          description: The list of webhooks.
           items:
-            description: A list of webhook IDs.
-            format: int64
-            type: integer
+            $ref: '#/components/schemas/FailedWebhook'
           type: array
       required:
-      - webhookIds
-      type: object
-    WebhooksExpirationDate:
-      additionalProperties: false
-      description: The date the refreshed webhooks expire.
-      properties:
-        expirationDate:
-          description: The expiration date of all the refreshed webhooks.
-          format: int64
-          readOnly: true
-          type: integer
-      required:
-      - expirationDate
+      - maxResults
+      - values
       type: object
     WebhookRegistrationDetails:
       additionalProperties: false
@@ -432,46 +409,6 @@ components:
       required:
       - url
       - webhooks
-      type: object
-    PageBeanWebhook:
-      additionalProperties: false
-      description: A page of items.
-      properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
-          type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/Webhook'
-          readOnly: true
-          type: array
       type: object
     WebhookDetails:
       additionalProperties: false
@@ -522,14 +459,56 @@ components:
       - events
       - jqlFilter
       type: object
-    ContainerForRegisteredWebhooks:
+    WebhooksExpirationDate:
       additionalProperties: false
-      description: Container for a list of registered webhooks. Webhook details are returned in the same order as the request.
+      description: The date the refreshed webhooks expire.
       properties:
-        webhookRegistrationResult:
-          description: A list of registered webhooks.
+        expirationDate:
+          description: The expiration date of all the refreshed webhooks.
+          format: int64
+          readOnly: true
+          type: integer
+      required:
+      - expirationDate
+      type: object
+    PageBeanWebhook:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
           items:
-            $ref: '#/components/schemas/RegisteredWebhook'
+            $ref: '#/components/schemas/Webhook'
+          readOnly: true
           type: array
       type: object
     FailedWebhook:
@@ -553,6 +532,30 @@ components:
       - failureTime
       - id
       - url
+      type: object
+    ContainerForRegisteredWebhooks:
+      additionalProperties: false
+      description: Container for a list of registered webhooks. Webhook details are returned in the same order as the request.
+      properties:
+        webhookRegistrationResult:
+          description: A list of registered webhooks.
+          items:
+            $ref: '#/components/schemas/RegisteredWebhook'
+          type: array
+      type: object
+    ContainerForWebhookIDs:
+      additionalProperties: false
+      description: Container for a list of webhook IDs.
+      properties:
+        webhookIds:
+          description: A list of webhook IDs.
+          items:
+            description: A list of webhook IDs.
+            format: int64
+            type: integer
+          type: array
+      required:
+      - webhookIds
       type: object
     Webhook:
       additionalProperties: false
@@ -617,26 +620,23 @@ components:
       - jqlFilter
       - url
       type: object
-    FailedWebhooks:
+    ErrorCollection:
       additionalProperties: false
-      description: A page of failed webhooks.
+      description: Error messages from an operation.
       properties:
-        maxResults:
-          description: The maximum number of items on the page. If the list of values is shorter than this number, then there are no more pages.
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
           format: int32
           type: integer
-        next:
-          description: The URL to the next page of results. Present only if the request returned at least one result.The next page may be empty at the time of receiving the response, but new failed webhooks may appear in time. You can save the URL to the next page and query for new results periodically (for example, every hour).
-          format: uri
-          type: string
-        values:
-          description: The list of webhooks.
-          items:
-            $ref: '#/components/schemas/FailedWebhook'
-          type: array
-      required:
-      - maxResults
-      - values
       type: object
   securitySchemes:
     OAuth2:

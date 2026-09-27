@@ -852,49 +852,6 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    ListWrapperCallbackGroupName:
-      additionalProperties: false
-      type: object
-    UserMigrationBean:
-      additionalProperties: false
-      properties:
-        accountId:
-          type: string
-        key:
-          type: string
-        username:
-          type: string
-      type: object
-    AvatarUrlsBean:
-      additionalProperties: false
-      properties:
-        16x16:
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
-          type: string
-        24x24:
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
-          type: string
-        32x32:
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-          type: string
-        48x48:
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
-          type: string
-      type: object
-    UnrestrictedUserEmail:
-      additionalProperties: true
-      properties:
-        accountId:
-          description: The accountId of the user
-          type: string
-        email:
-          description: The email of the user
-          type: string
-      type: object
     GroupName:
       additionalProperties: false
       description: Details about a group.
@@ -913,150 +870,45 @@ components:
           readOnly: true
           type: string
       type: object
-    SimpleListWrapperApplicationRole:
-      additionalProperties: false
+    NewUserDetails:
+      additionalProperties: true
+      description: The user details.
       properties:
-        callback:
-          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
-        items:
-          items:
-            $ref: '#/components/schemas/ApplicationRole'
-          type: array
-        max-results:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-            name: max-results
-        pagingCallback:
-          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
-        size:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-      type: object
-      xml:
-        name: list
-    PageBeanUser:
-      additionalProperties: false
-      description: A page of items.
-      properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
-          type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/User'
-          readOnly: true
-          type: array
-      type: object
-    ApplicationRole:
-      additionalProperties: false
-      description: Details of an application role.
-      properties:
-        defaultGroups:
-          description: The groups that are granted default access for this application role. As a group's name can change, use of `defaultGroupsDetails` is recommended to identify a groups.
+        applicationKeys:
+          description: Deprecated, do not use.
           items:
             type: string
           type: array
-          uniqueItems: true
-        defaultGroupsDetails:
-          description: The groups that are granted default access for this application role.
-          items:
-            $ref: '#/components/schemas/GroupName'
-          type: array
-        defined:
-          description: Deprecated.
-          type: boolean
-        groupDetails:
-          description: The groups associated with the application role.
-          items:
-            $ref: '#/components/schemas/GroupName'
-          type: array
-        groups:
-          description: The groups associated with the application role. As a group's name can change, use of `groupDetails` is recommended to identify a groups.
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        hasUnlimitedSeats:
-          type: boolean
+        displayName:
+          description: This property is no longer available. If the user has an Atlassian account, their display name is not changed. If the user does not have an Atlassian account, they are sent an email asking them set up an account.
+          type: string
+        emailAddress:
+          description: The email address for the user.
+          type: string
         key:
-          description: The key of the application role.
+          description: This property is no longer available. See the [migration guide](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
           type: string
         name:
-          description: The display name of the application role.
+          description: This property is no longer available. See the [migration guide](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
           type: string
-        numberOfSeats:
-          description: The maximum count of users on your license.
-          format: int32
-          type: integer
-        platform:
-          description: Indicates if the application role belongs to Jira platform (`jira-core`).
-          type: boolean
-        remainingSeats:
-          description: The count of users remaining on your license.
-          format: int32
-          type: integer
-        selectedByDefault:
-          description: Determines whether this application role should be selected by default on user creation.
-          type: boolean
-        userCount:
-          description: The number of users counting against your license.
-          format: int32
-          type: integer
-        userCountDescription:
-          description: The [type of users](https://confluence.atlassian.com/x/lRW3Ng) being counted against your license.
+        password:
+          description: This property is no longer available. If the user has an Atlassian account, their password is not changed. If the user does not have an Atlassian account, they are sent an email asking them set up an account.
           type: string
-      type: object
-    UserColumnRequestBody:
-      additionalProperties: false
-      properties:
-        columns:
+        products:
+          description: 'Products the new user has access to. Valid products are: jira-core, jira-servicedesk, jira-product-discovery, jira-software. To create a user without product access, set this field to be an empty array.'
           items:
             type: string
           type: array
-      type: object
-    ColumnItem:
-      additionalProperties: false
-      description: Details of an issue navigator column item.
-      properties:
-        label:
-          description: The issue navigator column label.
+          uniqueItems: true
+        self:
+          description: The URL of the user.
+          readOnly: true
           type: string
-        value:
-          description: The issue navigator column value.
-          type: string
+      required:
+      - emailAddress
+      - products
       type: object
-    ListWrapperCallbackApplicationRole:
+    ListWrapperCallbackGroupName:
       additionalProperties: false
       type: object
     User:
@@ -1139,43 +991,92 @@ components:
       type: object
       xml:
         name: user
-    NewUserDetails:
-      additionalProperties: true
-      description: The user details.
+    ApplicationRole:
+      additionalProperties: false
+      description: Details of an application role.
       properties:
-        applicationKeys:
-          description: Deprecated, do not use.
-          items:
-            type: string
-          type: array
-        displayName:
-          description: This property is no longer available. If the user has an Atlassian account, their display name is not changed. If the user does not have an Atlassian account, they are sent an email asking them set up an account.
-          type: string
-        emailAddress:
-          description: The email address for the user.
-          type: string
-        key:
-          description: This property is no longer available. See the [migration guide](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        name:
-          description: This property is no longer available. See the [migration guide](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        password:
-          description: This property is no longer available. If the user has an Atlassian account, their password is not changed. If the user does not have an Atlassian account, they are sent an email asking them set up an account.
-          type: string
-        products:
-          description: 'Products the new user has access to. Valid products are: jira-core, jira-servicedesk, jira-product-discovery, jira-software. To create a user without product access, set this field to be an empty array.'
+        defaultGroups:
+          description: The groups that are granted default access for this application role. As a group's name can change, use of `defaultGroupsDetails` is recommended to identify a groups.
           items:
             type: string
           type: array
           uniqueItems: true
-        self:
-          description: The URL of the user.
-          readOnly: true
+        defaultGroupsDetails:
+          description: The groups that are granted default access for this application role.
+          items:
+            $ref: '#/components/schemas/GroupName'
+          type: array
+        defined:
+          description: Deprecated.
+          type: boolean
+        groupDetails:
+          description: The groups associated with the application role.
+          items:
+            $ref: '#/components/schemas/GroupName'
+          type: array
+        groups:
+          description: The groups associated with the application role. As a group's name can change, use of `groupDetails` is recommended to identify a groups.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        hasUnlimitedSeats:
+          type: boolean
+        key:
+          description: The key of the application role.
           type: string
-      required:
-      - emailAddress
-      - products
+        name:
+          description: The display name of the application role.
+          type: string
+        numberOfSeats:
+          description: The maximum count of users on your license.
+          format: int32
+          type: integer
+        platform:
+          description: Indicates if the application role belongs to Jira platform (`jira-core`).
+          type: boolean
+        remainingSeats:
+          description: The count of users remaining on your license.
+          format: int32
+          type: integer
+        selectedByDefault:
+          description: Determines whether this application role should be selected by default on user creation.
+          type: boolean
+        userCount:
+          description: The number of users counting against your license.
+          format: int32
+          type: integer
+        userCountDescription:
+          description: The [type of users](https://confluence.atlassian.com/x/lRW3Ng) being counted against your license.
+          type: string
+      type: object
+    SimpleListWrapperApplicationRole:
+      additionalProperties: false
+      properties:
+        callback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        items:
+          items:
+            $ref: '#/components/schemas/ApplicationRole'
+          type: array
+        max-results:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+            name: max-results
+        pagingCallback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        size:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+      type: object
+      xml:
+        name: list
+    ListWrapperCallbackApplicationRole:
+      additionalProperties: false
       type: object
     SimpleListWrapperGroupName:
       additionalProperties: false
@@ -1202,6 +1103,105 @@ components:
       type: object
       xml:
         name: list
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+          type: string
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
+      type: object
+    UnrestrictedUserEmail:
+      additionalProperties: true
+      properties:
+        accountId:
+          description: The accountId of the user
+          type: string
+        email:
+          description: The email of the user
+          type: string
+      type: object
+    ColumnItem:
+      additionalProperties: false
+      description: Details of an issue navigator column item.
+      properties:
+        label:
+          description: The issue navigator column label.
+          type: string
+        value:
+          description: The issue navigator column value.
+          type: string
+      type: object
+    UserColumnRequestBody:
+      additionalProperties: false
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+      type: object
+    PageBeanUser:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/User'
+          readOnly: true
+          type: array
+      type: object
+    UserMigrationBean:
+      additionalProperties: false
+      properties:
+        accountId:
+          type: string
+        key:
+          type: string
+        username:
+          type: string
+      type: object
   securitySchemes:
     OAuth2:
       description: OAuth2 scopes for Jira

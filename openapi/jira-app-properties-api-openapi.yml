@@ -619,19 +619,6 @@ components:
           readOnly: true
           type: array
       type: object
-    PropertyKey:
-      additionalProperties: false
-      description: Property key details.
-      properties:
-        key:
-          description: The key of the property.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the property.
-          readOnly: true
-          type: string
-      type: object
     OperationMessage:
       additionalProperties: false
       example:
@@ -647,6 +634,19 @@ components:
       required:
       - message
       - statusCode
+      type: object
+    PropertyKey:
+      additionalProperties: false
+      description: Property key details.
+      properties:
+        key:
+          description: The key of the property.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the property.
+          readOnly: true
+          type: string
       type: object
   securitySchemes:
     OAuth2:

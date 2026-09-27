@@ -590,44 +590,6 @@ paths:
       x-atlassian-connect-scope: NONE
 components:
   schemas:
-    IssueFieldOptionScopeBean:
-      additionalProperties: false
-      properties:
-        global:
-          allOf:
-          - $ref: '#/components/schemas/GlobalScopeBean'
-          description: Defines the behavior of the option within the global context. If this property is set, even if set to an empty object, then the option is available in all projects.
-        projects:
-          description: DEPRECATED
-          items:
-            format: int64
-            type: integer
-          type: array
-          uniqueItems: true
-        projects2:
-          description: Defines the projects in which the option is available and the behavior of the option within each project. Specify one object per project. The behavior of the option in a project context overrides the behavior in the global context.
-          items:
-            $ref: '#/components/schemas/ProjectScopeBean'
-          type: array
-          uniqueItems: true
-      type: object
-    ProjectScopeBean:
-      additionalProperties: false
-      properties:
-        attributes:
-          description: Defines the behavior of the option in the project.If notSelectable is set, the option cannot be set as the field's value. This is useful for archiving an option that has previously been selected but shouldn't be used anymore.If defaultValue is set, the option is selected by default.
-          items:
-            enum:
-            - notSelectable
-            - defaultValue
-            type: string
-          type: array
-          uniqueItems: true
-        id:
-          description: The ID of the project that the option's behavior applies to.
-          format: int64
-          type: integer
-      type: object
     IssueFieldOptionConfiguration:
       additionalProperties: false
       description: Details of the projects the option is available in.
@@ -646,6 +608,23 @@ components:
           - $ref: '#/components/schemas/IssueFieldOptionScopeBean'
           description: Defines the projects that the option is available in. If the scope is not defined, then the option is available in all projects.
       type: object
+    ProjectScopeBean:
+      additionalProperties: false
+      properties:
+        attributes:
+          description: Defines the behavior of the option in the project.If notSelectable is set, the option cannot be set as the field's value. This is useful for archiving an option that has previously been selected but shouldn't be used anymore.If defaultValue is set, the option is selected by default.
+          items:
+            enum:
+            - notSelectable
+            - defaultValue
+            type: string
+          type: array
+          uniqueItems: true
+        id:
+          description: The ID of the project that the option's behavior applies to.
+          format: int64
+          type: integer
+      type: object
     IssueFieldOptionCreateBean:
       additionalProperties: true
       properties:
@@ -660,6 +639,19 @@ components:
           type: string
       required:
       - value
+      type: object
+    GlobalScopeBean:
+      additionalProperties: false
+      properties:
+        attributes:
+          description: Defines the behavior of the option in the global context.If notSelectable is set, the option cannot be set as the field's value. This is useful for archiving an option that has previously been selected but shouldn't be used anymore.If defaultValue is set, the option is selected by default.
+          items:
+            enum:
+            - notSelectable
+            - defaultValue
+            type: string
+          type: array
+          uniqueItems: true
       type: object
     RemoveOptionFromIssuesResult:
       additionalProperties: false
@@ -679,46 +671,6 @@ components:
           items:
             format: int64
             type: integer
-          type: array
-      type: object
-    PageBeanIssueFieldOption:
-      additionalProperties: false
-      description: A page of items.
-      properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
-          type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/IssueFieldOption'
-          readOnly: true
           type: array
       type: object
     TaskProgressBeanRemoveOptionFromIssuesResult:
@@ -791,6 +743,23 @@ components:
       - submitted
       - submittedBy
       type: object
+    SimpleErrorCollection:
+      additionalProperties: false
+      properties:
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        httpStatusCode:
+          format: int32
+          type: integer
+      type: object
     IssueFieldOption:
       additionalProperties: false
       description: Details of the options for a select list issue field.
@@ -812,35 +781,66 @@ components:
       - id
       - value
       type: object
-    SimpleErrorCollection:
+    IssueFieldOptionScopeBean:
       additionalProperties: false
       properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+        global:
+          allOf:
+          - $ref: '#/components/schemas/GlobalScopeBean'
+          description: Defines the behavior of the option within the global context. If this property is set, even if set to an empty object, then the option is available in all projects.
+        projects:
+          description: DEPRECATED
           items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        httpStatusCode:
-          format: int32
-          type: integer
-      type: object
-    GlobalScopeBean:
-      additionalProperties: false
-      properties:
-        attributes:
-          description: Defines the behavior of the option in the global context.If notSelectable is set, the option cannot be set as the field's value. This is useful for archiving an option that has previously been selected but shouldn't be used anymore.If defaultValue is set, the option is selected by default.
-          items:
-            enum:
-            - notSelectable
-            - defaultValue
-            type: string
+            format: int64
+            type: integer
           type: array
           uniqueItems: true
+        projects2:
+          description: Defines the projects in which the option is available and the behavior of the option within each project. Specify one object per project. The behavior of the option in a project context overrides the behavior in the global context.
+          items:
+            $ref: '#/components/schemas/ProjectScopeBean'
+          type: array
+          uniqueItems: true
+      type: object
+    PageBeanIssueFieldOption:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/IssueFieldOption'
+          readOnly: true
+          type: array
       type: object
   securitySchemes:
     OAuth2:
