@@ -2726,76 +2726,170 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
-    LinkGroup:
+    JsonTypeBean:
       additionalProperties: false
-      description: Details a link group, which defines issue operations.
+      description: The schema of a field.
       properties:
-        groups:
-          items:
-            $ref: '#/components/schemas/LinkGroup'
-          type: array
-        header:
-          additionalProperties: false
-          description: Details about the operations available in this version.
-          properties:
-            href:
-              type: string
-            iconClass:
-              type: string
-            id:
-              type: string
-            label:
-              type: string
-            styleClass:
-              type: string
-            title:
-              type: string
-            weight:
-              format: int32
-              type: integer
+        configuration:
+          additionalProperties:
+            readOnly: true
+          description: If the field is a custom field, the configuration of the field.
+          readOnly: true
           type: object
-          xml:
-            name: link
-        id:
+        custom:
+          description: If the field is a custom field, the URI of the field.
+          readOnly: true
           type: string
-        links:
-          items:
-            additionalProperties: false
-            description: Details about the operations available in this version.
-            properties:
-              href:
-                type: string
-              iconClass:
-                type: string
-              id:
-                type: string
-              label:
-                type: string
-              styleClass:
-                type: string
-              title:
-                type: string
-              weight:
-                format: int32
-                type: integer
-            type: object
-            xml:
-              name: link
-          type: array
-        styleClass:
+        customId:
+          description: If the field is a custom field, the custom ID of the field.
+          format: int64
+          readOnly: true
+          type: integer
+        items:
+          description: When the data type is an array, the name of the field items within the array.
+          readOnly: true
           type: string
-        weight:
-          format: int32
+        system:
+          description: If the field is a system field, the name of the field.
+          readOnly: true
+          type: string
+        type:
+          description: The data type of the field.
+          readOnly: true
+          type: string
+      required:
+      - type
+      type: object
+    IssueCountBean:
+      additionalProperties: false
+      properties:
+        count:
+          description: Number of issues.
+          format: int64
           type: integer
       type: object
-    Operations:
-      additionalProperties: true
-      description: Details of the operations that can be performed on the issue.
+    SoftwareIssueResults:
+      additionalProperties: false
+      description: The result of an issue search in Jira Software APIs.
       properties:
-        linkGroups:
-          description: Details of the link groups defining issue operations.
+        expand:
+          description: Expand options that include additional search result details in the response.
+          readOnly: true
+          type: string
+        isLast:
+          description: Indicates whether this is the last page of the paginated response.
+          readOnly: true
+          type: boolean
+        issues:
+          description: The list of issues found by the search.
           items:
-            $ref: '#/components/schemas/LinkGroup'
+            $ref: '#/components/schemas/IssueBean'
+          readOnly: true
+          type: array
+        names:
+          additionalProperties:
+            readOnly: true
+            type: string
+          description: The ID and name of each field in the search results.
+          readOnly: true
+          type: object
+        nextPageToken:
+          description: Continuation token to fetch the next page. If this result represents the last or only page, this token will be null.
+          readOnly: true
+          type: string
+        schema:
+          additionalProperties:
+            $ref: '#/components/schemas/JsonTypeBean'
+          description: The schema describing the field types in the search results.
+          readOnly: true
+          type: object
+        warningMessages:
+          description: Any warnings related to the JQL query.
+          items:
+            readOnly: true
+            type: string
+          readOnly: true
+          type: array
+      type: object
+    SearchResults:
+      additionalProperties: false
+      description: The result of a JQL search.
+      properties:
+        expand:
+          description: Expand options that include additional search result details in the response.
+          readOnly: true
+          type: string
+        issues:
+          description: The list of issues found by the search.
+          items:
+            $ref: '#/components/schemas/IssueBean'
+          readOnly: true
+          type: array
+        maxResults:
+          description: The maximum number of results that could be on the page.
+          format: int32
+          readOnly: true
+          type: integer
+        names:
+          additionalProperties:
+            readOnly: true
+            type: string
+          description: The ID and name of each field in the search results.
+          readOnly: true
+          type: object
+        schema:
+          additionalProperties:
+            additionalProperties: false
+            description: The schema of a field.
+            properties:
+              configuration:
+                additionalProperties:
+                  readOnly: true
+                description: If the field is a custom field, the configuration of the field.
+                readOnly: true
+                type: object
+              custom:
+                description: If the field is a custom field, the URI of the field.
+                readOnly: true
+                type: string
+              customId:
+                description: If the field is a custom field, the custom ID of the field.
+                format: int64
+                readOnly: true
+                type: integer
+              items:
+                description: When the data type is an array, the name of the field items within the array.
+                readOnly: true
+                type: string
+              system:
+                description: If the field is a system field, the name of the field.
+                readOnly: true
+                type: string
+              type:
+                description: The data type of the field.
+                readOnly: true
+                type: string
+            required:
+            - type
+            type: object
+          description: The schema describing the field types in the search results.
+          readOnly: true
+          type: object
+        startAt:
+          description: The index of the first item returned on the page.
+          format: int32
+          readOnly: true
+          type: integer
+        total:
+          description: The number of results on the page.
+          format: int32
+          readOnly: true
+          type: integer
+        warningMessages:
+          description: Any warnings related to the JQL query.
+          items:
+            readOnly: true
+            type: string
           readOnly: true
           type: array
       type: object
@@ -3566,172 +3660,78 @@ components:
       type: object
       xml:
         name: issue
-    IssueCountBean:
-      additionalProperties: false
+    Operations:
+      additionalProperties: true
+      description: Details of the operations that can be performed on the issue.
       properties:
-        count:
-          description: Number of issues.
-          format: int64
-          type: integer
-      type: object
-    SearchResults:
-      additionalProperties: false
-      description: The result of a JQL search.
-      properties:
-        expand:
-          description: Expand options that include additional search result details in the response.
-          readOnly: true
-          type: string
-        issues:
-          description: The list of issues found by the search.
+        linkGroups:
+          description: Details of the link groups defining issue operations.
           items:
-            $ref: '#/components/schemas/IssueBean'
+            $ref: '#/components/schemas/LinkGroup'
           readOnly: true
           type: array
-        maxResults:
-          description: The maximum number of results that could be on the page.
-          format: int32
-          readOnly: true
-          type: integer
-        names:
-          additionalProperties:
-            readOnly: true
-            type: string
-          description: The ID and name of each field in the search results.
-          readOnly: true
+      type: object
+    LinkGroup:
+      additionalProperties: false
+      description: Details a link group, which defines issue operations.
+      properties:
+        groups:
+          items:
+            $ref: '#/components/schemas/LinkGroup'
+          type: array
+        header:
+          additionalProperties: false
+          description: Details about the operations available in this version.
+          properties:
+            href:
+              type: string
+            iconClass:
+              type: string
+            id:
+              type: string
+            label:
+              type: string
+            styleClass:
+              type: string
+            title:
+              type: string
+            weight:
+              format: int32
+              type: integer
           type: object
-        schema:
-          additionalProperties:
+          xml:
+            name: link
+        id:
+          type: string
+        links:
+          items:
             additionalProperties: false
-            description: The schema of a field.
+            description: Details about the operations available in this version.
             properties:
-              configuration:
-                additionalProperties:
-                  readOnly: true
-                description: If the field is a custom field, the configuration of the field.
-                readOnly: true
-                type: object
-              custom:
-                description: If the field is a custom field, the URI of the field.
-                readOnly: true
+              href:
                 type: string
-              customId:
-                description: If the field is a custom field, the custom ID of the field.
-                format: int64
-                readOnly: true
+              iconClass:
+                type: string
+              id:
+                type: string
+              label:
+                type: string
+              styleClass:
+                type: string
+              title:
+                type: string
+              weight:
+                format: int32
                 type: integer
-              items:
-                description: When the data type is an array, the name of the field items within the array.
-                readOnly: true
-                type: string
-              system:
-                description: If the field is a system field, the name of the field.
-                readOnly: true
-                type: string
-              type:
-                description: The data type of the field.
-                readOnly: true
-                type: string
-            required:
-            - type
             type: object
-          description: The schema describing the field types in the search results.
-          readOnly: true
-          type: object
-        startAt:
-          description: The index of the first item returned on the page.
+            xml:
+              name: link
+          type: array
+        styleClass:
+          type: string
+        weight:
           format: int32
-          readOnly: true
           type: integer
-        total:
-          description: The number of results on the page.
-          format: int32
-          readOnly: true
-          type: integer
-        warningMessages:
-          description: Any warnings related to the JQL query.
-          items:
-            readOnly: true
-            type: string
-          readOnly: true
-          type: array
-      type: object
-    SoftwareIssueResults:
-      additionalProperties: false
-      description: The result of an issue search in Jira Software APIs.
-      properties:
-        expand:
-          description: Expand options that include additional search result details in the response.
-          readOnly: true
-          type: string
-        isLast:
-          description: Indicates whether this is the last page of the paginated response.
-          readOnly: true
-          type: boolean
-        issues:
-          description: The list of issues found by the search.
-          items:
-            $ref: '#/components/schemas/IssueBean'
-          readOnly: true
-          type: array
-        names:
-          additionalProperties:
-            readOnly: true
-            type: string
-          description: The ID and name of each field in the search results.
-          readOnly: true
-          type: object
-        nextPageToken:
-          description: Continuation token to fetch the next page. If this result represents the last or only page, this token will be null.
-          readOnly: true
-          type: string
-        schema:
-          additionalProperties:
-            $ref: '#/components/schemas/JsonTypeBean'
-          description: The schema describing the field types in the search results.
-          readOnly: true
-          type: object
-        warningMessages:
-          description: Any warnings related to the JQL query.
-          items:
-            readOnly: true
-            type: string
-          readOnly: true
-          type: array
-      type: object
-    JsonTypeBean:
-      additionalProperties: false
-      description: The schema of a field.
-      properties:
-        configuration:
-          additionalProperties:
-            readOnly: true
-          description: If the field is a custom field, the configuration of the field.
-          readOnly: true
-          type: object
-        custom:
-          description: If the field is a custom field, the URI of the field.
-          readOnly: true
-          type: string
-        customId:
-          description: If the field is a custom field, the custom ID of the field.
-          format: int64
-          readOnly: true
-          type: integer
-        items:
-          description: When the data type is an array, the name of the field items within the array.
-          readOnly: true
-          type: string
-        system:
-          description: If the field is a system field, the name of the field.
-          readOnly: true
-          type: string
-        type:
-          description: The data type of the field.
-          readOnly: true
-          type: string
-      required:
-      - type
       type: object
   securitySchemes:
     OAuth2:

@@ -587,147 +587,6 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
-    GroupName:
-      additionalProperties: false
-      description: Details about a group.
-      properties:
-        groupId:
-          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
-          type:
-          - string
-          - 'null'
-        name:
-          description: The name of group.
-          type: string
-        self:
-          description: The URL for these group details.
-          format: uri
-          readOnly: true
-          type: string
-      type: object
-    PageBeanComponentWithIssueCount:
-      additionalProperties: false
-      description: A page of items.
-      properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
-          type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/ComponentWithIssueCount'
-          readOnly: true
-          type: array
-      type: object
-    User:
-      additionalProperties: false
-      description: "A user with details as permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
-      properties:
-        accountId:
-          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*. Required in requests.
-          maxLength: 128
-          type: string
-        accountType:
-          description: "The user account type. Can take the following values:\n\n *  `atlassian` regular Atlassian user account\n *  `app` system account used for Connect applications and OAuth to represent external systems\n *  `customer` Jira Service Desk account representing an external service desk"
-          enum:
-          - atlassian
-          - app
-          - customer
-          - unknown
-          readOnly: true
-          type: string
-        active:
-          description: Whether the user is active.
-          readOnly: true
-          type: boolean
-        appType:
-          description: "The app type of the user account when accountType is 'app'. Can take the following values:\n\n *  `service` Service Account\n *  `agent` Rovo Agent Account\n *  `unknown` Unknown app type"
-          readOnly: true
-          type: string
-        applicationRoles:
-          allOf:
-          - $ref: '#/components/schemas/SimpleListWrapperApplicationRole'
-          description: The application roles the user is assigned to.
-          readOnly: true
-        avatarUrls:
-          allOf:
-          - $ref: '#/components/schemas/AvatarUrlsBean'
-          description: The avatars of the user.
-          readOnly: true
-        displayName:
-          description: The display name of the user. Depending on the user’s privacy setting, this may return an alternative value.
-          readOnly: true
-          type: string
-        emailAddress:
-          description: The email address of the user. Depending on the user’s privacy setting, this may be returned as null.
-          readOnly: true
-          type: string
-        expand:
-          description: Expand options that include additional user details in the response.
-          readOnly: true
-          type: string
-          xml:
-            attribute: true
-        groups:
-          allOf:
-          - $ref: '#/components/schemas/SimpleListWrapperGroupName'
-          description: The groups that the user belongs to.
-          readOnly: true
-        guest:
-          description: Whether the user is a guest.
-          readOnly: true
-          type: boolean
-        key:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        locale:
-          description: The locale of the user. Depending on the user’s privacy setting, this may be returned as null.
-          readOnly: true
-          type: string
-        name:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        self:
-          description: The URL of the user.
-          format: uri
-          readOnly: true
-          type: string
-        timeZone:
-          description: The time zone specified in the user's profile. If the user's time zone is not visible to the current user (due to user's profile setting), or if a time zone has not been set, the instance's default time zone will be returned.
-          readOnly: true
-          type: string
-      type: object
-      xml:
-        name: user
-    ListWrapperCallbackGroupName:
-      additionalProperties: false
-      type: object
     ComponentIssuesCount:
       additionalProperties: false
       description: Count of issues assigned to a component.
@@ -830,153 +689,6 @@ components:
       type: object
       xml:
         name: component
-    ApplicationRole:
-      additionalProperties: false
-      description: Details of an application role.
-      properties:
-        defaultGroups:
-          description: The groups that are granted default access for this application role. As a group's name can change, use of `defaultGroupsDetails` is recommended to identify a groups.
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        defaultGroupsDetails:
-          description: The groups that are granted default access for this application role.
-          items:
-            $ref: '#/components/schemas/GroupName'
-          type: array
-        defined:
-          description: Deprecated.
-          type: boolean
-        groupDetails:
-          description: The groups associated with the application role.
-          items:
-            $ref: '#/components/schemas/GroupName'
-          type: array
-        groups:
-          description: The groups associated with the application role. As a group's name can change, use of `groupDetails` is recommended to identify a groups.
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        hasUnlimitedSeats:
-          type: boolean
-        key:
-          description: The key of the application role.
-          type: string
-        name:
-          description: The display name of the application role.
-          type: string
-        numberOfSeats:
-          description: The maximum count of users on your license.
-          format: int32
-          type: integer
-        platform:
-          description: Indicates if the application role belongs to Jira platform (`jira-core`).
-          type: boolean
-        remainingSeats:
-          description: The count of users remaining on your license.
-          format: int32
-          type: integer
-        selectedByDefault:
-          description: Determines whether this application role should be selected by default on user creation.
-          type: boolean
-        userCount:
-          description: The number of users counting against your license.
-          format: int32
-          type: integer
-        userCountDescription:
-          description: The [type of users](https://confluence.atlassian.com/x/lRW3Ng) being counted against your license.
-          type: string
-      type: object
-    LimitExceededResponseBean:
-      additionalProperties: false
-      properties:
-        current_count:
-          format: int32
-          type: integer
-        entity_type:
-          type: string
-        error_code:
-          type: string
-        limit_type:
-          type: string
-        max_allowed_limit:
-          format: int32
-          type: integer
-        message:
-          type: string
-        scope_id:
-          type: string
-      type: object
-    SimpleListWrapperApplicationRole:
-      additionalProperties: false
-      properties:
-        callback:
-          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
-        items:
-          items:
-            $ref: '#/components/schemas/ApplicationRole'
-          type: array
-        max-results:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-            name: max-results
-        pagingCallback:
-          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
-        size:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-      type: object
-      xml:
-        name: list
-    ListWrapperCallbackApplicationRole:
-      additionalProperties: false
-      type: object
-    PageBean2ComponentJsonBean:
-      additionalProperties: false
-      description: A page of items.
-      properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
-          type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/ComponentJsonBean'
-          readOnly: true
-          type: array
-      type: object
     ComponentWithIssueCount:
       additionalProperties: false
       description: Details about a component with a count of the issues it contains.
@@ -1047,6 +759,187 @@ components:
           readOnly: true
           type: string
       type: object
+    PageBean2ComponentJsonBean:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/ComponentJsonBean'
+          readOnly: true
+          type: array
+      type: object
+    PageBeanComponentWithIssueCount:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/ComponentWithIssueCount'
+          readOnly: true
+          type: array
+      type: object
+    ListWrapperCallbackGroupName:
+      additionalProperties: false
+      type: object
+    GroupName:
+      additionalProperties: false
+      description: Details about a group.
+      properties:
+        groupId:
+          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The name of group.
+          type: string
+        self:
+          description: The URL for these group details.
+          format: uri
+          readOnly: true
+          type: string
+      type: object
+    ApplicationRole:
+      additionalProperties: false
+      description: Details of an application role.
+      properties:
+        defaultGroups:
+          description: The groups that are granted default access for this application role. As a group's name can change, use of `defaultGroupsDetails` is recommended to identify a groups.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        defaultGroupsDetails:
+          description: The groups that are granted default access for this application role.
+          items:
+            $ref: '#/components/schemas/GroupName'
+          type: array
+        defined:
+          description: Deprecated.
+          type: boolean
+        groupDetails:
+          description: The groups associated with the application role.
+          items:
+            $ref: '#/components/schemas/GroupName'
+          type: array
+        groups:
+          description: The groups associated with the application role. As a group's name can change, use of `groupDetails` is recommended to identify a groups.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        hasUnlimitedSeats:
+          type: boolean
+        key:
+          description: The key of the application role.
+          type: string
+        name:
+          description: The display name of the application role.
+          type: string
+        numberOfSeats:
+          description: The maximum count of users on your license.
+          format: int32
+          type: integer
+        platform:
+          description: Indicates if the application role belongs to Jira platform (`jira-core`).
+          type: boolean
+        remainingSeats:
+          description: The count of users remaining on your license.
+          format: int32
+          type: integer
+        selectedByDefault:
+          description: Determines whether this application role should be selected by default on user creation.
+          type: boolean
+        userCount:
+          description: The number of users counting against your license.
+          format: int32
+          type: integer
+        userCountDescription:
+          description: The [type of users](https://confluence.atlassian.com/x/lRW3Ng) being counted against your license.
+          type: string
+      type: object
+    ComponentJsonBean:
+      additionalProperties: true
+      properties:
+        ari:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        metadata:
+          additionalProperties:
+            type: string
+          type: object
+        name:
+          type: string
+        self:
+          type: string
+      type: object
+    ListWrapperCallbackApplicationRole:
+      additionalProperties: false
+      type: object
     SimpleListWrapperGroupName:
       additionalProperties: false
       properties:
@@ -1072,6 +965,106 @@ components:
       type: object
       xml:
         name: list
+    LimitExceededResponseBean:
+      additionalProperties: false
+      properties:
+        current_count:
+          format: int32
+          type: integer
+        entity_type:
+          type: string
+        error_code:
+          type: string
+        limit_type:
+          type: string
+        max_allowed_limit:
+          format: int32
+          type: integer
+        message:
+          type: string
+        scope_id:
+          type: string
+      type: object
+    User:
+      additionalProperties: false
+      description: "A user with details as permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
+      properties:
+        accountId:
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*. Required in requests.
+          maxLength: 128
+          type: string
+        accountType:
+          description: "The user account type. Can take the following values:\n\n *  `atlassian` regular Atlassian user account\n *  `app` system account used for Connect applications and OAuth to represent external systems\n *  `customer` Jira Service Desk account representing an external service desk"
+          enum:
+          - atlassian
+          - app
+          - customer
+          - unknown
+          readOnly: true
+          type: string
+        active:
+          description: Whether the user is active.
+          readOnly: true
+          type: boolean
+        appType:
+          description: "The app type of the user account when accountType is 'app'. Can take the following values:\n\n *  `service` Service Account\n *  `agent` Rovo Agent Account\n *  `unknown` Unknown app type"
+          readOnly: true
+          type: string
+        applicationRoles:
+          allOf:
+          - $ref: '#/components/schemas/SimpleListWrapperApplicationRole'
+          description: The application roles the user is assigned to.
+          readOnly: true
+        avatarUrls:
+          allOf:
+          - $ref: '#/components/schemas/AvatarUrlsBean'
+          description: The avatars of the user.
+          readOnly: true
+        displayName:
+          description: The display name of the user. Depending on the user’s privacy setting, this may return an alternative value.
+          readOnly: true
+          type: string
+        emailAddress:
+          description: The email address of the user. Depending on the user’s privacy setting, this may be returned as null.
+          readOnly: true
+          type: string
+        expand:
+          description: Expand options that include additional user details in the response.
+          readOnly: true
+          type: string
+          xml:
+            attribute: true
+        groups:
+          allOf:
+          - $ref: '#/components/schemas/SimpleListWrapperGroupName'
+          description: The groups that the user belongs to.
+          readOnly: true
+        guest:
+          description: Whether the user is a guest.
+          readOnly: true
+          type: boolean
+        key:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        locale:
+          description: The locale of the user. Depending on the user’s privacy setting, this may be returned as null.
+          readOnly: true
+          type: string
+        name:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        self:
+          description: The URL of the user.
+          format: uri
+          readOnly: true
+          type: string
+        timeZone:
+          description: The time zone specified in the user's profile. If the user's time zone is not visible to the current user (due to user's profile setting), or if a time zone has not been set, the instance's default time zone will be returned.
+          readOnly: true
+          type: string
+      type: object
+      xml:
+        name: user
     AvatarUrlsBean:
       additionalProperties: false
       properties:
@@ -1092,24 +1085,31 @@ components:
           format: uri
           type: string
       type: object
-    ComponentJsonBean:
-      additionalProperties: true
+    SimpleListWrapperApplicationRole:
+      additionalProperties: false
       properties:
-        ari:
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        metadata:
-          additionalProperties:
-            type: string
-          type: object
-        name:
-          type: string
-        self:
-          type: string
+        callback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        items:
+          items:
+            $ref: '#/components/schemas/ApplicationRole'
+          type: array
+        max-results:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+            name: max-results
+        pagingCallback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        size:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
       type: object
+      xml:
+        name: list
   securitySchemes:
     OAuth2:
       description: OAuth2 scopes for Jira

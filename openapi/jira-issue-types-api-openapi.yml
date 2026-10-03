@@ -581,48 +581,18 @@ paths:
     - url: https://your-domain.atlassian.net
 components:
   schemas:
-    ProjectRef:
+    Scope:
       type: object
-      description: A reference to a Jira project.
+      description: The scope of the issue type (project or global).
       properties:
-        self:
+        type:
           type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: string
-          example: abc123
-        key:
-          type: string
-          example: example_value
-        name:
-          type: string
-          example: Example Title
-        avatarUrls:
-          $ref: '#/components/schemas/AvatarUrls'
-        projectTypeKey:
-          type: string
-          example: example_value
-    AvatarUrls:
-      type: object
-      description: Avatar URLs in multiple sizes.
-      properties:
-        16x16:
-          type: string
-          format: uri
-          example: https://www.example.com
-        24x24:
-          type: string
-          format: uri
-          example: https://www.example.com
-        32x32:
-          type: string
-          format: uri
-          example: https://www.example.com
-        48x48:
-          type: string
-          format: uri
-          example: https://www.example.com
+          enum:
+          - PROJECT
+          - TEMPLATE
+          example: PROJECT
+        project:
+          $ref: '#/components/schemas/ProjectRef'
     IssueTypeDetails:
       type: object
       description: Details of an issue type.
@@ -665,18 +635,107 @@ components:
           example: 10
         scope:
           $ref: '#/components/schemas/Scope'
-    Scope:
+    ProjectRef:
       type: object
-      description: The scope of the issue type (project or global).
+      description: A reference to a Jira project.
       properties:
-        type:
+        self:
           type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        key:
+          type: string
+          example: example_value
+        name:
+          type: string
+          example: Example Title
+        avatarUrls:
+          $ref: '#/components/schemas/AvatarUrls'
+        projectTypeKey:
+          type: string
+          example: example_value
+    AvatarUrls:
+      type: object
+      description: Avatar URLs in multiple sizes.
+      properties:
+        16x16:
+          type: string
+          format: uri
+          example: https://www.example.com
+        24x24:
+          type: string
+          format: uri
+          example: https://www.example.com
+        32x32:
+          type: string
+          format: uri
+          example: https://www.example.com
+        48x48:
+          type: string
+          format: uri
+          example: https://www.example.com
+    IssueTypeUpdateBean:
+      additionalProperties: false
+      properties:
+        avatarId:
+          description: "The ID of an issue type avatar. This can be obtained be obtained from the following endpoints:\n\n *  [System issue type avatar IDs only](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-avatars/#api-rest-api-3-avatar-type-system-get)\n *  [System and custom issue type avatar IDs](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-avatars/#api-rest-api-3-universal-avatar-type-type-owner-entityid-get)"
+          format: int64
+          type: integer
+        description:
+          description: The description of the issue type.
+          type: string
+        name:
+          description: The unique name for the issue type. The maximum length is 60 characters.
+          type: string
+      type: object
+    IssueTypeCreateBean:
+      additionalProperties: false
+      properties:
+        description:
+          description: The description of the issue type.
+          type: string
+        hierarchyLevel:
+          description: "The hierarchy level of the issue type. Use:\n\n *  `-1` for Subtask.\n *  `0` for Base.\n\nDefaults to `0`."
+          format: int32
+          type: integer
+        name:
+          description: The unique name for the issue type. The maximum length is 60 characters.
+          type: string
+        type:
+          description: 'Deprecated. Use `hierarchyLevel` instead. See the [deprecation notice](https://community.developer.atlassian.com/t/deprecation-of-the-epic-link-parent-link-and-other-related-fields-in-rest-apis-and-webhooks/54048) for details.
+
+
+            Whether the issue type is `subtype` or `standard`. Defaults to `standard`.'
           enum:
-          - PROJECT
-          - TEMPLATE
-          example: PROJECT
-        project:
-          $ref: '#/components/schemas/ProjectRef'
+          - subtask
+          - standard
+          type: string
+      required:
+      - name
+      type: object
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+          type: string
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
+      type: object
     ProjectDetails:
       additionalProperties: false
       description: Details about a project.
@@ -719,6 +778,23 @@ components:
           description: Whether or not the project is simplified.
           readOnly: true
           type: boolean
+      type: object
+    Scope_2:
+      additionalProperties: true
+      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
+      properties:
+        project:
+          allOf:
+          - $ref: '#/components/schemas/ProjectDetails'
+          description: The project the item has scope in.
+          readOnly: true
+        type:
+          description: The type of scope.
+          enum:
+          - PROJECT
+          - TEMPLATE
+          readOnly: true
+          type: string
       type: object
     IssueTypeDetails_2:
       additionalProperties: false
@@ -769,80 +845,25 @@ components:
           readOnly: true
           type: boolean
       type: object
-    IssueTypeCreateBean:
+    UpdatedProjectCategory:
       additionalProperties: false
+      description: A project category.
       properties:
         description:
-          description: The description of the issue type.
-          type: string
-        hierarchyLevel:
-          description: "The hierarchy level of the issue type. Use:\n\n *  `-1` for Subtask.\n *  `0` for Base.\n\nDefaults to `0`."
-          format: int32
-          type: integer
-        name:
-          description: The unique name for the issue type. The maximum length is 60 characters.
-          type: string
-        type:
-          description: 'Deprecated. Use `hierarchyLevel` instead. See the [deprecation notice](https://community.developer.atlassian.com/t/deprecation-of-the-epic-link-parent-link-and-other-related-fields-in-rest-apis-and-webhooks/54048) for details.
-
-
-            Whether the issue type is `subtype` or `standard`. Defaults to `standard`.'
-          enum:
-          - subtask
-          - standard
-          type: string
-      required:
-      - name
-      type: object
-    IssueTypeUpdateBean:
-      additionalProperties: false
-      properties:
-        avatarId:
-          description: "The ID of an issue type avatar. This can be obtained be obtained from the following endpoints:\n\n *  [System issue type avatar IDs only](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-avatars/#api-rest-api-3-avatar-type-system-get)\n *  [System and custom issue type avatar IDs](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-avatars/#api-rest-api-3-universal-avatar-type-type-owner-entityid-get)"
-          format: int64
-          type: integer
-        description:
-          description: The description of the issue type.
-          type: string
-        name:
-          description: The unique name for the issue type. The maximum length is 60 characters.
-          type: string
-      type: object
-    Scope_2:
-      additionalProperties: true
-      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
-      properties:
-        project:
-          allOf:
-          - $ref: '#/components/schemas/ProjectDetails'
-          description: The project the item has scope in.
-          readOnly: true
-        type:
-          description: The type of scope.
-          enum:
-          - PROJECT
-          - TEMPLATE
+          description: The name of the project category.
           readOnly: true
           type: string
-      type: object
-    AvatarUrlsBean:
-      additionalProperties: false
-      properties:
-        16x16:
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
+        id:
+          description: The ID of the project category.
+          readOnly: true
           type: string
-        24x24:
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
+        name:
+          description: The description of the project category.
+          readOnly: true
           type: string
-        32x32:
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-          type: string
-        48x48:
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
+        self:
+          description: The URL of the project category.
+          readOnly: true
           type: string
       type: object
     Avatar:
@@ -882,27 +903,6 @@ components:
           type: object
       required:
       - id
-      type: object
-    UpdatedProjectCategory:
-      additionalProperties: false
-      description: A project category.
-      properties:
-        description:
-          description: The name of the project category.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the project category.
-          readOnly: true
-          type: string
-        name:
-          description: The description of the project category.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the project category.
-          readOnly: true
-          type: string
       type: object
   securitySchemes:
     basicAuth:

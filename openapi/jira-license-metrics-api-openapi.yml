@@ -167,6 +167,19 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
+    License:
+      additionalProperties: false
+      description: Details about a license for the Jira instance.
+      properties:
+        applications:
+          description: The applications under this license.
+          items:
+            $ref: '#/components/schemas/LicensedApplication'
+          readOnly: true
+          type: array
+      required:
+      - applications
+      type: object
     ErrorCollections:
       additionalProperties: false
       type: object
@@ -189,19 +202,6 @@ components:
       required:
       - id
       - plan
-      type: object
-    License:
-      additionalProperties: false
-      description: Details about a license for the Jira instance.
-      properties:
-        applications:
-          description: The applications under this license.
-          items:
-            $ref: '#/components/schemas/LicensedApplication'
-          readOnly: true
-          type: array
-      required:
-      - applications
       type: object
     LicenseMetric:
       additionalProperties: false

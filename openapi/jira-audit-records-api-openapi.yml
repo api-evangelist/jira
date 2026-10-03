@@ -141,32 +141,6 @@ components:
           readOnly: true
           type: string
       type: object
-    AuditRecords:
-      additionalProperties: false
-      description: Container for a list of audit records.
-      properties:
-        limit:
-          description: The requested or default limit on the number of audit items to be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        offset:
-          description: The number of audit items skipped before the first item in this list.
-          format: int32
-          readOnly: true
-          type: integer
-        records:
-          description: The list of audit items.
-          items:
-            $ref: '#/components/schemas/AuditRecordBean'
-          readOnly: true
-          type: array
-        total:
-          description: The total number of audit items returned.
-          format: int64
-          readOnly: true
-          type: integer
-      type: object
     AuditRecordBean:
       additionalProperties: false
       description: An audit record.
@@ -220,24 +194,6 @@ components:
           readOnly: true
           type: string
       type: object
-    ErrorCollection:
-      additionalProperties: false
-      description: Error messages from an operation.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        status:
-          format: int32
-          type: integer
-      type: object
     AssociatedItemBean:
       additionalProperties: false
       description: Details of an item associated with the changed record.
@@ -262,6 +218,50 @@ components:
           description: The type of the associated record.
           readOnly: true
           type: string
+      type: object
+    AuditRecords:
+      additionalProperties: false
+      description: Container for a list of audit records.
+      properties:
+        limit:
+          description: The requested or default limit on the number of audit items to be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        offset:
+          description: The number of audit items skipped before the first item in this list.
+          format: int32
+          readOnly: true
+          type: integer
+        records:
+          description: The list of audit items.
+          items:
+            $ref: '#/components/schemas/AuditRecordBean'
+          readOnly: true
+          type: array
+        total:
+          description: The total number of audit items returned.
+          format: int64
+          readOnly: true
+          type: integer
+      type: object
+    ErrorCollection:
+      additionalProperties: false
+      description: Error messages from an operation.
+      properties:
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
+          format: int32
+          type: integer
       type: object
   securitySchemes:
     OAuth2:

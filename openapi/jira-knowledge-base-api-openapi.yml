@@ -106,6 +106,71 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
+    PagedLinkDTO:
+      additionalProperties: false
+      properties:
+        base:
+          description: Base URL for the REST API calls.
+          format: uri
+          type: string
+        context:
+          type: string
+        next:
+          description: REST API URL for the next page, if there is one.
+          format: uri
+          type: string
+        prev:
+          description: REST API URL for the previous page, if there is one.
+          format: uri
+          type: string
+        self:
+          description: REST API URL for the current page.
+          format: uri
+          type: string
+      type: object
+    I18nErrorMessage:
+      additionalProperties: false
+      properties:
+        i18nKey:
+          type: string
+        parameters:
+          items:
+            type: string
+          type: array
+      type: object
+    SourceDTO:
+      additionalProperties: true
+      properties:
+        type:
+          description: Type of the knowledge base source
+          enum:
+          - confluence
+          type: string
+      type: object
+    ArticleDTO:
+      additionalProperties: false
+      properties:
+        content:
+          $ref: '#/components/schemas/ContentDTO'
+        excerpt:
+          description: Excerpt of the article which matches the given query string.
+          type: string
+        source:
+          allOf:
+          - $ref: '#/components/schemas/SourceDTO'
+          description: Source of the article.
+        title:
+          description: Title of the article.
+          type: string
+      type: object
+    ErrorResponse:
+      additionalProperties: false
+      properties:
+        errorMessage:
+          type: string
+        i18nErrorMessage:
+          $ref: '#/components/schemas/I18nErrorMessage'
+      type: object
     ContentDTO:
       additionalProperties: false
       properties:
@@ -144,71 +209,6 @@ components:
           items:
             $ref: '#/components/schemas/ArticleDTO'
           type: array
-      type: object
-    ArticleDTO:
-      additionalProperties: false
-      properties:
-        content:
-          $ref: '#/components/schemas/ContentDTO'
-        excerpt:
-          description: Excerpt of the article which matches the given query string.
-          type: string
-        source:
-          allOf:
-          - $ref: '#/components/schemas/SourceDTO'
-          description: Source of the article.
-        title:
-          description: Title of the article.
-          type: string
-      type: object
-    ErrorResponse:
-      additionalProperties: false
-      properties:
-        errorMessage:
-          type: string
-        i18nErrorMessage:
-          $ref: '#/components/schemas/I18nErrorMessage'
-      type: object
-    I18nErrorMessage:
-      additionalProperties: false
-      properties:
-        i18nKey:
-          type: string
-        parameters:
-          items:
-            type: string
-          type: array
-      type: object
-    SourceDTO:
-      additionalProperties: true
-      properties:
-        type:
-          description: Type of the knowledge base source
-          enum:
-          - confluence
-          type: string
-      type: object
-    PagedLinkDTO:
-      additionalProperties: false
-      properties:
-        base:
-          description: Base URL for the REST API calls.
-          format: uri
-          type: string
-        context:
-          type: string
-        next:
-          description: REST API URL for the next page, if there is one.
-          format: uri
-          type: string
-        prev:
-          description: REST API URL for the previous page, if there is one.
-          format: uri
-          type: string
-        self:
-          description: REST API URL for the current page.
-          format: uri
-          type: string
       type: object
   securitySchemes:
     OAuth2:

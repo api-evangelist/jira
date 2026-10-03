@@ -563,88 +563,69 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    IssueTypeSchemePayload:
+    ProjectTemplateModel:
       additionalProperties: false
-      description: The payload for creating issue type schemes
       properties:
-        defaultIssueTypeId:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        archetype:
+          $ref: '#/components/schemas/ProjectArchetype'
+        defaultBoardView:
+          type: string
         description:
-          description: The description of the issue type scheme
-          type:
-          - string
-          - 'null'
-        issueTypeIds:
-          description: The issue type IDs for the issue type scheme
-          example: pcri:issueType:id:10001
-          items:
-            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-          type: array
+          type: string
+        liveTemplateProjectIdReference:
+          format: int64
+          type: integer
         name:
-          description: The name of the issue type scheme
+          type: string
+        projectTemplateKey:
+          $ref: '#/components/schemas/ProjectTemplateKey'
+        snapshotTemplate:
+          additionalProperties: {}
+          type: object
+        templateGenerationOptions:
+          $ref: '#/components/schemas/CustomTemplateOptions'
+        type:
+          enum:
+          - LIVE
+          - SNAPSHOT
+          type: string
+      type: object
+    FieldLayoutConfiguration:
+      additionalProperties: false
+      description: Defines the payload for the field layout configuration. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-field-configurations/\#api-rest-api-3-fieldconfiguration-post
+      properties:
+        field:
+          description: Whether to show the field
+          type: boolean
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        required:
+          description: Whether the field is required
+          type: boolean
+      type: object
+    IssueTypeHierarchyPayload:
+      additionalProperties: false
+      description: The payload for creating an issue type hierarchy
+      properties:
+        hierarchyLevel:
+          description: The hierarchy level of the issue type. 0, 1, 2, 3 .. n; Negative values for subtasks
+          format: int32
+          type: integer
+        name:
+          description: The name of the issue type
+          type: string
+        onConflict:
+          description: The conflict strategy to use when the issue type already exists. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
+          enum:
+          - FAIL
+          - USE
+          - NEW
           type: string
         pcri:
           $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-      type: object
-    BoardsPayload:
-      additionalProperties: false
-      properties:
-        boards:
-          description: The boards to be associated with the project.
-          items:
-            $ref: '#/components/schemas/BoardPayload'
-          type: array
       type:
       - object
       - 'null'
-    FromLayoutPayload:
-      additionalProperties: false
-      description: The payload for the layout details for the start end of a transition
-      properties:
-        fromPort:
-          description: The port that the transition can be made from
-          format: int32
-          type: integer
-        status:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        toPortOverride:
-          description: The port that the transition goes to
-          format: int32
-          type: integer
-      type: object
-    CardLayoutField:
-      additionalProperties: false
-      description: Card layout settings of the board
-      properties:
-        fieldId:
-          type: string
-        id:
-          format: int64
-          type: integer
-        mode:
-          enum:
-          - PLAN
-          - WORK
-          type: string
-        position:
-          format: int32
-          type: integer
-      type: object
-    SecurityLevelMemberPayload:
-      additionalProperties: false
-      description: The payload for creating a security level member. See https://support.atlassian.com/jira-cloud-administration/docs/configure-issue-security-schemes/
-      properties:
-        parameter:
-          description: Defines the value associated with the type. For reporter this would be \{"null"\}; for users this would be the names of specific users); for group this would be group names like \{"administrators", "jira-administrators", "jira-users"\}
-          type: string
-        type:
-          description: The type of the security level member
-          enum:
-          - group
-          - reporter
-          - users
-          type: string
-      type: object
     PermissionPayloadDTO:
       additionalProperties: false
       description: The payload to create a permission scheme
@@ -677,240 +658,55 @@ components:
       type:
       - object
       - 'null'
-    NotificationSchemeEventPayload:
+    FieldCapabilityPayload:
       additionalProperties: false
-      description: The payload for creating a notification scheme event. Defines which notifications should be sent for a specific event
+      description: Defines the payload for the fields, screens, screen schemes, issue type screen schemes, field layouts, and field layout schemes
       properties:
-        event:
-          $ref: '#/components/schemas/NotificationSchemeEventIDPayload'
-        notifications:
-          description: The configuration for notification recipents
+        customFieldDefinitions:
+          description: The custom field definitions. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-fields/\#api-rest-api-3-field-post
           items:
-            $ref: '#/components/schemas/NotificationSchemeNotificationDetailsPayload'
-          type: array
-      type: object
-    SaveProjectTemplateRequest:
-      additionalProperties: false
-      description: The request details to generate template from a project
-      properties:
-        projectId:
-          description: The ID of the target project
-          format: int64
-          type: integer
-        templateGenerationOptions:
-          $ref: '#/components/schemas/CustomTemplateOptions'
-        templateType:
-          description: 'The type of the template: LIVE | SNAPSHOT'
-          enum:
-          - LIVE
-          - SNAPSHOT
-          type: string
-      type: object
-    CustomTemplateRequestDTO:
-      additionalProperties: false
-      description: The specific request object for creating a project with template.
-      properties:
-        boardFeatures:
-          $ref: '#/components/schemas/BoardFeaturesPayload'
-        boards:
-          $ref: '#/components/schemas/BoardsPayload'
-        field:
-          $ref: '#/components/schemas/FieldCapabilityPayload'
-        issueType:
-          $ref: '#/components/schemas/IssueTypeProjectCreatePayload'
-        notification:
-          $ref: '#/components/schemas/NotificationSchemePayload'
-        permissionScheme:
-          $ref: '#/components/schemas/PermissionPayloadDTO'
-        project:
-          $ref: '#/components/schemas/ProjectPayload'
-        role:
-          $ref: '#/components/schemas/RolesCapabilityPayload'
-        scope:
-          $ref: '#/components/schemas/ScopePayload'
-        security:
-          $ref: '#/components/schemas/SecuritySchemePayload'
-        workflow:
-          $ref: '#/components/schemas/WorkflowCapabilityPayload'
-      type: object
-    SwimlanePayload:
-      additionalProperties: false
-      description: The payload for custom swimlanes
-      properties:
-        description:
-          description: The description of the quick filter
-          type: string
-        jqlQuery:
-          description: The jql query for the quick filter
-          type: string
-        name:
-          description: The name of the quick filter
-          type: string
-      type: object
-    IssueTypeProjectCreatePayload:
-      additionalProperties: false
-      description: The payload for creating issue types in a project
-      properties:
-        issueTypeHierarchy:
-          description: Defines the issue type hierarhy to be created and used during this project creation. This will only add new levels if there isn't an existing level
-          items:
-            $ref: '#/components/schemas/IssueTypeHierarchyPayload'
+            $ref: '#/components/schemas/CustomFieldPayload'
           type:
           - array
           - 'null'
-        issueTypeScheme:
-          $ref: '#/components/schemas/IssueTypeSchemePayload'
-        issueTypes:
-          description: Only needed if you want to create issue types, you can otherwise use the ids of issue types in the scheme configuration
+        fieldLayoutScheme:
+          $ref: '#/components/schemas/FieldLayoutSchemePayload'
+        fieldLayouts:
+          deprecated: true
+          description: The field layouts configuration.
           items:
-            $ref: '#/components/schemas/IssueTypePayload'
+            $ref: '#/components/schemas/FieldLayoutPayload'
           type:
           - array
           - 'null'
-      type:
-      - object
-      - 'null'
-    ProjectCreateResourceIdentifier:
-      additionalProperties: false
-      description: 'Every project-created entity has an ID that must be unique within the scope of the project creation. PCRI (Project Create Resource Identifier) is a standard format for creating IDs and references to other project entities. PCRI format is defined as follows: pcri:\[entityType\]:\[type\]:\[entityId\] entityType - the type of an entity, e.g. status, role, workflow type - PCRI type, either `id` - The ID of an entity that already exists in the target site, or `ref` - A unique reference to an entity that is being created entityId - entity identifier, if type is `id` - must be an existing entity ID that exists in the Jira site, if `ref` - must be unique across all entities in the scope of this project template creation'
-      example: pcri:permissionScheme:id:10001
-      properties:
-        anID:
-          type: boolean
-        areference:
-          type: boolean
-        entityId:
-          type: string
-        entityType:
-          type: string
-        id:
-          type: string
-        type:
-          enum:
-          - id
-          - ref
-          type: string
-      type: object
-    QuickFilterPayload:
-      additionalProperties: false
-      description: The payload for defining quick filters
-      properties:
-        description:
-          description: The description of the quick filter
-          type: string
-        jqlQuery:
-          description: The jql query for the quick filter
-          type: string
-        name:
-          description: The name of the quick filter
-          type: string
-      type: object
-    IssueTypePayload:
-      additionalProperties: false
-      description: The payload for creating an issue type
-      properties:
-        avatarId:
-          description: The avatar ID of the issue type. Go to https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-avatars/\#api-rest-api-3-avatar-type-system-get to choose an avatarId existing in Jira
-          format: int64
+        fieldScheme:
+          $ref: '#/components/schemas/FieldSchemePayload'
+        issueLayouts:
+          description: The issue layouts configuration
+          items:
+            $ref: '#/components/schemas/IssueLayoutPayload'
           type:
-          - integer
+          - array
           - 'null'
-        description:
-          description: The description of the issue type
+        issueTypeScreenScheme:
+          $ref: '#/components/schemas/IssueTypeScreenSchemePayload'
+        screenScheme:
+          description: The screen schemes See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-schemes/\#api-rest-api-3-screenscheme-post
+          items:
+            $ref: '#/components/schemas/ScreenSchemePayload'
           type:
-          - string
+          - array
           - 'null'
-        hierarchyLevel:
-          description: The hierarchy level of the issue type. 0, 1, 2, 3 .. n; Negative values for subtasks
-          format: int32
-          type: integer
-        name:
-          description: The name of the issue type
-          type: string
-        onConflict:
-          description: The conflict strategy to use when the issue type already exists. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
-          enum:
-          - FAIL
-          - USE
-          - NEW
-          type: string
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-      type:
-      - object
-      - 'null'
-    WorkflowStatusPayload:
-      additionalProperties: false
-      description: The statuses to be used in the workflow
-      properties:
-        layout:
-          $ref: '#/components/schemas/WorkflowStatusLayoutPayload'
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        properties:
-          additionalProperties:
-            description: The properties of the workflow status.
-            type: string
-          description: The properties of the workflow status.
-          type: object
-      type: object
-    ScreenSchemePayload:
-      additionalProperties: false
-      description: Defines the payload for the screen schemes. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-schemes/\#api-rest-api-3-screenscheme-post
-      properties:
-        defaultScreen:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        description:
-          description: The description of the screen scheme
-          example: This is a screen scheme
-          type: string
-        name:
-          description: The name of the screen scheme
-          example: My Screen Scheme
-          type: string
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
         screens:
-          additionalProperties:
-            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-          description: 'Similar to the field layout scheme those mappings allow users to set different screens for different operations: default - always there, applied to all operations that don''t have an explicit mapping `create`, `view`, `edit` - specific operations that are available and users can assign a different screen for each one of them https://support.atlassian.com/jira-cloud-administration/docs/manage-screen-schemes/\#Associating-a-screen-with-an-issue-operation'
-          type: object
+          description: The screens. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screens/\#api-rest-api-3-screens-post
+          items:
+            $ref: '#/components/schemas/ScreenPayload'
+          type:
+          - array
+          - 'null'
       type:
       - object
       - 'null'
-    IssueTypeScreenSchemePayload:
-      additionalProperties: false
-      description: Defines the payload for the issue type screen schemes. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-type-screen-schemes/\#api-rest-api-3-issuetypescreenscheme-post
-      properties:
-        defaultScreenScheme:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        description:
-          description: The description of the issue type screen scheme
-          example: This is an issue type screen scheme
-          type: string
-        explicitMappings:
-          additionalProperties:
-            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-          description: The IDs of the screen schemes for the issue type IDs and default. A default entry is required to create an issue type screen scheme, it defines the mapping for all issue types without a screen scheme.
-          type: object
-        name:
-          description: The name of the issue type screen scheme
-          example: My Issue Type Screen Scheme
-          type: string
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-      type:
-      - object
-      - 'null'
-    NonWorkingDay:
-      additionalProperties: false
-      properties:
-        id:
-          format: int64
-          type: integer
-        iso8601Date:
-          type: string
-      type: object
     IssueLayoutItemPayload:
       additionalProperties: false
       description: Defines the payload to configure the issue layout item for a project.
@@ -935,25 +731,23 @@ components:
           - FIELD
           type: string
       type: object
-    RolePayload:
+    WorkflowPayload:
       additionalProperties: false
-      description: The payload used to create a project role. It is optional for CMP projects, as a default role actor will be provided. TMP will add new role actors to the table.
+      description: The payload for creating workflow, see https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflows/\#api-rest-api-3-workflows-create-post
       properties:
-        defaultActors:
-          description: The default actors for the role. By adding default actors, the role will be added to any future projects created
-          example: '[pcri:user:id:1234]'
-          items:
-            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-          type: array
         description:
-          description: The description of the role
+          description: The description of the workflow
+          example: a software workflow
           type: string
+        loopedTransitionContainerLayout:
+          $ref: '#/components/schemas/WorkflowStatusLayoutPayload'
         name:
-          description: The name of the role
+          description: The name of the workflow
+          example: Software Simplified Workflow
           type: string
         onConflict:
-          default: USE
-          description: The strategy to use when there is a conflict with an existing project role. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
+          default: NEW
+          description: The strategy to use if there is a conflict with another workflow
           enum:
           - FAIL
           - USE
@@ -961,83 +755,47 @@ components:
           type: string
         pcri:
           $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        type:
-          description: The type of the role. Only used by project-scoped project
-          enum:
-          - HIDDEN
-          - VIEWABLE
-          - AI_AGENT
-          - EDITABLE
-          - GUEST
-          example: EDITABLE
-          type: string
-      type: object
-    NotificationSchemePayload:
-      additionalProperties: false
-      description: The payload for creating a notification scheme. The user has to supply the ID for the default notification scheme. For CMP this is provided in the project payload and should be left empty, for TMP it's provided using this payload
-      example: "CMP:  \"project\": {\n                 \"pcri\": \"pcri:project:ref:new-project1\",\n                 \"notificationSchemeId\": \"pcri:notificationScheme:id:10000\",\n                 ...\n              }\nTMP: \"notification\": {\n       \"pcri\": \"pcri:notificationScheme:ref:notification1\",\n       \"name\": \"Simplified Notification Scheme\",\n       \"notificationSchemeEvents\": [\n         {\n           \"event\": {\n             \"id\": \"1\"\n           },\n           \"notifications\": [\n             {\n               \"notificationType\": \"CurrentAssignee\"\n             },\n             {\n               \"notificationType\": \"Reporter\"\n             },\n             {\n               \"notificationType\": \"AllWatchers\"\n             }\n           ]\n         },\n         {\n           \"event\": {\n             \"id\": \"2\"\n           },\n           \"notifications\": [\n             {\n               \"notificationType\": \"CurrentAssignee\"\n             },\n             {\n               \"notificationType\": \"Reporter\"\n             },\n             {\n               \"notificationType\": \"AllWatchers\"\n             }\n           ]\n         },...\n       ]\n     }\n"
-      properties:
-        description:
-          description: The description of the notification scheme
-          type: string
-        name:
-          description: The name of the notification scheme
-          type: string
-        notificationSchemeEvents:
-          description: The events and notifications for the notification scheme
-          items:
-            $ref: '#/components/schemas/NotificationSchemeEventPayload'
-          type: array
-        onConflict:
-          description: The strategy to use when there is a conflict with an existing entity
-          enum:
-          - FAIL
-          - USE
-          - NEW
-          type: string
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-      type:
-      - object
-      - 'null'
-    WorkflowCapabilityPayload:
-      additionalProperties: false
-      description: The payload for creating a workflows. See https://www.atlassian.com/software/jira/guides/workflows/overview\#what-is-a-jira-workflow
-      properties:
+        startPointLayout:
+          $ref: '#/components/schemas/WorkflowStatusLayoutPayload'
         statuses:
-          description: The statuses for the workflow
+          description: The statuses to be used in the workflow
           items:
-            $ref: '#/components/schemas/StatusPayload'
+            $ref: '#/components/schemas/WorkflowStatusPayload'
           type: array
-        workflowScheme:
-          $ref: '#/components/schemas/WorkflowSchemePayload'
-        workflows:
+        transitions:
           description: The transitions for the workflow
           items:
-            $ref: '#/components/schemas/WorkflowPayload'
+            $ref: '#/components/schemas/TransitionPayload'
           type: array
-      type:
-      - object
-      - 'null'
-    WorkflowSchemePayload:
+      type: object
+    ProjectCustomTemplateCreateRequestDTO:
       additionalProperties: false
-      description: The payload for creating a workflow scheme. See https://www.atlassian.com/software/jira/guides/workflows/overview\#what-is-a-jira-workflow-scheme
+      description: Request to create a project using a custom template
       properties:
-        defaultWorkflow:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        details:
+          $ref: '#/components/schemas/CustomTemplatesProjectDetails'
+        template:
+          $ref: '#/components/schemas/CustomTemplateRequestDTO'
+      type: object
+    FieldSchemePayload:
+      additionalProperties: false
+      description: Defines the payload to configure the field scheme for a project. See [Field schemes](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-field-schemes/#api-group-field-schemes).
+      properties:
         description:
-          description: The description of the workflow scheme
+          description: The description of the field scheme
+          example: This is a field scheme
           type: string
-        explicitMappings:
-          additionalProperties:
-            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-          description: Association between issuetypes and workflows
-          type: object
+        items:
+          description: The field association items for this field scheme.
+          items:
+            $ref: '#/components/schemas/FieldAssociationItemPayload'
+          type: array
         name:
-          description: The name of the workflow scheme
+          description: The name of the field scheme
+          example: My Field Scheme
           type: string
         onConflict:
-          description: The strategy to use if there is a conflict with another workflow scheme
+          description: The strategy to use when there is a conflict with an existing field scheme. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
           enum:
           - FAIL
           - USE
@@ -1045,106 +803,228 @@ components:
           type: string
         pcri:
           $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-      type: object
-    SaveTemplateRequest:
+      type:
+      - object
+      - 'null'
+    ProjectCreateResourceIdentifier:
       additionalProperties: false
-      description: Request to save a custom template
+      description: 'Every project-created entity has an ID that must be unique within the scope of the project creation. PCRI (Project Create Resource Identifier) is a standard format for creating IDs and references to other project entities. PCRI format is defined as follows: pcri:\[entityType\]:\[type\]:\[entityId\] entityType - the type of an entity, e.g. status, role, workflow type - PCRI type, either `id` - The ID of an entity that already exists in the target site, or `ref` - A unique reference to an entity that is being created entityId - entity identifier, if type is `id` - must be an existing entity ID that exists in the Jira site, if `ref` - must be unique across all entities in the scope of this project template creation'
+      example: pcri:permissionScheme:id:10001
+      properties:
+        anID:
+          type: boolean
+        areference:
+          type: boolean
+        entityId:
+          type: string
+        entityType:
+          type: string
+        id:
+          type: string
+        type:
+          enum:
+          - id
+          - ref
+          type: string
+      type: object
+    ScreenPayload:
+      additionalProperties: false
+      description: Defines the payload for the field screens. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screens/\#api-rest-api-3-screens-post
+      properties:
+        description:
+          description: The description of the screen
+          example: This is a screen
+          type: string
+        name:
+          description: The name of the screen
+          example: My Screen
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        tabs:
+          description: The tabs of the screen. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-tab-fields/\#api-rest-api-3-screens-screenid-tabs-tabid-fields-post
+          items:
+            $ref: '#/components/schemas/TabPayload'
+          type: array
+      type:
+      - object
+      - 'null'
+    SecuritySchemePayload:
+      additionalProperties: false
+      description: The payload for creating a security scheme. See https://support.atlassian.com/jira-cloud-administration/docs/configure-issue-security-schemes/
+      properties:
+        description:
+          description: The description of the security scheme
+          example: Newly created issue security scheme
+          type: string
+        name:
+          description: The name of the security scheme
+          example: New Security Scheme
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        securityLevels:
+          description: The security levels for the security scheme
+          items:
+            $ref: '#/components/schemas/SecurityLevelPayload'
+          type: array
+      type:
+      - object
+      - 'null'
+    BoardColumnPayload:
+      additionalProperties: false
+      description: The payload for creating a board column
+      properties:
+        maximumIssueConstraint:
+          description: The maximum issue constraint for the column
+          format: int64
+          type: integer
+        minimumIssueConstraint:
+          description: The minimum issue constraint for the column
+          format: int64
+          type: integer
+        name:
+          description: The name of the column
+          example: TODO
+          type: string
+        statusIds:
+          description: The status IDs for the column
+          example: pcri:status:ref:done
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+      type: object
+    ProjectArchetype:
+      additionalProperties: false
+      properties:
+        realType:
+          enum:
+          - BUSINESS
+          - SOFTWARE
+          - PRODUCT_DISCOVERY
+          - SERVICE_DESK
+          - CUSTOMER_SERVICE
+          - OPS
+          type: string
+        style:
+          enum:
+          - classic
+          - next-gen
+          type: string
+        type:
+          enum:
+          - BUSINESS
+          - SOFTWARE
+          - PRODUCT_DISCOVERY
+          - SERVICE_DESK
+          - CUSTOMER_SERVICE
+          - OPS
+          type: string
+      type: object
+    TabPayload:
+      additionalProperties: false
+      description: Defines the payload for the tabs of the screen. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-tab-fields/\#api-rest-api-3-screens-screenid-tabs-tabid-fields-post
+      properties:
+        fields:
+          description: The list of resource identifier of the field associated to the tab. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-tab-fields/\#api-rest-api-3-screens-screenid-tabs-tabid-fields-post
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+        name:
+          description: The name of the tab
+          type: string
+      type: object
+    CardLayout:
+      additionalProperties: false
+      description: Card layout configuration.
+      properties:
+        showDaysInColumn:
+          default: false
+          description: Whether to show days in column
+          enum:
+          - true
+          - false
+          type: boolean
+      type: object
+    SaveProjectTemplateRequest:
+      additionalProperties: false
+      description: The request details to generate template from a project
+      properties:
+        projectId:
+          description: The ID of the target project
+          format: int64
+          type: integer
+        templateGenerationOptions:
+          $ref: '#/components/schemas/CustomTemplateOptions'
+        templateType:
+          description: 'The type of the template: LIVE | SNAPSHOT'
+          enum:
+          - LIVE
+          - SNAPSHOT
+          type: string
+      type: object
+    ProjectTemplateKey:
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        uuid:
+          format: uuid
+          type: string
+      type: object
+    EditTemplateRequest:
+      additionalProperties: false
+      description: Request to edit a custom template
       properties:
         templateDescription:
           description: The description of the template
           maxLength: 150
           type: string
-        templateFromProjectRequest:
-          $ref: '#/components/schemas/SaveProjectTemplateRequest'
+        templateGenerationOptions:
+          $ref: '#/components/schemas/CustomTemplateOptions'
+        templateKey:
+          description: The unique identifier of the template
+          type: string
         templateName:
           description: The name of the template
           maxLength: 50
           type: string
       type: object
-    SwimlanesPayload:
+    RulePayload:
       additionalProperties: false
-      description: The payload for customising a swimlanes on a board
+      description: The payload for creating rules in a workflow
       properties:
-        customSwimlanes:
-          description: The custom swimlane definitions.
-          items:
-            $ref: '#/components/schemas/SwimlanePayload'
-          type: array
-        defaultCustomSwimlaneName:
-          description: The name of the custom swimlane to use for work items that don't match any other swimlanes.
-          type: string
-        swimlaneStrategy:
-          description: The swimlane strategy for the board.
-          enum:
-          - none
-          - custom
-          - parentChild
-          - assignee
-          - assigneeUnassignedFirst
-          - epic
-          - project
-          - issueparent
-          - issuechildren
-          - request_type
+        parameters:
+          additionalProperties:
+            description: The parameters of the rule
+            type: string
+          description: The parameters of the rule
+          type: object
+        ruleKey:
+          description: The key of the rule. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflows/\#api-rest-api-3-workflows-capabilities-get
+          example: system:update-field
           type: string
       type: object
-    RolesCapabilityPayload:
+    NotificationSchemeEventIDPayload:
+      additionalProperties: false
+      description: The event ID to use for reference in the payload
+      properties:
+        id:
+          description: The event ID to use for reference in the payload
+          example: '1'
+          type: string
+      type: object
+    BoardsPayload:
       additionalProperties: false
       properties:
-        roleToProjectActors:
-          additionalProperties:
-            description: A map of role PCRI (can be ID or REF) to a list of user or group PCRI IDs to associate with the role and project.
-            items:
-              $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-            type: array
-          description: A map of role PCRI (can be ID or REF) to a list of user or group PCRI IDs to associate with the role and project.
-          type: object
-        roles:
-          description: The list of roles to create.
+        boards:
+          description: The boards to be associated with the project.
           items:
-            $ref: '#/components/schemas/RolePayload'
+            $ref: '#/components/schemas/BoardPayload'
           type: array
       type:
       - object
       - 'null'
-    ToLayoutPayload:
-      additionalProperties: false
-      description: The payload for the layout details for the destination end of a transition
-      properties:
-        port:
-          description: Defines where the transition line will be connected to a status. Port 0 to 7 are acceptable values.
-          example: 1
-          format: int32
-          type: integer
-        status:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-      type: object
-    SecurityLevelPayload:
-      additionalProperties: false
-      description: The payload for creating a security level. See https://support.atlassian.com/jira-cloud-administration/docs/configure-issue-security-schemes/
-      properties:
-        description:
-          description: The description of the security level
-          example: Newly created issue security level
-          type: string
-        isDefault:
-          description: Whether the security level is default for the security scheme
-          enum:
-          - true
-          - false
-          type: boolean
-        name:
-          description: The name of the security level
-          example: New Security Level
-          type: string
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        securityLevelMembers:
-          description: The members of the security level
-          items:
-            $ref: '#/components/schemas/SecurityLevelMemberPayload'
-          type: array
-      type: object
     TransitionPayload:
       additionalProperties: false
       description: The payload for creating a transition in a workflow. Can be DIRECTED, GLOBAL, SELF-LOOPED, GLOBAL LOOPED
@@ -1202,63 +1082,65 @@ components:
             $ref: '#/components/schemas/RulePayload'
           type: array
       type: object
-    BoardPayload:
+    WorkflowStatusPayload:
       additionalProperties: false
-      description: The payload for creating a board
+      description: The statuses to be used in the workflow
       properties:
-        boardFilterJQL:
-          description: Takes in a JQL string to create a new filter. If no value is provided, it'll default to a JQL filter for the project creating
-          example: project = 'My Project'
-          type: string
-        cardColorStrategy:
-          description: Card color settings of the board
-          enum:
-          - ISSUE_TYPE
-          - REQUEST_TYPE
-          - ASSIGNEE
-          - PRIORITY
-          - NONE
-          - CUSTOM
-          type: string
-        cardLayout:
-          $ref: '#/components/schemas/CardLayout'
-        cardLayouts:
-          description: Card layout settings of the board
-          items:
-            $ref: '#/components/schemas/CardLayoutField'
-          type: array
-        columns:
-          description: The columns of the board
-          items:
-            $ref: '#/components/schemas/BoardColumnPayload'
-          type: array
-        enableCardCover:
-          description: Whether to enable the card cover option on this board
-          type: boolean
-        features:
-          deprecated: true
-          description: 'Feature settings for the board. Deprecated: use boardFeatures capability instead.'
-          items:
-            $ref: '#/components/schemas/BoardFeaturePayload'
-          type: array
-        name:
-          description: The name of the board
-          type: string
+        layout:
+          $ref: '#/components/schemas/WorkflowStatusLayoutPayload'
         pcri:
           $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        quickFilters:
-          description: The quick filters for the board.
+        properties:
+          additionalProperties:
+            description: The properties of the workflow status.
+            type: string
+          description: The properties of the workflow status.
+          type: object
+      type: object
+    PermissionGrantDTO:
+      additionalProperties: false
+      description: List of permission grants
+      properties:
+        applicationAccess:
           items:
-            $ref: '#/components/schemas/QuickFilterPayload'
+            type: string
           type: array
-        supportsSprint:
-          default: true
-          description: Whether sprints are supported on the board
-          type: boolean
-        swimlanes:
-          $ref: '#/components/schemas/SwimlanesPayload'
-        workingDaysConfig:
-          $ref: '#/components/schemas/WorkingDaysConfig'
+          uniqueItems: true
+        groupCustomFields:
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+          uniqueItems: true
+        groups:
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+          uniqueItems: true
+        permissionKeys:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        projectRoles:
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+          uniqueItems: true
+        specialGrants:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        userCustomFields:
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+          uniqueItems: true
+        users:
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+          uniqueItems: true
       type: object
     CustomFieldPayload:
       additionalProperties: false
@@ -1299,14 +1181,38 @@ components:
       type:
       - object
       - 'null'
-    ProjectCustomTemplateCreateRequestDTO:
+    NotificationSchemeNotificationDetailsPayload:
       additionalProperties: false
-      description: Request to create a project using a custom template
+      description: The configuration for notification recipents
       properties:
-        details:
-          $ref: '#/components/schemas/CustomTemplatesProjectDetails'
-        template:
-          $ref: '#/components/schemas/CustomTemplateRequestDTO'
+        notificationType:
+          description: The type of notification.
+          type: string
+        parameter:
+          description: The parameter of the notification, should be eiither null if not required, or PCRI.
+          type: string
+      type: object
+    FieldAssociationItemPayload:
+      additionalProperties: false
+      description: Defines the payload for the field association scheme.
+      properties:
+        description:
+          description: The description of the field association item
+          example: The description of the field association item
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        qualifierId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        qualifierType:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        rendererType:
+          description: The renderer type of the field
+          example: jira-text-renderer
+          type: string
+        required:
+          description: Whether the field is required
+          type: boolean
       type: object
     WorkflowStatusLayoutPayload:
       additionalProperties: false
@@ -1323,117 +1229,25 @@ components:
           format: double
           type: number
       type: object
-    BoardFeaturePayload:
+    ConditionGroupPayload:
       additionalProperties: false
-      description: The payload for setting a board feature
+      description: The payload for creating a condition group in a workflow
       properties:
-        featureKey:
-          description: The key of the feature
-          enum:
-          - ESTIMATION
-          - SPRINTS
-          type: string
-        state:
-          description: Whether the feature should be turned on or off
-          enum:
-          - true
-          - false
-          type: boolean
-      type: object
-    BoardColumnPayload:
-      additionalProperties: false
-      description: The payload for creating a board column
-      properties:
-        maximumIssueConstraint:
-          description: The maximum issue constraint for the column
-          format: int64
-          type: integer
-        minimumIssueConstraint:
-          description: The minimum issue constraint for the column
-          format: int64
-          type: integer
-        name:
-          description: The name of the column
-          example: TODO
-          type: string
-        statusIds:
-          description: The status IDs for the column
-          example: pcri:status:ref:done
+        conditionGroup:
+          description: The nested conditions of the condition group.
           items:
-            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+            $ref: '#/components/schemas/ConditionGroupPayload'
           type: array
-      type: object
-    SaveTemplateResponse:
-      additionalProperties: false
-      properties:
-        projectTemplateKey:
-          $ref: '#/components/schemas/ProjectTemplateKey'
-      type: object
-    EditTemplateRequest:
-      additionalProperties: false
-      description: Request to edit a custom template
-      properties:
-        templateDescription:
-          description: The description of the template
-          maxLength: 150
-          type: string
-        templateGenerationOptions:
-          $ref: '#/components/schemas/CustomTemplateOptions'
-        templateKey:
-          description: The unique identifier of the template
-          type: string
-        templateName:
-          description: The name of the template
-          maxLength: 50
-          type: string
-      type: object
-    NotificationSchemeNotificationDetailsPayload:
-      additionalProperties: false
-      description: The configuration for notification recipents
-      properties:
-        notificationType:
-          description: The type of notification.
-          type: string
-        parameter:
-          description: The parameter of the notification, should be eiither null if not required, or PCRI.
-          type: string
-      type: object
-    WorkingDaysConfig:
-      additionalProperties: false
-      description: Working days configuration
-      properties:
-        friday:
-          type: boolean
-        id:
-          format: int64
-          type: integer
-        monday:
-          type: boolean
-        nonWorkingDays:
+        conditions:
+          description: The rules for this condition.
           items:
-            $ref: '#/components/schemas/NonWorkingDay'
+            $ref: '#/components/schemas/RulePayload'
           type: array
-          uniqueItems: true
-        saturday:
-          type: boolean
-        sunday:
-          type: boolean
-        thursday:
-          type: boolean
-        timezoneId:
-          type: string
-        tuesday:
-          type: boolean
-        wednesday:
-          type: boolean
-      type: object
-    NotificationSchemeEventIDPayload:
-      additionalProperties: false
-      description: The event ID to use for reference in the payload
-      properties:
-        id:
-          description: The event ID to use for reference in the payload
-          example: '1'
+        operation:
+          description: Determines how the conditions in the group are evaluated. Accepts either `ANY` or `ALL`. If `ANY` is used, at least one condition in the group must be true for the group to evaluate to true. If `ALL` is used, all conditions in the group must be true for the group to evaluate to true.
+          enum:
+          - ANY
+          - ALL
           type: string
       type: object
     CustomTemplatesProjectDetails:
@@ -1503,19 +1317,74 @@ components:
           example: https://www.example.com
           type: string
       type: object
-    IssueTypeHierarchyPayload:
+    FieldLayoutPayload:
       additionalProperties: false
-      description: The payload for creating an issue type hierarchy
+      deprecated: true
+      description: Defines the payload for the field layouts. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-field-configurations/\#api-group-issue-field-configurations" + fieldlayout is what users would see as "Field Configuration" in Jira's UI - https://support.atlassian.com/jira-cloud-administration/docs/manage-issue-field-configurations/
       properties:
-        hierarchyLevel:
-          description: The hierarchy level of the issue type. 0, 1, 2, 3 .. n; Negative values for subtasks
-          format: int32
-          type: integer
-        name:
-          description: The name of the issue type
+        configuration:
+          description: The field layout configuration. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-field-configurations/\#api-rest-api-3-fieldconfiguration-post
+          items:
+            $ref: '#/components/schemas/FieldLayoutConfiguration'
+          type: array
+        description:
+          description: The description of the field layout
+          example: This is a field layout
           type: string
+        name:
+          description: The name of the field layout
+          example: My Field Layout
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type:
+      - object
+      - 'null'
+    SwimlanesPayload:
+      additionalProperties: false
+      description: The payload for customising a swimlanes on a board
+      properties:
+        customSwimlanes:
+          description: The custom swimlane definitions.
+          items:
+            $ref: '#/components/schemas/SwimlanePayload'
+          type: array
+        defaultCustomSwimlaneName:
+          description: The name of the custom swimlane to use for work items that don't match any other swimlanes.
+          type: string
+        swimlaneStrategy:
+          description: The swimlane strategy for the board.
+          enum:
+          - none
+          - custom
+          - parentChild
+          - assignee
+          - assigneeUnassignedFirst
+          - epic
+          - project
+          - issueparent
+          - issuechildren
+          - request_type
+          type: string
+      type: object
+    NotificationSchemePayload:
+      additionalProperties: false
+      description: The payload for creating a notification scheme. The user has to supply the ID for the default notification scheme. For CMP this is provided in the project payload and should be left empty, for TMP it's provided using this payload
+      example: "CMP:  \"project\": {\n                 \"pcri\": \"pcri:project:ref:new-project1\",\n                 \"notificationSchemeId\": \"pcri:notificationScheme:id:10000\",\n                 ...\n              }\nTMP: \"notification\": {\n       \"pcri\": \"pcri:notificationScheme:ref:notification1\",\n       \"name\": \"Simplified Notification Scheme\",\n       \"notificationSchemeEvents\": [\n         {\n           \"event\": {\n             \"id\": \"1\"\n           },\n           \"notifications\": [\n             {\n               \"notificationType\": \"CurrentAssignee\"\n             },\n             {\n               \"notificationType\": \"Reporter\"\n             },\n             {\n               \"notificationType\": \"AllWatchers\"\n             }\n           ]\n         },\n         {\n           \"event\": {\n             \"id\": \"2\"\n           },\n           \"notifications\": [\n             {\n               \"notificationType\": \"CurrentAssignee\"\n             },\n             {\n               \"notificationType\": \"Reporter\"\n             },\n             {\n               \"notificationType\": \"AllWatchers\"\n             }\n           ]\n         },...\n       ]\n     }\n"
+      properties:
+        description:
+          description: The description of the notification scheme
+          type: string
+        name:
+          description: The name of the notification scheme
+          type: string
+        notificationSchemeEvents:
+          description: The events and notifications for the notification scheme
+          items:
+            $ref: '#/components/schemas/NotificationSchemeEventPayload'
+          type: array
         onConflict:
-          description: The conflict strategy to use when the issue type already exists. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
+          description: The strategy to use when there is a conflict with an existing entity
           enum:
           - FAIL
           - USE
@@ -1526,338 +1395,29 @@ components:
       type:
       - object
       - 'null'
-    ProjectArchetype:
+    IssueLayoutPayload:
       additionalProperties: false
+      description: Defines the payload to configure the issue layouts for a project.
       properties:
-        realType:
+        containerId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        issueLayoutType:
+          description: The issue layout type
           enum:
-          - BUSINESS
-          - SOFTWARE
-          - PRODUCT_DISCOVERY
-          - SERVICE_DESK
-          - CUSTOMER_SERVICE
-          - OPS
+          - ISSUE_VIEW
+          - ISSUE_CREATE
+          - REQUEST_FORM
           type: string
-        style:
-          enum:
-          - classic
-          - next-gen
-          type: string
-        type:
-          enum:
-          - BUSINESS
-          - SOFTWARE
-          - PRODUCT_DISCOVERY
-          - SERVICE_DESK
-          - CUSTOMER_SERVICE
-          - OPS
-          type: string
-      type: object
-    CardLayout:
-      additionalProperties: false
-      description: Card layout configuration.
-      properties:
-        showDaysInColumn:
-          default: false
-          description: Whether to show days in column
-          enum:
-          - true
-          - false
-          type: boolean
-      type: object
-    FieldCapabilityPayload:
-      additionalProperties: false
-      description: Defines the payload for the fields, screens, screen schemes, issue type screen schemes, field layouts, and field layout schemes
-      properties:
-        customFieldDefinitions:
-          description: The custom field definitions. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-fields/\#api-rest-api-3-field-post
+        items:
+          description: The configuration of items in the issue layout
           items:
-            $ref: '#/components/schemas/CustomFieldPayload'
-          type:
-          - array
-          - 'null'
-        fieldLayoutScheme:
-          $ref: '#/components/schemas/FieldLayoutSchemePayload'
-        fieldLayouts:
-          deprecated: true
-          description: The field layouts configuration.
-          items:
-            $ref: '#/components/schemas/FieldLayoutPayload'
-          type:
-          - array
-          - 'null'
-        fieldScheme:
-          $ref: '#/components/schemas/FieldSchemePayload'
-        issueLayouts:
-          description: The issue layouts configuration
-          items:
-            $ref: '#/components/schemas/IssueLayoutPayload'
-          type:
-          - array
-          - 'null'
-        issueTypeScreenScheme:
-          $ref: '#/components/schemas/IssueTypeScreenSchemePayload'
-        screenScheme:
-          description: The screen schemes See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-schemes/\#api-rest-api-3-screenscheme-post
-          items:
-            $ref: '#/components/schemas/ScreenSchemePayload'
-          type:
-          - array
-          - 'null'
-        screens:
-          description: The screens. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screens/\#api-rest-api-3-screens-post
-          items:
-            $ref: '#/components/schemas/ScreenPayload'
-          type:
-          - array
-          - 'null'
+            $ref: '#/components/schemas/IssueLayoutItemPayload'
+          type: array
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
       type:
       - object
       - 'null'
-    FieldLayoutConfiguration:
-      additionalProperties: false
-      description: Defines the payload for the field layout configuration. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-field-configurations/\#api-rest-api-3-fieldconfiguration-post
-      properties:
-        field:
-          description: Whether to show the field
-          type: boolean
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        required:
-          description: Whether the field is required
-          type: boolean
-      type: object
-    WorkflowPayload:
-      additionalProperties: false
-      description: The payload for creating workflow, see https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflows/\#api-rest-api-3-workflows-create-post
-      properties:
-        description:
-          description: The description of the workflow
-          example: a software workflow
-          type: string
-        loopedTransitionContainerLayout:
-          $ref: '#/components/schemas/WorkflowStatusLayoutPayload'
-        name:
-          description: The name of the workflow
-          example: Software Simplified Workflow
-          type: string
-        onConflict:
-          default: NEW
-          description: The strategy to use if there is a conflict with another workflow
-          enum:
-          - FAIL
-          - USE
-          - NEW
-          type: string
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        startPointLayout:
-          $ref: '#/components/schemas/WorkflowStatusLayoutPayload'
-        statuses:
-          description: The statuses to be used in the workflow
-          items:
-            $ref: '#/components/schemas/WorkflowStatusPayload'
-          type: array
-        transitions:
-          description: The transitions for the workflow
-          items:
-            $ref: '#/components/schemas/TransitionPayload'
-          type: array
-      type: object
-    ProjectPayload:
-      additionalProperties: false
-      description: The payload for creating a project
-      properties:
-        fieldLayoutSchemeId:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        issueSecuritySchemeId:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        issueTypeSchemeId:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        issueTypeScreenSchemeId:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        notificationSchemeId:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        permissionSchemeId:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        projectTypeKey:
-          description: The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes), which defines the application-specific feature set. If you don't specify the project template you have to specify the project type.
-          enum:
-          - software
-          - business
-          - service_desk
-          - product_discovery
-          example: software
-          type: string
-        workflowSchemeId:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-      type: object
-    RulePayload:
-      additionalProperties: false
-      description: The payload for creating rules in a workflow
-      properties:
-        parameters:
-          additionalProperties:
-            description: The parameters of the rule
-            type: string
-          description: The parameters of the rule
-          type: object
-        ruleKey:
-          description: The key of the rule. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflows/\#api-rest-api-3-workflows-capabilities-get
-          example: system:update-field
-          type: string
-      type: object
-    PermissionGrantDTO:
-      additionalProperties: false
-      description: List of permission grants
-      properties:
-        applicationAccess:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        groupCustomFields:
-          items:
-            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-          type: array
-          uniqueItems: true
-        groups:
-          items:
-            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-          type: array
-          uniqueItems: true
-        permissionKeys:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        projectRoles:
-          items:
-            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-          type: array
-          uniqueItems: true
-        specialGrants:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        userCustomFields:
-          items:
-            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-          type: array
-          uniqueItems: true
-        users:
-          items:
-            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-          type: array
-          uniqueItems: true
-      type: object
-    ProjectTemplateModel:
-      additionalProperties: false
-      properties:
-        archetype:
-          $ref: '#/components/schemas/ProjectArchetype'
-        defaultBoardView:
-          type: string
-        description:
-          type: string
-        liveTemplateProjectIdReference:
-          format: int64
-          type: integer
-        name:
-          type: string
-        projectTemplateKey:
-          $ref: '#/components/schemas/ProjectTemplateKey'
-        snapshotTemplate:
-          additionalProperties: {}
-          type: object
-        templateGenerationOptions:
-          $ref: '#/components/schemas/CustomTemplateOptions'
-        type:
-          enum:
-          - LIVE
-          - SNAPSHOT
-          type: string
-      type: object
-    ProjectTemplateKey:
-      additionalProperties: false
-      properties:
-        key:
-          type: string
-        uuid:
-          format: uuid
-          type: string
-      type: object
-    FieldAssociationItemPayload:
-      additionalProperties: false
-      description: Defines the payload for the field association scheme.
-      properties:
-        description:
-          description: The description of the field association item
-          example: The description of the field association item
-          type: string
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        qualifierId:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        qualifierType:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        rendererType:
-          description: The renderer type of the field
-          example: jira-text-renderer
-          type: string
-        required:
-          description: Whether the field is required
-          type: boolean
-      type: object
-    ConditionGroupPayload:
-      additionalProperties: false
-      description: The payload for creating a condition group in a workflow
-      properties:
-        conditionGroup:
-          description: The nested conditions of the condition group.
-          items:
-            $ref: '#/components/schemas/ConditionGroupPayload'
-          type: array
-        conditions:
-          description: The rules for this condition.
-          items:
-            $ref: '#/components/schemas/RulePayload'
-          type: array
-        operation:
-          description: Determines how the conditions in the group are evaluated. Accepts either `ANY` or `ALL`. If `ANY` is used, at least one condition in the group must be true for the group to evaluate to true. If `ALL` is used, all conditions in the group must be true for the group to evaluate to true.
-          enum:
-          - ANY
-          - ALL
-          type: string
-      type: object
-    BoardFeaturesPayload:
-      additionalProperties: false
-      description: Configuration of features for one or more boards. Replaces the deprecated features field on BoardPayload
-      properties:
-        boardFeatures:
-          additionalProperties:
-            description: A map of board PCRIs to the list of features to enable on each board.
-            items:
-              $ref: '#/components/schemas/BoardFeaturePayload'
-            type: array
-          description: A map of board PCRIs to the list of features to enable on each board.
-          type: object
-      type:
-      - object
-      - 'null'
-    CustomTemplateOptions:
-      additionalProperties: false
-      properties:
-        enableScreenDelegatedAdminSupport:
-          description: Enable screen delegated admin support for the template. This means screen and associated schemes will be copied rather than referenced.
-          type: boolean
-        enableWorkflowDelegatedAdminSupport:
-          description: Enable workflow delegated admin support for the template. This means workflows and workflow schemes will be copied rather than referenced.
-          type: boolean
-      type: object
     FieldLayoutSchemePayload:
       additionalProperties: false
       deprecated: true
@@ -1886,42 +1446,248 @@ components:
       type:
       - object
       - 'null'
-    ScopePayload:
+    SecurityLevelPayload:
       additionalProperties: false
-      description: The payload for creating a scope. Defines if a project is team-managed project or company-managed project
+      description: The payload for creating a security level. See https://support.atlassian.com/jira-cloud-administration/docs/configure-issue-security-schemes/
       properties:
-        type:
-          description: The type of the scope. Use `GLOBAL` or empty for company-managed project, and `PROJECT` for team-managed project
-          enum:
-          - GLOBAL
-          - PROJECT
-          type: string
-      type:
-      - object
-      - 'null'
-    FieldLayoutPayload:
-      additionalProperties: false
-      deprecated: true
-      description: Defines the payload for the field layouts. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-field-configurations/\#api-group-issue-field-configurations" + fieldlayout is what users would see as "Field Configuration" in Jira's UI - https://support.atlassian.com/jira-cloud-administration/docs/manage-issue-field-configurations/
-      properties:
-        configuration:
-          description: The field layout configuration. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-field-configurations/\#api-rest-api-3-fieldconfiguration-post
-          items:
-            $ref: '#/components/schemas/FieldLayoutConfiguration'
-          type: array
         description:
-          description: The description of the field layout
-          example: This is a field layout
+          description: The description of the security level
+          example: Newly created issue security level
           type: string
+        isDefault:
+          description: Whether the security level is default for the security scheme
+          enum:
+          - true
+          - false
+          type: boolean
         name:
-          description: The name of the field layout
-          example: My Field Layout
+          description: The name of the security level
+          example: New Security Level
           type: string
         pcri:
           $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        securityLevelMembers:
+          description: The members of the security level
+          items:
+            $ref: '#/components/schemas/SecurityLevelMemberPayload'
+          type: array
+      type: object
+    QuickFilterPayload:
+      additionalProperties: false
+      description: The payload for defining quick filters
+      properties:
+        description:
+          description: The description of the quick filter
+          type: string
+        jqlQuery:
+          description: The jql query for the quick filter
+          type: string
+        name:
+          description: The name of the quick filter
+          type: string
+      type: object
+    WorkflowSchemePayload:
+      additionalProperties: false
+      description: The payload for creating a workflow scheme. See https://www.atlassian.com/software/jira/guides/workflows/overview\#what-is-a-jira-workflow-scheme
+      properties:
+        defaultWorkflow:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        description:
+          description: The description of the workflow scheme
+          type: string
+        explicitMappings:
+          additionalProperties:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          description: Association between issuetypes and workflows
+          type: object
+        name:
+          description: The name of the workflow scheme
+          type: string
+        onConflict:
+          description: The strategy to use if there is a conflict with another workflow scheme
+          enum:
+          - FAIL
+          - USE
+          - NEW
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type: object
+    CustomTemplateOptions:
+      additionalProperties: false
+      properties:
+        enableScreenDelegatedAdminSupport:
+          description: Enable screen delegated admin support for the template. This means screen and associated schemes will be copied rather than referenced.
+          type: boolean
+        enableWorkflowDelegatedAdminSupport:
+          description: Enable workflow delegated admin support for the template. This means workflows and workflow schemes will be copied rather than referenced.
+          type: boolean
+      type: object
+    BoardFeaturesPayload:
+      additionalProperties: false
+      description: Configuration of features for one or more boards. Replaces the deprecated features field on BoardPayload
+      properties:
+        boardFeatures:
+          additionalProperties:
+            description: A map of board PCRIs to the list of features to enable on each board.
+            items:
+              $ref: '#/components/schemas/BoardFeaturePayload'
+            type: array
+          description: A map of board PCRIs to the list of features to enable on each board.
+          type: object
       type:
       - object
       - 'null'
+    ScreenSchemePayload:
+      additionalProperties: false
+      description: Defines the payload for the screen schemes. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-schemes/\#api-rest-api-3-screenscheme-post
+      properties:
+        defaultScreen:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        description:
+          description: The description of the screen scheme
+          example: This is a screen scheme
+          type: string
+        name:
+          description: The name of the screen scheme
+          example: My Screen Scheme
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        screens:
+          additionalProperties:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          description: 'Similar to the field layout scheme those mappings allow users to set different screens for different operations: default - always there, applied to all operations that don''t have an explicit mapping `create`, `view`, `edit` - specific operations that are available and users can assign a different screen for each one of them https://support.atlassian.com/jira-cloud-administration/docs/manage-screen-schemes/\#Associating-a-screen-with-an-issue-operation'
+          type: object
+      type:
+      - object
+      - 'null'
+    NonWorkingDay:
+      additionalProperties: false
+      properties:
+        id:
+          format: int64
+          type: integer
+        iso8601Date:
+          type: string
+      type: object
+    NotificationSchemeEventPayload:
+      additionalProperties: false
+      description: The payload for creating a notification scheme event. Defines which notifications should be sent for a specific event
+      properties:
+        event:
+          $ref: '#/components/schemas/NotificationSchemeEventIDPayload'
+        notifications:
+          description: The configuration for notification recipents
+          items:
+            $ref: '#/components/schemas/NotificationSchemeNotificationDetailsPayload'
+          type: array
+      type: object
+    CustomTemplateRequestDTO:
+      additionalProperties: false
+      description: The specific request object for creating a project with template.
+      properties:
+        boardFeatures:
+          $ref: '#/components/schemas/BoardFeaturesPayload'
+        boards:
+          $ref: '#/components/schemas/BoardsPayload'
+        field:
+          $ref: '#/components/schemas/FieldCapabilityPayload'
+        issueType:
+          $ref: '#/components/schemas/IssueTypeProjectCreatePayload'
+        notification:
+          $ref: '#/components/schemas/NotificationSchemePayload'
+        permissionScheme:
+          $ref: '#/components/schemas/PermissionPayloadDTO'
+        project:
+          $ref: '#/components/schemas/ProjectPayload'
+        role:
+          $ref: '#/components/schemas/RolesCapabilityPayload'
+        scope:
+          $ref: '#/components/schemas/ScopePayload'
+        security:
+          $ref: '#/components/schemas/SecuritySchemePayload'
+        workflow:
+          $ref: '#/components/schemas/WorkflowCapabilityPayload'
+      type: object
+    SwimlanePayload:
+      additionalProperties: false
+      description: The payload for custom swimlanes
+      properties:
+        description:
+          description: The description of the quick filter
+          type: string
+        jqlQuery:
+          description: The jql query for the quick filter
+          type: string
+        name:
+          description: The name of the quick filter
+          type: string
+      type: object
+    IssueTypeSchemePayload:
+      additionalProperties: false
+      description: The payload for creating issue type schemes
+      properties:
+        defaultIssueTypeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        description:
+          description: The description of the issue type scheme
+          type:
+          - string
+          - 'null'
+        issueTypeIds:
+          description: The issue type IDs for the issue type scheme
+          example: pcri:issueType:id:10001
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+        name:
+          description: The name of the issue type scheme
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type: object
+    BoardFeaturePayload:
+      additionalProperties: false
+      description: The payload for setting a board feature
+      properties:
+        featureKey:
+          description: The key of the feature
+          enum:
+          - ESTIMATION
+          - SPRINTS
+          type: string
+        state:
+          description: Whether the feature should be turned on or off
+          enum:
+          - true
+          - false
+          type: boolean
+      type: object
+    CardLayoutField:
+      additionalProperties: false
+      description: Card layout settings of the board
+      properties:
+        fieldId:
+          type: string
+        id:
+          format: int64
+          type: integer
+        mode:
+          enum:
+          - PLAN
+          - WORK
+          type: string
+        position:
+          format: int32
+          type: integer
+      type: object
+    SaveTemplateResponse:
+      additionalProperties: false
+      properties:
+        projectTemplateKey:
+          $ref: '#/components/schemas/ProjectTemplateKey'
+      type: object
     StatusPayload:
       additionalProperties: false
       description: The payload for creating a status
@@ -1954,105 +1720,30 @@ components:
           - DONE
           type: string
       type: object
-    TabPayload:
+    IssueTypePayload:
       additionalProperties: false
-      description: Defines the payload for the tabs of the screen. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-tab-fields/\#api-rest-api-3-screens-screenid-tabs-tabid-fields-post
+      description: The payload for creating an issue type
       properties:
-        fields:
-          description: The list of resource identifier of the field associated to the tab. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-tab-fields/\#api-rest-api-3-screens-screenid-tabs-tabid-fields-post
-          items:
-            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-          type: array
-        name:
-          description: The name of the tab
-          type: string
-      type: object
-    ScreenPayload:
-      additionalProperties: false
-      description: Defines the payload for the field screens. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screens/\#api-rest-api-3-screens-post
-      properties:
+        avatarId:
+          description: The avatar ID of the issue type. Go to https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-avatars/\#api-rest-api-3-avatar-type-system-get to choose an avatarId existing in Jira
+          format: int64
+          type:
+          - integer
+          - 'null'
         description:
-          description: The description of the screen
-          example: This is a screen
-          type: string
+          description: The description of the issue type
+          type:
+          - string
+          - 'null'
+        hierarchyLevel:
+          description: The hierarchy level of the issue type. 0, 1, 2, 3 .. n; Negative values for subtasks
+          format: int32
+          type: integer
         name:
-          description: The name of the screen
-          example: My Screen
-          type: string
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        tabs:
-          description: The tabs of the screen. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-screen-tab-fields/\#api-rest-api-3-screens-screenid-tabs-tabid-fields-post
-          items:
-            $ref: '#/components/schemas/TabPayload'
-          type: array
-      type:
-      - object
-      - 'null'
-    IssueLayoutPayload:
-      additionalProperties: false
-      description: Defines the payload to configure the issue layouts for a project.
-      properties:
-        containerId:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        issueLayoutType:
-          description: The issue layout type
-          enum:
-          - ISSUE_VIEW
-          - ISSUE_CREATE
-          - REQUEST_FORM
-          type: string
-        items:
-          description: The configuration of items in the issue layout
-          items:
-            $ref: '#/components/schemas/IssueLayoutItemPayload'
-          type: array
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-      type:
-      - object
-      - 'null'
-    SecuritySchemePayload:
-      additionalProperties: false
-      description: The payload for creating a security scheme. See https://support.atlassian.com/jira-cloud-administration/docs/configure-issue-security-schemes/
-      properties:
-        description:
-          description: The description of the security scheme
-          example: Newly created issue security scheme
-          type: string
-        name:
-          description: The name of the security scheme
-          example: New Security Scheme
-          type: string
-        pcri:
-          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
-        securityLevels:
-          description: The security levels for the security scheme
-          items:
-            $ref: '#/components/schemas/SecurityLevelPayload'
-          type: array
-      type:
-      - object
-      - 'null'
-    FieldSchemePayload:
-      additionalProperties: false
-      description: Defines the payload to configure the field scheme for a project. See [Field schemes](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-field-schemes/#api-group-field-schemes).
-      properties:
-        description:
-          description: The description of the field scheme
-          example: This is a field scheme
-          type: string
-        items:
-          description: The field association items for this field scheme.
-          items:
-            $ref: '#/components/schemas/FieldAssociationItemPayload'
-          type: array
-        name:
-          description: The name of the field scheme
-          example: My Field Scheme
+          description: The name of the issue type
           type: string
         onConflict:
-          description: The strategy to use when there is a conflict with an existing field scheme. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
+          description: The conflict strategy to use when the issue type already exists. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
           enum:
           - FAIL
           - USE
@@ -2060,6 +1751,315 @@ components:
           type: string
         pcri:
           $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type:
+      - object
+      - 'null'
+    BoardPayload:
+      additionalProperties: false
+      description: The payload for creating a board
+      properties:
+        boardFilterJQL:
+          description: Takes in a JQL string to create a new filter. If no value is provided, it'll default to a JQL filter for the project creating
+          example: project = 'My Project'
+          type: string
+        cardColorStrategy:
+          description: Card color settings of the board
+          enum:
+          - ISSUE_TYPE
+          - REQUEST_TYPE
+          - ASSIGNEE
+          - PRIORITY
+          - NONE
+          - CUSTOM
+          type: string
+        cardLayout:
+          $ref: '#/components/schemas/CardLayout'
+        cardLayouts:
+          description: Card layout settings of the board
+          items:
+            $ref: '#/components/schemas/CardLayoutField'
+          type: array
+        columns:
+          description: The columns of the board
+          items:
+            $ref: '#/components/schemas/BoardColumnPayload'
+          type: array
+        enableCardCover:
+          description: Whether to enable the card cover option on this board
+          type: boolean
+        features:
+          deprecated: true
+          description: 'Feature settings for the board. Deprecated: use boardFeatures capability instead.'
+          items:
+            $ref: '#/components/schemas/BoardFeaturePayload'
+          type: array
+        name:
+          description: The name of the board
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        quickFilters:
+          description: The quick filters for the board.
+          items:
+            $ref: '#/components/schemas/QuickFilterPayload'
+          type: array
+        supportsSprint:
+          default: true
+          description: Whether sprints are supported on the board
+          type: boolean
+        swimlanes:
+          $ref: '#/components/schemas/SwimlanesPayload'
+        workingDaysConfig:
+          $ref: '#/components/schemas/WorkingDaysConfig'
+      type: object
+    ToLayoutPayload:
+      additionalProperties: false
+      description: The payload for the layout details for the destination end of a transition
+      properties:
+        port:
+          description: Defines where the transition line will be connected to a status. Port 0 to 7 are acceptable values.
+          example: 1
+          format: int32
+          type: integer
+        status:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type: object
+    WorkingDaysConfig:
+      additionalProperties: false
+      description: Working days configuration
+      properties:
+        friday:
+          type: boolean
+        id:
+          format: int64
+          type: integer
+        monday:
+          type: boolean
+        nonWorkingDays:
+          items:
+            $ref: '#/components/schemas/NonWorkingDay'
+          type: array
+          uniqueItems: true
+        saturday:
+          type: boolean
+        sunday:
+          type: boolean
+        thursday:
+          type: boolean
+        timezoneId:
+          type: string
+        tuesday:
+          type: boolean
+        wednesday:
+          type: boolean
+      type: object
+    FromLayoutPayload:
+      additionalProperties: false
+      description: The payload for the layout details for the start end of a transition
+      properties:
+        fromPort:
+          description: The port that the transition can be made from
+          format: int32
+          type: integer
+        status:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        toPortOverride:
+          description: The port that the transition goes to
+          format: int32
+          type: integer
+      type: object
+    RolesCapabilityPayload:
+      additionalProperties: false
+      properties:
+        roleToProjectActors:
+          additionalProperties:
+            description: A map of role PCRI (can be ID or REF) to a list of user or group PCRI IDs to associate with the role and project.
+            items:
+              $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+            type: array
+          description: A map of role PCRI (can be ID or REF) to a list of user or group PCRI IDs to associate with the role and project.
+          type: object
+        roles:
+          description: The list of roles to create.
+          items:
+            $ref: '#/components/schemas/RolePayload'
+          type: array
+      type:
+      - object
+      - 'null'
+    IssueTypeScreenSchemePayload:
+      additionalProperties: false
+      description: Defines the payload for the issue type screen schemes. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-type-screen-schemes/\#api-rest-api-3-issuetypescreenscheme-post
+      properties:
+        defaultScreenScheme:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        description:
+          description: The description of the issue type screen scheme
+          example: This is an issue type screen scheme
+          type: string
+        explicitMappings:
+          additionalProperties:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          description: The IDs of the screen schemes for the issue type IDs and default. A default entry is required to create an issue type screen scheme, it defines the mapping for all issue types without a screen scheme.
+          type: object
+        name:
+          description: The name of the issue type screen scheme
+          example: My Issue Type Screen Scheme
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type:
+      - object
+      - 'null'
+    SaveTemplateRequest:
+      additionalProperties: false
+      description: Request to save a custom template
+      properties:
+        templateDescription:
+          description: The description of the template
+          maxLength: 150
+          type: string
+        templateFromProjectRequest:
+          $ref: '#/components/schemas/SaveProjectTemplateRequest'
+        templateName:
+          description: The name of the template
+          maxLength: 50
+          type: string
+      type: object
+    RolePayload:
+      additionalProperties: false
+      description: The payload used to create a project role. It is optional for CMP projects, as a default role actor will be provided. TMP will add new role actors to the table.
+      properties:
+        defaultActors:
+          description: The default actors for the role. By adding default actors, the role will be added to any future projects created
+          example: '[pcri:user:id:1234]'
+          items:
+            $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+          type: array
+        description:
+          description: The description of the role
+          type: string
+        name:
+          description: The name of the role
+          type: string
+        onConflict:
+          default: USE
+          description: The strategy to use when there is a conflict with an existing project role. FAIL - Fail execution, this always needs to be unique; USE - Use the existing entity and ignore new entity parameters
+          enum:
+          - FAIL
+          - USE
+          - NEW
+          type: string
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        type:
+          description: The type of the role. Only used by project-scoped project
+          enum:
+          - HIDDEN
+          - VIEWABLE
+          - AI_AGENT
+          - EDITABLE
+          - GUEST
+          example: EDITABLE
+          type: string
+      type: object
+    WorkflowCapabilityPayload:
+      additionalProperties: false
+      description: The payload for creating a workflows. See https://www.atlassian.com/software/jira/guides/workflows/overview\#what-is-a-jira-workflow
+      properties:
+        statuses:
+          description: The statuses for the workflow
+          items:
+            $ref: '#/components/schemas/StatusPayload'
+          type: array
+        workflowScheme:
+          $ref: '#/components/schemas/WorkflowSchemePayload'
+        workflows:
+          description: The transitions for the workflow
+          items:
+            $ref: '#/components/schemas/WorkflowPayload'
+          type: array
+      type:
+      - object
+      - 'null'
+    ScopePayload:
+      additionalProperties: false
+      description: The payload for creating a scope. Defines if a project is team-managed project or company-managed project
+      properties:
+        type:
+          description: The type of the scope. Use `GLOBAL` or empty for company-managed project, and `PROJECT` for team-managed project
+          enum:
+          - GLOBAL
+          - PROJECT
+          type: string
+      type:
+      - object
+      - 'null'
+    ProjectPayload:
+      additionalProperties: false
+      description: The payload for creating a project
+      properties:
+        fieldLayoutSchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        issueSecuritySchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        issueTypeSchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        issueTypeScreenSchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        notificationSchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        pcri:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        permissionSchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+        projectTypeKey:
+          description: The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes), which defines the application-specific feature set. If you don't specify the project template you have to specify the project type.
+          enum:
+          - software
+          - business
+          - service_desk
+          - product_discovery
+          example: software
+          type: string
+        workflowSchemeId:
+          $ref: '#/components/schemas/ProjectCreateResourceIdentifier'
+      type: object
+    SecurityLevelMemberPayload:
+      additionalProperties: false
+      description: The payload for creating a security level member. See https://support.atlassian.com/jira-cloud-administration/docs/configure-issue-security-schemes/
+      properties:
+        parameter:
+          description: Defines the value associated with the type. For reporter this would be \{"null"\}; for users this would be the names of specific users); for group this would be group names like \{"administrators", "jira-administrators", "jira-users"\}
+          type: string
+        type:
+          description: The type of the security level member
+          enum:
+          - group
+          - reporter
+          - users
+          type: string
+      type: object
+    IssueTypeProjectCreatePayload:
+      additionalProperties: false
+      description: The payload for creating issue types in a project
+      properties:
+        issueTypeHierarchy:
+          description: Defines the issue type hierarhy to be created and used during this project creation. This will only add new levels if there isn't an existing level
+          items:
+            $ref: '#/components/schemas/IssueTypeHierarchyPayload'
+          type:
+          - array
+          - 'null'
+        issueTypeScheme:
+          $ref: '#/components/schemas/IssueTypeSchemePayload'
+        issueTypes:
+          description: Only needed if you want to create issue types, you can otherwise use the ids of issue types in the scheme configuration
+          items:
+            $ref: '#/components/schemas/IssueTypePayload'
+          type:
+          - array
+          - 'null'
       type:
       - object
       - 'null'

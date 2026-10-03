@@ -358,16 +358,31 @@ components:
           readOnly: true
           type: string
       type: object
-    PermittedProjects:
+    BulkProjectPermissionGrants:
       additionalProperties: false
-      description: A list of projects in which a user is granted permissions.
+      description: List of project permissions and the projects and issues those permissions grant access to.
       properties:
-        projects:
-          description: A list of projects.
+        issues:
+          description: IDs of the issues the user has the permission for.
           items:
-            $ref: '#/components/schemas/ProjectIdentifierBean'
-          readOnly: true
+            format: int64
+            type: integer
           type: array
+          uniqueItems: true
+        permission:
+          description: A project permission,
+          type: string
+        projects:
+          description: IDs of the projects the user has the permission for.
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+      required:
+      - issues
+      - permission
+      - projects
       type: object
     Permissions:
       additionalProperties: false
@@ -379,6 +394,17 @@ components:
           description: List of permissions.
           readOnly: true
           type: object
+      type: object
+    PermittedProjects:
+      additionalProperties: false
+      description: A list of projects in which a user is granted permissions.
+      properties:
+        projects:
+          description: A list of projects.
+          items:
+            $ref: '#/components/schemas/ProjectIdentifierBean'
+          readOnly: true
+          type: array
       type: object
     BulkProjectPermissions:
       additionalProperties: false
@@ -407,17 +433,6 @@ components:
       required:
       - permissions
       type: object
-    PermissionsKeysBean:
-      additionalProperties: false
-      properties:
-        permissions:
-          description: A list of permission keys.
-          items:
-            type: string
-          type: array
-      required:
-      - permissions
-      type: object
     BulkPermissionsRequestBean:
       additionalProperties: false
       description: Details of global permissions to look up and project permissions with associated projects and issues to look up.
@@ -437,6 +452,17 @@ components:
             $ref: '#/components/schemas/BulkProjectPermissions'
           type: array
           uniqueItems: true
+      type: object
+    PermissionsKeysBean:
+      additionalProperties: false
+      properties:
+        permissions:
+          description: A list of permission keys.
+          items:
+            type: string
+          type: array
+      required:
+      - permissions
       type: object
     UserPermission:
       additionalProperties: true
@@ -467,50 +493,6 @@ components:
           - PROJECT
           type: string
       type: object
-    BulkProjectPermissionGrants:
-      additionalProperties: false
-      description: List of project permissions and the projects and issues those permissions grant access to.
-      properties:
-        issues:
-          description: IDs of the issues the user has the permission for.
-          items:
-            format: int64
-            type: integer
-          type: array
-          uniqueItems: true
-        permission:
-          description: A project permission,
-          type: string
-        projects:
-          description: IDs of the projects the user has the permission for.
-          items:
-            format: int64
-            type: integer
-          type: array
-          uniqueItems: true
-      required:
-      - issues
-      - permission
-      - projects
-      type: object
-    ErrorCollection:
-      additionalProperties: false
-      description: Error messages from an operation.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        status:
-          format: int32
-          type: integer
-      type: object
     BulkPermissionGrants:
       additionalProperties: false
       description: Details of global and project permissions granted to the user.
@@ -530,6 +512,24 @@ components:
       required:
       - globalPermissions
       - projectPermissions
+      type: object
+    ErrorCollection:
+      additionalProperties: false
+      description: Error messages from an operation.
+      properties:
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
+          format: int32
+          type: integer
       type: object
   securitySchemes:
     OAuth2:

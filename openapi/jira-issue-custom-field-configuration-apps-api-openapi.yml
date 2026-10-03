@@ -317,6 +317,45 @@ paths:
       x-atlassian-connect-scope: ADMIN
 components:
   schemas:
+    CustomFieldConfigurations:
+      additionalProperties: false
+      description: Details of configurations for a custom field.
+      properties:
+        configurations:
+          description: The list of custom field configuration details.
+          items:
+            $ref: '#/components/schemas/ContextualConfiguration'
+          maxItems: 1000
+          minItems: 1
+          type: array
+          uniqueItems: true
+      required:
+      - configurations
+      type: object
+      writeOnly: true
+    BulkContextualConfiguration:
+      additionalProperties: false
+      description: Details of the contextual configuration for a custom field.
+      properties:
+        configuration:
+          description: The field configuration.
+        customFieldId:
+          description: The ID of the custom field.
+          type: string
+        fieldContextId:
+          description: The ID of the field context the configuration is associated with.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the configuration.
+          type: string
+        schema:
+          description: The field value schema.
+      required:
+      - customFieldId
+      - fieldContextId
+      - id
+      type: object
     PageBeanBulkContextualConfiguration:
       additionalProperties: false
       description: A page of items.
@@ -376,29 +415,6 @@ components:
       - fieldContextId
       - id
       type: object
-    BulkContextualConfiguration:
-      additionalProperties: false
-      description: Details of the contextual configuration for a custom field.
-      properties:
-        configuration:
-          description: The field configuration.
-        customFieldId:
-          description: The ID of the custom field.
-          type: string
-        fieldContextId:
-          description: The ID of the field context the configuration is associated with.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the configuration.
-          type: string
-        schema:
-          description: The field value schema.
-      required:
-      - customFieldId
-      - fieldContextId
-      - id
-      type: object
     PageBeanContextualConfiguration:
       additionalProperties: false
       description: A page of items.
@@ -451,22 +467,6 @@ components:
           type: array
       required:
       - fieldIdsOrKeys
-      type: object
-      writeOnly: true
-    CustomFieldConfigurations:
-      additionalProperties: false
-      description: Details of configurations for a custom field.
-      properties:
-        configurations:
-          description: The list of custom field configuration details.
-          items:
-            $ref: '#/components/schemas/ContextualConfiguration'
-          maxItems: 1000
-          minItems: 1
-          type: array
-          uniqueItems: true
-      required:
-      - configurations
       type: object
       writeOnly: true
   securitySchemes:

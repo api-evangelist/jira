@@ -387,21 +387,30 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    UiModificationIdentifiers:
+    CreateUiModificationDetails:
       additionalProperties: false
-      description: Identifiers for a UI modification.
+      description: The details of a UI modification.
       properties:
-        id:
-          description: The ID of the UI modification.
-          readOnly: true
+        contexts:
+          description: List of contexts of the UI modification. The maximum number of contexts is 1000.
+          items:
+            $ref: '#/components/schemas/UiModificationContextDetails'
+          type: array
+          writeOnly: true
+        data:
+          description: The data of the UI modification. The maximum size of the data is 50000 characters.
           type: string
-        self:
-          description: The URL of the UI modification.
-          readOnly: true
+          writeOnly: true
+        description:
+          description: The description of the UI modification. The maximum length is 255 characters.
           type: string
+          writeOnly: true
+        name:
+          description: The name of the UI modification. The maximum length is 255 characters.
+          type: string
+          writeOnly: true
       required:
-      - id
-      - self
+      - name
       type: object
     PageBeanUiModificationDetails:
       additionalProperties: false
@@ -443,107 +452,6 @@ components:
           readOnly: true
           type: array
       type: object
-    UiModificationDetails:
-      additionalProperties: false
-      description: The details of a UI modification.
-      properties:
-        contexts:
-          description: List of contexts of the UI modification. The maximum number of contexts is 1000.
-          items:
-            $ref: '#/components/schemas/UiModificationContextDetails'
-          readOnly: true
-          type: array
-        data:
-          description: The data of the UI modification. The maximum size of the data is 50000 characters.
-          readOnly: true
-          type: string
-        description:
-          description: The description of the UI modification. The maximum length is 255 characters.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the UI modification.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the UI modification. The maximum length is 255 characters.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the UI modification.
-          readOnly: true
-          type: string
-      required:
-      - id
-      - name
-      - self
-      type: object
-    UpdateUiModificationDetails:
-      additionalProperties: false
-      description: The details of a UI modification.
-      properties:
-        contexts:
-          description: List of contexts of the UI modification. The maximum number of contexts is 1000. If provided, replaces all existing contexts.
-          items:
-            $ref: '#/components/schemas/UiModificationContextDetails'
-          type: array
-          writeOnly: true
-        data:
-          description: The data of the UI modification. The maximum size of the data is 50000 characters.
-          type: string
-          writeOnly: true
-        description:
-          description: The description of the UI modification. The maximum length is 255 characters.
-          type: string
-          writeOnly: true
-        name:
-          description: The name of the UI modification. The maximum length is 255 characters.
-          type: string
-          writeOnly: true
-      type: object
-    CreateUiModificationDetails:
-      additionalProperties: false
-      description: The details of a UI modification.
-      properties:
-        contexts:
-          description: List of contexts of the UI modification. The maximum number of contexts is 1000.
-          items:
-            $ref: '#/components/schemas/UiModificationContextDetails'
-          type: array
-          writeOnly: true
-        data:
-          description: The data of the UI modification. The maximum size of the data is 50000 characters.
-          type: string
-          writeOnly: true
-        description:
-          description: The description of the UI modification. The maximum length is 255 characters.
-          type: string
-          writeOnly: true
-        name:
-          description: The name of the UI modification. The maximum length is 255 characters.
-          type: string
-          writeOnly: true
-      required:
-      - name
-      type: object
-    DetailedErrorCollection:
-      additionalProperties: false
-      properties:
-        details:
-          additionalProperties: {}
-          description: Map of objects representing additional details for an error
-          type: object
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-      type: object
     UiModificationContextDetails:
       additionalProperties: false
       description: The details of a UI modification's context, which define where to activate the UI modification.
@@ -581,6 +489,98 @@ components:
           type: string
       type: object
       writeOnly: true
+    UpdateUiModificationDetails:
+      additionalProperties: false
+      description: The details of a UI modification.
+      properties:
+        contexts:
+          description: List of contexts of the UI modification. The maximum number of contexts is 1000. If provided, replaces all existing contexts.
+          items:
+            $ref: '#/components/schemas/UiModificationContextDetails'
+          type: array
+          writeOnly: true
+        data:
+          description: The data of the UI modification. The maximum size of the data is 50000 characters.
+          type: string
+          writeOnly: true
+        description:
+          description: The description of the UI modification. The maximum length is 255 characters.
+          type: string
+          writeOnly: true
+        name:
+          description: The name of the UI modification. The maximum length is 255 characters.
+          type: string
+          writeOnly: true
+      type: object
+    UiModificationIdentifiers:
+      additionalProperties: false
+      description: Identifiers for a UI modification.
+      properties:
+        id:
+          description: The ID of the UI modification.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the UI modification.
+          readOnly: true
+          type: string
+      required:
+      - id
+      - self
+      type: object
+    DetailedErrorCollection:
+      additionalProperties: false
+      properties:
+        details:
+          additionalProperties: {}
+          description: Map of objects representing additional details for an error
+          type: object
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+      type: object
+    UiModificationDetails:
+      additionalProperties: false
+      description: The details of a UI modification.
+      properties:
+        contexts:
+          description: List of contexts of the UI modification. The maximum number of contexts is 1000.
+          items:
+            $ref: '#/components/schemas/UiModificationContextDetails'
+          readOnly: true
+          type: array
+        data:
+          description: The data of the UI modification. The maximum size of the data is 50000 characters.
+          readOnly: true
+          type: string
+        description:
+          description: The description of the UI modification. The maximum length is 255 characters.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the UI modification.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the UI modification. The maximum length is 255 characters.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the UI modification.
+          readOnly: true
+          type: string
+      required:
+      - id
+      - name
+      - self
+      type: object
   securitySchemes:
     OAuth2:
       description: OAuth2 scopes for Jira

@@ -106,21 +106,6 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    ProjectWithDataPolicy:
-      additionalProperties: false
-      description: Details about data policies for a project.
-      properties:
-        dataPolicy:
-          allOf:
-          - $ref: '#/components/schemas/ProjectDataPolicy'
-          description: Data policy.
-          readOnly: true
-        id:
-          description: The project ID.
-          format: int64
-          readOnly: true
-          type: integer
-      type: object
     ProjectDataPolicy:
       additionalProperties: false
       description: Details about data policy.
@@ -149,6 +134,21 @@ components:
             $ref: '#/components/schemas/ProjectWithDataPolicy'
           readOnly: true
           type: array
+      type: object
+    ProjectWithDataPolicy:
+      additionalProperties: false
+      description: Details about data policies for a project.
+      properties:
+        dataPolicy:
+          allOf:
+          - $ref: '#/components/schemas/ProjectDataPolicy'
+          description: Data policy.
+          readOnly: true
+        id:
+          description: The project ID.
+          format: int64
+          readOnly: true
+          type: integer
       type: object
     ErrorCollection:
       additionalProperties: false

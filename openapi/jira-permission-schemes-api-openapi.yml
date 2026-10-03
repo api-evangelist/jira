@@ -745,6 +745,77 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
+    PermissionHolder:
+      additionalProperties: false
+      description: Details of a user, group, field, or project role that holds a permission. See [Holder object](../api-group-permission-schemes/#holder-object) in *Get all permission schemes* for more information.
+      properties:
+        expand:
+          description: Expand options that include additional permission holder details in the response.
+          readOnly: true
+          type: string
+        parameter:
+          description: As a group's name can change, use of `value` is recommended. The identifier associated withthe `type` value that defines the holder of the permission.
+          type: string
+        type:
+          description: The type of permission holder.
+          type: string
+        value:
+          description: The identifier associated with the `type` value that defines the holder of the permission.
+          type: string
+      required:
+      - type
+      type: object
+    PermissionGrants:
+      additionalProperties: false
+      description: List of permission grants.
+      properties:
+        expand:
+          description: Expand options that include additional permission grant details in the response.
+          readOnly: true
+          type: string
+        permissions:
+          description: Permission grants list.
+          items:
+            $ref: '#/components/schemas/PermissionGrant'
+          readOnly: true
+          type: array
+      type: object
+    PermissionScheme:
+      additionalProperties: true
+      description: Details of a permission scheme.
+      properties:
+        description:
+          description: A description for the permission scheme.
+          type: string
+        expand:
+          description: The expand options available for the permission scheme.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the permission scheme.
+          format: int64
+          readOnly: true
+          type: integer
+        name:
+          description: The name of the permission scheme. Must be unique.
+          type: string
+        permissions:
+          description: The permission scheme to create or update. See [About permission schemes and grants](../api-group-permission-schemes/#about-permission-schemes-and-grants) for more information.
+          items:
+            $ref: '#/components/schemas/PermissionGrant'
+          type: array
+        scope:
+          allOf:
+          - $ref: '#/components/schemas/Scope'
+          description: The scope of the permission scheme.
+        self:
+          description: The URL of the permission scheme.
+          format: uri
+          readOnly: true
+          type: string
+      required:
+      - name
+      type: object
     ProjectDetails:
       additionalProperties: false
       description: Details about a project.
@@ -788,34 +859,6 @@ components:
           readOnly: true
           type: boolean
       type: object
-    PermissionSchemes:
-      additionalProperties: false
-      description: List of all permission schemes.
-      properties:
-        permissionSchemes:
-          description: Permission schemes list.
-          items:
-            $ref: '#/components/schemas/PermissionScheme'
-          readOnly: true
-          type: array
-      type: object
-    Scope:
-      additionalProperties: true
-      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
-      properties:
-        project:
-          allOf:
-          - $ref: '#/components/schemas/ProjectDetails'
-          description: The project the item has scope in.
-          readOnly: true
-        type:
-          description: The type of scope.
-          enum:
-          - PROJECT
-          - TEMPLATE
-          readOnly: true
-          type: string
-      type: object
     PermissionGrant:
       additionalProperties: true
       description: Details about a permission granted to a user or group.
@@ -838,40 +881,42 @@ components:
           readOnly: true
           type: string
       type: object
-    PermissionHolder:
+    LimitExceededResponseBean:
       additionalProperties: false
-      description: Details of a user, group, field, or project role that holds a permission. See [Holder object](../api-group-permission-schemes/#holder-object) in *Get all permission schemes* for more information.
       properties:
-        expand:
-          description: Expand options that include additional permission holder details in the response.
-          readOnly: true
+        current_count:
+          format: int32
+          type: integer
+        entity_type:
           type: string
-        parameter:
-          description: As a group's name can change, use of `value` is recommended. The identifier associated withthe `type` value that defines the holder of the permission.
+        error_code:
           type: string
-        type:
-          description: The type of permission holder.
+        limit_type:
           type: string
-        value:
-          description: The identifier associated with the `type` value that defines the holder of the permission.
+        max_allowed_limit:
+          format: int32
+          type: integer
+        message:
           type: string
-      required:
-      - type
+        scope_id:
+          type: string
       type: object
-    PermissionGrants:
-      additionalProperties: false
-      description: List of permission grants.
+    Scope:
+      additionalProperties: true
+      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
       properties:
-        expand:
-          description: Expand options that include additional permission grant details in the response.
+        project:
+          allOf:
+          - $ref: '#/components/schemas/ProjectDetails'
+          description: The project the item has scope in.
+          readOnly: true
+        type:
+          description: The type of scope.
+          enum:
+          - PROJECT
+          - TEMPLATE
           readOnly: true
           type: string
-        permissions:
-          description: Permission grants list.
-          items:
-            $ref: '#/components/schemas/PermissionGrant'
-          readOnly: true
-          type: array
       type: object
     AvatarUrlsBean:
       additionalProperties: false
@@ -891,26 +936,6 @@ components:
         48x48:
           description: The URL of the item's 48x48 pixel avatar.
           format: uri
-          type: string
-      type: object
-    LimitExceededResponseBean:
-      additionalProperties: false
-      properties:
-        current_count:
-          format: int32
-          type: integer
-        entity_type:
-          type: string
-        error_code:
-          type: string
-        limit_type:
-          type: string
-        max_allowed_limit:
-          format: int32
-          type: integer
-        message:
-          type: string
-        scope_id:
           type: string
       type: object
     UpdatedProjectCategory:
@@ -934,41 +959,16 @@ components:
           readOnly: true
           type: string
       type: object
-    PermissionScheme:
-      additionalProperties: true
-      description: Details of a permission scheme.
+    PermissionSchemes:
+      additionalProperties: false
+      description: List of all permission schemes.
       properties:
-        description:
-          description: A description for the permission scheme.
-          type: string
-        expand:
-          description: The expand options available for the permission scheme.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the permission scheme.
-          format: int64
-          readOnly: true
-          type: integer
-        name:
-          description: The name of the permission scheme. Must be unique.
-          type: string
-        permissions:
-          description: The permission scheme to create or update. See [About permission schemes and grants](../api-group-permission-schemes/#about-permission-schemes-and-grants) for more information.
+        permissionSchemes:
+          description: Permission schemes list.
           items:
-            $ref: '#/components/schemas/PermissionGrant'
-          type: array
-        scope:
-          allOf:
-          - $ref: '#/components/schemas/Scope'
-          description: The scope of the permission scheme.
-        self:
-          description: The URL of the permission scheme.
-          format: uri
+            $ref: '#/components/schemas/PermissionScheme'
           readOnly: true
-          type: string
-      required:
-      - name
+          type: array
       type: object
   securitySchemes:
     OAuth2:

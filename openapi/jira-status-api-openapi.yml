@@ -593,93 +593,18 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    StatusScope:
+    StatusWorkflowUsagePage:
       additionalProperties: false
-      description: The scope of the status.
-      properties:
-        project:
-          $ref: '#/components/schemas/ProjectId'
-        type:
-          description: The scope of the status. `GLOBAL` for company-managed projects and `PROJECT` for team-managed projects.
-          enum:
-          - PROJECT
-          - GLOBAL
-          type: string
-      required:
-      - type
-      type: object
-    StatusProjectUsagePage:
-      additionalProperties: false
-      description: A page of projects.
+      description: A page of workflows.
       properties:
         nextPageToken:
           description: Page token for the next page of issue type usages.
           type: string
         values:
-          description: The list of projects.
+          description: The list of statuses.
           items:
-            $ref: '#/components/schemas/StatusProjectUsage'
+            $ref: '#/components/schemas/StatusWorkflowUsageWorkflow'
           type: array
-      type: object
-    JiraStatus:
-      additionalProperties: false
-      description: Details of a status.
-      properties:
-        description:
-          description: The description of the status.
-          type: string
-        id:
-          description: The ID of the status.
-          type: string
-        name:
-          description: The name of the status.
-          type: string
-        scope:
-          $ref: '#/components/schemas/StatusScope'
-        statusCategory:
-          description: The category of the status.
-          enum:
-          - TODO
-          - IN_PROGRESS
-          - DONE
-          type: string
-      type: object
-    StatusProjectIssueTypeUsagePage:
-      additionalProperties: false
-      description: A page of issue types.
-      properties:
-        nextPageToken:
-          description: Page token for the next page of issue type usages.
-          type: string
-        values:
-          description: The list of issue types.
-          items:
-            $ref: '#/components/schemas/StatusProjectIssueTypeUsage'
-          type: array
-      type: object
-    ProjectId:
-      additionalProperties: false
-      description: Project ID details.
-      properties:
-        id:
-          description: The ID of the project.
-          type: string
-      required:
-      - id
-      type:
-      - object
-      - 'null'
-    StatusUpdateRequest:
-      additionalProperties: false
-      description: The list of statuses that will be updated.
-      properties:
-        statuses:
-          description: The list of statuses that will be updated.
-          items:
-            $ref: '#/components/schemas/StatusUpdate'
-          type: array
-      required:
-      - statuses
       type: object
     StatusProjectIssueTypeUsage:
       additionalProperties: false
@@ -687,37 +612,6 @@ components:
       properties:
         id:
           description: The issue type ID.
-          type: string
-      type: object
-    StatusWorkflowUsageDTO:
-      additionalProperties: false
-      description: Workflows using the status.
-      properties:
-        statusId:
-          description: The status ID.
-          type: string
-        workflows:
-          $ref: '#/components/schemas/StatusWorkflowUsagePage'
-      type: object
-    StatusProjectIssueTypeUsageDTO:
-      additionalProperties: false
-      description: The issue types using this status in a project.
-      properties:
-        issueTypes:
-          $ref: '#/components/schemas/StatusProjectIssueTypeUsagePage'
-        projectId:
-          description: The project ID.
-          type: string
-        statusId:
-          description: The status ID.
-          type: string
-      type: object
-    StatusProjectUsage:
-      additionalProperties: false
-      description: The project.
-      properties:
-        id:
-          description: The project ID.
           type: string
       type: object
     StatusCreateRequest:
@@ -735,43 +629,51 @@ components:
       - scope
       - statuses
       type: object
-    StatusUpdate:
-      additionalProperties: true
-      description: Details of the status being updated.
-      properties:
-        description:
-          description: The description of the status.
-          type: string
-        id:
-          description: The ID of the status.
-          type: string
-        name:
-          description: The name of the status.
-          type: string
-        statusCategory:
-          description: The category of the status.
-          enum:
-          - TODO
-          - IN_PROGRESS
-          - DONE
-          type: string
-      required:
-      - id
-      - name
-      - statusCategory
-      type: object
-    StatusWorkflowUsagePage:
+    StatusProjectIssueTypeUsagePage:
       additionalProperties: false
-      description: A page of workflows.
+      description: A page of issue types.
       properties:
         nextPageToken:
           description: Page token for the next page of issue type usages.
           type: string
         values:
-          description: The list of statuses.
+          description: The list of issue types.
           items:
-            $ref: '#/components/schemas/StatusWorkflowUsageWorkflow'
+            $ref: '#/components/schemas/StatusProjectIssueTypeUsage'
           type: array
+      type: object
+    StatusProjectUsage:
+      additionalProperties: false
+      description: The project.
+      properties:
+        id:
+          description: The project ID.
+          type: string
+      type: object
+    StatusUpdateRequest:
+      additionalProperties: false
+      description: The list of statuses that will be updated.
+      properties:
+        statuses:
+          description: The list of statuses that will be updated.
+          items:
+            $ref: '#/components/schemas/StatusUpdate'
+          type: array
+      required:
+      - statuses
+      type: object
+    StatusProjectIssueTypeUsageDTO:
+      additionalProperties: false
+      description: The issue types using this status in a project.
+      properties:
+        issueTypes:
+          $ref: '#/components/schemas/StatusProjectIssueTypeUsagePage'
+        projectId:
+          description: The project ID.
+          type: string
+        statusId:
+          description: The status ID.
+          type: string
       type: object
     StatusCreate:
       additionalProperties: false
@@ -795,23 +697,18 @@ components:
       - name
       - statusCategory
       type: object
-    StatusProjectUsageDTO:
+    StatusProjectUsagePage:
       additionalProperties: false
-      description: The projects using this status.
+      description: A page of projects.
       properties:
-        projects:
-          $ref: '#/components/schemas/StatusProjectUsagePage'
-        statusId:
-          description: The status ID.
+        nextPageToken:
+          description: Page token for the next page of issue type usages.
           type: string
-      type: object
-    StatusWorkflowUsageWorkflow:
-      additionalProperties: false
-      description: The worflow.
-      properties:
-        id:
-          description: The workflow ID.
-          type: string
+        values:
+          description: The list of projects.
+          items:
+            $ref: '#/components/schemas/StatusProjectUsage'
+          type: array
       type: object
     PageOfStatuses:
       additionalProperties: false
@@ -842,6 +739,109 @@ components:
           items:
             $ref: '#/components/schemas/JiraStatus'
           type: array
+      type: object
+    StatusScope:
+      additionalProperties: false
+      description: The scope of the status.
+      properties:
+        project:
+          $ref: '#/components/schemas/ProjectId'
+        type:
+          description: The scope of the status. `GLOBAL` for company-managed projects and `PROJECT` for team-managed projects.
+          enum:
+          - PROJECT
+          - GLOBAL
+          type: string
+      required:
+      - type
+      type: object
+    StatusWorkflowUsageWorkflow:
+      additionalProperties: false
+      description: The worflow.
+      properties:
+        id:
+          description: The workflow ID.
+          type: string
+      type: object
+    StatusProjectUsageDTO:
+      additionalProperties: false
+      description: The projects using this status.
+      properties:
+        projects:
+          $ref: '#/components/schemas/StatusProjectUsagePage'
+        statusId:
+          description: The status ID.
+          type: string
+      type: object
+    ProjectId:
+      additionalProperties: false
+      description: Project ID details.
+      properties:
+        id:
+          description: The ID of the project.
+          type: string
+      required:
+      - id
+      type:
+      - object
+      - 'null'
+    StatusUpdate:
+      additionalProperties: true
+      description: Details of the status being updated.
+      properties:
+        description:
+          description: The description of the status.
+          type: string
+        id:
+          description: The ID of the status.
+          type: string
+        name:
+          description: The name of the status.
+          type: string
+        statusCategory:
+          description: The category of the status.
+          enum:
+          - TODO
+          - IN_PROGRESS
+          - DONE
+          type: string
+      required:
+      - id
+      - name
+      - statusCategory
+      type: object
+    JiraStatus:
+      additionalProperties: false
+      description: Details of a status.
+      properties:
+        description:
+          description: The description of the status.
+          type: string
+        id:
+          description: The ID of the status.
+          type: string
+        name:
+          description: The name of the status.
+          type: string
+        scope:
+          $ref: '#/components/schemas/StatusScope'
+        statusCategory:
+          description: The category of the status.
+          enum:
+          - TODO
+          - IN_PROGRESS
+          - DONE
+          type: string
+      type: object
+    StatusWorkflowUsageDTO:
+      additionalProperties: false
+      description: Workflows using the status.
+      properties:
+        statusId:
+          description: The status ID.
+          type: string
+        workflows:
+          $ref: '#/components/schemas/StatusWorkflowUsagePage'
       type: object
   securitySchemes:
     OAuth2:

@@ -188,6 +188,22 @@ paths:
       x-atlassian-connect-scope: NONE
 components:
   schemas:
+    OperationMessage:
+      additionalProperties: false
+      example:
+        message: An example message.
+        statusCode: 200
+      properties:
+        message:
+          description: The human-readable message that describes the result.
+          type: string
+        statusCode:
+          description: The status code of the response.
+          type: integer
+      required:
+      - message
+      - statusCode
+      type: object
     TaskProgress:
       description: Details about a task.
       properties:
@@ -253,22 +269,6 @@ components:
       - self
       - status
       - submittedBy
-      type: object
-    OperationMessage:
-      additionalProperties: false
-      example:
-        message: An example message.
-        statusCode: 200
-      properties:
-        message:
-          description: The human-readable message that describes the result.
-          type: string
-        statusCode:
-          description: The status code of the response.
-          type: integer
-      required:
-      - message
-      - statusCode
       type: object
   securitySchemes:
     OAuth2:

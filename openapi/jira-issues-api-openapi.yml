@@ -2640,24 +2640,47 @@ paths:
     - url: https://your-domain.atlassian.net
 components:
   schemas:
-    Votes:
+    Version:
       type: object
-      description: The votes for an issue.
+      description: A project version.
       properties:
         self:
           type: string
           format: uri
           example: https://www.example.com
-        votes:
-          type: integer
-          format: int32
-          example: 10
-        hasVoted:
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        archived:
           type: boolean
           example: true
-    Worklog:
+        released:
+          type: boolean
+          example: true
+        releaseDate:
+          type: string
+          format: date
+          example: '2026-01-15'
+        startDate:
+          type: string
+          format: date
+          example: '2026-01-15'
+        overdue:
+          type: boolean
+          example: true
+        projectId:
+          type: integer
+          format: int64
+          example: '500123'
+    Component:
       type: object
-      description: A worklog entry.
+      description: A project component.
       properties:
         self:
           type: string
@@ -2666,274 +2689,31 @@ components:
         id:
           type: string
           example: abc123
-        author:
+        name:
+          type: string
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        lead:
           $ref: '#/components/schemas/UserDetails'
-        updateAuthor:
+        assigneeType:
+          type: string
+          enum:
+          - PROJECT_DEFAULT
+          - COMPONENT_LEAD
+          - PROJECT_LEAD
+          - UNASSIGNED
+          example: PROJECT_DEFAULT
+        assignee:
           $ref: '#/components/schemas/UserDetails'
-        comment:
-          $ref: '#/components/schemas/AtlassianDocumentFormat'
-        created:
-          type: string
-          format: date-time
-          example: '2026-01-15T10:30:00Z'
-        updated:
-          type: string
-          format: date-time
-          example: '2026-01-15T10:30:00Z'
-        started:
-          type: string
-          format: date-time
-          example: '2026-01-15T10:30:00Z'
-        timeSpent:
-          type: string
-          description: The time spent on the worklog (e.g., 3h 20m).
-          example: example_value
-        timeSpentSeconds:
-          type: integer
-          format: int64
-          example: 10
-    TransitionRef:
-      type: object
-      description: A reference to a transition by ID.
-      properties:
-        id:
-          type: string
-          description: The ID of the transition.
-          example: abc123
-      required:
-      - id
-    Visibility:
-      type: object
-      description: The visibility restrictions for a comment.
-      properties:
-        type:
-          type: string
-          enum:
-          - group
-          - role
-          example: group
-        value:
-          type: string
-          description: The name of the group or role to restrict visibility to.
-          example: example_value
-        identifier:
-          type: string
-          description: The ID of the group or role.
-          example: example_value
-    AtlassianDocumentFormat:
-      type: object
-      description: Atlassian Document Format (ADF) representation of rich text content. ADF is a JSON-based format used in Jira Cloud REST API v3 for description, comment, and other rich text fields.
-      required:
-      - type
-      - version
-      - content
-      properties:
-        type:
-          type: string
-          enum:
-          - doc
-          description: The root node type. Always doc.
-          example: doc
-        version:
-          type: integer
-          description: The ADF version. Currently 1.
-          enum:
-          - 1
-          example: 1
-        content:
-          type: array
-          description: The content nodes of the document.
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                description: The node type (e.g., paragraph, heading, bulletList, orderedList, codeBlock, blockquote, table, mediaSingle, rule).
-              content:
-                type: array
-                description: Child content nodes.
-                items:
-                  type: object
-                  properties:
-                    type:
-                      type: string
-                      description: The inline node type (e.g., text, hardBreak, mention, emoji, inlineCard).
-                    text:
-                      type: string
-                    marks:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          type:
-                            type: string
-                            description: The mark type (e.g., strong, em, code, link, underline, strike, textColor).
-                          attrs:
-                            type: object
-                            additionalProperties: true
-                  additionalProperties: true
-              attrs:
-                type: object
-                additionalProperties: true
-            additionalProperties: true
-          example: []
-    Scope:
-      type: object
-      description: The scope of the issue type (project or global).
-      properties:
-        type:
-          type: string
-          enum:
-          - PROJECT
-          - TEMPLATE
-          example: PROJECT
         project:
-          $ref: '#/components/schemas/ProjectRef'
-    Priority:
-      type: object
-      description: An issue priority.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: string
-          example: abc123
-        name:
-          type: string
-          description: The name of the priority (e.g., Highest, High, Medium, Low, Lowest).
-          example: Example Title
-        description:
-          type: string
-          example: A sample description.
-        iconUrl:
-          type: string
-          format: uri
-          example: https://www.example.com
-        statusColor:
-          type: string
-          description: The color associated with the priority.
-          example: example_value
-    Attachment:
-      type: object
-      description: An attachment on an issue.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: string
-          example: abc123
-        filename:
           type: string
           example: example_value
-        author:
-          $ref: '#/components/schemas/UserDetails'
-        created:
-          type: string
-          format: date-time
-          example: '2026-01-15T10:30:00Z'
-        size:
+        projectId:
           type: integer
           format: int64
-          example: 10
-        mimeType:
-          type: string
-          example: example_value
-        content:
-          type: string
-          format: uri
-          description: The URL to download the attachment content.
-          example: https://www.example.com
-        thumbnail:
-          type: string
-          format: uri
-          example: https://www.example.com
-    StatusCategory:
-      type: object
-      description: A status category in Jira.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: integer
-          format: int64
-          example: abc123
-        key:
-          type: string
-          description: The key of the status category (e.g., new, indeterminate, done).
-          example: example_value
-        colorName:
-          type: string
-          description: The color name for the status category.
-          example: example_value
-        name:
-          type: string
-          description: The name of the status category.
-          example: Example Title
-    Resolution:
-      type: object
-      description: An issue resolution.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: string
-          example: abc123
-        name:
-          type: string
-          description: The name of the resolution (e.g., Fixed, Won't Fix, Duplicate).
-          example: Example Title
-        description:
-          type: string
-          example: A sample description.
-    AvatarUrls:
-      type: object
-      description: Avatar URLs in multiple sizes.
-      properties:
-        16x16:
-          type: string
-          format: uri
-          example: https://www.example.com
-        24x24:
-          type: string
-          format: uri
-          example: https://www.example.com
-        32x32:
-          type: string
-          format: uri
-          example: https://www.example.com
-        48x48:
-          type: string
-          format: uri
-          example: https://www.example.com
-    PageOfComments:
-      type: object
-      description: A paginated list of comments.
-      properties:
-        startAt:
-          type: integer
-          format: int32
-          example: 10
-        maxResults:
-          type: integer
-          format: int32
-          example: 10
-        total:
-          type: integer
-          format: int32
-          example: 10
-        comments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Comment'
-          example: []
+          example: '500123'
     IssueTypeDetails:
       type: object
       description: Details of an issue type.
@@ -2976,6 +2756,39 @@ components:
           example: 10
         scope:
           $ref: '#/components/schemas/Scope'
+    EntityProperty:
+      type: object
+      description: An entity property (key-value pair).
+      properties:
+        key:
+          type: string
+          description: The property key.
+          example: example_value
+        value:
+          description: The property value (any JSON value).
+          example: example_value
+    ProjectRef:
+      type: object
+      description: A reference to a Jira project.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        key:
+          type: string
+          example: example_value
+        name:
+          type: string
+          example: Example Title
+        avatarUrls:
+          $ref: '#/components/schemas/AvatarUrls'
+        projectTypeKey:
+          type: string
+          example: example_value
     ErrorCollection:
       type: object
       description: Error details returned by the API.
@@ -2996,65 +2809,77 @@ components:
           type: integer
           description: The HTTP status code.
           example: 10
-    Version:
+    TransitionRef:
       type: object
-      description: A project version.
+      description: A reference to a transition by ID.
       properties:
-        self:
+        id:
           type: string
-          format: uri
-          example: https://www.example.com
+          description: The ID of the transition.
+          example: abc123
+      required:
+      - id
+    IssueLinkType:
+      type: object
+      description: The type of link between issues.
+      properties:
         id:
           type: string
           example: abc123
         name:
           type: string
           example: Example Title
-        description:
+        inward:
           type: string
-          example: A sample description.
-        archived:
+          description: The inward description (e.g., is blocked by).
+          example: example_value
+        outward:
+          type: string
+          description: The outward description (e.g., blocks).
+          example: example_value
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+    Votes:
+      type: object
+      description: The votes for an issue.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        votes:
+          type: integer
+          format: int32
+          example: 10
+        hasVoted:
           type: boolean
           example: true
-        released:
-          type: boolean
-          example: true
-        releaseDate:
+    StatusCategory:
+      type: object
+      description: A status category in Jira.
+      properties:
+        self:
           type: string
-          format: date
-          example: '2026-01-15'
-        startDate:
-          type: string
-          format: date
-          example: '2026-01-15'
-        overdue:
-          type: boolean
-          example: true
-        projectId:
+          format: uri
+          example: https://www.example.com
+        id:
           type: integer
           format: int64
-          example: '500123'
-    Changelog:
-      type: object
-      description: A paginated list of changelogs.
-      properties:
-        startAt:
-          type: integer
-          format: int32
-          example: 10
-        maxResults:
-          type: integer
-          format: int32
-          example: 10
-        total:
-          type: integer
-          format: int32
-          example: 10
-        histories:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChangeHistory'
-          example: []
+          example: abc123
+        key:
+          type: string
+          description: The key of the status category (e.g., new, indeterminate, done).
+          example: example_value
+        colorName:
+          type: string
+          description: The color name for the status category.
+          example: example_value
+        name:
+          type: string
+          description: The name of the status category.
+          example: Example Title
     ChangeItem:
       type: object
       description: An individual field change within a changelog entry.
@@ -3088,107 +2913,26 @@ components:
           - string
           - 'null'
           example: example_value
-    UserDetails:
+    IssueLink:
       type: object
-      description: A Jira user.
-      properties:
-        self:
-          type: string
-          format: uri
-          description: The URL of the user in the REST API.
-          example: https://www.example.com
-        accountId:
-          type: string
-          description: The account ID of the user, which uniquely identifies the user across all Atlassian products.
-          maxLength: 128
-          example: '500123'
-        emailAddress:
-          type: string
-          format: email
-          description: The email address of the user (may not be available depending on privacy settings).
-          example: user@example.com
-        displayName:
-          type: string
-          description: The display name of the user.
-          example: example_value
-        active:
-          type: boolean
-          description: Whether the user account is active.
-          example: true
-        timeZone:
-          type: string
-          description: The time zone of the user.
-          example: example_value
-        accountType:
-          type: string
-          description: The type of account.
-          enum:
-          - atlassian
-          - app
-          - customer
-          example: atlassian
-        avatarUrls:
-          $ref: '#/components/schemas/AvatarUrls'
-    IssueLinkType:
-      type: object
-      description: The type of link between issues.
+      description: A link between issues.
       properties:
         id:
           type: string
           example: abc123
-        name:
-          type: string
-          example: Example Title
-        inward:
-          type: string
-          description: The inward description (e.g., is blocked by).
-          example: example_value
-        outward:
-          type: string
-          description: The outward description (e.g., blocks).
-          example: example_value
         self:
           type: string
           format: uri
           example: https://www.example.com
-    Comment:
+        type:
+          $ref: '#/components/schemas/IssueLinkType'
+        inwardIssue:
+          $ref: '#/components/schemas/IssueRef'
+        outwardIssue:
+          $ref: '#/components/schemas/IssueRef'
+    StatusDetails:
       type: object
-      description: A comment on an issue.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: string
-          example: abc123
-        author:
-          $ref: '#/components/schemas/UserDetails'
-        body:
-          $ref: '#/components/schemas/AtlassianDocumentFormat'
-        renderedBody:
-          type: string
-          description: The rendered version of the comment body in HTML.
-          example: example_value
-        updateAuthor:
-          $ref: '#/components/schemas/UserDetails'
-        created:
-          type: string
-          format: date-time
-          example: '2026-01-15T10:30:00Z'
-        updated:
-          type: string
-          format: date-time
-          example: '2026-01-15T10:30:00Z'
-        visibility:
-          $ref: '#/components/schemas/Visibility'
-        jsdPublic:
-          type: boolean
-          description: Whether the comment is visible in Jira Service Management.
-          example: true
-    Component:
-      type: object
-      description: A project component.
+      description: A status in Jira.
       properties:
         self:
           type: string
@@ -3199,29 +2943,17 @@ components:
           example: abc123
         name:
           type: string
+          description: The name of the status (e.g., To Do, In Progress, Done).
           example: Example Title
         description:
           type: string
           example: A sample description.
-        lead:
-          $ref: '#/components/schemas/UserDetails'
-        assigneeType:
+        iconUrl:
           type: string
-          enum:
-          - PROJECT_DEFAULT
-          - COMPONENT_LEAD
-          - PROJECT_LEAD
-          - UNASSIGNED
-          example: PROJECT_DEFAULT
-        assignee:
-          $ref: '#/components/schemas/UserDetails'
-        project:
-          type: string
-          example: example_value
-        projectId:
-          type: integer
-          format: int64
-          example: '500123'
+          format: uri
+          example: https://www.example.com
+        statusCategory:
+          $ref: '#/components/schemas/StatusCategory'
     CreatedIssue:
       type: object
       description: Details of a newly created issue.
@@ -3248,28 +2980,6 @@ components:
             errorCollection:
               $ref: '#/components/schemas/ErrorCollection'
           example: example_value
-    ProjectRef:
-      type: object
-      description: A reference to a Jira project.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: string
-          example: abc123
-        key:
-          type: string
-          example: example_value
-        name:
-          type: string
-          example: Example Title
-        avatarUrls:
-          $ref: '#/components/schemas/AvatarUrls'
-        projectTypeKey:
-          type: string
-          example: example_value
     Watches:
       type: object
       description: The watchers of an issue.
@@ -3285,131 +2995,6 @@ components:
         isWatching:
           type: boolean
           example: true
-    IssueLink:
-      type: object
-      description: A link between issues.
-      properties:
-        id:
-          type: string
-          example: abc123
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        type:
-          $ref: '#/components/schemas/IssueLinkType'
-        inwardIssue:
-          $ref: '#/components/schemas/IssueRef'
-        outwardIssue:
-          $ref: '#/components/schemas/IssueRef'
-    IssueRef:
-      type: object
-      description: A reference to an issue.
-      properties:
-        id:
-          type: string
-          example: abc123
-        key:
-          type: string
-          example: example_value
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        fields:
-          type: object
-          properties:
-            summary:
-              type: string
-            status:
-              $ref: '#/components/schemas/StatusDetails'
-            priority:
-              $ref: '#/components/schemas/Priority'
-            issuetype:
-              $ref: '#/components/schemas/IssueTypeDetails'
-          example: example_value
-    ChangeHistory:
-      type: object
-      description: A changelog entry.
-      properties:
-        id:
-          type: string
-          example: abc123
-        author:
-          $ref: '#/components/schemas/UserDetails'
-        created:
-          type: string
-          format: date-time
-          example: '2026-01-15T10:30:00Z'
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChangeItem'
-          example: []
-    EntityProperty:
-      type: object
-      description: An entity property (key-value pair).
-      properties:
-        key:
-          type: string
-          description: The property key.
-          example: example_value
-        value:
-          description: The property value (any JSON value).
-          example: example_value
-    IssueCreateRequest:
-      type: object
-      description: Request body for creating an issue.
-      properties:
-        update:
-          type: object
-          description: A map of operations to perform on issue fields. Each key is a field ID and the value is an array of operations.
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/FieldUpdateOperation'
-          example: example_value
-        fields:
-          type: object
-          description: A map of field ID to field value for the issue. Required fields depend on the project and issue type.
-          additionalProperties: true
-          example: example_value
-        transition:
-          $ref: '#/components/schemas/TransitionRef'
-        historyMetadata:
-          type: object
-          description: Metadata about the history entry.
-          additionalProperties: true
-          example: example_value
-        properties:
-          type: array
-          description: Entity properties to set on the issue.
-          items:
-            $ref: '#/components/schemas/EntityProperty'
-          example: []
-      required:
-      - fields
-    PageOfWorklogs:
-      type: object
-      description: A paginated list of worklogs.
-      properties:
-        startAt:
-          type: integer
-          format: int32
-          example: 10
-        maxResults:
-          type: integer
-          format: int32
-          example: 10
-        total:
-          type: integer
-          format: int32
-          example: 10
-        worklogs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Worklog'
-          example: []
     IssueUpdateRequest:
       type: object
       description: Request body for editing an issue.
@@ -3440,125 +3025,6 @@ components:
           items:
             $ref: '#/components/schemas/EntityProperty'
           example: []
-    Transition:
-      type: object
-      description: A workflow transition.
-      properties:
-        id:
-          type: string
-          example: abc123
-        name:
-          type: string
-          example: Example Title
-        to:
-          $ref: '#/components/schemas/StatusDetails'
-        hasScreen:
-          type: boolean
-          example: true
-        isGlobal:
-          type: boolean
-          example: true
-        isInitial:
-          type: boolean
-          example: true
-        isConditional:
-          type: boolean
-          example: true
-        fields:
-          type: object
-          description: Fields available during the transition.
-          additionalProperties: true
-          example: example_value
-    StatusDetails:
-      type: object
-      description: A status in Jira.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: string
-          example: abc123
-        name:
-          type: string
-          description: The name of the status (e.g., To Do, In Progress, Done).
-          example: Example Title
-        description:
-          type: string
-          example: A sample description.
-        iconUrl:
-          type: string
-          format: uri
-          example: https://www.example.com
-        statusCategory:
-          $ref: '#/components/schemas/StatusCategory'
-    IssueBean:
-      type: object
-      description: A Jira issue with all fields and metadata.
-      properties:
-        id:
-          type: string
-          description: The ID of the issue.
-          example: abc123
-        key:
-          type: string
-          description: The key of the issue (e.g., PROJ-123).
-          example: example_value
-        self:
-          type: string
-          format: uri
-          description: The URL of the issue in the REST API.
-          example: https://www.example.com
-        expand:
-          type: string
-          description: The expand options applied to the issue.
-          example: example_value
-        fields:
-          $ref: '#/components/schemas/IssueFields'
-        renderedFields:
-          type: object
-          description: HTML-rendered versions of the issue fields.
-          additionalProperties: true
-          example: example_value
-        names:
-          type: object
-          description: Field name mapping for the issue.
-          additionalProperties:
-            type: string
-          example: example_value
-        schema:
-          type: object
-          description: JSON Schema for each field in the issue.
-          additionalProperties: true
-          example: example_value
-        transitions:
-          type: array
-          description: Transitions available for the issue.
-          items:
-            $ref: '#/components/schemas/Transition'
-          example: []
-        changelog:
-          $ref: '#/components/schemas/Changelog'
-    FieldUpdateOperation:
-      type: object
-      description: An operation to perform on a field value.
-      properties:
-        add:
-          description: Value to add to the field.
-          example: example_value
-        remove:
-          description: Value to remove from the field.
-          example: example_value
-        set:
-          description: Value to set the field to.
-          example: example_value
-        edit:
-          description: Value to edit in the field.
-          example: example_value
-        copy:
-          description: Value to copy to the field.
-          example: example_value
     IssueFields:
       type: object
       description: The fields of a Jira issue.
@@ -3684,6 +3150,912 @@ components:
             $ref: '#/components/schemas/IssueLink'
           example: []
       additionalProperties: true
+    AtlassianDocumentFormat:
+      type: object
+      description: Atlassian Document Format (ADF) representation of rich text content. ADF is a JSON-based format used in Jira Cloud REST API v3 for description, comment, and other rich text fields.
+      required:
+      - type
+      - version
+      - content
+      properties:
+        type:
+          type: string
+          enum:
+          - doc
+          description: The root node type. Always doc.
+          example: doc
+        version:
+          type: integer
+          description: The ADF version. Currently 1.
+          enum:
+          - 1
+          example: 1
+        content:
+          type: array
+          description: The content nodes of the document.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: The node type (e.g., paragraph, heading, bulletList, orderedList, codeBlock, blockquote, table, mediaSingle, rule).
+              content:
+                type: array
+                description: Child content nodes.
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: The inline node type (e.g., text, hardBreak, mention, emoji, inlineCard).
+                    text:
+                      type: string
+                    marks:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            description: The mark type (e.g., strong, em, code, link, underline, strike, textColor).
+                          attrs:
+                            type: object
+                            additionalProperties: true
+                  additionalProperties: true
+              attrs:
+                type: object
+                additionalProperties: true
+            additionalProperties: true
+          example: []
+    Attachment:
+      type: object
+      description: An attachment on an issue.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        filename:
+          type: string
+          example: example_value
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        size:
+          type: integer
+          format: int64
+          example: 10
+        mimeType:
+          type: string
+          example: example_value
+        content:
+          type: string
+          format: uri
+          description: The URL to download the attachment content.
+          example: https://www.example.com
+        thumbnail:
+          type: string
+          format: uri
+          example: https://www.example.com
+    FieldUpdateOperation:
+      type: object
+      description: An operation to perform on a field value.
+      properties:
+        add:
+          description: Value to add to the field.
+          example: example_value
+        remove:
+          description: Value to remove from the field.
+          example: example_value
+        set:
+          description: Value to set the field to.
+          example: example_value
+        edit:
+          description: Value to edit in the field.
+          example: example_value
+        copy:
+          description: Value to copy to the field.
+          example: example_value
+    Changelog:
+      type: object
+      description: A paginated list of changelogs.
+      properties:
+        startAt:
+          type: integer
+          format: int32
+          example: 10
+        maxResults:
+          type: integer
+          format: int32
+          example: 10
+        total:
+          type: integer
+          format: int32
+          example: 10
+        histories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChangeHistory'
+          example: []
+    PageOfWorklogs:
+      type: object
+      description: A paginated list of worklogs.
+      properties:
+        startAt:
+          type: integer
+          format: int32
+          example: 10
+        maxResults:
+          type: integer
+          format: int32
+          example: 10
+        total:
+          type: integer
+          format: int32
+          example: 10
+        worklogs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Worklog'
+          example: []
+    Scope:
+      type: object
+      description: The scope of the issue type (project or global).
+      properties:
+        type:
+          type: string
+          enum:
+          - PROJECT
+          - TEMPLATE
+          example: PROJECT
+        project:
+          $ref: '#/components/schemas/ProjectRef'
+    Visibility:
+      type: object
+      description: The visibility restrictions for a comment.
+      properties:
+        type:
+          type: string
+          enum:
+          - group
+          - role
+          example: group
+        value:
+          type: string
+          description: The name of the group or role to restrict visibility to.
+          example: example_value
+        identifier:
+          type: string
+          description: The ID of the group or role.
+          example: example_value
+    Transition:
+      type: object
+      description: A workflow transition.
+      properties:
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        to:
+          $ref: '#/components/schemas/StatusDetails'
+        hasScreen:
+          type: boolean
+          example: true
+        isGlobal:
+          type: boolean
+          example: true
+        isInitial:
+          type: boolean
+          example: true
+        isConditional:
+          type: boolean
+          example: true
+        fields:
+          type: object
+          description: Fields available during the transition.
+          additionalProperties: true
+          example: example_value
+    IssueRef:
+      type: object
+      description: A reference to an issue.
+      properties:
+        id:
+          type: string
+          example: abc123
+        key:
+          type: string
+          example: example_value
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        fields:
+          type: object
+          properties:
+            summary:
+              type: string
+            status:
+              $ref: '#/components/schemas/StatusDetails'
+            priority:
+              $ref: '#/components/schemas/Priority'
+            issuetype:
+              $ref: '#/components/schemas/IssueTypeDetails'
+          example: example_value
+    Worklog:
+      type: object
+      description: A worklog entry.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        updateAuthor:
+          $ref: '#/components/schemas/UserDetails'
+        comment:
+          $ref: '#/components/schemas/AtlassianDocumentFormat'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        updated:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        started:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        timeSpent:
+          type: string
+          description: The time spent on the worklog (e.g., 3h 20m).
+          example: example_value
+        timeSpentSeconds:
+          type: integer
+          format: int64
+          example: 10
+    AvatarUrls:
+      type: object
+      description: Avatar URLs in multiple sizes.
+      properties:
+        16x16:
+          type: string
+          format: uri
+          example: https://www.example.com
+        24x24:
+          type: string
+          format: uri
+          example: https://www.example.com
+        32x32:
+          type: string
+          format: uri
+          example: https://www.example.com
+        48x48:
+          type: string
+          format: uri
+          example: https://www.example.com
+    IssueCreateRequest:
+      type: object
+      description: Request body for creating an issue.
+      properties:
+        update:
+          type: object
+          description: A map of operations to perform on issue fields. Each key is a field ID and the value is an array of operations.
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/FieldUpdateOperation'
+          example: example_value
+        fields:
+          type: object
+          description: A map of field ID to field value for the issue. Required fields depend on the project and issue type.
+          additionalProperties: true
+          example: example_value
+        transition:
+          $ref: '#/components/schemas/TransitionRef'
+        historyMetadata:
+          type: object
+          description: Metadata about the history entry.
+          additionalProperties: true
+          example: example_value
+        properties:
+          type: array
+          description: Entity properties to set on the issue.
+          items:
+            $ref: '#/components/schemas/EntityProperty'
+          example: []
+      required:
+      - fields
+    UserDetails:
+      type: object
+      description: A Jira user.
+      properties:
+        self:
+          type: string
+          format: uri
+          description: The URL of the user in the REST API.
+          example: https://www.example.com
+        accountId:
+          type: string
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products.
+          maxLength: 128
+          example: '500123'
+        emailAddress:
+          type: string
+          format: email
+          description: The email address of the user (may not be available depending on privacy settings).
+          example: user@example.com
+        displayName:
+          type: string
+          description: The display name of the user.
+          example: example_value
+        active:
+          type: boolean
+          description: Whether the user account is active.
+          example: true
+        timeZone:
+          type: string
+          description: The time zone of the user.
+          example: example_value
+        accountType:
+          type: string
+          description: The type of account.
+          enum:
+          - atlassian
+          - app
+          - customer
+          example: atlassian
+        avatarUrls:
+          $ref: '#/components/schemas/AvatarUrls'
+    Priority:
+      type: object
+      description: An issue priority.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the priority (e.g., Highest, High, Medium, Low, Lowest).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          example: https://www.example.com
+        statusColor:
+          type: string
+          description: The color associated with the priority.
+          example: example_value
+    Resolution:
+      type: object
+      description: An issue resolution.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the resolution (e.g., Fixed, Won't Fix, Duplicate).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+    PageOfComments:
+      type: object
+      description: A paginated list of comments.
+      properties:
+        startAt:
+          type: integer
+          format: int32
+          example: 10
+        maxResults:
+          type: integer
+          format: int32
+          example: 10
+        total:
+          type: integer
+          format: int32
+          example: 10
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          example: []
+    IssueBean:
+      type: object
+      description: A Jira issue with all fields and metadata.
+      properties:
+        id:
+          type: string
+          description: The ID of the issue.
+          example: abc123
+        key:
+          type: string
+          description: The key of the issue (e.g., PROJ-123).
+          example: example_value
+        self:
+          type: string
+          format: uri
+          description: The URL of the issue in the REST API.
+          example: https://www.example.com
+        expand:
+          type: string
+          description: The expand options applied to the issue.
+          example: example_value
+        fields:
+          $ref: '#/components/schemas/IssueFields'
+        renderedFields:
+          type: object
+          description: HTML-rendered versions of the issue fields.
+          additionalProperties: true
+          example: example_value
+        names:
+          type: object
+          description: Field name mapping for the issue.
+          additionalProperties:
+            type: string
+          example: example_value
+        schema:
+          type: object
+          description: JSON Schema for each field in the issue.
+          additionalProperties: true
+          example: example_value
+        transitions:
+          type: array
+          description: Transitions available for the issue.
+          items:
+            $ref: '#/components/schemas/Transition'
+          example: []
+        changelog:
+          $ref: '#/components/schemas/Changelog'
+    ChangeHistory:
+      type: object
+      description: A changelog entry.
+      properties:
+        id:
+          type: string
+          example: abc123
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChangeItem'
+          example: []
+    Comment:
+      type: object
+      description: A comment on an issue.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        author:
+          $ref: '#/components/schemas/UserDetails'
+        body:
+          $ref: '#/components/schemas/AtlassianDocumentFormat'
+        renderedBody:
+          type: string
+          description: The rendered version of the comment body in HTML.
+          example: example_value
+        updateAuthor:
+          $ref: '#/components/schemas/UserDetails'
+        created:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        updated:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00Z'
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+        jsdPublic:
+          type: boolean
+          description: Whether the comment is visible in Jira Service Management.
+          example: true
+    BulkIssueResults:
+      additionalProperties: false
+      description: The list of requested issues & fields.
+      properties:
+        issueErrors:
+          description: When Jira can't return an issue enumerated in a request due to a retriable error or payload constraint, we'll return the respective issue ID with a corresponding error message. This list is empty when there are no errors Issues which aren't found or that the user doesn't have permission to view won't be returned in this list.
+          items:
+            $ref: '#/components/schemas/IssueError'
+          readOnly: true
+          type: array
+        issues:
+          description: The list of issues.
+          items:
+            $ref: '#/components/schemas/IssueBean_2'
+          readOnly: true
+          type: array
+      type: object
+      xml:
+        name: issue
+    SimpleListWrapperApplicationRole:
+      additionalProperties: false
+      properties:
+        callback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        items:
+          items:
+            $ref: '#/components/schemas/ApplicationRole'
+          type: array
+        max-results:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+            name: max-results
+        pagingCallback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        size:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+      type: object
+      xml:
+        name: list
+    JsonTypeBean:
+      additionalProperties: false
+      description: The schema of a field.
+      properties:
+        configuration:
+          additionalProperties:
+            readOnly: true
+          description: If the field is a custom field, the configuration of the field.
+          readOnly: true
+          type: object
+        custom:
+          description: If the field is a custom field, the URI of the field.
+          readOnly: true
+          type: string
+        customId:
+          description: If the field is a custom field, the custom ID of the field.
+          format: int64
+          readOnly: true
+          type: integer
+        items:
+          description: When the data type is an array, the name of the field items within the array.
+          readOnly: true
+          type: string
+        system:
+          description: If the field is a system field, the name of the field.
+          readOnly: true
+          type: string
+        type:
+          description: The data type of the field.
+          readOnly: true
+          type: string
+      required:
+      - type
+      type: object
+    IssueLimitReportResponseBean:
+      additionalProperties: false
+      properties:
+        entitiesBreachingLimit:
+          additionalProperties:
+            additionalProperties:
+              items:
+                format: int64
+                type: integer
+              type: array
+            type: object
+          description: For each field, the ids of the individual entities breaching the limit, grouped by the id or key of the issue they belong to. Fields that hold a single value, such as description and environment, map to an empty list because the issue itself identifies the breaching content
+          type: object
+        issuesApproachingLimit:
+          additionalProperties:
+            additionalProperties:
+              format: int64
+              type: integer
+            type: object
+          description: A list of ids of issues approaching the limit and their field count
+          type: object
+        issuesBreachingLimit:
+          additionalProperties:
+            additionalProperties:
+              format: int64
+              type: integer
+            type: object
+          description: A list of ids of issues breaching the limit and their field count
+          type: object
+        limits:
+          additionalProperties:
+            format: int32
+            type: integer
+          description: The fields and their defined limits
+          type: object
+      type: object
+    BulkChangelogResponseBean:
+      additionalProperties: false
+      description: A page of changelogs which is designed to handle multiple issues
+      properties:
+        issueChangeLogs:
+          description: The list of issues changelogs.
+          items:
+            $ref: '#/components/schemas/IssueChangeLog'
+          readOnly: true
+          type: array
+        nextPageToken:
+          description: Continuation token to fetch the next page. If this result represents the last or the only page, this token will be null.
+          readOnly: true
+          type: string
+      type: object
+    ArchivedIssuesFilterRequest:
+      additionalProperties: true
+      description: Details of a filter for exporting archived issues.
+      properties:
+        archivedBy:
+          description: List archived issues archived by a specified account ID.
+          items:
+            type: string
+          type: array
+        archivedDateRange:
+          $ref: '#/components/schemas/DateRangeFilterRequest'
+        issueTypes:
+          description: List archived issues with a specified issue type ID.
+          items:
+            type: string
+          type: array
+        projects:
+          description: List archived issues with a specified project key.
+          items:
+            type: string
+          type: array
+        reporters:
+          description: List archived issues where the reporter is a specified account ID.
+          items:
+            type: string
+          type: array
+      type: object
+    BulkChangelogRequestBean:
+      additionalProperties: false
+      description: Request bean for bulk changelog retrieval
+      properties:
+        fieldIds:
+          description: List of field IDs to filter changelogs
+          items:
+            description: List of field IDs to filter changelogs
+            type: string
+          maxItems: 10
+          minItems: 0
+          type: array
+          uniqueItems: true
+        issueIdsOrKeys:
+          description: List of issue IDs/keys to fetch changelogs for
+          items:
+            description: List of issue IDs/keys to fetch changelogs for
+            type: string
+          maxItems: 1000
+          minItems: 1
+          type: array
+        maxResults:
+          default: 1000
+          description: The maximum number of items to return per page
+          format: int32
+          maximum: 10000
+          minimum: 1
+          type: integer
+        nextPageToken:
+          description: The cursor for pagination
+          type: string
+      required:
+      - issueIdsOrKeys
+      type: object
+    DateRangeFilterRequest:
+      additionalProperties: false
+      description: List issues archived within a specified date range.
+      properties:
+        dateAfter:
+          description: List issues archived after a specified date, passed in the YYYY-MM-DD format.
+          type: string
+        dateBefore:
+          description: List issues archived before a specified date provided in the YYYY-MM-DD format.
+          type: string
+      required:
+      - dateAfter
+      - dateBefore
+      type: object
+    ListWrapperCallbackGroupName:
+      additionalProperties: false
+      type: object
+    FieldMetadata:
+      additionalProperties: false
+      description: The metadata describing an issue field.
+      properties:
+        allowedValues:
+          description: The list of values allowed in the field.
+          items:
+            readOnly: true
+          readOnly: true
+          type: array
+        autoCompleteUrl:
+          description: The URL that can be used to automatically complete the field.
+          readOnly: true
+          type: string
+        configuration:
+          additionalProperties:
+            readOnly: true
+          description: The configuration properties.
+          readOnly: true
+          type: object
+        defaultValue:
+          description: The default value of the field.
+          readOnly: true
+        hasDefaultValue:
+          description: Whether the field has a default value.
+          readOnly: true
+          type: boolean
+        key:
+          description: The key of the field.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the field.
+          readOnly: true
+          type: string
+        operations:
+          description: The list of operations that can be performed on the field.
+          items:
+            readOnly: true
+            type: string
+          readOnly: true
+          type: array
+        required:
+          description: Whether the field is required.
+          readOnly: true
+          type: boolean
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/JsonTypeBean'
+          description: The data type of the field.
+          readOnly: true
+      required:
+      - key
+      - name
+      - operations
+      - required
+      - schema
+      type: object
+      xml:
+        name: availableField
+    Operations:
+      additionalProperties: true
+      description: Details of the operations that can be performed on the issue.
+      properties:
+        linkGroups:
+          description: Details of the link groups defining issue operations.
+          items:
+            $ref: '#/components/schemas/LinkGroup'
+          readOnly: true
+          type: array
+      type: object
+    EntityProperty_2:
+      additionalProperties: false
+      description: An entity property, for more information see [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).
+      properties:
+        key:
+          description: The key of the property. Required on create and update.
+          type: string
+        value:
+          description: The value of the property. Required on create and update.
+      type: object
+    CreatedIssues:
+      additionalProperties: false
+      description: Details about the issues created and the errors for requests that failed.
+      properties:
+        errors:
+          description: Error details for failed issue creation requests.
+          items:
+            $ref: '#/components/schemas/BulkOperationErrorResult'
+          readOnly: true
+          type: array
+        issues:
+          description: Details of the issues created.
+          items:
+            $ref: '#/components/schemas/CreatedIssue_2'
+          readOnly: true
+          type: array
+      type: object
+    IssueTransition:
+      additionalProperties: true
+      description: Details of an issue transition.
+      properties:
+        expand:
+          description: Expand options that include additional transition details in the response.
+          readOnly: true
+          type: string
+        fields:
+          additionalProperties:
+            $ref: '#/components/schemas/FieldMetadata'
+          description: Details of the fields associated with the issue transition screen. Use this information to populate `fields` and `update` in a transition request.
+          readOnly: true
+          type: object
+        hasScreen:
+          description: Whether there is a screen associated with the issue transition.
+          readOnly: true
+          type: boolean
+        id:
+          description: The ID of the issue transition. Required when specifying a transition to undertake.
+          type: string
+        isAvailable:
+          description: Whether the transition is available to be performed.
+          readOnly: true
+          type: boolean
+        isConditional:
+          description: Whether the issue has to meet criteria before the issue transition is applied.
+          readOnly: true
+          type: boolean
+        isGlobal:
+          description: Whether the issue transition is global, that is, the transition is applied to issues regardless of their status.
+          readOnly: true
+          type: boolean
+        isInitial:
+          description: Whether this is the initial issue transition for the workflow.
+          readOnly: true
+          type: boolean
+        looped:
+          type: boolean
+        name:
+          description: The name of the issue transition.
+          readOnly: true
+          type: string
+        to:
+          allOf:
+          - $ref: '#/components/schemas/StatusDetails_2'
+          description: Details of the issue status after the transition.
+          readOnly: true
+      type: object
+    ErrorCollection_2:
+      additionalProperties: false
+      description: Error messages from an operation.
+      properties:
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
+          format: int32
+          type: integer
+      type: object
     SimpleLink:
       additionalProperties: false
       description: Details about the operations available in this version.
@@ -3706,66 +4078,11 @@ components:
       type: object
       xml:
         name: link
-    IssueTypeIssueCreateMetadata:
+    ArchiveIssueAsyncRequest:
       additionalProperties: false
-      description: Details of the issue creation metadata for an issue type.
       properties:
-        avatarId:
-          description: The ID of the issue type's avatar.
-          format: int64
-          readOnly: true
-          type: integer
-        description:
-          description: The description of the issue type.
-          readOnly: true
+        jql:
           type: string
-        entityId:
-          description: Unique ID for next-gen projects.
-          format: uuid
-          readOnly: true
-          type: string
-        expand:
-          description: Expand options that include additional issue type metadata details in the response.
-          readOnly: true
-          type: string
-          xml:
-            attribute: true
-        fields:
-          additionalProperties:
-            $ref: '#/components/schemas/FieldMetadata'
-          description: List of the fields available when creating an issue for the issue type.
-          readOnly: true
-          type: object
-        hierarchyLevel:
-          description: Hierarchy level of the issue type.
-          format: int32
-          readOnly: true
-          type: integer
-        iconUrl:
-          description: The URL of the issue type's avatar.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the issue type.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the issue type.
-          readOnly: true
-          type: string
-        scope:
-          allOf:
-          - $ref: '#/components/schemas/Scope_2'
-          description: Details of the next-gen projects the issue type is available in.
-          readOnly: true
-        self:
-          description: The URL of these issue type details.
-          readOnly: true
-          type: string
-        subtask:
-          description: Whether this issue type is used to create subtasks.
-          readOnly: true
-          type: boolean
       type: object
     ChangeDetails:
       additionalProperties: false
@@ -3799,6 +4116,231 @@ components:
           description: The details of the new value as a string.
           readOnly: true
           type: string
+      type: object
+    StatusCategory_2:
+      additionalProperties: true
+      description: A status category.
+      properties:
+        colorName:
+          description: The name of the color used to represent the status category.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the status category.
+          format: int64
+          readOnly: true
+          type: integer
+        key:
+          description: The key of the status category.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the status category.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the status category.
+          readOnly: true
+          type: string
+      type: object
+    FieldCreateMetadata:
+      additionalProperties: false
+      description: The metadata describing an issue field for createmeta.
+      properties:
+        allowedValues:
+          description: The list of values allowed in the field.
+          items:
+            readOnly: true
+          readOnly: true
+          type: array
+        autoCompleteUrl:
+          description: The URL that can be used to automatically complete the field.
+          readOnly: true
+          type: string
+        configuration:
+          additionalProperties:
+            readOnly: true
+          description: The configuration properties.
+          readOnly: true
+          type: object
+        defaultValue:
+          description: The default value of the field.
+          readOnly: true
+        fieldId:
+          description: The field id.
+          readOnly: true
+          type: string
+        hasDefaultValue:
+          description: Whether the field has a default value.
+          readOnly: true
+          type: boolean
+        key:
+          description: The key of the field.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the field.
+          readOnly: true
+          type: string
+        operations:
+          description: The list of operations that can be performed on the field.
+          items:
+            readOnly: true
+            type: string
+          readOnly: true
+          type: array
+        required:
+          description: Whether the field is required.
+          readOnly: true
+          type: boolean
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/JsonTypeBean'
+          description: The data type of the field.
+          readOnly: true
+      required:
+      - fieldId
+      - key
+      - name
+      - operations
+      - required
+      - schema
+      type: object
+      xml:
+        name: availableField
+    Errors:
+      additionalProperties: false
+      properties:
+        issueIsSubtask:
+          $ref: '#/components/schemas/Error'
+        issuesInArchivedProjects:
+          $ref: '#/components/schemas/Error'
+        issuesInUnlicensedProjects:
+          $ref: '#/components/schemas/Error'
+        issuesNotFound:
+          $ref: '#/components/schemas/Error'
+        userDoesNotHavePermission:
+          $ref: '#/components/schemas/Error'
+      type: object
+    Transitions:
+      additionalProperties: false
+      description: List of issue transitions.
+      properties:
+        expand:
+          description: Expand options that include additional transitions details in the response.
+          readOnly: true
+          type: string
+          xml:
+            attribute: true
+        transitions:
+          description: List of issue transitions.
+          items:
+            $ref: '#/components/schemas/IssueTransition'
+          readOnly: true
+          type: array
+      type: object
+    RestrictedPermission:
+      additionalProperties: true
+      description: Details of the permission.
+      properties:
+        id:
+          description: The ID of the permission. Either `id` or `key` must be specified. Use [Get all permissions](#api-rest-api-3-permissions-get) to get the list of permissions.
+          type: string
+        key:
+          description: The key of the permission. Either `id` or `key` must be specified. Use [Get all permissions](#api-rest-api-3-permissions-get) to get the list of permissions.
+          type: string
+      type: object
+    StatusDetails_2:
+      additionalProperties: true
+      description: A status.
+      properties:
+        description:
+          description: The description of the status.
+          readOnly: true
+          type: string
+        iconUrl:
+          description: The URL of the icon used to represent the status.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the status.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the status.
+          readOnly: true
+          type: string
+        scope:
+          allOf:
+          - $ref: '#/components/schemas/Scope_2'
+          description: The scope of the field.
+          readOnly: true
+        self:
+          description: The URL of the status.
+          readOnly: true
+          type: string
+        statusCategory:
+          allOf:
+          - $ref: '#/components/schemas/StatusCategory_2'
+          description: The category assigned to the status.
+          readOnly: true
+      type: object
+    SimpleListWrapperGroupName:
+      additionalProperties: false
+      properties:
+        callback:
+          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
+        items:
+          items:
+            $ref: '#/components/schemas/GroupName'
+          type: array
+        max-results:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+            name: max-results
+        pagingCallback:
+          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
+        size:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+      type: object
+      xml:
+        name: list
+    NotificationRecipients:
+      additionalProperties: true
+      description: Details of the users and groups to receive the notification.
+      properties:
+        assignee:
+          description: Whether the notification should be sent to the issue's assignees.
+          type: boolean
+        groupIds:
+          description: List of groupIds to receive the notification.
+          items:
+            type: string
+          type: array
+        groups:
+          description: List of groups to receive the notification.
+          items:
+            $ref: '#/components/schemas/GroupName'
+          type: array
+        reporter:
+          description: Whether the notification should be sent to the issue's reporter.
+          type: boolean
+        users:
+          description: List of users to receive the notification.
+          items:
+            $ref: '#/components/schemas/UserDetails_2'
+          type: array
+        voters:
+          description: Whether the notification should be sent to the issue's voters.
+          type: boolean
+        watchers:
+          description: Whether the notification should be sent to the issue's watchers.
+          type: boolean
       type: object
     User:
       additionalProperties: false
@@ -3880,45 +4422,72 @@ components:
       type: object
       xml:
         name: user
-    ListWrapperCallbackGroupName:
-      additionalProperties: false
-      type: object
-    ArchiveIssueAsyncRequest:
-      additionalProperties: false
-      properties:
-        jql:
-          type: string
-      type: object
-    Scope_2:
+    IssueUpdateDetails:
       additionalProperties: true
-      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
+      description: Details of an issue update request.
       properties:
-        project:
+        fields:
+          additionalProperties: {}
+          description: List of issue screen fields to update, specifying the sub-field to update and its value for each field. This field provides a straightforward option when setting a sub-field. When multiple sub-fields or other operations are required, use `update`. Fields included in here cannot be included in `update`.
+          type: object
+        historyMetadata:
           allOf:
-          - $ref: '#/components/schemas/ProjectDetails'
-          description: The project the item has scope in.
-          readOnly: true
-        type:
-          description: The type of scope.
-          enum:
-          - PROJECT
-          - TEMPLATE
+          - $ref: '#/components/schemas/HistoryMetadata'
+          description: Additional issue history details.
+        properties:
+          description: Details of issue properties to be add or update.
+          items:
+            $ref: '#/components/schemas/EntityProperty_2'
+          type: array
+        transition:
+          allOf:
+          - $ref: '#/components/schemas/IssueTransition'
+          description: Details of a transition. Required when performing a transition, optional when creating or editing an issue.
+        update:
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/FieldUpdateOperation_2'
+            type: array
+          description: A Map containing the field field name and a list of operations to perform on the issue screen field. Note that fields included in here cannot be included in `fields`.
+          type: object
+      type: object
+    NestedResponse:
+      additionalProperties: false
+      properties:
+        errorCollection:
+          $ref: '#/components/schemas/ErrorCollection_2'
+        status:
+          format: int32
+          type: integer
+        warningCollection:
+          $ref: '#/components/schemas/WarningCollection'
+      type: object
+    CreatedIssue_2:
+      additionalProperties: false
+      description: Details about a created issue or subtask.
+      properties:
+        id:
+          description: The ID of the created issue or subtask.
           readOnly: true
           type: string
-      type: object
-    ListWrapperCallbackApplicationRole:
-      additionalProperties: false
-      type: object
-    Operations:
-      additionalProperties: true
-      description: Details of the operations that can be performed on the issue.
-      properties:
-        linkGroups:
-          description: Details of the link groups defining issue operations.
-          items:
-            $ref: '#/components/schemas/LinkGroup'
+        key:
+          description: The key of the created issue or subtask.
           readOnly: true
-          type: array
+          type: string
+        self:
+          description: The URL of the created issue or subtask.
+          readOnly: true
+          type: string
+        transition:
+          allOf:
+          - $ref: '#/components/schemas/NestedResponse'
+          description: The response code and messages related to any requested transition.
+          readOnly: true
+        watchers:
+          allOf:
+          - $ref: '#/components/schemas/NestedResponse'
+          description: The response code and messages related to any requested watchers.
+          readOnly: true
       type: object
     IssueChangeLog:
       additionalProperties: false
@@ -3934,6 +4503,283 @@ components:
           description: The ID of the issue.
           readOnly: true
           type: string
+      type: object
+    BulkFetchIssueRequestBean:
+      additionalProperties: false
+      properties:
+        expand:
+          description: "Use [expand](#expansion) to include additional information about issues in the response. Note that, unlike the majority of instances where `expand` is specified, `expand` is defined as a list of values. The expand options are:\n\n *  `renderedFields` Returns field values rendered in HTML format.\n *  `names` Returns the display name of each field.\n *  `schema` Returns the schema describing a field type.\n *  `transitions` Returns all possible transitions for the issue.\n *  `operations` Returns all possible operations for the issue.\n *  `editmeta` Returns information about how each field can be edited.\n *  `changelog` Returns a list of recent updates to an issue, sorted by date, starting from the most recent. This returns a maximum of 40 changelogs. If you require more, please refer to [Bulk fetch changelogs](#api-rest-api-3-changelog-bulkfetch-post).\n *  `versionedRepresentations` Instead of `fields`, returns `versionedRepresentations` a JSON array containing each version of a field's value, with the highest numbered item representing the most recent version.\n\nTo request up to 1000 issues in a single call, do not include `changelog`, `editmeta`, `operations`, `renderedFields`, `transitions`, or `versionedRepresentations` in `expand`. Requests that include any of these can include at most 100 issues; larger requests are rejected with a 400 error."
+          items:
+            type: string
+          type: array
+        fields:
+          description: "A list of fields to return for each issue, use it to retrieve a subset of fields. This parameter accepts a comma-separated list. Expand options include:\n\n *  `*all` Returns all fields.\n *  `*navigable` Returns navigable fields.\n *  Any issue field, prefixed with a minus to exclude.\n\nThe default is `*navigable`.\n\nExamples:\n\n *  `summary,comment` Returns the summary and comments fields only.\n *  `-description` Returns all navigable (default) fields except description.\n *  `*all,-comment` Returns all fields except comments.\n\nMultiple `fields` parameters can be included in a request.\n\nNote: All navigable fields are returned by default. This differs from [GET issue](#api-rest-api-3-issue-issueIdOrKey-get) where the default is all fields.\n\nTo request up to 1000 issues in a single call, explicitly list the fields you need: at least one field must be a positive include (a request containing only exclusions is not eligible), the `*all` and `*navigable` wildcards and the default navigable field set are not eligible for the higher limit, no more than 100 fields may be listed, and none of the included fields returns multiple values (for example `comment`, `worklog`, or `attachment`). Requests that do not meet these conditions can include at most 100 issues; larger requests are rejected with a 400 error."
+          items:
+            type: string
+          type: array
+        fieldsByKeys:
+          description: Reference fields by their key (rather than ID). The default is `false`.
+          type: boolean
+        issueIdsOrKeys:
+          description: An array of issue IDs or issue keys to fetch. You can mix issue IDs and keys in the same query. You can request up to 100 issues per call. Requests can include up to 1000 issues per call when they meet all of the conditions described for the `fields` and `expand` parameters. Requests that exceed the applicable limit are rejected with a 400 error.
+          items:
+            type: string
+          type: array
+        properties:
+          description: A list of issue property keys of issue properties to be included in the results. A maximum of 5 issue property keys can be specified.
+          items:
+            type: string
+          type: array
+      required:
+      - issueIdsOrKeys
+      type: object
+    IssueCreateMetadata:
+      additionalProperties: false
+      description: The wrapper for the issue creation metadata for a list of projects.
+      properties:
+        expand:
+          description: Expand options that include additional project details in the response.
+          readOnly: true
+          type: string
+          xml:
+            attribute: true
+        projects:
+          description: List of projects and their issue creation metadata.
+          items:
+            $ref: '#/components/schemas/ProjectIssueCreateMetadata'
+          readOnly: true
+          type: array
+      type: object
+    WarningCollection:
+      additionalProperties: false
+      properties:
+        warnings:
+          items:
+            type: string
+          type: array
+      type: object
+    Notification:
+      additionalProperties: true
+      description: Details about a notification.
+      properties:
+        htmlBody:
+          description: The HTML body of the email notification for the issue.
+          type: string
+        restrict:
+          allOf:
+          - $ref: '#/components/schemas/NotificationRecipientsRestrictions'
+          description: Restricts the notifications to users with the specified permissions.
+        subject:
+          description: The subject of the email notification for the issue. If this is not specified, then the subject is set to the issue key and summary.
+          type: string
+        textBody:
+          description: The plain text body of the email notification for the issue.
+          type: string
+        to:
+          allOf:
+          - $ref: '#/components/schemas/NotificationRecipients'
+          description: The recipients of the email notification for the issue.
+      type: object
+    FieldUpdateOperation_2:
+      additionalProperties: false
+      description: Details of an operation to perform on a field.
+      properties:
+        add:
+          description: The value to add to the field.
+          example: triaged
+        copy:
+          description: The field value to copy from another issue.
+          example:
+            issuelinks:
+              sourceIssues:
+              - key: FP-5
+        edit:
+          description: The value to edit in the field.
+          example:
+            originalEstimate: 1w 1d
+            remainingEstimate: 4d
+        remove:
+          description: The value to removed from the field.
+          example: blocker
+        set:
+          description: The value to set in the field.
+          example: A new summary
+      type: object
+    ExportArchivedIssuesTaskProgressResponse:
+      additionalProperties: false
+      description: The response for status request for a running/completed export task.
+      properties:
+        fileUrl:
+          type: string
+        payload:
+          type: string
+        progress:
+          format: int64
+          type: integer
+        status:
+          type: string
+        submittedTime:
+          format: date-time
+          type: string
+        taskId:
+          type: string
+      type: object
+    IssueUpdateMetadata:
+      description: A list of editable field details.
+      properties:
+        fields:
+          additionalProperties:
+            $ref: '#/components/schemas/FieldMetadata'
+          readOnly: true
+          type: object
+      type: object
+    IssueArchivalSyncRequest:
+      additionalProperties: false
+      description: List of Issue Ids Or Keys that are to be archived or unarchived
+      properties:
+        issueIdsOrKeys:
+          items:
+            type: string
+          type: array
+      type: object
+    PageBeanChangelog:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/Changelog_2'
+          readOnly: true
+          type: array
+      type: object
+    ProjectIssueCreateMetadata:
+      additionalProperties: false
+      description: Details of the issue creation metadata for a project.
+      properties:
+        avatarUrls:
+          allOf:
+          - $ref: '#/components/schemas/AvatarUrlsBean'
+          description: List of the project's avatars, returning the avatar size and associated URL.
+          readOnly: true
+        expand:
+          description: Expand options that include additional project issue create metadata details in the response.
+          readOnly: true
+          type: string
+          xml:
+            attribute: true
+        id:
+          description: The ID of the project.
+          readOnly: true
+          type: string
+        issuetypes:
+          description: List of the issue types supported by the project.
+          items:
+            $ref: '#/components/schemas/IssueTypeIssueCreateMetadata'
+          readOnly: true
+          type: array
+        key:
+          description: The key of the project.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the project.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the project.
+          readOnly: true
+          type: string
+      type: object
+    Changelog_2:
+      additionalProperties: false
+      description: A log of changes made to issue fields. Changelogs related to workflow associations are currently being deprecated.
+      properties:
+        author:
+          allOf:
+          - $ref: '#/components/schemas/UserDetails_2'
+          description: The user who made the change.
+          readOnly: true
+        created:
+          description: The date on which the change took place.
+          format: date-time
+          readOnly: true
+          type: string
+        historyMetadata:
+          allOf:
+          - $ref: '#/components/schemas/HistoryMetadata'
+          description: The history metadata associated with the changed.
+          readOnly: true
+        id:
+          description: The ID of the changelog.
+          readOnly: true
+          type: string
+        items:
+          description: The list of items changed.
+          items:
+            $ref: '#/components/schemas/ChangeDetails'
+          readOnly: true
+          type: array
+      type: object
+    Error:
+      additionalProperties: false
+      properties:
+        count:
+          format: int64
+          type: integer
+        issueIdsOrKeys:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        message:
+          type: string
+      type: object
+    ListWrapperCallbackApplicationRole:
+      additionalProperties: false
+      type: object
+    IssueChangelogIds:
+      additionalProperties: false
+      description: A list of changelog IDs.
+      properties:
+        changelogIds:
+          description: The list of changelog IDs.
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+      required:
+      - changelogIds
       type: object
     AvatarUrlsBean:
       additionalProperties: false
@@ -3954,111 +4800,6 @@ components:
           description: The URL of the item's 48x48 pixel avatar.
           format: uri
           type: string
-      type: object
-    IssueLimitReportResponseBean:
-      additionalProperties: false
-      properties:
-        entitiesBreachingLimit:
-          additionalProperties:
-            additionalProperties:
-              items:
-                format: int64
-                type: integer
-              type: array
-            type: object
-          description: For each field, the ids of the individual entities breaching the limit, grouped by the id or key of the issue they belong to. Fields that hold a single value, such as description and environment, map to an empty list because the issue itself identifies the breaching content
-          type: object
-        issuesApproachingLimit:
-          additionalProperties:
-            additionalProperties:
-              format: int64
-              type: integer
-            type: object
-          description: A list of ids of issues approaching the limit and their field count
-          type: object
-        issuesBreachingLimit:
-          additionalProperties:
-            additionalProperties:
-              format: int64
-              type: integer
-            type: object
-          description: A list of ids of issues breaching the limit and their field count
-          type: object
-        limits:
-          additionalProperties:
-            format: int32
-            type: integer
-          description: The fields and their defined limits
-          type: object
-      type: object
-    StatusCategory_2:
-      additionalProperties: true
-      description: A status category.
-      properties:
-        colorName:
-          description: The name of the color used to represent the status category.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the status category.
-          format: int64
-          readOnly: true
-          type: integer
-        key:
-          description: The key of the status category.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the status category.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the status category.
-          readOnly: true
-          type: string
-      type: object
-    NotificationRecipientsRestrictions:
-      additionalProperties: false
-      description: Details of the group membership or permissions needed to receive the notification.
-      properties:
-        groupIds:
-          description: List of groupId memberships required to receive the notification.
-          items:
-            type: string
-          type: array
-        groups:
-          description: List of group memberships required to receive the notification.
-          items:
-            $ref: '#/components/schemas/GroupName'
-          type: array
-        permissions:
-          description: List of permissions required to receive the notification.
-          items:
-            $ref: '#/components/schemas/RestrictedPermission'
-          type: array
-      type: object
-    IssueEvent:
-      additionalProperties: false
-      description: Details about an issue event.
-      properties:
-        id:
-          description: The ID of the event.
-          format: int64
-          readOnly: true
-          type: integer
-        name:
-          description: The name of the event.
-          readOnly: true
-          type: string
-      type: object
-    IssueUpdateMetadata:
-      description: A list of editable field details.
-      properties:
-        fields:
-          additionalProperties:
-            $ref: '#/components/schemas/FieldMetadata'
-          readOnly: true
-          type: object
       type: object
     LinkGroup:
       additionalProperties: false
@@ -4081,6 +4822,309 @@ components:
         weight:
           format: int32
           type: integer
+      type: object
+    IssuesUpdateBean:
+      additionalProperties: true
+      properties:
+        issueUpdates:
+          items:
+            $ref: '#/components/schemas/IssueUpdateDetails'
+          type: array
+      type: object
+    IssueError:
+      additionalProperties: false
+      description: Describes the error that occurred when retrieving data for a particular issue.
+      properties:
+        errorMessage:
+          description: The error that occurred when fetching this issue.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the issue.
+          readOnly: true
+          type: string
+      type: object
+    IncludedFields:
+      additionalProperties: false
+      properties:
+        actuallyIncluded:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        excluded:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        included:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    IssueArchivalSyncResponse:
+      additionalProperties: false
+      description: Number of archived/unarchived issues and list of errors that occurred during the action, if any.
+      properties:
+        errors:
+          $ref: '#/components/schemas/Errors'
+        numberOfIssuesUpdated:
+          format: int64
+          type: integer
+      type: object
+    IssueTypeIssueCreateMetadata:
+      additionalProperties: false
+      description: Details of the issue creation metadata for an issue type.
+      properties:
+        avatarId:
+          description: The ID of the issue type's avatar.
+          format: int64
+          readOnly: true
+          type: integer
+        description:
+          description: The description of the issue type.
+          readOnly: true
+          type: string
+        entityId:
+          description: Unique ID for next-gen projects.
+          format: uuid
+          readOnly: true
+          type: string
+        expand:
+          description: Expand options that include additional issue type metadata details in the response.
+          readOnly: true
+          type: string
+          xml:
+            attribute: true
+        fields:
+          additionalProperties:
+            $ref: '#/components/schemas/FieldMetadata'
+          description: List of the fields available when creating an issue for the issue type.
+          readOnly: true
+          type: object
+        hierarchyLevel:
+          description: Hierarchy level of the issue type.
+          format: int32
+          readOnly: true
+          type: integer
+        iconUrl:
+          description: The URL of the issue type's avatar.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the issue type.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the issue type.
+          readOnly: true
+          type: string
+        scope:
+          allOf:
+          - $ref: '#/components/schemas/Scope_2'
+          description: Details of the next-gen projects the issue type is available in.
+          readOnly: true
+        self:
+          description: The URL of these issue type details.
+          readOnly: true
+          type: string
+        subtask:
+          description: Whether this issue type is used to create subtasks.
+          readOnly: true
+          type: boolean
+      type: object
+    NotificationRecipientsRestrictions:
+      additionalProperties: false
+      description: Details of the group membership or permissions needed to receive the notification.
+      properties:
+        groupIds:
+          description: List of groupId memberships required to receive the notification.
+          items:
+            type: string
+          type: array
+        groups:
+          description: List of group memberships required to receive the notification.
+          items:
+            $ref: '#/components/schemas/GroupName'
+          type: array
+        permissions:
+          description: List of permissions required to receive the notification.
+          items:
+            $ref: '#/components/schemas/RestrictedPermission'
+          type: array
+      type: object
+    PageOfCreateMetaIssueTypeWithField:
+      additionalProperties: true
+      description: A page of CreateMetaIssueType with Field.
+      properties:
+        fields:
+          description: The collection of FieldCreateMetaBeans.
+          items:
+            $ref: '#/components/schemas/FieldCreateMetadata'
+          readOnly: true
+          type: array
+        maxResults:
+          description: The maximum number of items to return per page.
+          format: int32
+          readOnly: true
+          type: integer
+        results:
+          items:
+            $ref: '#/components/schemas/FieldCreateMetadata'
+          type: array
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The total number of items in all pages.
+          format: int64
+          readOnly: true
+          type: integer
+      type: object
+    GroupName:
+      additionalProperties: false
+      description: Details about a group.
+      properties:
+        groupId:
+          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The name of group.
+          type: string
+        self:
+          description: The URL for these group details.
+          format: uri
+          readOnly: true
+          type: string
+      type: object
+    HistoryMetadata:
+      additionalProperties: true
+      description: Details of issue history metadata.
+      properties:
+        activityDescription:
+          description: The activity described in the history record.
+          type: string
+        activityDescriptionKey:
+          description: The key of the activity described in the history record.
+          type: string
+        actor:
+          allOf:
+          - $ref: '#/components/schemas/HistoryMetadataParticipant'
+          description: Details of the user whose action created the history record.
+        cause:
+          allOf:
+          - $ref: '#/components/schemas/HistoryMetadataParticipant'
+          description: Details of the cause that triggered the creation the history record.
+        description:
+          description: The description of the history record.
+          type: string
+        descriptionKey:
+          description: The description key of the history record.
+          type: string
+        emailDescription:
+          description: The description of the email address associated the history record.
+          type: string
+        emailDescriptionKey:
+          description: The description key of the email address associated the history record.
+          type: string
+        extraData:
+          additionalProperties:
+            type: string
+          description: Additional arbitrary information about the history record.
+          type: object
+        generator:
+          allOf:
+          - $ref: '#/components/schemas/HistoryMetadataParticipant'
+          description: Details of the system that generated the history record.
+        type:
+          description: The type of the history record.
+          type: string
+      type: object
+    UpdatedProjectCategory:
+      additionalProperties: false
+      description: A project category.
+      properties:
+        description:
+          description: The name of the project category.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the project category.
+          readOnly: true
+          type: string
+        name:
+          description: The description of the project category.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the project category.
+          readOnly: true
+          type: string
+      type: object
+    IssueEvent:
+      additionalProperties: false
+      description: Details about an issue event.
+      properties:
+        id:
+          description: The ID of the event.
+          format: int64
+          readOnly: true
+          type: integer
+        name:
+          description: The name of the event.
+          readOnly: true
+          type: string
+      type: object
+    UserDetails_2:
+      additionalProperties: false
+      description: "User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
+      properties:
+        accountId:
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+          maxLength: 128
+          type: string
+        accountType:
+          description: The type of account represented by this user. This will be one of 'atlassian' (normal users), 'app' (application user) or 'customer' (Jira Service Desk customer user)
+          readOnly: true
+          type: string
+        active:
+          description: Whether the user is active.
+          readOnly: true
+          type: boolean
+        avatarUrls:
+          allOf:
+          - $ref: '#/components/schemas/AvatarUrlsBean'
+          description: The avatars of the user.
+          readOnly: true
+        displayName:
+          description: The display name of the user. Depending on the user’s privacy settings, this may return an alternative value.
+          readOnly: true
+          type: string
+        emailAddress:
+          description: The email address of the user. Depending on the user’s privacy settings, this may be returned as null.
+          readOnly: true
+          type: string
+        key:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          readOnly: true
+          type: string
+        name:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the user.
+          readOnly: true
+          type: string
+        timeZone:
+          description: The time zone specified in the user's profile. Depending on the user’s privacy settings, this may be returned as null.
+          readOnly: true
+          type: string
       type: object
     ApplicationRole:
       additionalProperties: false
@@ -4141,290 +5185,6 @@ components:
           description: The [type of users](https://confluence.atlassian.com/x/lRW3Ng) being counted against your license.
           type: string
       type: object
-    IssueCreateMetadata:
-      additionalProperties: false
-      description: The wrapper for the issue creation metadata for a list of projects.
-      properties:
-        expand:
-          description: Expand options that include additional project details in the response.
-          readOnly: true
-          type: string
-          xml:
-            attribute: true
-        projects:
-          description: List of projects and their issue creation metadata.
-          items:
-            $ref: '#/components/schemas/ProjectIssueCreateMetadata'
-          readOnly: true
-          type: array
-      type: object
-    PageBeanChangelog:
-      additionalProperties: false
-      description: A page of items.
-      properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
-          type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/Changelog_2'
-          readOnly: true
-          type: array
-      type: object
-    PageOfChangelogs:
-      additionalProperties: false
-      description: A page of changelogs.
-      properties:
-        histories:
-          description: The list of changelogs.
-          items:
-            $ref: '#/components/schemas/Changelog_2'
-          readOnly: true
-          type: array
-        maxResults:
-          description: The maximum number of results that could be on the page.
-          format: int32
-          readOnly: true
-          type: integer
-        startAt:
-          description: The index of the first item returned on the page.
-          format: int32
-          readOnly: true
-          type: integer
-        total:
-          description: The number of results on the page.
-          format: int32
-          readOnly: true
-          type: integer
-      type: object
-    IssueChangelogIds:
-      additionalProperties: false
-      description: A list of changelog IDs.
-      properties:
-        changelogIds:
-          description: The list of changelog IDs.
-          items:
-            format: int64
-            type: integer
-          type: array
-          uniqueItems: true
-      required:
-      - changelogIds
-      type: object
-    Error:
-      additionalProperties: false
-      properties:
-        count:
-          format: int64
-          type: integer
-        issueIdsOrKeys:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        message:
-          type: string
-      type: object
-    IncludedFields:
-      additionalProperties: false
-      properties:
-        actuallyIncluded:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        excluded:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        included:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
-    ArchivedIssuesFilterRequest:
-      additionalProperties: true
-      description: Details of a filter for exporting archived issues.
-      properties:
-        archivedBy:
-          description: List archived issues archived by a specified account ID.
-          items:
-            type: string
-          type: array
-        archivedDateRange:
-          $ref: '#/components/schemas/DateRangeFilterRequest'
-        issueTypes:
-          description: List archived issues with a specified issue type ID.
-          items:
-            type: string
-          type: array
-        projects:
-          description: List archived issues with a specified project key.
-          items:
-            type: string
-          type: array
-        reporters:
-          description: List archived issues where the reporter is a specified account ID.
-          items:
-            type: string
-          type: array
-      type: object
-    ErrorCollection_2:
-      additionalProperties: false
-      description: Error messages from an operation.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        status:
-          format: int32
-          type: integer
-      type: object
-    ExportArchivedIssuesTaskProgressResponse:
-      additionalProperties: false
-      description: The response for status request for a running/completed export task.
-      properties:
-        fileUrl:
-          type: string
-        payload:
-          type: string
-        progress:
-          format: int64
-          type: integer
-        status:
-          type: string
-        submittedTime:
-          format: date-time
-          type: string
-        taskId:
-          type: string
-      type: object
-    Errors:
-      additionalProperties: false
-      properties:
-        issueIsSubtask:
-          $ref: '#/components/schemas/Error'
-        issuesInArchivedProjects:
-          $ref: '#/components/schemas/Error'
-        issuesInUnlicensedProjects:
-          $ref: '#/components/schemas/Error'
-        issuesNotFound:
-          $ref: '#/components/schemas/Error'
-        userDoesNotHavePermission:
-          $ref: '#/components/schemas/Error'
-      type: object
-    Changelog_2:
-      additionalProperties: false
-      description: A log of changes made to issue fields. Changelogs related to workflow associations are currently being deprecated.
-      properties:
-        author:
-          allOf:
-          - $ref: '#/components/schemas/UserDetails_2'
-          description: The user who made the change.
-          readOnly: true
-        created:
-          description: The date on which the change took place.
-          format: date-time
-          readOnly: true
-          type: string
-        historyMetadata:
-          allOf:
-          - $ref: '#/components/schemas/HistoryMetadata'
-          description: The history metadata associated with the changed.
-          readOnly: true
-        id:
-          description: The ID of the changelog.
-          readOnly: true
-          type: string
-        items:
-          description: The list of items changed.
-          items:
-            $ref: '#/components/schemas/ChangeDetails'
-          readOnly: true
-          type: array
-      type: object
-    UserDetails_2:
-      additionalProperties: false
-      description: "User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
-      properties:
-        accountId:
-          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
-          maxLength: 128
-          type: string
-        accountType:
-          description: The type of account represented by this user. This will be one of 'atlassian' (normal users), 'app' (application user) or 'customer' (Jira Service Desk customer user)
-          readOnly: true
-          type: string
-        active:
-          description: Whether the user is active.
-          readOnly: true
-          type: boolean
-        avatarUrls:
-          allOf:
-          - $ref: '#/components/schemas/AvatarUrlsBean'
-          description: The avatars of the user.
-          readOnly: true
-        displayName:
-          description: The display name of the user. Depending on the user’s privacy settings, this may return an alternative value.
-          readOnly: true
-          type: string
-        emailAddress:
-          description: The email address of the user. Depending on the user’s privacy settings, this may be returned as null.
-          readOnly: true
-          type: string
-        key:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          readOnly: true
-          type: string
-        name:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the user.
-          readOnly: true
-          type: string
-        timeZone:
-          description: The time zone specified in the user's profile. Depending on the user’s privacy settings, this may be returned as null.
-          readOnly: true
-          type: string
-      type: object
     ProjectDetails:
       additionalProperties: false
       description: Details about a project.
@@ -4468,658 +5228,17 @@ components:
           readOnly: true
           type: boolean
       type: object
-    ProjectIssueCreateMetadata:
-      additionalProperties: false
-      description: Details of the issue creation metadata for a project.
-      properties:
-        avatarUrls:
-          allOf:
-          - $ref: '#/components/schemas/AvatarUrlsBean'
-          description: List of the project's avatars, returning the avatar size and associated URL.
-          readOnly: true
-        expand:
-          description: Expand options that include additional project issue create metadata details in the response.
-          readOnly: true
-          type: string
-          xml:
-            attribute: true
-        id:
-          description: The ID of the project.
-          readOnly: true
-          type: string
-        issuetypes:
-          description: List of the issue types supported by the project.
-          items:
-            $ref: '#/components/schemas/IssueTypeIssueCreateMetadata'
-          readOnly: true
-          type: array
-        key:
-          description: The key of the project.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the project.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the project.
-          readOnly: true
-          type: string
-      type: object
-    IssuesUpdateBean:
-      additionalProperties: true
-      properties:
-        issueUpdates:
-          items:
-            $ref: '#/components/schemas/IssueUpdateDetails'
-          type: array
-      type: object
-    PageOfCreateMetaIssueTypeWithField:
-      additionalProperties: true
-      description: A page of CreateMetaIssueType with Field.
-      properties:
-        fields:
-          description: The collection of FieldCreateMetaBeans.
-          items:
-            $ref: '#/components/schemas/FieldCreateMetadata'
-          readOnly: true
-          type: array
-        maxResults:
-          description: The maximum number of items to return per page.
-          format: int32
-          readOnly: true
-          type: integer
-        results:
-          items:
-            $ref: '#/components/schemas/FieldCreateMetadata'
-          type: array
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The total number of items in all pages.
-          format: int64
-          readOnly: true
-          type: integer
-      type: object
-    DateRangeFilterRequest:
-      additionalProperties: false
-      description: List issues archived within a specified date range.
-      properties:
-        dateAfter:
-          description: List issues archived after a specified date, passed in the YYYY-MM-DD format.
-          type: string
-        dateBefore:
-          description: List issues archived before a specified date provided in the YYYY-MM-DD format.
-          type: string
-      required:
-      - dateAfter
-      - dateBefore
-      type: object
-    FieldMetadata:
-      additionalProperties: false
-      description: The metadata describing an issue field.
-      properties:
-        allowedValues:
-          description: The list of values allowed in the field.
-          items:
-            readOnly: true
-          readOnly: true
-          type: array
-        autoCompleteUrl:
-          description: The URL that can be used to automatically complete the field.
-          readOnly: true
-          type: string
-        configuration:
-          additionalProperties:
-            readOnly: true
-          description: The configuration properties.
-          readOnly: true
-          type: object
-        defaultValue:
-          description: The default value of the field.
-          readOnly: true
-        hasDefaultValue:
-          description: Whether the field has a default value.
-          readOnly: true
-          type: boolean
-        key:
-          description: The key of the field.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the field.
-          readOnly: true
-          type: string
-        operations:
-          description: The list of operations that can be performed on the field.
-          items:
-            readOnly: true
-            type: string
-          readOnly: true
-          type: array
-        required:
-          description: Whether the field is required.
-          readOnly: true
-          type: boolean
-        schema:
-          allOf:
-          - $ref: '#/components/schemas/JsonTypeBean'
-          description: The data type of the field.
-          readOnly: true
-      required:
-      - key
-      - name
-      - operations
-      - required
-      - schema
-      type: object
-      xml:
-        name: availableField
-    CreatedIssues:
-      additionalProperties: false
-      description: Details about the issues created and the errors for requests that failed.
-      properties:
-        errors:
-          description: Error details for failed issue creation requests.
-          items:
-            $ref: '#/components/schemas/BulkOperationErrorResult'
-          readOnly: true
-          type: array
-        issues:
-          description: Details of the issues created.
-          items:
-            $ref: '#/components/schemas/CreatedIssue_2'
-          readOnly: true
-          type: array
-      type: object
-    CreatedIssue_2:
-      additionalProperties: false
-      description: Details about a created issue or subtask.
-      properties:
-        id:
-          description: The ID of the created issue or subtask.
-          readOnly: true
-          type: string
-        key:
-          description: The key of the created issue or subtask.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the created issue or subtask.
-          readOnly: true
-          type: string
-        transition:
-          allOf:
-          - $ref: '#/components/schemas/NestedResponse'
-          description: The response code and messages related to any requested transition.
-          readOnly: true
-        watchers:
-          allOf:
-          - $ref: '#/components/schemas/NestedResponse'
-          description: The response code and messages related to any requested watchers.
-          readOnly: true
-      type: object
-    SimpleListWrapperApplicationRole:
+    BulkOperationErrorResult:
       additionalProperties: false
       properties:
-        callback:
-          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
-        items:
-          items:
-            $ref: '#/components/schemas/ApplicationRole'
-          type: array
-        max-results:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-            name: max-results
-        pagingCallback:
-          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
-        size:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-      type: object
-      xml:
-        name: list
-    PageOfCreateMetaIssueTypes:
-      additionalProperties: true
-      description: A page of CreateMetaIssueTypes.
-      properties:
-        createMetaIssueType:
-          items:
-            $ref: '#/components/schemas/IssueTypeIssueCreateMetadata'
-          type: array
-          writeOnly: true
-        issueTypes:
-          description: The list of CreateMetaIssueType.
-          items:
-            $ref: '#/components/schemas/IssueTypeIssueCreateMetadata'
-          readOnly: true
-          type: array
-        maxResults:
-          description: The maximum number of items to return per page.
-          format: int32
-          readOnly: true
-          type: integer
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The total number of items in all pages.
-          format: int64
-          readOnly: true
-          type: integer
-      type: object
-    UpdatedProjectCategory:
-      additionalProperties: false
-      description: A project category.
-      properties:
-        description:
-          description: The name of the project category.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the project category.
-          readOnly: true
-          type: string
-        name:
-          description: The description of the project category.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the project category.
-          readOnly: true
-          type: string
-      type: object
-    WarningCollection:
-      additionalProperties: false
-      properties:
-        warnings:
-          items:
-            type: string
-          type: array
-      type: object
-    IssueArchivalSyncRequest:
-      additionalProperties: false
-      description: List of Issue Ids Or Keys that are to be archived or unarchived
-      properties:
-        issueIdsOrKeys:
-          items:
-            type: string
-          type: array
-      type: object
-    BulkIssueResults:
-      additionalProperties: false
-      description: The list of requested issues & fields.
-      properties:
-        issueErrors:
-          description: When Jira can't return an issue enumerated in a request due to a retriable error or payload constraint, we'll return the respective issue ID with a corresponding error message. This list is empty when there are no errors Issues which aren't found or that the user doesn't have permission to view won't be returned in this list.
-          items:
-            $ref: '#/components/schemas/IssueError'
-          readOnly: true
-          type: array
-        issues:
-          description: The list of issues.
-          items:
-            $ref: '#/components/schemas/IssueBean_2'
-          readOnly: true
-          type: array
-      type: object
-      xml:
-        name: issue
-    FieldCreateMetadata:
-      additionalProperties: false
-      description: The metadata describing an issue field for createmeta.
-      properties:
-        allowedValues:
-          description: The list of values allowed in the field.
-          items:
-            readOnly: true
-          readOnly: true
-          type: array
-        autoCompleteUrl:
-          description: The URL that can be used to automatically complete the field.
-          readOnly: true
-          type: string
-        configuration:
-          additionalProperties:
-            readOnly: true
-          description: The configuration properties.
-          readOnly: true
-          type: object
-        defaultValue:
-          description: The default value of the field.
-          readOnly: true
-        fieldId:
-          description: The field id.
-          readOnly: true
-          type: string
-        hasDefaultValue:
-          description: Whether the field has a default value.
-          readOnly: true
-          type: boolean
-        key:
-          description: The key of the field.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the field.
-          readOnly: true
-          type: string
-        operations:
-          description: The list of operations that can be performed on the field.
-          items:
-            readOnly: true
-            type: string
-          readOnly: true
-          type: array
-        required:
-          description: Whether the field is required.
-          readOnly: true
-          type: boolean
-        schema:
-          allOf:
-          - $ref: '#/components/schemas/JsonTypeBean'
-          description: The data type of the field.
-          readOnly: true
-      required:
-      - fieldId
-      - key
-      - name
-      - operations
-      - required
-      - schema
-      type: object
-      xml:
-        name: availableField
-    GroupName:
-      additionalProperties: false
-      description: Details about a group.
-      properties:
-        groupId:
-          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
-          type:
-          - string
-          - 'null'
-        name:
-          description: The name of group.
-          type: string
-        self:
-          description: The URL for these group details.
-          format: uri
-          readOnly: true
-          type: string
-      type: object
-    IssueTransition:
-      additionalProperties: true
-      description: Details of an issue transition.
-      properties:
-        expand:
-          description: Expand options that include additional transition details in the response.
-          readOnly: true
-          type: string
-        fields:
-          additionalProperties:
-            $ref: '#/components/schemas/FieldMetadata'
-          description: Details of the fields associated with the issue transition screen. Use this information to populate `fields` and `update` in a transition request.
-          readOnly: true
-          type: object
-        hasScreen:
-          description: Whether there is a screen associated with the issue transition.
-          readOnly: true
-          type: boolean
-        id:
-          description: The ID of the issue transition. Required when specifying a transition to undertake.
-          type: string
-        isAvailable:
-          description: Whether the transition is available to be performed.
-          readOnly: true
-          type: boolean
-        isConditional:
-          description: Whether the issue has to meet criteria before the issue transition is applied.
-          readOnly: true
-          type: boolean
-        isGlobal:
-          description: Whether the issue transition is global, that is, the transition is applied to issues regardless of their status.
-          readOnly: true
-          type: boolean
-        isInitial:
-          description: Whether this is the initial issue transition for the workflow.
-          readOnly: true
-          type: boolean
-        looped:
-          type: boolean
-        name:
-          description: The name of the issue transition.
-          readOnly: true
-          type: string
-        to:
-          allOf:
-          - $ref: '#/components/schemas/StatusDetails_2'
-          description: Details of the issue status after the transition.
-          readOnly: true
-      type: object
-    BulkChangelogResponseBean:
-      additionalProperties: false
-      description: A page of changelogs which is designed to handle multiple issues
-      properties:
-        issueChangeLogs:
-          description: The list of issues changelogs.
-          items:
-            $ref: '#/components/schemas/IssueChangeLog'
-          readOnly: true
-          type: array
-        nextPageToken:
-          description: Continuation token to fetch the next page. If this result represents the last or the only page, this token will be null.
-          readOnly: true
-          type: string
-      type: object
-    IssueUpdateDetails:
-      additionalProperties: true
-      description: Details of an issue update request.
-      properties:
-        fields:
-          additionalProperties: {}
-          description: List of issue screen fields to update, specifying the sub-field to update and its value for each field. This field provides a straightforward option when setting a sub-field. When multiple sub-fields or other operations are required, use `update`. Fields included in here cannot be included in `update`.
-          type: object
-        historyMetadata:
-          allOf:
-          - $ref: '#/components/schemas/HistoryMetadata'
-          description: Additional issue history details.
-        properties:
-          description: Details of issue properties to be add or update.
-          items:
-            $ref: '#/components/schemas/EntityProperty_2'
-          type: array
-        transition:
-          allOf:
-          - $ref: '#/components/schemas/IssueTransition'
-          description: Details of a transition. Required when performing a transition, optional when creating or editing an issue.
-        update:
-          additionalProperties:
-            items:
-              $ref: '#/components/schemas/FieldUpdateOperation_2'
-            type: array
-          description: A Map containing the field field name and a list of operations to perform on the issue screen field. Note that fields included in here cannot be included in `fields`.
-          type: object
-      type: object
-    EntityProperty_2:
-      additionalProperties: false
-      description: An entity property, for more information see [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).
-      properties:
-        key:
-          description: The key of the property. Required on create and update.
-          type: string
-        value:
-          description: The value of the property. Required on create and update.
-      type: object
-    Notification:
-      additionalProperties: true
-      description: Details about a notification.
-      properties:
-        htmlBody:
-          description: The HTML body of the email notification for the issue.
-          type: string
-        restrict:
-          allOf:
-          - $ref: '#/components/schemas/NotificationRecipientsRestrictions'
-          description: Restricts the notifications to users with the specified permissions.
-        subject:
-          description: The subject of the email notification for the issue. If this is not specified, then the subject is set to the issue key and summary.
-          type: string
-        textBody:
-          description: The plain text body of the email notification for the issue.
-          type: string
-        to:
-          allOf:
-          - $ref: '#/components/schemas/NotificationRecipients'
-          description: The recipients of the email notification for the issue.
-      type: object
-    BulkFetchIssueRequestBean:
-      additionalProperties: false
-      properties:
-        expand:
-          description: "Use [expand](#expansion) to include additional information about issues in the response. Note that, unlike the majority of instances where `expand` is specified, `expand` is defined as a list of values. The expand options are:\n\n *  `renderedFields` Returns field values rendered in HTML format.\n *  `names` Returns the display name of each field.\n *  `schema` Returns the schema describing a field type.\n *  `transitions` Returns all possible transitions for the issue.\n *  `operations` Returns all possible operations for the issue.\n *  `editmeta` Returns information about how each field can be edited.\n *  `changelog` Returns a list of recent updates to an issue, sorted by date, starting from the most recent. This returns a maximum of 40 changelogs. If you require more, please refer to [Bulk fetch changelogs](#api-rest-api-3-changelog-bulkfetch-post).\n *  `versionedRepresentations` Instead of `fields`, returns `versionedRepresentations` a JSON array containing each version of a field's value, with the highest numbered item representing the most recent version.\n\nTo request up to 1000 issues in a single call, do not include `changelog`, `editmeta`, `operations`, `renderedFields`, `transitions`, or `versionedRepresentations` in `expand`. Requests that include any of these can include at most 100 issues; larger requests are rejected with a 400 error."
-          items:
-            type: string
-          type: array
-        fields:
-          description: "A list of fields to return for each issue, use it to retrieve a subset of fields. This parameter accepts a comma-separated list. Expand options include:\n\n *  `*all` Returns all fields.\n *  `*navigable` Returns navigable fields.\n *  Any issue field, prefixed with a minus to exclude.\n\nThe default is `*navigable`.\n\nExamples:\n\n *  `summary,comment` Returns the summary and comments fields only.\n *  `-description` Returns all navigable (default) fields except description.\n *  `*all,-comment` Returns all fields except comments.\n\nMultiple `fields` parameters can be included in a request.\n\nNote: All navigable fields are returned by default. This differs from [GET issue](#api-rest-api-3-issue-issueIdOrKey-get) where the default is all fields.\n\nTo request up to 1000 issues in a single call, explicitly list the fields you need: at least one field must be a positive include (a request containing only exclusions is not eligible), the `*all` and `*navigable` wildcards and the default navigable field set are not eligible for the higher limit, no more than 100 fields may be listed, and none of the included fields returns multiple values (for example `comment`, `worklog`, or `attachment`). Requests that do not meet these conditions can include at most 100 issues; larger requests are rejected with a 400 error."
-          items:
-            type: string
-          type: array
-        fieldsByKeys:
-          description: Reference fields by their key (rather than ID). The default is `false`.
-          type: boolean
-        issueIdsOrKeys:
-          description: An array of issue IDs or issue keys to fetch. You can mix issue IDs and keys in the same query. You can request up to 100 issues per call. Requests can include up to 1000 issues per call when they meet all of the conditions described for the `fields` and `expand` parameters. Requests that exceed the applicable limit are rejected with a 400 error.
-          items:
-            type: string
-          type: array
-        properties:
-          description: A list of issue property keys of issue properties to be included in the results. A maximum of 5 issue property keys can be specified.
-          items:
-            type: string
-          type: array
-      required:
-      - issueIdsOrKeys
-      type: object
-    NestedResponse:
-      additionalProperties: false
-      properties:
-        errorCollection:
+        elementErrors:
           $ref: '#/components/schemas/ErrorCollection_2'
+        failedElementNumber:
+          format: int32
+          type: integer
         status:
           format: int32
           type: integer
-        warningCollection:
-          $ref: '#/components/schemas/WarningCollection'
-      type: object
-    IssueArchivalSyncResponse:
-      additionalProperties: false
-      description: Number of archived/unarchived issues and list of errors that occurred during the action, if any.
-      properties:
-        errors:
-          $ref: '#/components/schemas/Errors'
-        numberOfIssuesUpdated:
-          format: int64
-          type: integer
-      type: object
-    IssueError:
-      additionalProperties: false
-      description: Describes the error that occurred when retrieving data for a particular issue.
-      properties:
-        errorMessage:
-          description: The error that occurred when fetching this issue.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the issue.
-          readOnly: true
-          type: string
-      type: object
-    Transitions:
-      additionalProperties: false
-      description: List of issue transitions.
-      properties:
-        expand:
-          description: Expand options that include additional transitions details in the response.
-          readOnly: true
-          type: string
-          xml:
-            attribute: true
-        transitions:
-          description: List of issue transitions.
-          items:
-            $ref: '#/components/schemas/IssueTransition'
-          readOnly: true
-          type: array
-      type: object
-    HistoryMetadataParticipant:
-      additionalProperties: true
-      description: Details of user or system associated with a issue history metadata item.
-      properties:
-        avatarUrl:
-          description: The URL to an avatar for the user or system associated with a history record.
-          type: string
-        displayName:
-          description: The display name of the user or system associated with a history record.
-          type: string
-        displayNameKey:
-          description: The key of the display name of the user or system associated with a history record.
-          type: string
-        id:
-          description: The ID of the user or system associated with a history record.
-          type: string
-        type:
-          description: The type of the user or system associated with a history record.
-          type: string
-        url:
-          description: The URL of the user or system associated with a history record.
-          type: string
-      type: object
-    StatusDetails_2:
-      additionalProperties: true
-      description: A status.
-      properties:
-        description:
-          description: The description of the status.
-          readOnly: true
-          type: string
-        iconUrl:
-          description: The URL of the icon used to represent the status.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the status.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the status.
-          readOnly: true
-          type: string
-        scope:
-          allOf:
-          - $ref: '#/components/schemas/Scope_2'
-          description: The scope of the field.
-          readOnly: true
-        self:
-          description: The URL of the status.
-          readOnly: true
-          type: string
-        statusCategory:
-          allOf:
-          - $ref: '#/components/schemas/StatusCategory_2'
-          description: The category assigned to the status.
-          readOnly: true
       type: object
     IssueBean_2:
       additionalProperties: false
@@ -5207,221 +5326,102 @@ components:
       type: object
       xml:
         name: issue
-    RestrictedPermission:
+    Scope_2:
       additionalProperties: true
-      description: Details of the permission.
+      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
       properties:
-        id:
-          description: The ID of the permission. Either `id` or `key` must be specified. Use [Get all permissions](#api-rest-api-3-permissions-get) to get the list of permissions.
-          type: string
-        key:
-          description: The key of the permission. Either `id` or `key` must be specified. Use [Get all permissions](#api-rest-api-3-permissions-get) to get the list of permissions.
+        project:
+          allOf:
+          - $ref: '#/components/schemas/ProjectDetails'
+          description: The project the item has scope in.
+          readOnly: true
+        type:
+          description: The type of scope.
+          enum:
+          - PROJECT
+          - TEMPLATE
+          readOnly: true
           type: string
       type: object
-    BulkOperationErrorResult:
+    PageOfChangelogs:
       additionalProperties: false
+      description: A page of changelogs.
       properties:
-        elementErrors:
-          $ref: '#/components/schemas/ErrorCollection_2'
-        failedElementNumber:
-          format: int32
-          type: integer
-        status:
-          format: int32
-          type: integer
-      type: object
-    BulkChangelogRequestBean:
-      additionalProperties: false
-      description: Request bean for bulk changelog retrieval
-      properties:
-        fieldIds:
-          description: List of field IDs to filter changelogs
+        histories:
+          description: The list of changelogs.
           items:
-            description: List of field IDs to filter changelogs
-            type: string
-          maxItems: 10
-          minItems: 0
-          type: array
-          uniqueItems: true
-        issueIdsOrKeys:
-          description: List of issue IDs/keys to fetch changelogs for
-          items:
-            description: List of issue IDs/keys to fetch changelogs for
-            type: string
-          maxItems: 1000
-          minItems: 1
+            $ref: '#/components/schemas/Changelog_2'
+          readOnly: true
           type: array
         maxResults:
-          default: 1000
-          description: The maximum number of items to return per page
+          description: The maximum number of results that could be on the page.
           format: int32
-          maximum: 10000
-          minimum: 1
-          type: integer
-        nextPageToken:
-          description: The cursor for pagination
-          type: string
-      required:
-      - issueIdsOrKeys
-      type: object
-    NotificationRecipients:
-      additionalProperties: true
-      description: Details of the users and groups to receive the notification.
-      properties:
-        assignee:
-          description: Whether the notification should be sent to the issue's assignees.
-          type: boolean
-        groupIds:
-          description: List of groupIds to receive the notification.
-          items:
-            type: string
-          type: array
-        groups:
-          description: List of groups to receive the notification.
-          items:
-            $ref: '#/components/schemas/GroupName'
-          type: array
-        reporter:
-          description: Whether the notification should be sent to the issue's reporter.
-          type: boolean
-        users:
-          description: List of users to receive the notification.
-          items:
-            $ref: '#/components/schemas/UserDetails_2'
-          type: array
-        voters:
-          description: Whether the notification should be sent to the issue's voters.
-          type: boolean
-        watchers:
-          description: Whether the notification should be sent to the issue's watchers.
-          type: boolean
-      type: object
-    SimpleListWrapperGroupName:
-      additionalProperties: false
-      properties:
-        callback:
-          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
-        items:
-          items:
-            $ref: '#/components/schemas/GroupName'
-          type: array
-        max-results:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-            name: max-results
-        pagingCallback:
-          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
-        size:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-      type: object
-      xml:
-        name: list
-    FieldUpdateOperation_2:
-      additionalProperties: false
-      description: Details of an operation to perform on a field.
-      properties:
-        add:
-          description: The value to add to the field.
-          example: triaged
-        copy:
-          description: The field value to copy from another issue.
-          example:
-            issuelinks:
-              sourceIssues:
-              - key: FP-5
-        edit:
-          description: The value to edit in the field.
-          example:
-            originalEstimate: 1w 1d
-            remainingEstimate: 4d
-        remove:
-          description: The value to removed from the field.
-          example: blocker
-        set:
-          description: The value to set in the field.
-          example: A new summary
-      type: object
-    HistoryMetadata:
-      additionalProperties: true
-      description: Details of issue history metadata.
-      properties:
-        activityDescription:
-          description: The activity described in the history record.
-          type: string
-        activityDescriptionKey:
-          description: The key of the activity described in the history record.
-          type: string
-        actor:
-          allOf:
-          - $ref: '#/components/schemas/HistoryMetadataParticipant'
-          description: Details of the user whose action created the history record.
-        cause:
-          allOf:
-          - $ref: '#/components/schemas/HistoryMetadataParticipant'
-          description: Details of the cause that triggered the creation the history record.
-        description:
-          description: The description of the history record.
-          type: string
-        descriptionKey:
-          description: The description key of the history record.
-          type: string
-        emailDescription:
-          description: The description of the email address associated the history record.
-          type: string
-        emailDescriptionKey:
-          description: The description key of the email address associated the history record.
-          type: string
-        extraData:
-          additionalProperties:
-            type: string
-          description: Additional arbitrary information about the history record.
-          type: object
-        generator:
-          allOf:
-          - $ref: '#/components/schemas/HistoryMetadataParticipant'
-          description: Details of the system that generated the history record.
-        type:
-          description: The type of the history record.
-          type: string
-      type: object
-    JsonTypeBean:
-      additionalProperties: false
-      description: The schema of a field.
-      properties:
-        configuration:
-          additionalProperties:
-            readOnly: true
-          description: If the field is a custom field, the configuration of the field.
           readOnly: true
-          type: object
-        custom:
-          description: If the field is a custom field, the URI of the field.
+          type: integer
+        startAt:
+          description: The index of the first item returned on the page.
+          format: int32
           readOnly: true
-          type: string
-        customId:
-          description: If the field is a custom field, the custom ID of the field.
+          type: integer
+        total:
+          description: The number of results on the page.
+          format: int32
+          readOnly: true
+          type: integer
+      type: object
+    PageOfCreateMetaIssueTypes:
+      additionalProperties: true
+      description: A page of CreateMetaIssueTypes.
+      properties:
+        createMetaIssueType:
+          items:
+            $ref: '#/components/schemas/IssueTypeIssueCreateMetadata'
+          type: array
+          writeOnly: true
+        issueTypes:
+          description: The list of CreateMetaIssueType.
+          items:
+            $ref: '#/components/schemas/IssueTypeIssueCreateMetadata'
+          readOnly: true
+          type: array
+        maxResults:
+          description: The maximum number of items to return per page.
+          format: int32
+          readOnly: true
+          type: integer
+        startAt:
+          description: The index of the first item returned.
           format: int64
           readOnly: true
           type: integer
-        items:
-          description: When the data type is an array, the name of the field items within the array.
+        total:
+          description: The total number of items in all pages.
+          format: int64
           readOnly: true
+          type: integer
+      type: object
+    HistoryMetadataParticipant:
+      additionalProperties: true
+      description: Details of user or system associated with a issue history metadata item.
+      properties:
+        avatarUrl:
+          description: The URL to an avatar for the user or system associated with a history record.
           type: string
-        system:
-          description: If the field is a system field, the name of the field.
-          readOnly: true
+        displayName:
+          description: The display name of the user or system associated with a history record.
+          type: string
+        displayNameKey:
+          description: The key of the display name of the user or system associated with a history record.
+          type: string
+        id:
+          description: The ID of the user or system associated with a history record.
           type: string
         type:
-          description: The data type of the field.
-          readOnly: true
+          description: The type of the user or system associated with a history record.
           type: string
-      required:
-      - type
+        url:
+          description: The URL of the user or system associated with a history record.
+          type: string
       type: object
   parameters:
     issueIdOrKey:

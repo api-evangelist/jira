@@ -155,21 +155,15 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    UserLinkDTO:
+    I18nErrorMessage:
       additionalProperties: false
       properties:
-        avatarUrls:
-          additionalProperties:
+        i18nKey:
+          type: string
+        parameters:
+          items:
             type: string
-          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
-          type: object
-        jiraRest:
-          description: REST API URL for the customer.
-          format: uri
-          type: string
-        self:
-          format: uri
-          type: string
+          type: array
       type: object
     UserDTO:
       additionalProperties: false
@@ -221,15 +215,21 @@ components:
         i18nErrorMessage:
           $ref: '#/components/schemas/I18nErrorMessage'
       type: object
-    I18nErrorMessage:
+    UserLinkDTO:
       additionalProperties: false
       properties:
-        i18nKey:
-          type: string
-        parameters:
-          items:
+        avatarUrls:
+          additionalProperties:
             type: string
-          type: array
+          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
+          type: object
+        jiraRest:
+          description: REST API URL for the customer.
+          format: uri
+          type: string
+        self:
+          format: uri
+          type: string
       type: object
   securitySchemes:
     OAuth2:

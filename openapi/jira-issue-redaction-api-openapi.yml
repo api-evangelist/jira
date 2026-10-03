@@ -158,26 +158,27 @@ components:
       - entityType
       - id
       type: object
-    BulkRedactionResponse:
+    SingleRedactionRequest:
       additionalProperties: false
       properties:
-        results:
-          description: Result for requested redactions
-          items:
-            $ref: '#/components/schemas/SingleRedactionResponse'
-          type: array
-          uniqueItems: true
+        contentItem:
+          $ref: '#/components/schemas/ContentItem'
+        externalId:
+          description: Unique id for the redaction request; ID format should be of UUID
+          example: 51101de6-d001-429d-a095-b2b96dd57fcb
+          format: uuid
+          type: string
+        reason:
+          description: The reason why the content is being redacted
+          example: PII data
+          type: string
+        redactionPosition:
+          $ref: '#/components/schemas/RedactionPosition'
       required:
-      - results
-      type: object
-    BulkRedactionRequest:
-      additionalProperties: false
-      properties:
-        redactions:
-          items:
-            $ref: '#/components/schemas/SingleRedactionRequest'
-          type: array
-          uniqueItems: true
+      - contentItem
+      - externalId
+      - reason
+      - redactionPosition
       type: object
     RedactionPosition:
       additionalProperties: false
@@ -206,6 +207,15 @@ components:
       - from
       - to
       type: object
+    BulkRedactionRequest:
+      additionalProperties: false
+      properties:
+        redactions:
+          items:
+            $ref: '#/components/schemas/SingleRedactionRequest'
+          type: array
+          uniqueItems: true
+      type: object
     SingleRedactionResponse:
       additionalProperties: false
       description: Result for requested redactions
@@ -221,27 +231,17 @@ components:
       - externalId
       - successful
       type: object
-    SingleRedactionRequest:
+    BulkRedactionResponse:
       additionalProperties: false
       properties:
-        contentItem:
-          $ref: '#/components/schemas/ContentItem'
-        externalId:
-          description: Unique id for the redaction request; ID format should be of UUID
-          example: 51101de6-d001-429d-a095-b2b96dd57fcb
-          format: uuid
-          type: string
-        reason:
-          description: The reason why the content is being redacted
-          example: PII data
-          type: string
-        redactionPosition:
-          $ref: '#/components/schemas/RedactionPosition'
+        results:
+          description: Result for requested redactions
+          items:
+            $ref: '#/components/schemas/SingleRedactionResponse'
+          type: array
+          uniqueItems: true
       required:
-      - contentItem
-      - externalId
-      - reason
-      - redactionPosition
+      - results
       type: object
     ErrorCollection:
       additionalProperties: false

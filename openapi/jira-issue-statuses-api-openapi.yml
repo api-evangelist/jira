@@ -68,6 +68,28 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    IssueTypeWithStatus:
+      type: object
+      description: Issue type with its valid statuses.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          example: Example Title
+        subtask:
+          type: boolean
+          example: true
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusDetails'
+          example: []
     StatusCategory:
       type: object
       description: A status category in Jira.
@@ -116,28 +138,6 @@ components:
           example: https://www.example.com
         statusCategory:
           $ref: '#/components/schemas/StatusCategory'
-    IssueTypeWithStatus:
-      type: object
-      description: Issue type with its valid statuses.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: string
-          example: abc123
-        name:
-          type: string
-          example: Example Title
-        subtask:
-          type: boolean
-          example: true
-        statuses:
-          type: array
-          items:
-            $ref: '#/components/schemas/StatusDetails'
-          example: []
   parameters:
     projectIdOrKey:
       name: projectIdOrKey

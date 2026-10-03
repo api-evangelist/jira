@@ -1857,211 +1857,91 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
-    RequestTypeCreateDTO:
+    JsonTypeBean:
+      additionalProperties: false
+      description: The schema of a field.
+      properties:
+        configuration:
+          additionalProperties:
+            readOnly: true
+          description: If the field is a custom field, the configuration of the field.
+          readOnly: true
+          type: object
+        custom:
+          description: If the field is a custom field, the URI of the field.
+          readOnly: true
+          type: string
+        customId:
+          description: If the field is a custom field, the custom ID of the field.
+          format: int64
+          readOnly: true
+          type: integer
+        items:
+          description: When the data type is an array, the name of the field items within the array.
+          readOnly: true
+          type: string
+        system:
+          description: If the field is a system field, the name of the field.
+          readOnly: true
+          type: string
+        type:
+          description: The data type of the field.
+          readOnly: true
+          type: string
+      required:
+      - type
+      type: object
+    RequestTypeGroupDTO:
       additionalProperties: false
       properties:
-        description:
-          description: Description of the request type on the service desk.
-          type: string
-        helpText:
-          description: Help text for the request type on the service desk.
-          type: string
-        issueTypeId:
-          description: ID of the request type to add to the service desk.
+        id:
+          description: ID of the request type group
           type: string
         name:
-          description: Name of the request type on the service desk.
+          description: Name of the request type group.
           type: string
       type: object
-    SimpleLink:
-      additionalProperties: false
-      description: Details about the operations available in this version.
-      properties:
-        href:
-          type: string
-        iconClass:
-          type: string
-        id:
-          type: string
-        label:
-          type: string
-        styleClass:
-          type: string
-        title:
-          type: string
-        weight:
-          format: int32
-          type: integer
-      type: object
-      xml:
-        name: link
-    ContentDTO:
+    I18nErrorMessage:
       additionalProperties: false
       properties:
-        iframeSrc:
-          description: Url containing the body of the article (without title), suitable for rendering in an iframe
+        i18nKey:
           type: string
-      type: object
-    Resource:
-      additionalProperties: false
-      properties:
-        contentAsByteArray:
+        parameters:
           items:
-            format: byte
             type: string
           type: array
-        description:
-          type: string
-        file:
-          format: binary
-          type: string
-        filename:
-          type: string
-        inputStream:
-          type: object
-        open:
-          type: boolean
-        readable:
-          type: boolean
-        uri:
-          format: uri
-          type: string
-        url:
-          format: url
-          type: string
       type: object
-    ChangeDetails:
-      additionalProperties: false
-      description: A change item.
-      properties:
-        field:
-          description: The name of the field changed.
-          readOnly: true
-          type: string
-        fieldId:
-          description: The ID of the field changed.
-          readOnly: true
-          type: string
-        fieldtype:
-          description: The type of the field changed.
-          readOnly: true
-          type: string
-        from:
-          description: The details of the original value.
-          readOnly: true
-          type: string
-        fromString:
-          description: The details of the original value as a string.
-          readOnly: true
-          type: string
-        to:
-          description: The details of the new value.
-          readOnly: true
-          type: string
-        toString:
-          description: The details of the new value as a string.
-          readOnly: true
-          type: string
-      type: object
-    ServiceDeskDTO:
+    PagedDTORequestTypeGroupDTO:
       additionalProperties: false
       properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/SelfLinkDTO'
-          description: REST API URL to the service desk.
-        id:
-          description: ID of the service desk.
-          type: string
-        projectId:
-          description: ID of the peer project for the service desk.
-          type: string
-        projectKey:
-          description: Key of the peer project of the service desk.
-          type: string
-        projectName:
-          description: Name of the project and service desk.
-          type: string
-        projectTypeKey:
-          description: Key of the project type.
-          type: string
-      type: object
-    UserDTO:
-      additionalProperties: false
-      properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/UserLinkDTO'
-          description: URLs for the customer record and related items.
-        accountId:
-          description: The accountId of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
-          type: string
-        active:
-          description: Indicates if the customer is active (true) or inactive (false)
-          type: boolean
-        displayName:
-          description: Customer's name for display in a UI. Depending on the customer’s privacy settings, this may return an alternative value.
-          type: string
-        emailAddress:
-          description: Customer's email address. Depending on the customer’s privacy settings, this may be returned as null.
-          type: string
-        key:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        name:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        timeZone:
-          description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
-          type: string
-      type: object
-    Scope:
-      additionalProperties: true
-      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
-      properties:
-        project:
-          allOf:
-          - $ref: '#/components/schemas/ProjectDetails'
-          description: The project the item has scope in.
-          readOnly: true
-        type:
-          description: The type of scope.
-          enum:
-          - PROJECT
-          - TEMPLATE
-          readOnly: true
-          type: string
-      type: object
-    Operations:
-      additionalProperties: true
-      description: Details of the operations that can be performed on the issue.
-      properties:
-        linkGroups:
-          description: Details of the link groups defining issue operations.
+        _expands:
           items:
-            $ref: '#/components/schemas/LinkGroup'
-          readOnly: true
+            type: string
           type: array
-      type: object
-    AvatarUrlsBean:
-      additionalProperties: false
-      properties:
-        16x16:
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
-          type: string
-        24x24:
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
-          type: string
-        32x32:
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-          type: string
-        48x48:
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
-          type: string
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/RequestTypeGroupDTO'
+          type: array
       type: object
     RequestTypePermissionCheckResponse:
       additionalProperties: false
@@ -2079,339 +1959,66 @@ components:
             type: integer
           type: array
       type: object
-    StatusCategory:
-      additionalProperties: true
-      description: A status category.
-      properties:
-        colorName:
-          description: The name of the color used to represent the status category.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the status category.
-          format: int64
-          readOnly: true
-          type: integer
-        key:
-          description: The key of the status category.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the status category.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the status category.
-          readOnly: true
-          type: string
-      type: object
-    SourceDTO:
-      additionalProperties: true
-      properties:
-        type:
-          description: Type of the knowledge base source
-          enum:
-          - confluence
-          type: string
-      type: object
-    ServiceDeskCustomerDTO:
+    FieldMetadata:
       additionalProperties: false
+      description: The metadata describing an issue field.
       properties:
-        accountIds:
-          description: List of users, specified by account IDs, to add to or remove from a service desk.
+        allowedValues:
+          description: The list of values allowed in the field.
           items:
-            type: string
+            readOnly: true
+          readOnly: true
           type: array
-          uniqueItems: true
-        usernames:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. Use `accountIds` instead.
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
-    IssueUpdateMetadata:
-      description: A list of editable field details.
-      properties:
-        fields:
+        autoCompleteUrl:
+          description: The URL that can be used to automatically complete the field.
+          readOnly: true
+          type: string
+        configuration:
           additionalProperties:
-            $ref: '#/components/schemas/FieldMetadata'
+            readOnly: true
+          description: The configuration properties.
           readOnly: true
           type: object
-      type: object
-    LinkGroup:
-      additionalProperties: false
-      description: Details a link group, which defines issue operations.
-      properties:
-        groups:
-          items:
-            $ref: '#/components/schemas/LinkGroup'
-          type: array
-        header:
-          $ref: '#/components/schemas/SimpleLink'
-        id:
-          type: string
-        links:
-          items:
-            $ref: '#/components/schemas/SimpleLink'
-          type: array
-        styleClass:
-          type: string
-        weight:
-          format: int32
-          type: integer
-      type: object
-    PagedDTOIssueBean:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/IssueBean'
-          type: array
-      type: object
-    CustomerRequestCreateMetaDTO:
-      additionalProperties: false
-      properties:
-        canAddRequestParticipants:
-          description: Flag indicating if participants can be added to a request (true) or not.
-          type: boolean
-        canRaiseOnBehalfOf:
-          description: Flag indicating if a request can be raised on behalf of another user (true) or not.
-          type: boolean
-        requestTypeFields:
-          description: List of the fields included in this request.
-          items:
-            $ref: '#/components/schemas/RequestTypeFieldDTO'
-          type: array
-      type: object
-    MultipartFile:
-      additionalProperties: false
-      properties:
-        bytes:
-          items:
-            format: byte
-            type: string
-          type: array
-        contentType:
-          type: string
-        empty:
-          type: boolean
-        inputStream:
-          type: object
-        name:
-          type: string
-        originalFilename:
-          type: string
-        resource:
-          $ref: '#/components/schemas/Resource'
-        size:
-          format: int64
-          type: integer
-      type: object
-    PageOfChangelogs:
-      additionalProperties: false
-      description: A page of changelogs.
-      properties:
-        histories:
-          description: The list of changelogs.
-          items:
-            $ref: '#/components/schemas/Changelog'
+        defaultValue:
+          description: The default value of the field.
           readOnly: true
-          type: array
-        maxResults:
-          description: The maximum number of results that could be on the page.
-          format: int32
+        hasDefaultValue:
+          description: Whether the field has a default value.
           readOnly: true
-          type: integer
-        startAt:
-          description: The index of the first item returned on the page.
-          format: int32
-          readOnly: true
-          type: integer
-        total:
-          description: The number of results on the page.
-          format: int32
-          readOnly: true
-          type: integer
-      type: object
-    PropertyKeys:
-      additionalProperties: false
-      description: List of property keys.
-      properties:
-        keys:
-          description: Property key details.
-          items:
-            $ref: '#/components/schemas/PropertyKey'
-          readOnly: true
-          type: array
-      type: object
-    PagedDTOServiceDeskDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
           type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/ServiceDeskDTO'
-          type: array
-      type: object
-    I18nErrorMessage:
-      additionalProperties: false
-      properties:
-        i18nKey:
-          type: string
-        parameters:
-          items:
-            type: string
-          type: array
-      type: object
-    IncludedFields:
-      additionalProperties: false
-      properties:
-        actuallyIncluded:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        excluded:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        included:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
-    PagedDTORequestTypeDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/RequestTypeDTO'
-          type: array
-      type: object
-    RequestTypeGroupDTO:
-      additionalProperties: false
-      properties:
-        id:
-          description: ID of the request type group
+        key:
+          description: The key of the field.
+          readOnly: true
           type: string
         name:
-          description: Name of the request type group.
-          type: string
-      type: object
-    Changelog:
-      additionalProperties: false
-      description: A log of changes made to issue fields. Changelogs related to workflow associations are currently being deprecated.
-      properties:
-        author:
-          allOf:
-          - $ref: '#/components/schemas/UserDetails'
-          description: The user who made the change.
-          readOnly: true
-        created:
-          description: The date on which the change took place.
-          format: date-time
+          description: The name of the field.
           readOnly: true
           type: string
-        historyMetadata:
-          allOf:
-          - $ref: '#/components/schemas/HistoryMetadata'
-          description: The history metadata associated with the changed.
-          readOnly: true
-        id:
-          description: The ID of the changelog.
-          readOnly: true
-          type: string
-        items:
-          description: The list of items changed.
+        operations:
+          description: The list of operations that can be performed on the field.
           items:
-            $ref: '#/components/schemas/ChangeDetails'
+            readOnly: true
+            type: string
           readOnly: true
           type: array
+        required:
+          description: Whether the field is required.
+          readOnly: true
+          type: boolean
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/JsonTypeBean'
+          description: The data type of the field.
+          readOnly: true
+      required:
+      - key
+      - name
+      - operations
+      - required
+      - schema
       type: object
-    ServiceDeskCustomerInviteDTO:
-      additionalProperties: false
-      properties:
-        displayName:
-          description: Customer's name for display in the UI.
-          type: string
-        email:
-          description: Customer's email address.
-          type: string
-      type: object
+      xml:
+        name: availableField
     RequestTypeFieldDTO:
       additionalProperties: false
       properties:
@@ -2449,7 +2056,7 @@ components:
         visible:
           type: boolean
       type: object
-    PagedDTORequestTypeGroupDTO:
+    PagedDTOUserDTO:
       additionalProperties: false
       properties:
         _expands:
@@ -2478,8 +2085,894 @@ components:
         values:
           description: Details of the items included in the page.
           items:
-            $ref: '#/components/schemas/RequestTypeGroupDTO'
+            $ref: '#/components/schemas/UserDTO'
           type: array
+      type: object
+    SelfLinkDTO:
+      additionalProperties: false
+      properties:
+        self:
+          format: uri
+          type: string
+      type: object
+    Operations:
+      additionalProperties: true
+      description: Details of the operations that can be performed on the issue.
+      properties:
+        linkGroups:
+          description: Details of the link groups defining issue operations.
+          items:
+            $ref: '#/components/schemas/LinkGroup'
+          readOnly: true
+          type: array
+      type: object
+    EntityProperty:
+      additionalProperties: false
+      description: An entity property, for more information see [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).
+      properties:
+        key:
+          description: The key of the property. Required on create and update.
+          type: string
+        value:
+          description: The value of the property. Required on create and update.
+      type: object
+    RequestTypeIconLinkDTO:
+      additionalProperties: false
+      properties:
+        iconUrls:
+          additionalProperties:
+            format: uri
+            type: string
+          description: URLs for the request type icons.
+          type: object
+      type: object
+    IssueTransition:
+      additionalProperties: true
+      description: Details of an issue transition.
+      properties:
+        expand:
+          description: Expand options that include additional transition details in the response.
+          readOnly: true
+          type: string
+        fields:
+          additionalProperties:
+            $ref: '#/components/schemas/FieldMetadata'
+          description: Details of the fields associated with the issue transition screen. Use this information to populate `fields` and `update` in a transition request.
+          readOnly: true
+          type: object
+        hasScreen:
+          description: Whether there is a screen associated with the issue transition.
+          readOnly: true
+          type: boolean
+        id:
+          description: The ID of the issue transition. Required when specifying a transition to undertake.
+          type: string
+        isAvailable:
+          description: Whether the transition is available to be performed.
+          readOnly: true
+          type: boolean
+        isConditional:
+          description: Whether the issue has to meet criteria before the issue transition is applied.
+          readOnly: true
+          type: boolean
+        isGlobal:
+          description: Whether the issue transition is global, that is, the transition is applied to issues regardless of their status.
+          readOnly: true
+          type: boolean
+        isInitial:
+          description: Whether this is the initial issue transition for the workflow.
+          readOnly: true
+          type: boolean
+        looped:
+          type: boolean
+        name:
+          description: The name of the issue transition.
+          readOnly: true
+          type: string
+        to:
+          allOf:
+          - $ref: '#/components/schemas/StatusDetails'
+          description: Details of the issue status after the transition.
+          readOnly: true
+      type: object
+    PagedDTOArticleDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/ArticleDTO'
+          type: array
+      type: object
+    CustomerRequestCreateMetaDTO:
+      additionalProperties: false
+      properties:
+        canAddRequestParticipants:
+          description: Flag indicating if participants can be added to a request (true) or not.
+          type: boolean
+        canRaiseOnBehalfOf:
+          description: Flag indicating if a request can be raised on behalf of another user (true) or not.
+          type: boolean
+        requestTypeFields:
+          description: List of the fields included in this request.
+          items:
+            $ref: '#/components/schemas/RequestTypeFieldDTO'
+          type: array
+      type: object
+    SimpleLink:
+      additionalProperties: false
+      description: Details about the operations available in this version.
+      properties:
+        href:
+          type: string
+        iconClass:
+          type: string
+        id:
+          type: string
+        label:
+          type: string
+        styleClass:
+          type: string
+        title:
+          type: string
+        weight:
+          format: int32
+          type: integer
+      type: object
+      xml:
+        name: link
+    RequestTypeIconDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/RequestTypeIconLinkDTO'
+          description: Map of the URLs for the request type icons.
+        id:
+          description: ID of the request type icon.
+          type: string
+      type: object
+    PropertyKeys:
+      additionalProperties: false
+      description: List of property keys.
+      properties:
+        keys:
+          description: Property key details.
+          items:
+            $ref: '#/components/schemas/PropertyKey'
+          readOnly: true
+          type: array
+      type: object
+    PagedDTORequestTypeDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/RequestTypeDTO'
+          type: array
+      type: object
+    UserLinkDTO:
+      additionalProperties: false
+      properties:
+        avatarUrls:
+          additionalProperties:
+            type: string
+          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
+          type: object
+        jiraRest:
+          description: REST API URL for the customer.
+          format: uri
+          type: string
+        self:
+          format: uri
+          type: string
+      type: object
+    RequestTypeFieldValueDTO:
+      additionalProperties: false
+      properties:
+        children:
+          description: List of child fields.
+          items:
+            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
+          type: array
+        label:
+          description: Label for the field.
+          type: string
+        value:
+          description: Value of the field.
+          type: string
+      type: object
+    UserDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/UserLinkDTO'
+          description: URLs for the customer record and related items.
+        accountId:
+          description: The accountId of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+          type: string
+        active:
+          description: Indicates if the customer is active (true) or inactive (false)
+          type: boolean
+        displayName:
+          description: Customer's name for display in a UI. Depending on the customer’s privacy settings, this may return an alternative value.
+          type: string
+        emailAddress:
+          description: Customer's email address. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+        key:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        name:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        timeZone:
+          description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+      type: object
+    PagedDTOQueueDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/QueueDTO'
+          type: array
+      type: object
+    ChangeDetails:
+      additionalProperties: false
+      description: A change item.
+      properties:
+        field:
+          description: The name of the field changed.
+          readOnly: true
+          type: string
+        fieldId:
+          description: The ID of the field changed.
+          readOnly: true
+          type: string
+        fieldtype:
+          description: The type of the field changed.
+          readOnly: true
+          type: string
+        from:
+          description: The details of the original value.
+          readOnly: true
+          type: string
+        fromString:
+          description: The details of the original value as a string.
+          readOnly: true
+          type: string
+        to:
+          description: The details of the new value.
+          readOnly: true
+          type: string
+        toString:
+          description: The details of the new value as a string.
+          readOnly: true
+          type: string
+      type: object
+    StatusCategory:
+      additionalProperties: true
+      description: A status category.
+      properties:
+        colorName:
+          description: The name of the color used to represent the status category.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the status category.
+          format: int64
+          readOnly: true
+          type: integer
+        key:
+          description: The key of the status category.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the status category.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the status category.
+          readOnly: true
+          type: string
+      type: object
+    QueueDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/SelfLinkDTO'
+          description: REST API URL to the queue.
+        fields:
+          description: Fields returned for each request in the queue.
+          items:
+            type: string
+          type: array
+        id:
+          description: ID for the queue.
+          type: string
+        issueCount:
+          description: The count of customer requests in the queue.
+          format: int64
+          type: integer
+        jql:
+          description: JQL query that filters reqeusts for the queue.
+          type: string
+        name:
+          description: Short name for the queue.
+          type: string
+      type: object
+    RequestTypeDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          description: List of items that can be expanded in the response by specifying the expand query parameter.
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/SelfLinkDTO'
+          description: REST API URL for the request type.
+        canCreateRequest:
+          description: Whether the user has permission to create a request with this request type.
+          type: boolean
+        description:
+          description: Description of the request type.
+          type: string
+        fields:
+          allOf:
+          - $ref: '#/components/schemas/CustomerRequestCreateMetaDTO'
+          description: Fields and additional metadata for creating a request that uses the request type
+        groupIds:
+          description: List of the request type groups the request type belongs to.
+          items:
+            type: string
+          type: array
+        helpText:
+          description: Help text for the request type.
+          type: string
+        icon:
+          allOf:
+          - $ref: '#/components/schemas/RequestTypeIconDTO'
+          description: Links to the request type's icons.
+        id:
+          description: ID for the request type.
+          type: string
+        issueTypeId:
+          description: ID of the issue type the request type is based upon.
+          type: string
+        name:
+          description: Short name for the request type.
+          type: string
+        portalId:
+          description: ID of the customer portal associated with the service desk project.
+          type: string
+        practice:
+          description: The request type's practice
+          type: string
+        restrictionStatus:
+          description: Whether request type is restricted or not.
+          enum:
+          - OPEN
+          - RESTRICTED
+          type: string
+        serviceDeskId:
+          description: ID of the service desk the request type belongs to.
+          type: string
+      type: object
+    ServiceDeskCustomerDTO:
+      additionalProperties: false
+      properties:
+        accountIds:
+          description: List of users, specified by account IDs, to add to or remove from a service desk.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        usernames:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. Use `accountIds` instead.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    StatusDetails:
+      additionalProperties: true
+      description: A status.
+      properties:
+        description:
+          description: The description of the status.
+          readOnly: true
+          type: string
+        iconUrl:
+          description: The URL of the icon used to represent the status.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the status.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the status.
+          readOnly: true
+          type: string
+        scope:
+          allOf:
+          - $ref: '#/components/schemas/Scope'
+          description: The scope of the field.
+          readOnly: true
+        self:
+          description: The URL of the status.
+          readOnly: true
+          type: string
+        statusCategory:
+          allOf:
+          - $ref: '#/components/schemas/StatusCategory'
+          description: The category assigned to the status.
+          readOnly: true
+      type: object
+    MultipartFile:
+      additionalProperties: false
+      properties:
+        bytes:
+          items:
+            format: byte
+            type: string
+          type: array
+        contentType:
+          type: string
+        empty:
+          type: boolean
+        inputStream:
+          type: object
+        name:
+          type: string
+        originalFilename:
+          type: string
+        resource:
+          $ref: '#/components/schemas/Resource'
+        size:
+          format: int64
+          type: integer
+      type: object
+    ArticleDTO:
+      additionalProperties: false
+      properties:
+        content:
+          $ref: '#/components/schemas/ContentDTO'
+        excerpt:
+          description: Excerpt of the article which matches the given query string.
+          type: string
+        source:
+          allOf:
+          - $ref: '#/components/schemas/SourceDTO'
+          description: Source of the article.
+        title:
+          description: Title of the article.
+          type: string
+      type: object
+    RequestTypeCreateDTO:
+      additionalProperties: false
+      properties:
+        description:
+          description: Description of the request type on the service desk.
+          type: string
+        helpText:
+          description: Help text for the request type on the service desk.
+          type: string
+        issueTypeId:
+          description: ID of the request type to add to the service desk.
+          type: string
+        name:
+          description: Name of the request type on the service desk.
+          type: string
+      type: object
+    PagedLinkDTO:
+      additionalProperties: false
+      properties:
+        base:
+          description: Base URL for the REST API calls.
+          format: uri
+          type: string
+        context:
+          type: string
+        next:
+          description: REST API URL for the next page, if there is one.
+          format: uri
+          type: string
+        prev:
+          description: REST API URL for the previous page, if there is one.
+          format: uri
+          type: string
+        self:
+          description: REST API URL for the current page.
+          format: uri
+          type: string
+      type: object
+    PropertyKey:
+      additionalProperties: false
+      description: Property key details.
+      properties:
+        key:
+          description: The key of the property.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the property.
+          readOnly: true
+          type: string
+      type: object
+    PagedDTOIssueBean:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/IssueBean'
+          type: array
+      type: object
+    IssueUpdateMetadata:
+      description: A list of editable field details.
+      properties:
+        fields:
+          additionalProperties:
+            $ref: '#/components/schemas/FieldMetadata'
+          readOnly: true
+          type: object
+      type: object
+    Changelog:
+      additionalProperties: false
+      description: A log of changes made to issue fields. Changelogs related to workflow associations are currently being deprecated.
+      properties:
+        author:
+          allOf:
+          - $ref: '#/components/schemas/UserDetails'
+          description: The user who made the change.
+          readOnly: true
+        created:
+          description: The date on which the change took place.
+          format: date-time
+          readOnly: true
+          type: string
+        historyMetadata:
+          allOf:
+          - $ref: '#/components/schemas/HistoryMetadata'
+          description: The history metadata associated with the changed.
+          readOnly: true
+        id:
+          description: The ID of the changelog.
+          readOnly: true
+          type: string
+        items:
+          description: The list of items changed.
+          items:
+            $ref: '#/components/schemas/ChangeDetails'
+          readOnly: true
+          type: array
+      type: object
+    ErrorResponse:
+      additionalProperties: false
+      properties:
+        errorMessage:
+          type: string
+        i18nErrorMessage:
+          $ref: '#/components/schemas/I18nErrorMessage'
+      type: object
+    ContentDTO:
+      additionalProperties: false
+      properties:
+        iframeSrc:
+          description: Url containing the body of the article (without title), suitable for rendering in an iframe
+          type: string
+      type: object
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+          type: string
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
+      type: object
+    LinkGroup:
+      additionalProperties: false
+      description: Details a link group, which defines issue operations.
+      properties:
+        groups:
+          items:
+            $ref: '#/components/schemas/LinkGroup'
+          type: array
+        header:
+          $ref: '#/components/schemas/SimpleLink'
+        id:
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/SimpleLink'
+          type: array
+        styleClass:
+          type: string
+        weight:
+          format: int32
+          type: integer
+      type: object
+    ServiceDeskCustomerInviteDTO:
+      additionalProperties: false
+      properties:
+        displayName:
+          description: Customer's name for display in the UI.
+          type: string
+        email:
+          description: Customer's email address.
+          type: string
+      type: object
+    Scope:
+      additionalProperties: true
+      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
+      properties:
+        project:
+          allOf:
+          - $ref: '#/components/schemas/ProjectDetails'
+          description: The project the item has scope in.
+          readOnly: true
+        type:
+          description: The type of scope.
+          enum:
+          - PROJECT
+          - TEMPLATE
+          readOnly: true
+          type: string
+      type: object
+    IncludedFields:
+      additionalProperties: false
+      properties:
+        actuallyIncluded:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        excluded:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        included:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    ServiceDeskDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/SelfLinkDTO'
+          description: REST API URL to the service desk.
+        id:
+          description: ID of the service desk.
+          type: string
+        projectId:
+          description: ID of the peer project for the service desk.
+          type: string
+        projectKey:
+          description: Key of the peer project of the service desk.
+          type: string
+        projectName:
+          description: Name of the project and service desk.
+          type: string
+        projectTypeKey:
+          description: Key of the project type.
+          type: string
+      type: object
+    Resource:
+      additionalProperties: false
+      properties:
+        contentAsByteArray:
+          items:
+            format: byte
+            type: string
+          type: array
+        description:
+          type: string
+        file:
+          format: binary
+          type: string
+        filename:
+          type: string
+        inputStream:
+          type: object
+        open:
+          type: boolean
+        readable:
+          type: boolean
+        uri:
+          format: uri
+          type: string
+        url:
+          format: url
+          type: string
+      type: object
+    HistoryMetadata:
+      additionalProperties: true
+      description: Details of issue history metadata.
+      properties:
+        activityDescription:
+          description: The activity described in the history record.
+          type: string
+        activityDescriptionKey:
+          description: The key of the activity described in the history record.
+          type: string
+        actor:
+          allOf:
+          - $ref: '#/components/schemas/HistoryMetadataParticipant'
+          description: Details of the user whose action created the history record.
+        cause:
+          allOf:
+          - $ref: '#/components/schemas/HistoryMetadataParticipant'
+          description: Details of the cause that triggered the creation the history record.
+        description:
+          description: The description of the history record.
+          type: string
+        descriptionKey:
+          description: The description key of the history record.
+          type: string
+        emailDescription:
+          description: The description of the email address associated the history record.
+          type: string
+        emailDescriptionKey:
+          description: The description key of the email address associated the history record.
+          type: string
+        extraData:
+          additionalProperties:
+            type: string
+          description: Additional arbitrary information about the history record.
+          type: object
+        generator:
+          allOf:
+          - $ref: '#/components/schemas/HistoryMetadataParticipant'
+          description: Details of the system that generated the history record.
+        type:
+          description: The type of the history record.
+          type: string
+      type: object
+    UpdatedProjectCategory:
+      additionalProperties: false
+      description: A project category.
+      properties:
+        description:
+          description: The name of the project category.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the project category.
+          readOnly: true
+          type: string
+        name:
+          description: The description of the project category.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the project category.
+          readOnly: true
+          type: string
+      type: object
+    SourceDTO:
+      additionalProperties: true
+      properties:
+        type:
+          description: Type of the knowledge base source
+          enum:
+          - confluence
+          type: string
       type: object
     UserDetails:
       additionalProperties: false
@@ -2570,173 +3063,6 @@ components:
           readOnly: true
           type: boolean
       type: object
-    PropertyKey:
-      additionalProperties: false
-      description: Property key details.
-      properties:
-        key:
-          description: The key of the property.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the property.
-          readOnly: true
-          type: string
-      type: object
-    PagedDTOArticleDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/ArticleDTO'
-          type: array
-      type: object
-    FieldMetadata:
-      additionalProperties: false
-      description: The metadata describing an issue field.
-      properties:
-        allowedValues:
-          description: The list of values allowed in the field.
-          items:
-            readOnly: true
-          readOnly: true
-          type: array
-        autoCompleteUrl:
-          description: The URL that can be used to automatically complete the field.
-          readOnly: true
-          type: string
-        configuration:
-          additionalProperties:
-            readOnly: true
-          description: The configuration properties.
-          readOnly: true
-          type: object
-        defaultValue:
-          description: The default value of the field.
-          readOnly: true
-        hasDefaultValue:
-          description: Whether the field has a default value.
-          readOnly: true
-          type: boolean
-        key:
-          description: The key of the field.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the field.
-          readOnly: true
-          type: string
-        operations:
-          description: The list of operations that can be performed on the field.
-          items:
-            readOnly: true
-            type: string
-          readOnly: true
-          type: array
-        required:
-          description: Whether the field is required.
-          readOnly: true
-          type: boolean
-        schema:
-          allOf:
-          - $ref: '#/components/schemas/JsonTypeBean'
-          description: The data type of the field.
-          readOnly: true
-      required:
-      - key
-      - name
-      - operations
-      - required
-      - schema
-      type: object
-      xml:
-        name: availableField
-    RequestTypeFieldValueDTO:
-      additionalProperties: false
-      properties:
-        children:
-          description: List of child fields.
-          items:
-            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
-          type: array
-        label:
-          description: Label for the field.
-          type: string
-        value:
-          description: Value of the field.
-          type: string
-      type: object
-    QueueDTO:
-      additionalProperties: false
-      properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/SelfLinkDTO'
-          description: REST API URL to the queue.
-        fields:
-          description: Fields returned for each request in the queue.
-          items:
-            type: string
-          type: array
-        id:
-          description: ID for the queue.
-          type: string
-        issueCount:
-          description: The count of customer requests in the queue.
-          format: int64
-          type: integer
-        jql:
-          description: JQL query that filters reqeusts for the queue.
-          type: string
-        name:
-          description: Short name for the queue.
-          type: string
-      type: object
-    RequestTypeIconLinkDTO:
-      additionalProperties: false
-      properties:
-        iconUrls:
-          additionalProperties:
-            format: uri
-            type: string
-          description: URLs for the request type icons.
-          type: object
-      type: object
-    RequestTypeIconDTO:
-      additionalProperties: false
-      properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/RequestTypeIconLinkDTO'
-          description: Map of the URLs for the request type icons.
-        id:
-          description: ID of the request type icon.
-          type: string
-      type: object
     RequestTypePermissionCheckRequestDTO:
       additionalProperties: false
       properties:
@@ -2757,328 +3083,6 @@ components:
             format: int32
             type: integer
           type: array
-      type: object
-    PagedDTOQueueDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/QueueDTO'
-          type: array
-      type: object
-    UpdatedProjectCategory:
-      additionalProperties: false
-      description: A project category.
-      properties:
-        description:
-          description: The name of the project category.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the project category.
-          readOnly: true
-          type: string
-        name:
-          description: The description of the project category.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the project category.
-          readOnly: true
-          type: string
-      type: object
-    PagedLinkDTO:
-      additionalProperties: false
-      properties:
-        base:
-          description: Base URL for the REST API calls.
-          format: uri
-          type: string
-        context:
-          type: string
-        next:
-          description: REST API URL for the next page, if there is one.
-          format: uri
-          type: string
-        prev:
-          description: REST API URL for the previous page, if there is one.
-          format: uri
-          type: string
-        self:
-          description: REST API URL for the current page.
-          format: uri
-          type: string
-      type: object
-    EntityProperty:
-      additionalProperties: false
-      description: An entity property, for more information see [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).
-      properties:
-        key:
-          description: The key of the property. Required on create and update.
-          type: string
-        value:
-          description: The value of the property. Required on create and update.
-      type: object
-    IssueTransition:
-      additionalProperties: true
-      description: Details of an issue transition.
-      properties:
-        expand:
-          description: Expand options that include additional transition details in the response.
-          readOnly: true
-          type: string
-        fields:
-          additionalProperties:
-            $ref: '#/components/schemas/FieldMetadata'
-          description: Details of the fields associated with the issue transition screen. Use this information to populate `fields` and `update` in a transition request.
-          readOnly: true
-          type: object
-        hasScreen:
-          description: Whether there is a screen associated with the issue transition.
-          readOnly: true
-          type: boolean
-        id:
-          description: The ID of the issue transition. Required when specifying a transition to undertake.
-          type: string
-        isAvailable:
-          description: Whether the transition is available to be performed.
-          readOnly: true
-          type: boolean
-        isConditional:
-          description: Whether the issue has to meet criteria before the issue transition is applied.
-          readOnly: true
-          type: boolean
-        isGlobal:
-          description: Whether the issue transition is global, that is, the transition is applied to issues regardless of their status.
-          readOnly: true
-          type: boolean
-        isInitial:
-          description: Whether this is the initial issue transition for the workflow.
-          readOnly: true
-          type: boolean
-        looped:
-          type: boolean
-        name:
-          description: The name of the issue transition.
-          readOnly: true
-          type: string
-        to:
-          allOf:
-          - $ref: '#/components/schemas/StatusDetails'
-          description: Details of the issue status after the transition.
-          readOnly: true
-      type: object
-    SelfLinkDTO:
-      additionalProperties: false
-      properties:
-        self:
-          format: uri
-          type: string
-      type: object
-    UserLinkDTO:
-      additionalProperties: false
-      properties:
-        avatarUrls:
-          additionalProperties:
-            type: string
-          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
-          type: object
-        jiraRest:
-          description: REST API URL for the customer.
-          format: uri
-          type: string
-        self:
-          format: uri
-          type: string
-      type: object
-    PagedDTOUserDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/UserDTO'
-          type: array
-      type: object
-    ArticleDTO:
-      additionalProperties: false
-      properties:
-        content:
-          $ref: '#/components/schemas/ContentDTO'
-        excerpt:
-          description: Excerpt of the article which matches the given query string.
-          type: string
-        source:
-          allOf:
-          - $ref: '#/components/schemas/SourceDTO'
-          description: Source of the article.
-        title:
-          description: Title of the article.
-          type: string
-      type: object
-    RequestTypeDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          description: List of items that can be expanded in the response by specifying the expand query parameter.
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/SelfLinkDTO'
-          description: REST API URL for the request type.
-        canCreateRequest:
-          description: Whether the user has permission to create a request with this request type.
-          type: boolean
-        description:
-          description: Description of the request type.
-          type: string
-        fields:
-          allOf:
-          - $ref: '#/components/schemas/CustomerRequestCreateMetaDTO'
-          description: Fields and additional metadata for creating a request that uses the request type
-        groupIds:
-          description: List of the request type groups the request type belongs to.
-          items:
-            type: string
-          type: array
-        helpText:
-          description: Help text for the request type.
-          type: string
-        icon:
-          allOf:
-          - $ref: '#/components/schemas/RequestTypeIconDTO'
-          description: Links to the request type's icons.
-        id:
-          description: ID for the request type.
-          type: string
-        issueTypeId:
-          description: ID of the issue type the request type is based upon.
-          type: string
-        name:
-          description: Short name for the request type.
-          type: string
-        portalId:
-          description: ID of the customer portal associated with the service desk project.
-          type: string
-        practice:
-          description: The request type's practice
-          type: string
-        restrictionStatus:
-          description: Whether request type is restricted or not.
-          enum:
-          - OPEN
-          - RESTRICTED
-          type: string
-        serviceDeskId:
-          description: ID of the service desk the request type belongs to.
-          type: string
-      type: object
-    HistoryMetadataParticipant:
-      additionalProperties: true
-      description: Details of user or system associated with a issue history metadata item.
-      properties:
-        avatarUrl:
-          description: The URL to an avatar for the user or system associated with a history record.
-          type: string
-        displayName:
-          description: The display name of the user or system associated with a history record.
-          type: string
-        displayNameKey:
-          description: The key of the display name of the user or system associated with a history record.
-          type: string
-        id:
-          description: The ID of the user or system associated with a history record.
-          type: string
-        type:
-          description: The type of the user or system associated with a history record.
-          type: string
-        url:
-          description: The URL of the user or system associated with a history record.
-          type: string
-      type: object
-    StatusDetails:
-      additionalProperties: true
-      description: A status.
-      properties:
-        description:
-          description: The description of the status.
-          readOnly: true
-          type: string
-        iconUrl:
-          description: The URL of the icon used to represent the status.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the status.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the status.
-          readOnly: true
-          type: string
-        scope:
-          allOf:
-          - $ref: '#/components/schemas/Scope'
-          description: The scope of the field.
-          readOnly: true
-        self:
-          description: The URL of the status.
-          readOnly: true
-          type: string
-        statusCategory:
-          allOf:
-          - $ref: '#/components/schemas/StatusCategory'
-          description: The category assigned to the status.
-          readOnly: true
       type: object
     IssueBean:
       additionalProperties: false
@@ -3166,90 +3170,86 @@ components:
       type: object
       xml:
         name: issue
-    ErrorResponse:
+    PagedDTOServiceDeskDTO:
       additionalProperties: false
       properties:
-        errorMessage:
-          type: string
-        i18nErrorMessage:
-          $ref: '#/components/schemas/I18nErrorMessage'
-      type: object
-    HistoryMetadata:
-      additionalProperties: true
-      description: Details of issue history metadata.
-      properties:
-        activityDescription:
-          description: The activity described in the history record.
-          type: string
-        activityDescriptionKey:
-          description: The key of the activity described in the history record.
-          type: string
-        actor:
-          allOf:
-          - $ref: '#/components/schemas/HistoryMetadataParticipant'
-          description: Details of the user whose action created the history record.
-        cause:
-          allOf:
-          - $ref: '#/components/schemas/HistoryMetadataParticipant'
-          description: Details of the cause that triggered the creation the history record.
-        description:
-          description: The description of the history record.
-          type: string
-        descriptionKey:
-          description: The description key of the history record.
-          type: string
-        emailDescription:
-          description: The description of the email address associated the history record.
-          type: string
-        emailDescriptionKey:
-          description: The description key of the email address associated the history record.
-          type: string
-        extraData:
-          additionalProperties:
+        _expands:
+          items:
             type: string
-          description: Additional arbitrary information about the history record.
-          type: object
-        generator:
+          type: array
+        _links:
           allOf:
-          - $ref: '#/components/schemas/HistoryMetadataParticipant'
-          description: Details of the system that generated the history record.
-        type:
-          description: The type of the history record.
-          type: string
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/ServiceDeskDTO'
+          type: array
       type: object
-    JsonTypeBean:
+    PageOfChangelogs:
       additionalProperties: false
-      description: The schema of a field.
+      description: A page of changelogs.
       properties:
-        configuration:
-          additionalProperties:
-            readOnly: true
-          description: If the field is a custom field, the configuration of the field.
+        histories:
+          description: The list of changelogs.
+          items:
+            $ref: '#/components/schemas/Changelog'
           readOnly: true
-          type: object
-        custom:
-          description: If the field is a custom field, the URI of the field.
-          readOnly: true
-          type: string
-        customId:
-          description: If the field is a custom field, the custom ID of the field.
-          format: int64
+          type: array
+        maxResults:
+          description: The maximum number of results that could be on the page.
+          format: int32
           readOnly: true
           type: integer
-        items:
-          description: When the data type is an array, the name of the field items within the array.
+        startAt:
+          description: The index of the first item returned on the page.
+          format: int32
           readOnly: true
+          type: integer
+        total:
+          description: The number of results on the page.
+          format: int32
+          readOnly: true
+          type: integer
+      type: object
+    HistoryMetadataParticipant:
+      additionalProperties: true
+      description: Details of user or system associated with a issue history metadata item.
+      properties:
+        avatarUrl:
+          description: The URL to an avatar for the user or system associated with a history record.
           type: string
-        system:
-          description: If the field is a system field, the name of the field.
-          readOnly: true
+        displayName:
+          description: The display name of the user or system associated with a history record.
+          type: string
+        displayNameKey:
+          description: The key of the display name of the user or system associated with a history record.
+          type: string
+        id:
+          description: The ID of the user or system associated with a history record.
           type: string
         type:
-          description: The data type of the field.
-          readOnly: true
+          description: The type of the user or system associated with a history record.
           type: string
-      required:
-      - type
+        url:
+          description: The URL of the user or system associated with a history record.
+          type: string
       type: object
   securitySchemes:
     OAuth2:

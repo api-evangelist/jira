@@ -2376,95 +2376,392 @@ paths:
       x-atlassian-connect-scope: WRITE
 components:
   schemas:
-    CommentDTO:
+    JsonTypeBean:
+      additionalProperties: false
+      description: The schema of a field.
+      properties:
+        configuration:
+          additionalProperties:
+            readOnly: true
+          description: If the field is a custom field, the configuration of the field.
+          readOnly: true
+          type: object
+        custom:
+          description: If the field is a custom field, the URI of the field.
+          readOnly: true
+          type: string
+        customId:
+          description: If the field is a custom field, the custom ID of the field.
+          format: int64
+          readOnly: true
+          type: integer
+        items:
+          description: When the data type is an array, the name of the field items within the array.
+          readOnly: true
+          type: string
+        system:
+          description: If the field is a system field, the name of the field.
+          readOnly: true
+          type: string
+        type:
+          description: The data type of the field.
+          readOnly: true
+          type: string
+      required:
+      - type
+      type: object
+    ApprovalDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/SelfLinkDTO'
+          description: The REST API URL of the approval.
+        approvers:
+          description: Detailed list of the users who must provide a response to the approval.
+          items:
+            $ref: '#/components/schemas/ApproverDTO'
+          type: array
+        canAnswerApproval:
+          description: Indicates whether the user making the request is one of the approvers and can respond to the approval (true) or not (false).
+          type: boolean
+        completedDate:
+          allOf:
+          - $ref: '#/components/schemas/DateDTO'
+          description: Date the approval was completed.
+        createdDate:
+          allOf:
+          - $ref: '#/components/schemas/DateDTO'
+          description: Date the approval was created.
+        finalDecision:
+          description: Outcome of the approval, based on the approvals provided by all approvers.
+          enum:
+          - approved
+          - declined
+          - pending
+          type: string
+        id:
+          description: ID of the approval.
+          type: string
+        name:
+          description: Description of the approval being sought or provided.
+          type: string
+      type: object
+    CustomerTransitionExecutionDTO:
+      additionalProperties: false
+      properties:
+        additionalComment:
+          allOf:
+          - $ref: '#/components/schemas/AdditionalCommentDTO'
+          description: Comment explaining the reason for the transition.
+        id:
+          description: ID of the transition to be performed.
+          type: string
+      type: object
+    I18nErrorMessage:
+      additionalProperties: false
+      properties:
+        i18nKey:
+          type: string
+        parameters:
+          items:
+            type: string
+          type: array
+      type: object
+    FormValidationErrorDTO:
+      additionalProperties: false
+      properties:
+        code:
+          description: Machine-readable validation error code.
+          type: string
+        context:
+          description: Identifies the form entity that caused the validation error.
+          items:
+            $ref: '#/components/schemas/FormValidationErrorContextDTO'
+          type: array
+        detail:
+          description: Detailed validation error message.
+          type: string
+        status:
+          description: The HTTP status code.
+          format: int32
+          type: integer
+        title:
+          description: Short summary of the validation error.
+          type: string
+      type: object
+    RequestValidationResultDTO:
+      additionalProperties: false
+      properties:
+        errorMessage:
+          description: A single, human-readable summary describing why validation failed. Null when valid.
+          type: string
+        errorMessages:
+          description: General validation errors that are not attributable to a single field. Empty when valid.
+          items:
+            type: string
+          type: array
+        fieldErrors:
+          description: Field-level validation errors, keyed by the failing request field id. Empty when valid.
+          items:
+            $ref: '#/components/schemas/RequestFieldValidationErrorDTO'
+          type: array
+        formErrors:
+          description: ProForma form validation errors, if a form was supplied. Empty when valid or no form was present.
+          items:
+            $ref: '#/components/schemas/FormValidationErrorDTO'
+          type: array
+        reasonKey:
+          description: A machine-readable reason key categorising the overall failure. Null when valid.
+          type: string
+        valid:
+          description: True when the payload is both structurally and semantically valid and safe to create.
+          type: boolean
+      type: object
+    DateDTO:
+      additionalProperties: false
+      properties:
+        epochMillis:
+          description: Date as the number of milliseconds that have elapsed since 00:00:00 Coordinated Universal Time (UTC), 1 January 1970.
+          format: int64
+          type: integer
+        friendly:
+          description: Date in a user-friendly text format.
+          type: string
+        iso8601:
+          description: Date in ISO8601 format.
+          type: string
+        jira:
+          description: Date in the format used in the Jira REST APIs, which is ISO8601 format but extended with milliseconds. For example, 2016-09-28T23:08:32.097+1000.
+          type: string
+      type: object
+    DurationDTO:
+      additionalProperties: false
+      properties:
+        friendly:
+          description: Duration in a user-friendly text format.
+          type: string
+        millis:
+          description: Duration in milliseconds.
+          format: int64
+          type: integer
+      type: object
+    PagedDTOCustomerRequestDTO:
       additionalProperties: false
       properties:
         _expands:
-          description: List of items that can be expanded in the response by specifying the expand query parameter.
           items:
             type: string
           type: array
         _links:
           allOf:
-          - $ref: '#/components/schemas/SelfLinkDTO'
-          description: REST API URL link to the comment.
-        attachments:
-          allOf:
-          - $ref: '#/components/schemas/PagedDTOAttachmentDTO'
-          description: List of the attachments included in the comment.
-        author:
-          allOf:
-          - $ref: '#/components/schemas/UserDTO'
-          description: Details of the customer who authored the comment.
-        body:
-          description: Content of the comment.
-          type: string
-        created:
-          allOf:
-          - $ref: '#/components/schemas/DateDTO'
-          description: Date the comment was created.
-        id:
-          description: ID of the comment.
-          type: string
-        public:
-          description: Indicates whether the comment is public (true) or private/internal (false).
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
           type: boolean
-        renderedBody:
-          allOf:
-          - $ref: '#/components/schemas/RenderedValueDTO'
-          description: The rendered body of the comment.
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/CustomerRequestDTO'
+          type: array
       type: object
-    ServiceDeskDTO:
+    RequestTypeFieldDTO:
       additionalProperties: false
       properties:
-        _links:
+        defaultValues:
+          description: List of default values for the field.
+          items:
+            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
+          type: array
+        description:
+          description: Description of the field.
+          type: string
+        fieldId:
+          description: ID of the field.
+          type: string
+        jiraSchema:
           allOf:
-          - $ref: '#/components/schemas/SelfLinkDTO'
-          description: REST API URL to the service desk.
-        id:
-          description: ID of the service desk.
-          type: string
-        projectId:
-          description: ID of the peer project for the service desk.
-          type: string
-        projectKey:
-          description: Key of the peer project of the service desk.
-          type: string
-        projectName:
-          description: Name of the project and service desk.
-          type: string
-        projectTypeKey:
-          description: Key of the project type.
-          type: string
-      type: object
-    UserDTO:
-      additionalProperties: false
-      properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/UserLinkDTO'
-          description: URLs for the customer record and related items.
-        accountId:
-          description: The accountId of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
-          type: string
-        active:
-          description: Indicates if the customer is active (true) or inactive (false)
-          type: boolean
-        displayName:
-          description: Customer's name for display in a UI. Depending on the customer’s privacy settings, this may return an alternative value.
-          type: string
-        emailAddress:
-          description: Customer's email address. Depending on the customer’s privacy settings, this may be returned as null.
-          type: string
-        key:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
+          - $ref: '#/components/schemas/JsonTypeBean'
+          description: Jira specific implementation details for the field in the UI.
         name:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          description: Name of the field.
           type: string
-        timeZone:
-          description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
+        presetValues:
+          description: List of preset values for the field.
+          items:
+            type: string
+          type: array
+        required:
+          description: Indicates if the field is required (true) or not (false).
+          type: boolean
+        validValues:
+          description: List of valid values for the field.
+          items:
+            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
+          type: array
+        visible:
+          type: boolean
+      type: object
+    PagedDTOUserDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/UserDTO'
+          type: array
+      type: object
+    SelfLinkDTO:
+      additionalProperties: false
+      properties:
+        self:
+          format: uri
           type: string
+      type: object
+    PagedDTOCommentDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/CommentDTO'
+          type: array
+      type: object
+    RequestTypeIconLinkDTO:
+      additionalProperties: false
+      properties:
+        iconUrls:
+          additionalProperties:
+            format: uri
+            type: string
+          description: URLs for the request type icons.
+          type: object
+      type: object
+    PagedDTOCustomerRequestStatusDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/CustomerRequestStatusDTO'
+          type: array
+      type: object
+    CustomerRequestCreateMetaDTO:
+      additionalProperties: false
+      properties:
+        canAddRequestParticipants:
+          description: Flag indicating if participants can be added to a request (true) or not.
+          type: boolean
+        canRaiseOnBehalfOf:
+          description: Flag indicating if a request can be raised on behalf of another user (true) or not.
+          type: boolean
+        requestTypeFields:
+          description: List of the fields included in this request.
+          items:
+            $ref: '#/components/schemas/RequestTypeFieldDTO'
+          type: array
+      type: object
+    RequestTypeIconDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/RequestTypeIconLinkDTO'
+          description: Map of the URLs for the request type icons.
+        id:
+          description: ID of the request type icon.
+          type: string
+      type: object
+    Form:
+      additionalProperties: true
+      properties:
+        answers:
+          additionalProperties:
+            $ref: '#/components/schemas/FormAnswer'
+          description: JSON mapping of form field answers containing form field IDs and corresponding values.
+          type: object
       type: object
     SlaInformationOngoingCycleDTO:
       additionalProperties: false
@@ -2499,6 +2796,417 @@ components:
           description: Indicates whether the SLA it timed during calendared working hours only (true) or not (false).
           type: boolean
       type: object
+    CustomerTransitionDTO:
+      additionalProperties: false
+      properties:
+        id:
+          description: ID of the transition.
+          type: string
+        name:
+          description: Name of the transition.
+          type: string
+      type: object
+    RequestTypeFieldValueDTO:
+      additionalProperties: false
+      properties:
+        children:
+          description: List of child fields.
+          items:
+            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
+          type: array
+        label:
+          description: Label for the field.
+          type: string
+        value:
+          description: Value of the field.
+          type: string
+      type: object
+    UserDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/UserLinkDTO'
+          description: URLs for the customer record and related items.
+        accountId:
+          description: The accountId of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+          type: string
+        active:
+          description: Indicates if the customer is active (true) or inactive (false)
+          type: boolean
+        displayName:
+          description: Customer's name for display in a UI. Depending on the customer’s privacy settings, this may return an alternative value.
+          type: string
+        emailAddress:
+          description: Customer's email address. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+        key:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        name:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        timeZone:
+          description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+      type: object
+    RequestNotificationSubscriptionDTO:
+      additionalProperties: false
+      properties:
+        subscribed:
+          description: Indicates whether the user is subscribed (true) or not (false) to the request's notifications.
+          type: boolean
+      type: object
+    RequestCreateDTO:
+      additionalProperties: false
+      properties:
+        channel:
+          description: (Experimental) Shows extra information for the request channel.
+          type: string
+        form:
+          allOf:
+          - $ref: '#/components/schemas/Form'
+          description: Provides answers to the form associated with a request type. Omit Jira fields from `requestFieldValues` if they're linked to form answers. For form answers in ADF format, set `isAdfRequest` to true.
+        isAdfRequest:
+          description: (Experimental) Whether to accept rich text fields in Atlassian Document Format (ADF).
+          type: boolean
+        raiseOnBehalfOf:
+          description: The `accountId` of the customer that the request is being raised on behalf of.
+          type: string
+        requestFieldValues:
+          additionalProperties: {}
+          description: JSON map of Jira field IDs and their values representing the content of the request.
+          type: object
+        requestParticipants:
+          description: List of customers to participate in the request, as a list of `accountId` values.
+          items:
+            type: string
+          type: array
+        requestTypeId:
+          description: ID of the request type for the request.
+          type: string
+        serviceDeskId:
+          description: ID of the service desk in which to create the request.
+          type: string
+      type: object
+    SlaInformationDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/SelfLinkDTO'
+          description: REST API URL for the SLA.
+        completedCycles:
+          description: List of completed cycles for the SLA.
+          items:
+            $ref: '#/components/schemas/SlaInformationCompletedCycleDTO'
+          type: array
+        id:
+          description: ID of the Service Level Agreement (SLA).
+          type: string
+        name:
+          description: Description of the SLA.
+          type: string
+        ongoingCycle:
+          allOf:
+          - $ref: '#/components/schemas/SlaInformationOngoingCycleDTO'
+          description: Details of the active cycle for the SLA.
+        slaDisplayFormat:
+          description: Format in which SLA is to be displayed in the UI
+          type: string
+      type: object
+    RequestTypeDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          description: List of items that can be expanded in the response by specifying the expand query parameter.
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/SelfLinkDTO'
+          description: REST API URL for the request type.
+        canCreateRequest:
+          description: Whether the user has permission to create a request with this request type.
+          type: boolean
+        description:
+          description: Description of the request type.
+          type: string
+        fields:
+          allOf:
+          - $ref: '#/components/schemas/CustomerRequestCreateMetaDTO'
+          description: Fields and additional metadata for creating a request that uses the request type
+        groupIds:
+          description: List of the request type groups the request type belongs to.
+          items:
+            type: string
+          type: array
+        helpText:
+          description: Help text for the request type.
+          type: string
+        icon:
+          allOf:
+          - $ref: '#/components/schemas/RequestTypeIconDTO'
+          description: Links to the request type's icons.
+        id:
+          description: ID for the request type.
+          type: string
+        issueTypeId:
+          description: ID of the issue type the request type is based upon.
+          type: string
+        name:
+          description: Short name for the request type.
+          type: string
+        portalId:
+          description: ID of the customer portal associated with the service desk project.
+          type: string
+        practice:
+          description: The request type's practice
+          type: string
+        restrictionStatus:
+          description: Whether request type is restricted or not.
+          enum:
+          - OPEN
+          - RESTRICTED
+          type: string
+        serviceDeskId:
+          description: ID of the service desk the request type belongs to.
+          type: string
+      type: object
+    AttachmentCreateResultDTO:
+      additionalProperties: false
+      properties:
+        attachments:
+          allOf:
+          - $ref: '#/components/schemas/PagedDTOAttachmentDTO'
+          description: List of the attachments added.
+        comment:
+          allOf:
+          - $ref: '#/components/schemas/CommentDTO'
+          description: Details of the comment included with the attachments.
+      type: object
+    AdditionalCommentDTO:
+      additionalProperties: false
+      properties:
+        body:
+          description: Content of the comment.
+          type: string
+      type: object
+    FormValidationErrorContextDTO:
+      additionalProperties: false
+      properties:
+        id:
+          description: ID of the form entity related to the validation error.
+          type: string
+        type:
+          description: Type of form entity related to the validation error.
+          type: string
+      type: object
+    PagedLinkDTO:
+      additionalProperties: false
+      properties:
+        base:
+          description: Base URL for the REST API calls.
+          format: uri
+          type: string
+        context:
+          type: string
+        next:
+          description: REST API URL for the next page, if there is one.
+          format: uri
+          type: string
+        prev:
+          description: REST API URL for the previous page, if there is one.
+          format: uri
+          type: string
+        self:
+          description: REST API URL for the current page.
+          format: uri
+          type: string
+      type: object
+    I18nErrorMessageDTO:
+      additionalProperties: false
+      properties:
+        i18nKey:
+          description: Internationalization key for the error message.
+          type: string
+        parameters:
+          description: Parameters used to render the internationalized error message.
+          items:
+            type: string
+          type: array
+      type: object
+    ApprovalDecisionRequestDTO:
+      additionalProperties: false
+      properties:
+        decision:
+          description: Response to the approval request.
+          enum:
+          - approve
+          - decline
+          type: string
+      type: object
+    RenderedValueDTO:
+      additionalProperties: false
+      properties:
+        html:
+          type: string
+      type: object
+    CustomerRequestLinkDTO:
+      additionalProperties: false
+      properties:
+        agent:
+          description: Jira agent view URL for the request.
+          format: uri
+          type: string
+        jiraRest:
+          description: REST API URL for the request.
+          format: uri
+          type: string
+        self:
+          format: uri
+          type: string
+        web:
+          description: Web URL for the request.
+          format: uri
+          type: string
+      type: object
+    CustomerRequestActionDTO:
+      additionalProperties: false
+      properties:
+        allowed:
+          description: Indicates whether the user can undertake the action (true) or not (false).
+          type: boolean
+      type: object
+    AttachmentLinkDTO:
+      additionalProperties: false
+      properties:
+        content:
+          description: URL for the attachment.
+          format: uri
+          type: string
+        jiraRest:
+          description: REST API URL for the attachment
+          format: uri
+          type: string
+        self:
+          format: uri
+          type: string
+        thumbnail:
+          description: URL for the attachment's thumbnail image.
+          format: uri
+          type: string
+      type: object
+    CSATFeedbackFullDTO:
+      additionalProperties: false
+      properties:
+        comment:
+          allOf:
+          - $ref: '#/components/schemas/AdditionalCommentDTO'
+          description: (Optional) The comment provided with this feedback.
+        rating:
+          description: A numeric representation of the rating, this must be an integer value between 1 and 5.
+          format: int32
+          type: integer
+        type:
+          description: 'Indicates the type of feedback, supported values: `csat`.'
+          type: string
+      type: object
+    ApproverDTO:
+      additionalProperties: false
+      properties:
+        approver:
+          allOf:
+          - $ref: '#/components/schemas/UserDTO'
+          description: Details of the User who is providing approval.
+        approverDecision:
+          description: Decision made by the approver.
+          enum:
+          - approved
+          - declined
+          - pending
+          type: string
+      type: object
+    ErrorResponse:
+      additionalProperties: false
+      properties:
+        errorMessage:
+          type: string
+        i18nErrorMessage:
+          $ref: '#/components/schemas/I18nErrorMessage'
+      type: object
+    AttachmentDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/AttachmentLinkDTO'
+          description: Various URLs for the attachment.
+        author:
+          allOf:
+          - $ref: '#/components/schemas/UserDTO'
+          description: Details of the user who attached the file.
+        created:
+          allOf:
+          - $ref: '#/components/schemas/DateDTO'
+          description: Date the attachment was added.
+        filename:
+          description: Filename of the item attached.
+          type: string
+        mimeType:
+          description: MIME type of the attachment.
+          type: string
+        size:
+          description: Size of the attachment in bytes.
+          format: int64
+          type: integer
+      type: object
+    CommentCreateDTO:
+      additionalProperties: false
+      properties:
+        body:
+          description: Content of the comment.
+          type: string
+        public:
+          description: Indicates whether the comment is public (true) or private/internal (false).
+          type: boolean
+      type: object
+    CustomerRequestStatusDTO:
+      additionalProperties: false
+      properties:
+        status:
+          description: Name of the status condition.
+          type: string
+        statusCategory:
+          description: Status category the status belongs to.
+          enum:
+          - UNDEFINED
+          - NEW
+          - INDETERMINATE
+          - DONE
+          type: string
+        statusDate:
+          allOf:
+          - $ref: '#/components/schemas/DateDTO'
+          description: Date on which the status was attained.
+      type: object
+    FormValidationErrorResponseDTO:
+      additionalProperties: false
+      properties:
+        errorMessage:
+          description: Description of the error.
+          type: string
+        errors:
+          description: A list of validation errors.
+          items:
+            $ref: '#/components/schemas/FormValidationErrorDTO'
+          type: array
+        i18nErrorMessage:
+          allOf:
+          - $ref: '#/components/schemas/I18nErrorMessageDTO'
+          description: Internationalized error message details.
+      type: object
     PagedDTOCustomerTransitionDTO:
       additionalProperties: false
       properties:
@@ -2531,65 +3239,7 @@ components:
             $ref: '#/components/schemas/CustomerTransitionDTO'
           type: array
       type: object
-    CustomerTransitionDTO:
-      additionalProperties: false
-      properties:
-        id:
-          description: ID of the transition.
-          type: string
-        name:
-          description: Name of the transition.
-          type: string
-      type: object
-    RequestParticipantUpdateDTO:
-      additionalProperties: false
-      properties:
-        accountIds:
-          description: List of users, specified by account IDs, to add to or remove as participants in the request.
-          items:
-            type: string
-          type: array
-        usernames:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. Use `accountIds` instead.
-          items:
-            type: string
-          type: array
-      type: object
-    AttachmentCreateResultDTO:
-      additionalProperties: false
-      properties:
-        attachments:
-          allOf:
-          - $ref: '#/components/schemas/PagedDTOAttachmentDTO'
-          description: List of the attachments added.
-        comment:
-          allOf:
-          - $ref: '#/components/schemas/CommentDTO'
-          description: Details of the comment included with the attachments.
-      type: object
-    FormValidationErrorDTO:
-      additionalProperties: false
-      properties:
-        code:
-          description: Machine-readable validation error code.
-          type: string
-        context:
-          description: Identifies the form entity that caused the validation error.
-          items:
-            $ref: '#/components/schemas/FormValidationErrorContextDTO'
-          type: array
-        detail:
-          description: Detailed validation error message.
-          type: string
-        status:
-          description: The HTTP status code.
-          format: int32
-          type: integer
-        title:
-          description: Short summary of the validation error.
-          type: string
-      type: object
-    PagedDTOAttachmentDTO:
+    PagedDTOApprovalDTO:
       additionalProperties: false
       properties:
         _expands:
@@ -2618,44 +3268,63 @@ components:
         values:
           description: Details of the items included in the page.
           items:
-            $ref: '#/components/schemas/AttachmentDTO'
+            $ref: '#/components/schemas/ApprovalDTO'
           type: array
       type: object
-    DurationDTO:
+    ServiceDeskDTO:
       additionalProperties: false
       properties:
-        friendly:
-          description: Duration in a user-friendly text format.
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/SelfLinkDTO'
+          description: REST API URL to the service desk.
+        id:
+          description: ID of the service desk.
           type: string
-        millis:
-          description: Duration in milliseconds.
-          format: int64
-          type: integer
+        projectId:
+          description: ID of the peer project for the service desk.
+          type: string
+        projectKey:
+          description: Key of the peer project of the service desk.
+          type: string
+        projectName:
+          description: Name of the project and service desk.
+          type: string
+        projectTypeKey:
+          description: Key of the project type.
+          type: string
       type: object
-    CommentCreateDTO:
+    PagedDTOSlaInformationDTO:
       additionalProperties: false
       properties:
-        body:
-          description: Content of the comment.
-          type: string
-        public:
-          description: Indicates whether the comment is public (true) or private/internal (false).
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
           type: boolean
-      type: object
-    CustomerRequestFieldValueDTO:
-      additionalProperties: false
-      properties:
-        fieldId:
-          description: ID of the field.
-          type: string
-        label:
-          description: Text label for the field.
-          type: string
-        renderedValue:
-          description: Value of the field rendered in the UI.
-          type: object
-        value:
-          description: Value of the field.
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/SlaInformationDTO'
+          type: array
       type: object
     CustomerRequestDTO:
       additionalProperties: false
@@ -2734,174 +3403,52 @@ components:
           description: Summary of the request created
           type: string
       type: object
-    CustomerRequestCreateMetaDTO:
+    CustomerRequestFieldValueDTO:
       additionalProperties: false
       properties:
-        canAddRequestParticipants:
-          description: Flag indicating if participants can be added to a request (true) or not.
-          type: boolean
-        canRaiseOnBehalfOf:
-          description: Flag indicating if a request can be raised on behalf of another user (true) or not.
-          type: boolean
-        requestTypeFields:
-          description: List of the fields included in this request.
-          items:
-            $ref: '#/components/schemas/RequestTypeFieldDTO'
-          type: array
-      type: object
-    RenderedValueDTO:
-      additionalProperties: false
-      properties:
-        html:
-          type: string
-      type: object
-    I18nErrorMessage:
-      additionalProperties: false
-      properties:
-        i18nKey:
-          type: string
-        parameters:
-          items:
-            type: string
-          type: array
-      type: object
-    CustomerRequestStatusDTO:
-      additionalProperties: false
-      properties:
-        status:
-          description: Name of the status condition.
-          type: string
-        statusCategory:
-          description: Status category the status belongs to.
-          enum:
-          - UNDEFINED
-          - NEW
-          - INDETERMINATE
-          - DONE
-          type: string
-        statusDate:
-          allOf:
-          - $ref: '#/components/schemas/DateDTO'
-          description: Date on which the status was attained.
-      type: object
-    AttachmentLinkDTO:
-      additionalProperties: false
-      properties:
-        content:
-          description: URL for the attachment.
-          format: uri
-          type: string
-        jiraRest:
-          description: REST API URL for the attachment
-          format: uri
-          type: string
-        self:
-          format: uri
-          type: string
-        thumbnail:
-          description: URL for the attachment's thumbnail image.
-          format: uri
-          type: string
-      type: object
-    Form:
-      additionalProperties: true
-      properties:
-        answers:
-          additionalProperties:
-            $ref: '#/components/schemas/FormAnswer'
-          description: JSON mapping of form field answers containing form field IDs and corresponding values.
-          type: object
-      type: object
-    PagedDTOApprovalDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/ApprovalDTO'
-          type: array
-      type: object
-    RequestTypeFieldDTO:
-      additionalProperties: false
-      properties:
-        defaultValues:
-          description: List of default values for the field.
-          items:
-            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
-          type: array
-        description:
-          description: Description of the field.
-          type: string
         fieldId:
           description: ID of the field.
           type: string
-        jiraSchema:
-          allOf:
-          - $ref: '#/components/schemas/JsonTypeBean'
-          description: Jira specific implementation details for the field in the UI.
-        name:
-          description: Name of the field.
+        label:
+          description: Text label for the field.
           type: string
-        presetValues:
-          description: List of preset values for the field.
+        renderedValue:
+          description: Value of the field rendered in the UI.
+          type: object
+        value:
+          description: Value of the field.
+      type: object
+    FormAnswer:
+      additionalProperties: false
+      properties:
+        adf:
+          allOf:
+          - $ref: '#/components/schemas/JsonNode'
+          description: Answer in Atlassian Document Format (ADF)
+        choices:
+          description: IDs of selected choices
           items:
             type: string
           type: array
-        required:
-          description: Indicates if the field is required (true) or not (false).
-          type: boolean
-        validValues:
-          description: List of valid values for the field.
+        date:
+          description: Answer in date format (yyyy-MM-dd)
+          type: string
+        files:
+          description: The IDs of files to be attached to the form that are obtained by calling the ‘attach temporary file’ endpoint on the corresponding service desk.
           items:
-            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
+            type: string
           type: array
-        visible:
-          type: boolean
-      type: object
-    CSATFeedbackFullDTO:
-      additionalProperties: false
-      properties:
-        comment:
-          allOf:
-          - $ref: '#/components/schemas/AdditionalCommentDTO'
-          description: (Optional) The comment provided with this feedback.
-        rating:
-          description: A numeric representation of the rating, this must be an integer value between 1 and 5.
-          format: int32
-          type: integer
-        type:
-          description: 'Indicates the type of feedback, supported values: `csat`.'
+        text:
+          description: Answer in free text format
           type: string
-      type: object
-    AdditionalCommentDTO:
-      additionalProperties: false
-      properties:
-        body:
-          description: Content of the comment.
+        time:
+          description: Answer in timestamp format (HH:mm)
           type: string
+        users:
+          description: IDs of selected users
+          items:
+            type: string
+          type: array
       type: object
     AttachmentCreateDTO:
       additionalProperties: false
@@ -2919,21 +3466,6 @@ components:
             type: string
           type: array
       type: object
-    RequestTypeFieldValueDTO:
-      additionalProperties: false
-      properties:
-        children:
-          description: List of child fields.
-          items:
-            $ref: '#/components/schemas/RequestTypeFieldValueDTO'
-          type: array
-        label:
-          description: Label for the field.
-          type: string
-        value:
-          description: Value of the field.
-          type: string
-      type: object
     RequestFieldValidationErrorDTO:
       additionalProperties: false
       properties:
@@ -2944,17 +3476,7 @@ components:
           description: A human-readable explanation of why this field failed validation.
           type: string
       type: object
-    RequestTypeIconLinkDTO:
-      additionalProperties: false
-      properties:
-        iconUrls:
-          additionalProperties:
-            format: uri
-            type: string
-          description: URLs for the request type icons.
-          type: object
-      type: object
-    PagedDTOSlaInformationDTO:
+    PagedDTOAttachmentDTO:
       additionalProperties: false
       properties:
         _expands:
@@ -2983,42 +3505,22 @@ components:
         values:
           description: Details of the items included in the page.
           items:
-            $ref: '#/components/schemas/SlaInformationDTO'
+            $ref: '#/components/schemas/AttachmentDTO'
           type: array
       type: object
-    RequestTypeIconDTO:
+    RequestParticipantUpdateDTO:
       additionalProperties: false
       properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/RequestTypeIconLinkDTO'
-          description: Map of the URLs for the request type icons.
-        id:
-          description: ID of the request type icon.
-          type: string
-      type: object
-    RequestNotificationSubscriptionDTO:
-      additionalProperties: false
-      properties:
-        subscribed:
-          description: Indicates whether the user is subscribed (true) or not (false) to the request's notifications.
-          type: boolean
-      type: object
-    FormValidationErrorResponseDTO:
-      additionalProperties: false
-      properties:
-        errorMessage:
-          description: Description of the error.
-          type: string
-        errors:
-          description: A list of validation errors.
+        accountIds:
+          description: List of users, specified by account IDs, to add to or remove as participants in the request.
           items:
-            $ref: '#/components/schemas/FormValidationErrorDTO'
+            type: string
           type: array
-        i18nErrorMessage:
-          allOf:
-          - $ref: '#/components/schemas/I18nErrorMessageDTO'
-          description: Internationalized error message details.
+        usernames:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. Use `accountIds` instead.
+          items:
+            type: string
+          type: array
       type: object
     SlaInformationCompletedCycleDTO:
       additionalProperties: false
@@ -3050,213 +3552,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/DateDTO'
           description: Time and date at which the SLA cycle completed.
-      type: object
-    CustomerTransitionExecutionDTO:
-      additionalProperties: false
-      properties:
-        additionalComment:
-          allOf:
-          - $ref: '#/components/schemas/AdditionalCommentDTO'
-          description: Comment explaining the reason for the transition.
-        id:
-          description: ID of the transition to be performed.
-          type: string
-      type: object
-    AttachmentDTO:
-      additionalProperties: false
-      properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/AttachmentLinkDTO'
-          description: Various URLs for the attachment.
-        author:
-          allOf:
-          - $ref: '#/components/schemas/UserDTO'
-          description: Details of the user who attached the file.
-        created:
-          allOf:
-          - $ref: '#/components/schemas/DateDTO'
-          description: Date the attachment was added.
-        filename:
-          description: Filename of the item attached.
-          type: string
-        mimeType:
-          description: MIME type of the attachment.
-          type: string
-        size:
-          description: Size of the attachment in bytes.
-          format: int64
-          type: integer
-      type: object
-    I18nErrorMessageDTO:
-      additionalProperties: false
-      properties:
-        i18nKey:
-          description: Internationalization key for the error message.
-          type: string
-        parameters:
-          description: Parameters used to render the internationalized error message.
-          items:
-            type: string
-          type: array
-      type: object
-    PagedLinkDTO:
-      additionalProperties: false
-      properties:
-        base:
-          description: Base URL for the REST API calls.
-          format: uri
-          type: string
-        context:
-          type: string
-        next:
-          description: REST API URL for the next page, if there is one.
-          format: uri
-          type: string
-        prev:
-          description: REST API URL for the previous page, if there is one.
-          format: uri
-          type: string
-        self:
-          description: REST API URL for the current page.
-          format: uri
-          type: string
-      type: object
-    DateDTO:
-      additionalProperties: false
-      properties:
-        epochMillis:
-          description: Date as the number of milliseconds that have elapsed since 00:00:00 Coordinated Universal Time (UTC), 1 January 1970.
-          format: int64
-          type: integer
-        friendly:
-          description: Date in a user-friendly text format.
-          type: string
-        iso8601:
-          description: Date in ISO8601 format.
-          type: string
-        jira:
-          description: Date in the format used in the Jira REST APIs, which is ISO8601 format but extended with milliseconds. For example, 2016-09-28T23:08:32.097+1000.
-          type: string
-      type: object
-    CustomerRequestActionsDTO:
-      additionalProperties: false
-      properties:
-        addAttachment:
-          allOf:
-          - $ref: '#/components/schemas/CustomerRequestActionDTO'
-          description: Action of adding attachments to a request.
-        addComment:
-          allOf:
-          - $ref: '#/components/schemas/CustomerRequestActionDTO'
-          description: Action of adding comments to a request.
-        addParticipant:
-          allOf:
-          - $ref: '#/components/schemas/CustomerRequestActionDTO'
-          description: Action of adding participants to a request.
-        removeParticipant:
-          allOf:
-          - $ref: '#/components/schemas/CustomerRequestActionDTO'
-          description: Action of removing participants from a request.
-      type: object
-    ApproverDTO:
-      additionalProperties: false
-      properties:
-        approver:
-          allOf:
-          - $ref: '#/components/schemas/UserDTO'
-          description: Details of the User who is providing approval.
-        approverDecision:
-          description: Decision made by the approver.
-          enum:
-          - approved
-          - declined
-          - pending
-          type: string
-      type: object
-    PagedDTOCustomerRequestDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/CustomerRequestDTO'
-          type: array
-      type: object
-    CustomerRequestLinkDTO:
-      additionalProperties: false
-      properties:
-        agent:
-          description: Jira agent view URL for the request.
-          format: uri
-          type: string
-        jiraRest:
-          description: REST API URL for the request.
-          format: uri
-          type: string
-        self:
-          format: uri
-          type: string
-        web:
-          description: Web URL for the request.
-          format: uri
-          type: string
-      type: object
-    SelfLinkDTO:
-      additionalProperties: false
-      properties:
-        self:
-          format: uri
-          type: string
-      type: object
-    ApprovalDecisionRequestDTO:
-      additionalProperties: false
-      properties:
-        decision:
-          description: Response to the approval request.
-          enum:
-          - approve
-          - decline
-          type: string
-      type: object
-    UserLinkDTO:
-      additionalProperties: false
-      properties:
-        avatarUrls:
-          additionalProperties:
-            type: string
-          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
-          type: object
-        jiraRest:
-          description: REST API URL for the customer.
-          format: uri
-          type: string
-        self:
-          format: uri
-          type: string
       type: object
     JsonNode:
       additionalProperties: false
@@ -3350,114 +3645,7 @@ components:
         valueNode:
           type: boolean
       type: object
-    PagedDTOCustomerRequestStatusDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/CustomerRequestStatusDTO'
-          type: array
-      type: object
-    SlaInformationDTO:
-      additionalProperties: false
-      properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/SelfLinkDTO'
-          description: REST API URL for the SLA.
-        completedCycles:
-          description: List of completed cycles for the SLA.
-          items:
-            $ref: '#/components/schemas/SlaInformationCompletedCycleDTO'
-          type: array
-        id:
-          description: ID of the Service Level Agreement (SLA).
-          type: string
-        name:
-          description: Description of the SLA.
-          type: string
-        ongoingCycle:
-          allOf:
-          - $ref: '#/components/schemas/SlaInformationOngoingCycleDTO'
-          description: Details of the active cycle for the SLA.
-        slaDisplayFormat:
-          description: Format in which SLA is to be displayed in the UI
-          type: string
-      type: object
-    FormValidationErrorContextDTO:
-      additionalProperties: false
-      properties:
-        id:
-          description: ID of the form entity related to the validation error.
-          type: string
-        type:
-          description: Type of form entity related to the validation error.
-          type: string
-      type: object
-    PagedDTOUserDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/UserDTO'
-          type: array
-      type: object
-    CustomerRequestActionDTO:
-      additionalProperties: false
-      properties:
-        allowed:
-          description: Indicates whether the user can undertake the action (true) or not (false).
-          type: boolean
-      type: object
-    RequestTypeDTO:
+    CommentDTO:
       additionalProperties: false
       properties:
         _expands:
@@ -3468,256 +3656,68 @@ components:
         _links:
           allOf:
           - $ref: '#/components/schemas/SelfLinkDTO'
-          description: REST API URL for the request type.
-        canCreateRequest:
-          description: Whether the user has permission to create a request with this request type.
-          type: boolean
-        description:
-          description: Description of the request type.
-          type: string
-        fields:
+          description: REST API URL link to the comment.
+        attachments:
           allOf:
-          - $ref: '#/components/schemas/CustomerRequestCreateMetaDTO'
-          description: Fields and additional metadata for creating a request that uses the request type
-        groupIds:
-          description: List of the request type groups the request type belongs to.
-          items:
-            type: string
-          type: array
-        helpText:
-          description: Help text for the request type.
-          type: string
-        icon:
+          - $ref: '#/components/schemas/PagedDTOAttachmentDTO'
+          description: List of the attachments included in the comment.
+        author:
           allOf:
-          - $ref: '#/components/schemas/RequestTypeIconDTO'
-          description: Links to the request type's icons.
-        id:
-          description: ID for the request type.
+          - $ref: '#/components/schemas/UserDTO'
+          description: Details of the customer who authored the comment.
+        body:
+          description: Content of the comment.
           type: string
-        issueTypeId:
-          description: ID of the issue type the request type is based upon.
-          type: string
-        name:
-          description: Short name for the request type.
-          type: string
-        portalId:
-          description: ID of the customer portal associated with the service desk project.
-          type: string
-        practice:
-          description: The request type's practice
-          type: string
-        restrictionStatus:
-          description: Whether request type is restricted or not.
-          enum:
-          - OPEN
-          - RESTRICTED
-          type: string
-        serviceDeskId:
-          description: ID of the service desk the request type belongs to.
-          type: string
-      type: object
-    RequestCreateDTO:
-      additionalProperties: false
-      properties:
-        channel:
-          description: (Experimental) Shows extra information for the request channel.
-          type: string
-        form:
-          allOf:
-          - $ref: '#/components/schemas/Form'
-          description: Provides answers to the form associated with a request type. Omit Jira fields from `requestFieldValues` if they're linked to form answers. For form answers in ADF format, set `isAdfRequest` to true.
-        isAdfRequest:
-          description: (Experimental) Whether to accept rich text fields in Atlassian Document Format (ADF).
-          type: boolean
-        raiseOnBehalfOf:
-          description: The `accountId` of the customer that the request is being raised on behalf of.
-          type: string
-        requestFieldValues:
-          additionalProperties: {}
-          description: JSON map of Jira field IDs and their values representing the content of the request.
-          type: object
-        requestParticipants:
-          description: List of customers to participate in the request, as a list of `accountId` values.
-          items:
-            type: string
-          type: array
-        requestTypeId:
-          description: ID of the request type for the request.
-          type: string
-        serviceDeskId:
-          description: ID of the service desk in which to create the request.
-          type: string
-      type: object
-    PagedDTOCommentDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/CommentDTO'
-          type: array
-      type: object
-    ApprovalDTO:
-      additionalProperties: false
-      properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/SelfLinkDTO'
-          description: The REST API URL of the approval.
-        approvers:
-          description: Detailed list of the users who must provide a response to the approval.
-          items:
-            $ref: '#/components/schemas/ApproverDTO'
-          type: array
-        canAnswerApproval:
-          description: Indicates whether the user making the request is one of the approvers and can respond to the approval (true) or not (false).
-          type: boolean
-        completedDate:
+        created:
           allOf:
           - $ref: '#/components/schemas/DateDTO'
-          description: Date the approval was completed.
-        createdDate:
-          allOf:
-          - $ref: '#/components/schemas/DateDTO'
-          description: Date the approval was created.
-        finalDecision:
-          description: Outcome of the approval, based on the approvals provided by all approvers.
-          enum:
-          - approved
-          - declined
-          - pending
-          type: string
+          description: Date the comment was created.
         id:
-          description: ID of the approval.
+          description: ID of the comment.
           type: string
-        name:
-          description: Description of the approval being sought or provided.
-          type: string
-      type: object
-    ErrorResponse:
-      additionalProperties: false
-      properties:
-        errorMessage:
-          type: string
-        i18nErrorMessage:
-          $ref: '#/components/schemas/I18nErrorMessage'
-      type: object
-    FormAnswer:
-      additionalProperties: false
-      properties:
-        adf:
-          allOf:
-          - $ref: '#/components/schemas/JsonNode'
-          description: Answer in Atlassian Document Format (ADF)
-        choices:
-          description: IDs of selected choices
-          items:
-            type: string
-          type: array
-        date:
-          description: Answer in date format (yyyy-MM-dd)
-          type: string
-        files:
-          description: The IDs of files to be attached to the form that are obtained by calling the ‘attach temporary file’ endpoint on the corresponding service desk.
-          items:
-            type: string
-          type: array
-        text:
-          description: Answer in free text format
-          type: string
-        time:
-          description: Answer in timestamp format (HH:mm)
-          type: string
-        users:
-          description: IDs of selected users
-          items:
-            type: string
-          type: array
-      type: object
-    RequestValidationResultDTO:
-      additionalProperties: false
-      properties:
-        errorMessage:
-          description: A single, human-readable summary describing why validation failed. Null when valid.
-          type: string
-        errorMessages:
-          description: General validation errors that are not attributable to a single field. Empty when valid.
-          items:
-            type: string
-          type: array
-        fieldErrors:
-          description: Field-level validation errors, keyed by the failing request field id. Empty when valid.
-          items:
-            $ref: '#/components/schemas/RequestFieldValidationErrorDTO'
-          type: array
-        formErrors:
-          description: ProForma form validation errors, if a form was supplied. Empty when valid or no form was present.
-          items:
-            $ref: '#/components/schemas/FormValidationErrorDTO'
-          type: array
-        reasonKey:
-          description: A machine-readable reason key categorising the overall failure. Null when valid.
-          type: string
-        valid:
-          description: True when the payload is both structurally and semantically valid and safe to create.
+        public:
+          description: Indicates whether the comment is public (true) or private/internal (false).
           type: boolean
+        renderedBody:
+          allOf:
+          - $ref: '#/components/schemas/RenderedValueDTO'
+          description: The rendered body of the comment.
       type: object
-    JsonTypeBean:
+    CustomerRequestActionsDTO:
       additionalProperties: false
-      description: The schema of a field.
       properties:
-        configuration:
+        addAttachment:
+          allOf:
+          - $ref: '#/components/schemas/CustomerRequestActionDTO'
+          description: Action of adding attachments to a request.
+        addComment:
+          allOf:
+          - $ref: '#/components/schemas/CustomerRequestActionDTO'
+          description: Action of adding comments to a request.
+        addParticipant:
+          allOf:
+          - $ref: '#/components/schemas/CustomerRequestActionDTO'
+          description: Action of adding participants to a request.
+        removeParticipant:
+          allOf:
+          - $ref: '#/components/schemas/CustomerRequestActionDTO'
+          description: Action of removing participants from a request.
+      type: object
+    UserLinkDTO:
+      additionalProperties: false
+      properties:
+        avatarUrls:
           additionalProperties:
-            readOnly: true
-          description: If the field is a custom field, the configuration of the field.
-          readOnly: true
+            type: string
+          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
           type: object
-        custom:
-          description: If the field is a custom field, the URI of the field.
-          readOnly: true
+        jiraRest:
+          description: REST API URL for the customer.
+          format: uri
           type: string
-        customId:
-          description: If the field is a custom field, the custom ID of the field.
-          format: int64
-          readOnly: true
-          type: integer
-        items:
-          description: When the data type is an array, the name of the field items within the array.
-          readOnly: true
+        self:
+          format: uri
           type: string
-        system:
-          description: If the field is a system field, the name of the field.
-          readOnly: true
-          type: string
-        type:
-          description: The data type of the field.
-          readOnly: true
-          type: string
-      required:
-      - type
       type: object
   securitySchemes:
     OAuth2:

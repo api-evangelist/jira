@@ -596,76 +596,6 @@ paths:
       x-atlassian-connect-scope: ADMIN
 components:
   schemas:
-    PageBeanCustomFieldContextOption:
-      additionalProperties: false
-      description: A page of items.
-      properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
-          type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/CustomFieldContextOption'
-          readOnly: true
-          type: array
-      type: object
-    CustomFieldCreatedContextOptionsList:
-      additionalProperties: false
-      description: A list of custom field options for a context.
-      properties:
-        options:
-          description: The created custom field options.
-          items:
-            $ref: '#/components/schemas/CustomFieldContextOption'
-          type: array
-      type: object
-    RemoveOptionFromIssuesResult:
-      additionalProperties: false
-      properties:
-        errors:
-          allOf:
-          - $ref: '#/components/schemas/SimpleErrorCollection'
-          description: A collection of errors related to unchanged issues. The collection size is limited, which means not all errors may be returned.
-        modifiedIssues:
-          description: The IDs of the modified issues.
-          items:
-            format: int64
-            type: integer
-          type: array
-        unmodifiedIssues:
-          description: The IDs of the unchanged issues, those issues where errors prevent modification.
-          items:
-            format: int64
-            type: integer
-          type: array
-      type: object
     TaskProgressBeanRemoveOptionFromIssuesResult:
       additionalProperties: false
       description: Details about a task.
@@ -736,6 +666,103 @@ components:
       - submitted
       - submittedBy
       type: object
+    CustomFieldCreatedContextOptionsList:
+      additionalProperties: false
+      description: A list of custom field options for a context.
+      properties:
+        options:
+          description: The created custom field options.
+          items:
+            $ref: '#/components/schemas/CustomFieldContextOption'
+          type: array
+      type: object
+    PageBeanCustomFieldContextOption:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/CustomFieldContextOption'
+          readOnly: true
+          type: array
+      type: object
+    BulkCustomFieldOptionCreateRequest:
+      additionalProperties: false
+      description: Details of the options to create for a custom field.
+      properties:
+        options:
+          description: Details of options to create.
+          items:
+            $ref: '#/components/schemas/CustomFieldOptionCreate'
+          type: array
+      type: object
+      writeOnly: true
+    RemoveOptionFromIssuesResult:
+      additionalProperties: false
+      properties:
+        errors:
+          allOf:
+          - $ref: '#/components/schemas/SimpleErrorCollection'
+          description: A collection of errors related to unchanged issues. The collection size is limited, which means not all errors may be returned.
+        modifiedIssues:
+          description: The IDs of the modified issues.
+          items:
+            format: int64
+            type: integer
+          type: array
+        unmodifiedIssues:
+          description: The IDs of the unchanged issues, those issues where errors prevent modification.
+          items:
+            format: int64
+            type: integer
+          type: array
+      type: object
+    CustomFieldOptionUpdate:
+      additionalProperties: false
+      description: Details of a custom field option for a context.
+      properties:
+        disabled:
+          description: Whether the option is disabled.
+          type: boolean
+        id:
+          description: The ID of the custom field option.
+          type: string
+        value:
+          description: The value of the custom field option.
+          type: string
+      required:
+      - id
+      type: object
     OrderOfCustomFieldOptions:
       additionalProperties: false
       description: An ordered list of custom field option IDs and information on where to move them.
@@ -761,17 +788,6 @@ components:
       required:
       - customFieldOptionIds
       type: object
-    BulkCustomFieldOptionUpdateRequest:
-      additionalProperties: false
-      description: Details of the options to update for a custom field.
-      properties:
-        options:
-          description: Details of the options to update.
-          items:
-            $ref: '#/components/schemas/CustomFieldOptionUpdate'
-          type: array
-      type: object
-      writeOnly: true
     CustomFieldOptionCreate:
       additionalProperties: false
       description: Details of a custom field option to create.
@@ -788,30 +804,30 @@ components:
       required:
       - value
       type: object
-    CustomFieldOptionUpdate:
+    CustomFieldOption:
       additionalProperties: false
-      description: Details of a custom field option for a context.
+      description: Details of a custom option for a field.
       properties:
-        disabled:
-          description: Whether the option is disabled.
-          type: boolean
-        id:
-          description: The ID of the custom field option.
+        self:
+          description: The URL of these custom field option details.
+          format: uri
+          readOnly: true
           type: string
         value:
           description: The value of the custom field option.
+          readOnly: true
           type: string
-      required:
-      - id
       type: object
-    BulkCustomFieldOptionCreateRequest:
+      xml:
+        name: customFieldOption
+    BulkCustomFieldOptionUpdateRequest:
       additionalProperties: false
-      description: Details of the options to create for a custom field.
+      description: Details of the options to update for a custom field.
       properties:
         options:
-          description: Details of options to create.
+          description: Details of the options to update.
           items:
-            $ref: '#/components/schemas/CustomFieldOptionCreate'
+            $ref: '#/components/schemas/CustomFieldOptionUpdate'
           type: array
       type: object
       writeOnly: true
@@ -831,32 +847,6 @@ components:
         httpStatusCode:
           format: int32
           type: integer
-      type: object
-    CustomFieldOption:
-      additionalProperties: false
-      description: Details of a custom option for a field.
-      properties:
-        self:
-          description: The URL of these custom field option details.
-          format: uri
-          readOnly: true
-          type: string
-        value:
-          description: The value of the custom field option.
-          readOnly: true
-          type: string
-      type: object
-      xml:
-        name: customFieldOption
-    CustomFieldUpdatedContextOptionsList:
-      additionalProperties: false
-      description: A list of custom field options for a context.
-      properties:
-        options:
-          description: The updated custom field options.
-          items:
-            $ref: '#/components/schemas/CustomFieldOptionUpdate'
-          type: array
       type: object
     CustomFieldContextOption:
       additionalProperties: false
@@ -878,6 +868,16 @@ components:
       - disabled
       - id
       - value
+      type: object
+    CustomFieldUpdatedContextOptionsList:
+      additionalProperties: false
+      description: A list of custom field options for a context.
+      properties:
+        options:
+          description: The updated custom field options.
+          items:
+            $ref: '#/components/schemas/CustomFieldOptionUpdate'
+          type: array
       type: object
   securitySchemes:
     OAuth2:

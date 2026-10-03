@@ -1079,84 +1079,56 @@ paths:
       x-atlassian-connect-scope: WRITE
 components:
   schemas:
-    EntityProperty:
-      additionalProperties: false
-      description: An entity property, for more information see [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).
-      properties:
-        key:
-          description: The key of the property. Required on create and update.
-          type: string
-        value:
-          description: The value of the property. Required on create and update.
-      type: object
-    OrganizationServiceDeskUpdateDTO:
+    UsersOrganizationUpdateDTO:
       additionalProperties: true
       properties:
+        accountIds:
+          description: List of customers, specific by account IDs, to add to or remove from the organization.
+          items:
+            type: string
+          type: array
         organizationId:
-          description: List of organizations, specified by 'ID' field values, to add to or remove from the service desk.
+          description: The organizationId in which users need to be added
           format: int32
           type: integer
-        serviceDeskId:
-          description: Service desk Id for which, organization needs to be updated
-          type: string
-      required:
-      - organizationId
-      type: object
-    SelfLinkDTO:
-      additionalProperties: false
-      properties:
-        self:
-          format: uri
-          type: string
-      type: object
-    OrganizationDTO:
-      additionalProperties: false
-      properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/SelfLinkDTO'
-          description: REST API URL to the organization.
-        created:
-          allOf:
-          - $ref: '#/components/schemas/DateDTO'
-          description: Date the organization was created. This field may not be present in some older organizations.
-        id:
-          description: A unique system generated ID for the organization.
-          type: string
-        name:
-          description: Name of the organization.
-          type: string
-        scimManaged:
-          description: Returns if an organization is managed by scim. This field may not be present in some older organizations
-          type: boolean
-        uuid:
-          description: A unique system generated ID for the organization. This is identity from the group directory id
-          type: string
-      type: object
-    OrganizationCreateDTO:
-      additionalProperties: false
-      properties:
-        name:
-          description: Name of the organization. Must contain 1-200 characters.
-          type: string
-      required:
-      - name
-      type: object
-    UserLinkDTO:
-      additionalProperties: false
-      properties:
-        avatarUrls:
-          additionalProperties:
+        usernames:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. Use `accountIds` instead.
+          items:
             type: string
-          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
-          type: object
-        jiraRest:
-          description: REST API URL for the customer.
+          type: array
+      type: object
+    PagedLinkDTO:
+      additionalProperties: false
+      properties:
+        base:
+          description: Base URL for the REST API calls.
+          format: uri
+          type: string
+        context:
+          type: string
+        next:
+          description: REST API URL for the next page, if there is one.
+          format: uri
+          type: string
+        prev:
+          description: REST API URL for the previous page, if there is one.
           format: uri
           type: string
         self:
+          description: REST API URL for the current page.
           format: uri
           type: string
+      type: object
+    PropertyKeys:
+      additionalProperties: false
+      description: List of property keys.
+      properties:
+        keys:
+          description: Property key details.
+          items:
+            $ref: '#/components/schemas/PropertyKey'
+          readOnly: true
+          type: array
       type: object
     PropertyKey:
       additionalProperties: false
@@ -1170,6 +1142,29 @@ components:
           description: The URL of the property.
           readOnly: true
           type: string
+      type: object
+    I18nErrorMessage:
+      additionalProperties: false
+      properties:
+        i18nKey:
+          type: string
+        parameters:
+          items:
+            type: string
+          type: array
+      type: object
+    OrganizationServiceDeskUpdateDTO:
+      additionalProperties: true
+      properties:
+        organizationId:
+          description: List of organizations, specified by 'ID' field values, to add to or remove from the service desk.
+          format: int32
+          type: integer
+        serviceDeskId:
+          description: Service desk Id for which, organization needs to be updated
+          type: string
+      required:
+      - organizationId
       type: object
     UserDTO:
       additionalProperties: false
@@ -1198,124 +1193,6 @@ components:
           type: string
         timeZone:
           description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
-          type: string
-      type: object
-    PagedDTOUserDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/UserDTO'
-          type: array
-      type: object
-    PropertyKeys:
-      additionalProperties: false
-      description: List of property keys.
-      properties:
-        keys:
-          description: Property key details.
-          items:
-            $ref: '#/components/schemas/PropertyKey'
-          readOnly: true
-          type: array
-      type: object
-    UsersOrganizationUpdateDTO:
-      additionalProperties: true
-      properties:
-        accountIds:
-          description: List of customers, specific by account IDs, to add to or remove from the organization.
-          items:
-            type: string
-          type: array
-        organizationId:
-          description: The organizationId in which users need to be added
-          format: int32
-          type: integer
-        usernames:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. Use `accountIds` instead.
-          items:
-            type: string
-          type: array
-      type: object
-    ErrorResponse:
-      additionalProperties: false
-      properties:
-        errorMessage:
-          type: string
-        i18nErrorMessage:
-          $ref: '#/components/schemas/I18nErrorMessage'
-      type: object
-    I18nErrorMessage:
-      additionalProperties: false
-      properties:
-        i18nKey:
-          type: string
-        parameters:
-          items:
-            type: string
-          type: array
-      type: object
-    PagedLinkDTO:
-      additionalProperties: false
-      properties:
-        base:
-          description: Base URL for the REST API calls.
-          format: uri
-          type: string
-        context:
-          type: string
-        next:
-          description: REST API URL for the next page, if there is one.
-          format: uri
-          type: string
-        prev:
-          description: REST API URL for the previous page, if there is one.
-          format: uri
-          type: string
-        self:
-          description: REST API URL for the current page.
-          format: uri
-          type: string
-      type: object
-    DateDTO:
-      additionalProperties: false
-      properties:
-        epochMillis:
-          description: Date as the number of milliseconds that have elapsed since 00:00:00 Coordinated Universal Time (UTC), 1 January 1970.
-          format: int64
-          type: integer
-        friendly:
-          description: Date in a user-friendly text format.
-          type: string
-        iso8601:
-          description: Date in ISO8601 format.
-          type: string
-        jira:
-          description: Date in the format used in the Jira REST APIs, which is ISO8601 format but extended with milliseconds. For example, 2016-09-28T23:08:32.097+1000.
           type: string
       type: object
     PagedDTOOrganizationDTO:
@@ -1349,6 +1226,129 @@ components:
           items:
             $ref: '#/components/schemas/OrganizationDTO'
           type: array
+      type: object
+    DateDTO:
+      additionalProperties: false
+      properties:
+        epochMillis:
+          description: Date as the number of milliseconds that have elapsed since 00:00:00 Coordinated Universal Time (UTC), 1 January 1970.
+          format: int64
+          type: integer
+        friendly:
+          description: Date in a user-friendly text format.
+          type: string
+        iso8601:
+          description: Date in ISO8601 format.
+          type: string
+        jira:
+          description: Date in the format used in the Jira REST APIs, which is ISO8601 format but extended with milliseconds. For example, 2016-09-28T23:08:32.097+1000.
+          type: string
+      type: object
+    OrganizationDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/SelfLinkDTO'
+          description: REST API URL to the organization.
+        created:
+          allOf:
+          - $ref: '#/components/schemas/DateDTO'
+          description: Date the organization was created. This field may not be present in some older organizations.
+        id:
+          description: A unique system generated ID for the organization.
+          type: string
+        name:
+          description: Name of the organization.
+          type: string
+        scimManaged:
+          description: Returns if an organization is managed by scim. This field may not be present in some older organizations
+          type: boolean
+        uuid:
+          description: A unique system generated ID for the organization. This is identity from the group directory id
+          type: string
+      type: object
+    ErrorResponse:
+      additionalProperties: false
+      properties:
+        errorMessage:
+          type: string
+        i18nErrorMessage:
+          $ref: '#/components/schemas/I18nErrorMessage'
+      type: object
+    PagedDTOUserDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/UserDTO'
+          type: array
+      type: object
+    SelfLinkDTO:
+      additionalProperties: false
+      properties:
+        self:
+          format: uri
+          type: string
+      type: object
+    EntityProperty:
+      additionalProperties: false
+      description: An entity property, for more information see [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).
+      properties:
+        key:
+          description: The key of the property. Required on create and update.
+          type: string
+        value:
+          description: The value of the property. Required on create and update.
+      type: object
+    OrganizationCreateDTO:
+      additionalProperties: false
+      properties:
+        name:
+          description: Name of the organization. Must contain 1-200 characters.
+          type: string
+      required:
+      - name
+      type: object
+    UserLinkDTO:
+      additionalProperties: false
+      properties:
+        avatarUrls:
+          additionalProperties:
+            type: string
+          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
+          type: object
+        jiraRest:
+          description: REST API URL for the customer.
+          format: uri
+          type: string
+        self:
+          format: uri
+          type: string
       type: object
   securitySchemes:
     OAuth2:
