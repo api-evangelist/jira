@@ -147,6 +147,18 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    Transitions:
+      type: object
+      description: Available transitions for an issue.
+      properties:
+        expand:
+          type: string
+          example: example_value
+        transitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transition'
+          example: []
     IssueTransitionRequest:
       type: object
       description: Request body for performing an issue transition.
@@ -173,6 +185,73 @@ components:
           description: Metadata about the history entry.
           additionalProperties: true
           example: example_value
+    StatusCategory:
+      type: object
+      description: A status category in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: integer
+          format: int64
+          example: abc123
+        key:
+          type: string
+          description: The key of the status category (e.g., new, indeterminate, done).
+          example: example_value
+        colorName:
+          type: string
+          description: The color name for the status category.
+          example: example_value
+        name:
+          type: string
+          description: The name of the status category.
+          example: Example Title
+    StatusDetails:
+      type: object
+      description: A status in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the status (e.g., To Do, In Progress, Done).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          example: https://www.example.com
+        statusCategory:
+          $ref: '#/components/schemas/StatusCategory'
+    FieldUpdateOperation:
+      type: object
+      description: An operation to perform on a field value.
+      properties:
+        add:
+          description: Value to add to the field.
+          example: example_value
+        remove:
+          description: Value to remove from the field.
+          example: example_value
+        set:
+          description: Value to set the field to.
+          example: example_value
+        edit:
+          description: Value to edit in the field.
+          example: example_value
+        copy:
+          description: Value to copy to the field.
+          example: example_value
     TransitionRef:
       type: object
       description: A reference to a transition by ID.
@@ -183,6 +262,26 @@ components:
           example: abc123
       required:
       - id
+    ErrorCollection:
+      type: object
+      description: Error details returned by the API.
+      properties:
+        errorMessages:
+          type: array
+          description: The list of error messages.
+          items:
+            type: string
+          example: []
+        errors:
+          type: object
+          description: Field-specific errors.
+          additionalProperties:
+            type: string
+          example: example_value
+        status:
+          type: integer
+          description: The HTTP status code.
+          example: 10
     Transition:
       type: object
       description: A workflow transition.
@@ -212,105 +311,6 @@ components:
           description: Fields available during the transition.
           additionalProperties: true
           example: example_value
-    FieldUpdateOperation:
-      type: object
-      description: An operation to perform on a field value.
-      properties:
-        add:
-          description: Value to add to the field.
-          example: example_value
-        remove:
-          description: Value to remove from the field.
-          example: example_value
-        set:
-          description: Value to set the field to.
-          example: example_value
-        edit:
-          description: Value to edit in the field.
-          example: example_value
-        copy:
-          description: Value to copy to the field.
-          example: example_value
-    StatusCategory:
-      type: object
-      description: A status category in Jira.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: integer
-          format: int64
-          example: abc123
-        key:
-          type: string
-          description: The key of the status category (e.g., new, indeterminate, done).
-          example: example_value
-        colorName:
-          type: string
-          description: The color name for the status category.
-          example: example_value
-        name:
-          type: string
-          description: The name of the status category.
-          example: Example Title
-    Transitions:
-      type: object
-      description: Available transitions for an issue.
-      properties:
-        expand:
-          type: string
-          example: example_value
-        transitions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transition'
-          example: []
-    StatusDetails:
-      type: object
-      description: A status in Jira.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: string
-          example: abc123
-        name:
-          type: string
-          description: The name of the status (e.g., To Do, In Progress, Done).
-          example: Example Title
-        description:
-          type: string
-          example: A sample description.
-        iconUrl:
-          type: string
-          format: uri
-          example: https://www.example.com
-        statusCategory:
-          $ref: '#/components/schemas/StatusCategory'
-    ErrorCollection:
-      type: object
-      description: Error details returned by the API.
-      properties:
-        errorMessages:
-          type: array
-          description: The list of error messages.
-          items:
-            type: string
-          example: []
-        errors:
-          type: object
-          description: Field-specific errors.
-          additionalProperties:
-            type: string
-          example: example_value
-        status:
-          type: integer
-          description: The HTTP status code.
-          example: 10
   parameters:
     issueIdOrKey:
       name: issueIdOrKey

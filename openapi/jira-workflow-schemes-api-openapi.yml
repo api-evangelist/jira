@@ -1280,142 +1280,85 @@ paths:
       x-atlassian-connect-scope: ADMIN
 components:
   schemas:
-    ProjectUsage:
+    WorkflowSchemeProjectUsageDTO:
       additionalProperties: false
-      description: The project.
+      description: Projects using the workflow scheme.
       properties:
-        id:
-          description: The project ID.
+        projects:
+          $ref: '#/components/schemas/ProjectUsagePage'
+        workflowSchemeId:
+          description: The workflow scheme ID.
           type: string
       type: object
-    WorkflowSchemeReadRequest:
-      additionalProperties: false
-      description: The workflow scheme read request body.
+    WorkflowSchemeProjectSwitchBean:
+      additionalProperties: true
+      description: Request to switch a project's workflow scheme
       properties:
-        projectIds:
-          description: The list of project IDs to query.
+        mappingsByIssueTypeOverride:
+          description: The mappings for migrating issues from old statuses to new statuses when switching from one workflow scheme to another. This field is required if any statuses in the current project's workflows would no longer exist in the target workflow scheme. Each mapping defines how to update issues from an old status to the corresponding new status in the issue’s new workflow.
           items:
-            description: The list of project IDs to query.
-            type:
-            - string
-            - 'null'
-          type:
-          - array
-          - 'null'
-        workflowSchemeIds:
-          description: The list of workflow scheme IDs to query.
-          items:
-            description: The list of workflow scheme IDs to query.
-            type:
-            - string
-            - 'null'
-          type:
-          - array
-          - 'null'
+            $ref: '#/components/schemas/MappingsByIssueTypeOverride'
+          type: array
+        projectId:
+          description: The ID of the project to switch the workflow scheme for
+          example: '10001'
+          type: string
+        targetSchemeId:
+          description: The ID of the target workflow scheme to switch to
+          example: '10002'
+          type: string
       type: object
-    ListWrapperCallbackGroupName:
+    WorkflowScope:
       additionalProperties: false
-      type: object
-    WorkflowSchemeReadResponse:
-      additionalProperties: false
+      description: The scope of the workflow.
       properties:
-        defaultWorkflow:
-          $ref: '#/components/schemas/WorkflowMetadataRestModel'
-        description:
-          description: The description of the workflow scheme.
+        project:
+          $ref: '#/components/schemas/ProjectId'
+        type:
+          description: The scope of the workflow. `GLOBAL` for company-managed projects and `PROJECT` for team-managed projects.
+          enum:
+          - PROJECT
+          - GLOBAL
+          type: string
+      type: object
+    WorkflowSchemeUpdateRequiredMappingsRequest:
+      additionalProperties: false
+      description: The request payload to get the required mappings for updating a workflow scheme.
+      properties:
+        defaultWorkflowId:
+          description: The ID of the new default workflow for this workflow scheme. Only used in global-scoped workflow schemes. If it isn't specified, is set to *Jira Workflow (jira)*.
           type:
           - string
           - 'null'
         id:
           description: The ID of the workflow scheme.
           type: string
-        name:
-          description: The name of the workflow scheme.
-          type: string
-        scope:
-          $ref: '#/components/schemas/WorkflowScope'
-        taskId:
-          description: Indicates if there's an [asynchronous task](#async-operations) for this workflow scheme.
-          type:
-          - string
-          - 'null'
-        version:
-          $ref: '#/components/schemas/DocumentVersion'
         workflowsForIssueTypes:
-          description: Mappings from workflows to issue types.
+          description: The new workflow to issue type mappings for this workflow scheme.
           items:
-            $ref: '#/components/schemas/WorkflowMetadataAndIssueTypeRestModel'
+            $ref: '#/components/schemas/WorkflowSchemeAssociation'
           type: array
       required:
       - id
-      - name
-      - scope
-      - version
       - workflowsForIssueTypes
       type: object
-    RequiredMappingByIssueType:
+    StatusMetadata:
       additionalProperties: false
-      description: The list of required status mappings by issue type.
+      description: The details of the statuses in the associated workflows.
       properties:
-        issueTypeId:
-          description: The ID of the issue type.
-          type: string
-        statusIds:
-          description: The status IDs requiring mapping.
-          items:
-            description: The status IDs requiring mapping.
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
-    IssueTypeDetails:
-      additionalProperties: false
-      description: Details about an issue type.
-      properties:
-        avatarId:
-          description: The ID of the issue type's avatar.
-          format: int64
-          readOnly: true
-          type: integer
-        description:
-          description: The description of the issue type.
-          readOnly: true
-          type: string
-        entityId:
-          description: Unique ID for next-gen projects.
-          format: uuid
-          readOnly: true
-          type: string
-        hierarchyLevel:
-          description: Hierarchy level of the issue type.
-          format: int32
-          readOnly: true
-          type: integer
-        iconUrl:
-          description: The URL of the issue type's avatar.
-          readOnly: true
+        category:
+          description: The category of the status.
+          enum:
+          - TODO
+          - IN_PROGRESS
+          - DONE
           type: string
         id:
-          description: The ID of the issue type.
-          readOnly: true
+          description: The ID of the status.
           type: string
         name:
-          description: The name of the issue type.
-          readOnly: true
+          description: The name of the status.
           type: string
-        scope:
-          allOf:
-          - $ref: '#/components/schemas/Scope'
-          description: Details of the next-gen projects the issue type is available in.
-          readOnly: true
-        self:
-          description: The URL of these issue type details.
-          readOnly: true
-          type: string
-        subtask:
-          description: Whether this issue type is used to create subtasks.
-          readOnly: true
-          type: boolean
       type: object
     WorkflowSchemeAssociation:
       additionalProperties: false
@@ -1435,59 +1378,24 @@ components:
       - issueTypeIds
       - workflowId
       type: object
-    WorkflowMetadataRestModel:
+    ProjectUsage:
       additionalProperties: false
-      description: Workflow metadata and usage detail.
+      description: The project.
       properties:
-        description:
-          description: The description of the workflow.
-          type: string
         id:
-          description: The ID of the workflow.
+          description: The project ID.
           type: string
-        name:
-          description: The name of the workflow.
-          type: string
-        version:
-          $ref: '#/components/schemas/DocumentVersion'
-      required:
-      - description
-      - id
-      - name
-      - version
       type: object
-    MappingsByWorkflow:
+    MappingsByIssueTypeOverride:
       additionalProperties: false
-      description: The status mappings by workflows. Status mappings are required when the new workflow for an issue type doesn't contain all statuses that the old workflow has. Status mappings can be provided by a combination of `statusMappingsByWorkflows` and `statusMappingsByIssueTypeOverride`.
+      description: The mappings for migrating issues from old statuses to new statuses when switching from one workflow scheme to another. This field is required if any statuses in the current project's workflows would no longer exist in the target workflow scheme. Each mapping defines how to update issues from an old status to the corresponding new status in the issue’s new workflow.
       properties:
-        newWorkflowId:
-          description: The ID of the new workflow.
-          type: string
-        oldWorkflowId:
-          description: The ID of the old workflow.
+        issueTypeId:
           type: string
         statusMappings:
-          description: The list of status mappings.
           items:
             $ref: '#/components/schemas/WorkflowAssociationStatusMapping'
           type: array
-      required:
-      - newWorkflowId
-      - oldWorkflowId
-      - statusMappings
-      type: object
-    DefaultWorkflow:
-      additionalProperties: false
-      description: Details about the default workflow.
-      properties:
-        updateDraftIfNeeded:
-          description: Whether a draft workflow scheme is created or updated when updating an active workflow scheme. The draft is updated with the new default workflow. Defaults to `false`.
-          type: boolean
-        workflow:
-          description: The name of the workflow to set as the default workflow.
-          type: string
-      required:
-      - workflow
       type: object
     PageBeanWorkflowScheme:
       additionalProperties: false
@@ -1529,89 +1437,118 @@ components:
           readOnly: true
           type: array
       type: object
-    IssueTypeWorkflowMapping:
+    AvatarUrlsBean:
       additionalProperties: false
-      description: Details about the mapping between an issue type and a workflow.
       properties:
-        issueType:
-          description: The ID of the issue type. Not required if updating the issue type-workflow mapping.
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
           type: string
-        updateDraftIfNeeded:
-          description: Set to true to create or update the draft of a workflow scheme and update the mapping in the draft, when the workflow scheme cannot be edited. Defaults to `false`. Only applicable when updating the workflow-issue types mapping.
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
+      type: object
+    WorkflowSchemeReadRequest:
+      additionalProperties: false
+      description: The workflow scheme read request body.
+      properties:
+        projectIds:
+          description: The list of project IDs to query.
+          items:
+            description: The list of project IDs to query.
+            type:
+            - string
+            - 'null'
+          type:
+          - array
+          - 'null'
+        workflowSchemeIds:
+          description: The list of workflow scheme IDs to query.
+          items:
+            description: The list of workflow scheme IDs to query.
+            type:
+            - string
+            - 'null'
+          type:
+          - array
+          - 'null'
+      type: object
+    DocumentVersion:
+      additionalProperties: false
+      description: The current version details of this workflow scheme.
+      properties:
+        id:
+          description: The version UUID.
+          type: string
+        versionNumber:
+          description: The version number.
+          format: int64
+          type: integer
+      type: object
+    GroupName:
+      additionalProperties: false
+      description: Details about a group.
+      properties:
+        groupId:
+          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The name of group.
+          type: string
+        self:
+          description: The URL for these group details.
+          format: uri
+          readOnly: true
+          type: string
+      type: object
+    IssueTypesWorkflowMapping:
+      additionalProperties: false
+      description: Details about the mapping between issue types and a workflow.
+      properties:
+        defaultMapping:
+          description: Whether the workflow is the default workflow for the workflow scheme.
           type: boolean
-        workflow:
-          description: The name of the workflow.
-          type: string
-      type: object
-    WorkflowSchemeUpdateRequiredMappingsResponse:
-      additionalProperties: false
-      properties:
-        statusMappingsByIssueTypes:
-          description: The list of required status mappings by issue type.
+        issueTypes:
+          description: The list of issue type IDs.
           items:
-            $ref: '#/components/schemas/RequiredMappingByIssueType'
-          type: array
-          uniqueItems: true
-        statusMappingsByWorkflows:
-          description: The list of required status mappings by workflow.
-          items:
-            $ref: '#/components/schemas/RequiredMappingByWorkflows'
-          type: array
-          uniqueItems: true
-        statuses:
-          description: The details of the statuses in the associated workflows.
-          items:
-            $ref: '#/components/schemas/StatusMetadata'
-          type: array
-          uniqueItems: true
-        statusesPerWorkflow:
-          description: The statuses associated with each workflow.
-          items:
-            $ref: '#/components/schemas/StatusesPerWorkflow'
-          type: array
-          uniqueItems: true
-      type: object
-    WorkflowMetadataAndIssueTypeRestModel:
-      additionalProperties: false
-      description: The workflow metadata and issue type IDs which use this workflow.
-      properties:
-        issueTypeIds:
-          description: The list of issue type IDs for the mapping.
-          items:
-            description: The list of issue type IDs for the mapping.
             type: string
           type: array
+        updateDraftIfNeeded:
+          description: Whether a draft workflow scheme is created or updated when updating an active workflow scheme. The draft is updated with the new workflow-issue types mapping. Defaults to `false`.
+          type: boolean
         workflow:
-          $ref: '#/components/schemas/WorkflowMetadataRestModel'
-      required:
-      - issueTypeIds
-      - workflow
+          description: The name of the workflow. Optional if updating the workflow-issue types mapping.
+          type: string
       type: object
-    SimpleListWrapperGroupName:
+    StatusesPerWorkflow:
       additionalProperties: false
+      description: The statuses associated with each workflow.
       properties:
-        callback:
-          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
-        items:
+        initialStatusId:
+          description: The ID of the initial status for the workflow.
+          type: string
+        statuses:
+          description: The status IDs associated with the workflow.
           items:
-            $ref: '#/components/schemas/GroupName'
+            description: The status IDs associated with the workflow.
+            type: string
           type: array
-        max-results:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-            name: max-results
-        pagingCallback:
-          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
-        size:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
+          uniqueItems: true
+        workflowId:
+          description: The ID of the workflow.
+          type: string
       type: object
-      xml:
-        name: list
     User:
       additionalProperties: false
       description: "A user with details as permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
@@ -1692,104 +1629,103 @@ components:
       type: object
       xml:
         name: user
-    WorkflowScheme:
+    ListWrapperCallbackApplicationRole:
       additionalProperties: false
-      description: Details about a workflow scheme.
-      properties:
-        defaultWorkflow:
-          description: The name of the default workflow for the workflow scheme. The default workflow has *All Unassigned Issue Types* assigned to it in Jira. If `defaultWorkflow` is not specified when creating a workflow scheme, it is set to *Jira Workflow (jira)*.
-          type: string
-        description:
-          description: The description of the workflow scheme.
-          type: string
-        draft:
-          description: Whether the workflow scheme is a draft or not.
-          readOnly: true
-          type: boolean
-        id:
-          description: The ID of the workflow scheme.
-          format: int64
-          readOnly: true
-          type: integer
-        issueTypeMappings:
-          additionalProperties:
-            type: string
-          description: The issue type to workflow mappings, where each mapping is an issue type ID and workflow name pair. Note that an issue type can only be mapped to one workflow in a workflow scheme.
-          type: object
-        issueTypes:
-          additionalProperties:
-            $ref: '#/components/schemas/IssueTypeDetails'
-          description: The issue types available in Jira.
-          readOnly: true
-          type: object
-        lastModified:
-          description: The date-time that the draft workflow scheme was last modified. A modification is a change to the issue type-project mappings only. This property does not apply to non-draft workflows.
-          readOnly: true
-          type: string
-        lastModifiedUser:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          description: The user that last modified the draft workflow scheme. A modification is a change to the issue type-project mappings only. This property does not apply to non-draft workflows.
-          readOnly: true
-        name:
-          description: The name of the workflow scheme. The name must be unique. The maximum length is 255 characters. Required when creating a workflow scheme.
-          type: string
-        originalDefaultWorkflow:
-          description: For draft workflow schemes, this property is the name of the default workflow for the original workflow scheme. The default workflow has *All Unassigned Issue Types* assigned to it in Jira.
-          readOnly: true
-          type: string
-        originalIssueTypeMappings:
-          additionalProperties:
-            readOnly: true
-            type: string
-          description: For draft workflow schemes, this property is the issue type to workflow mappings for the original workflow scheme, where each mapping is an issue type ID and workflow name pair. Note that an issue type can only be mapped to one workflow in a workflow scheme.
-          readOnly: true
-          type: object
-        self:
-          format: uri
-          readOnly: true
-          type: string
-        updateDraftIfNeeded:
-          description: "Whether to create or update a draft workflow scheme when updating an active workflow scheme. An active workflow scheme is a workflow scheme that is used by at least one project. The following examples show how this property works:\n\n *  Update an active workflow scheme with `updateDraftIfNeeded` set to `true`: If a draft workflow scheme exists, it is updated. Otherwise, a draft workflow scheme is created.\n *  Update an active workflow scheme with `updateDraftIfNeeded` set to `false`: An error is returned, as active workflow schemes cannot be updated.\n *  Update an inactive workflow scheme with `updateDraftIfNeeded` set to `true`: The workflow scheme is updated, as inactive workflow schemes do not require drafts to update.\n\nDefaults to `false`."
-          type: boolean
       type: object
-    DocumentVersion:
+    ProjectId:
       additionalProperties: false
-      description: The current version details of this workflow scheme.
+      description: Project ID details.
       properties:
         id:
-          description: The version UUID.
+          description: The ID of the project.
           type: string
-        versionNumber:
-          description: The version number.
-          format: int64
-          type: integer
-      type: object
-    IssueTypesWorkflowMapping:
+      required:
+      - id
+      type:
+      - object
+      - 'null'
+    IssueTypeWorkflowMapping:
       additionalProperties: false
-      description: Details about the mapping between issue types and a workflow.
+      description: Details about the mapping between an issue type and a workflow.
       properties:
-        defaultMapping:
-          description: Whether the workflow is the default workflow for the workflow scheme.
-          type: boolean
-        issueTypes:
-          description: The list of issue type IDs.
-          items:
-            type: string
-          type: array
+        issueType:
+          description: The ID of the issue type. Not required if updating the issue type-workflow mapping.
+          type: string
         updateDraftIfNeeded:
-          description: Whether a draft workflow scheme is created or updated when updating an active workflow scheme. The draft is updated with the new workflow-issue types mapping. Defaults to `false`.
+          description: Set to true to create or update the draft of a workflow scheme and update the mapping in the draft, when the workflow scheme cannot be edited. Defaults to `false`. Only applicable when updating the workflow-issue types mapping.
           type: boolean
         workflow:
-          description: The name of the workflow. Optional if updating the workflow-issue types mapping.
+          description: The name of the workflow.
           type: string
       type: object
-    RequiredMappingByWorkflows:
+    WorkflowMetadataRestModel:
       additionalProperties: false
-      description: The list of required status mappings by workflow.
+      description: Workflow metadata and usage detail.
       properties:
-        sourceWorkflowId:
-          description: The ID of the source workflow.
+        description:
+          description: The description of the workflow.
+          type: string
+        id:
+          description: The ID of the workflow.
+          type: string
+        name:
+          description: The name of the workflow.
+          type: string
+        version:
+          $ref: '#/components/schemas/DocumentVersion'
+      required:
+      - description
+      - id
+      - name
+      - version
+      type: object
+    DefaultWorkflow:
+      additionalProperties: false
+      description: Details about the default workflow.
+      properties:
+        updateDraftIfNeeded:
+          description: Whether a draft workflow scheme is created or updated when updating an active workflow scheme. The draft is updated with the new default workflow. Defaults to `false`.
+          type: boolean
+        workflow:
+          description: The name of the workflow to set as the default workflow.
+          type: string
+      required:
+      - workflow
+      type: object
+    WorkflowSchemeUpdateRequiredMappingsResponse:
+      additionalProperties: false
+      properties:
+        statusMappingsByIssueTypes:
+          description: The list of required status mappings by issue type.
+          items:
+            $ref: '#/components/schemas/RequiredMappingByIssueType'
+          type: array
+          uniqueItems: true
+        statusMappingsByWorkflows:
+          description: The list of required status mappings by workflow.
+          items:
+            $ref: '#/components/schemas/RequiredMappingByWorkflows'
+          type: array
+          uniqueItems: true
+        statuses:
+          description: The details of the statuses in the associated workflows.
+          items:
+            $ref: '#/components/schemas/StatusMetadata'
+          type: array
+          uniqueItems: true
+        statusesPerWorkflow:
+          description: The statuses associated with each workflow.
+          items:
+            $ref: '#/components/schemas/StatusesPerWorkflow'
+          type: array
+          uniqueItems: true
+      type: object
+    RequiredMappingByIssueType:
+      additionalProperties: false
+      description: The list of required status mappings by issue type.
+      properties:
+        issueTypeId:
+          description: The ID of the issue type.
           type: string
         statusIds:
           description: The status IDs requiring mapping.
@@ -1798,9 +1734,219 @@ components:
             type: string
           type: array
           uniqueItems: true
-        targetWorkflowId:
-          description: The ID of the target workflow.
+      type: object
+    WorkflowSchemeUpdateRequest:
+      additionalProperties: true
+      description: The update workflow scheme payload.
+      properties:
+        defaultWorkflowId:
+          description: The ID of the workflow for issue types without having a mapping defined in this workflow scheme. Only used in global-scoped workflow schemes. If the `defaultWorkflowId` isn't specified, this is set to *Jira Workflow (jira)*.
           type: string
+        description:
+          description: The new description for this workflow scheme.
+          type: string
+        id:
+          description: The ID of this workflow scheme.
+          type: string
+        name:
+          description: The new name for this workflow scheme.
+          type: string
+        statusMappingsByIssueTypeOverride:
+          description: Overrides, for the selected issue types, any status mappings provided in `statusMappingsByWorkflows`. Status mappings are required when the new workflow for an issue type doesn't contain all statuses that the old workflow has. Status mappings can be provided by a combination of `statusMappingsByWorkflows` and `statusMappingsByIssueTypeOverride`.
+          items:
+            $ref: '#/components/schemas/MappingsByIssueTypeOverride'
+          type: array
+        statusMappingsByWorkflows:
+          description: The status mappings by workflows. Status mappings are required when the new workflow for an issue type doesn't contain all statuses that the old workflow has. Status mappings can be provided by a combination of `statusMappingsByWorkflows` and `statusMappingsByIssueTypeOverride`.
+          items:
+            $ref: '#/components/schemas/MappingsByWorkflow'
+          type: array
+        version:
+          $ref: '#/components/schemas/DocumentVersion'
+        workflowsForIssueTypes:
+          description: Mappings from workflows to issue types.
+          items:
+            $ref: '#/components/schemas/WorkflowSchemeAssociation'
+          type: array
+      required:
+      - description
+      - id
+      - name
+      - version
+      type: object
+    ProjectDetails:
+      additionalProperties: false
+      description: Details about a project.
+      properties:
+        avatarUrls:
+          allOf:
+          - $ref: '#/components/schemas/AvatarUrlsBean'
+          description: The URLs of the project's avatars.
+          readOnly: true
+        id:
+          description: The ID of the project.
+          type: string
+        key:
+          description: The key of the project.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the project.
+          readOnly: true
+          type: string
+        projectCategory:
+          allOf:
+          - $ref: '#/components/schemas/UpdatedProjectCategory'
+          description: The category the project belongs to.
+          readOnly: true
+        projectTypeKey:
+          description: The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes) of the project.
+          enum:
+          - software
+          - service_desk
+          - business
+          - product_discovery
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the project details.
+          readOnly: true
+          type: string
+        simplified:
+          description: Whether or not the project is simplified.
+          readOnly: true
+          type: boolean
+      type: object
+    SimpleListWrapperGroupName:
+      additionalProperties: false
+      properties:
+        callback:
+          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
+        items:
+          items:
+            $ref: '#/components/schemas/GroupName'
+          type: array
+        max-results:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+            name: max-results
+        pagingCallback:
+          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
+        size:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+      type: object
+      xml:
+        name: list
+    ListWrapperCallbackGroupName:
+      additionalProperties: false
+      type: object
+    Scope:
+      additionalProperties: true
+      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
+      properties:
+        project:
+          allOf:
+          - $ref: '#/components/schemas/ProjectDetails'
+          description: The project the item has scope in.
+          readOnly: true
+        type:
+          description: The type of scope.
+          enum:
+          - PROJECT
+          - TEMPLATE
+          readOnly: true
+          type: string
+      type: object
+    IssueTypeDetails:
+      additionalProperties: false
+      description: Details about an issue type.
+      properties:
+        avatarId:
+          description: The ID of the issue type's avatar.
+          format: int64
+          readOnly: true
+          type: integer
+        description:
+          description: The description of the issue type.
+          readOnly: true
+          type: string
+        entityId:
+          description: Unique ID for next-gen projects.
+          format: uuid
+          readOnly: true
+          type: string
+        hierarchyLevel:
+          description: Hierarchy level of the issue type.
+          format: int32
+          readOnly: true
+          type: integer
+        iconUrl:
+          description: The URL of the issue type's avatar.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the issue type.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the issue type.
+          readOnly: true
+          type: string
+        scope:
+          allOf:
+          - $ref: '#/components/schemas/Scope'
+          description: Details of the next-gen projects the issue type is available in.
+          readOnly: true
+        self:
+          description: The URL of these issue type details.
+          readOnly: true
+          type: string
+        subtask:
+          description: Whether this issue type is used to create subtasks.
+          readOnly: true
+          type: boolean
+      type: object
+    WorkflowSchemeReadResponse:
+      additionalProperties: false
+      properties:
+        defaultWorkflow:
+          $ref: '#/components/schemas/WorkflowMetadataRestModel'
+        description:
+          description: The description of the workflow scheme.
+          type:
+          - string
+          - 'null'
+        id:
+          description: The ID of the workflow scheme.
+          type: string
+        name:
+          description: The name of the workflow scheme.
+          type: string
+        scope:
+          $ref: '#/components/schemas/WorkflowScope'
+        taskId:
+          description: Indicates if there's an [asynchronous task](#async-operations) for this workflow scheme.
+          type:
+          - string
+          - 'null'
+        version:
+          $ref: '#/components/schemas/DocumentVersion'
+        workflowsForIssueTypes:
+          description: Mappings from workflows to issue types.
+          items:
+            $ref: '#/components/schemas/WorkflowMetadataAndIssueTypeRestModel'
+          type: array
+      required:
+      - id
+      - name
+      - scope
+      - version
+      - workflowsForIssueTypes
       type: object
     TaskProgressBeanObject:
       additionalProperties: false
@@ -1870,111 +2016,166 @@ components:
       - submitted
       - submittedBy
       type: object
-    WorkflowSchemeUpdateRequest:
-      additionalProperties: true
-      description: The update workflow scheme payload.
+    WorkflowMetadataAndIssueTypeRestModel:
+      additionalProperties: false
+      description: The workflow metadata and issue type IDs which use this workflow.
       properties:
-        defaultWorkflowId:
-          description: The ID of the workflow for issue types without having a mapping defined in this workflow scheme. Only used in global-scoped workflow schemes. If the `defaultWorkflowId` isn't specified, this is set to *Jira Workflow (jira)*.
+        issueTypeIds:
+          description: The list of issue type IDs for the mapping.
+          items:
+            description: The list of issue type IDs for the mapping.
+            type: string
+          type: array
+        workflow:
+          $ref: '#/components/schemas/WorkflowMetadataRestModel'
+      required:
+      - issueTypeIds
+      - workflow
+      type: object
+    WorkflowScheme:
+      additionalProperties: false
+      description: Details about a workflow scheme.
+      properties:
+        defaultWorkflow:
+          description: The name of the default workflow for the workflow scheme. The default workflow has *All Unassigned Issue Types* assigned to it in Jira. If `defaultWorkflow` is not specified when creating a workflow scheme, it is set to *Jira Workflow (jira)*.
           type: string
         description:
-          description: The new description for this workflow scheme.
+          description: The description of the workflow scheme.
+          type: string
+        draft:
+          description: Whether the workflow scheme is a draft or not.
+          readOnly: true
+          type: boolean
+        id:
+          description: The ID of the workflow scheme.
+          format: int64
+          readOnly: true
+          type: integer
+        issueTypeMappings:
+          additionalProperties:
+            type: string
+          description: The issue type to workflow mappings, where each mapping is an issue type ID and workflow name pair. Note that an issue type can only be mapped to one workflow in a workflow scheme.
+          type: object
+        issueTypes:
+          additionalProperties:
+            $ref: '#/components/schemas/IssueTypeDetails'
+          description: The issue types available in Jira.
+          readOnly: true
+          type: object
+        lastModified:
+          description: The date-time that the draft workflow scheme was last modified. A modification is a change to the issue type-project mappings only. This property does not apply to non-draft workflows.
+          readOnly: true
+          type: string
+        lastModifiedUser:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          description: The user that last modified the draft workflow scheme. A modification is a change to the issue type-project mappings only. This property does not apply to non-draft workflows.
+          readOnly: true
+        name:
+          description: The name of the workflow scheme. The name must be unique. The maximum length is 255 characters. Required when creating a workflow scheme.
+          type: string
+        originalDefaultWorkflow:
+          description: For draft workflow schemes, this property is the name of the default workflow for the original workflow scheme. The default workflow has *All Unassigned Issue Types* assigned to it in Jira.
+          readOnly: true
+          type: string
+        originalIssueTypeMappings:
+          additionalProperties:
+            readOnly: true
+            type: string
+          description: For draft workflow schemes, this property is the issue type to workflow mappings for the original workflow scheme, where each mapping is an issue type ID and workflow name pair. Note that an issue type can only be mapped to one workflow in a workflow scheme.
+          readOnly: true
+          type: object
+        self:
+          format: uri
+          readOnly: true
+          type: string
+        updateDraftIfNeeded:
+          description: "Whether to create or update a draft workflow scheme when updating an active workflow scheme. An active workflow scheme is a workflow scheme that is used by at least one project. The following examples show how this property works:\n\n *  Update an active workflow scheme with `updateDraftIfNeeded` set to `true`: If a draft workflow scheme exists, it is updated. Otherwise, a draft workflow scheme is created.\n *  Update an active workflow scheme with `updateDraftIfNeeded` set to `false`: An error is returned, as active workflow schemes cannot be updated.\n *  Update an inactive workflow scheme with `updateDraftIfNeeded` set to `true`: The workflow scheme is updated, as inactive workflow schemes do not require drafts to update.\n\nDefaults to `false`."
+          type: boolean
+      type: object
+    RequiredMappingByWorkflows:
+      additionalProperties: false
+      description: The list of required status mappings by workflow.
+      properties:
+        sourceWorkflowId:
+          description: The ID of the source workflow.
+          type: string
+        statusIds:
+          description: The status IDs requiring mapping.
+          items:
+            description: The status IDs requiring mapping.
+            type: string
+          type: array
+          uniqueItems: true
+        targetWorkflowId:
+          description: The ID of the target workflow.
+          type: string
+      type: object
+    UpdatedProjectCategory:
+      additionalProperties: false
+      description: A project category.
+      properties:
+        description:
+          description: The name of the project category.
+          readOnly: true
           type: string
         id:
-          description: The ID of this workflow scheme.
+          description: The ID of the project category.
+          readOnly: true
           type: string
         name:
-          description: The new name for this workflow scheme.
+          description: The description of the project category.
+          readOnly: true
           type: string
-        statusMappingsByIssueTypeOverride:
-          description: Overrides, for the selected issue types, any status mappings provided in `statusMappingsByWorkflows`. Status mappings are required when the new workflow for an issue type doesn't contain all statuses that the old workflow has. Status mappings can be provided by a combination of `statusMappingsByWorkflows` and `statusMappingsByIssueTypeOverride`.
-          items:
-            $ref: '#/components/schemas/MappingsByIssueTypeOverride'
-          type: array
-        statusMappingsByWorkflows:
-          description: The status mappings by workflows. Status mappings are required when the new workflow for an issue type doesn't contain all statuses that the old workflow has. Status mappings can be provided by a combination of `statusMappingsByWorkflows` and `statusMappingsByIssueTypeOverride`.
-          items:
-            $ref: '#/components/schemas/MappingsByWorkflow'
-          type: array
-        version:
-          $ref: '#/components/schemas/DocumentVersion'
-        workflowsForIssueTypes:
-          description: Mappings from workflows to issue types.
-          items:
-            $ref: '#/components/schemas/WorkflowSchemeAssociation'
-          type: array
-      required:
-      - description
-      - id
-      - name
-      - version
+        self:
+          description: The URL of the project category.
+          readOnly: true
+          type: string
       type: object
-    WorkflowAssociationStatusMapping:
+    SimpleListWrapperApplicationRole:
       additionalProperties: false
       properties:
-        newStatusId:
-          type: string
-        oldStatusId:
-          type: string
+        callback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        items:
+          items:
+            $ref: '#/components/schemas/ApplicationRole'
+          type: array
+        max-results:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+            name: max-results
+        pagingCallback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        size:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
       type: object
-    ListWrapperCallbackApplicationRole:
+      xml:
+        name: list
+    MappingsByWorkflow:
       additionalProperties: false
-      type: object
-    MappingsByIssueTypeOverride:
-      additionalProperties: false
-      description: The mappings for migrating issues from old statuses to new statuses when switching from one workflow scheme to another. This field is required if any statuses in the current project's workflows would no longer exist in the target workflow scheme. Each mapping defines how to update issues from an old status to the corresponding new status in the issue’s new workflow.
+      description: The status mappings by workflows. Status mappings are required when the new workflow for an issue type doesn't contain all statuses that the old workflow has. Status mappings can be provided by a combination of `statusMappingsByWorkflows` and `statusMappingsByIssueTypeOverride`.
       properties:
-        issueTypeId:
+        newWorkflowId:
+          description: The ID of the new workflow.
+          type: string
+        oldWorkflowId:
+          description: The ID of the old workflow.
           type: string
         statusMappings:
+          description: The list of status mappings.
           items:
             $ref: '#/components/schemas/WorkflowAssociationStatusMapping'
           type: array
-      type: object
-    ProjectId:
-      additionalProperties: false
-      description: Project ID details.
-      properties:
-        id:
-          description: The ID of the project.
-          type: string
       required:
-      - id
-      type:
-      - object
-      - 'null'
-    AvatarUrlsBean:
-      additionalProperties: false
-      properties:
-        16x16:
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
-          type: string
-        24x24:
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
-          type: string
-        32x32:
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-          type: string
-        48x48:
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
-          type: string
-      type: object
-    WorkflowScope:
-      additionalProperties: false
-      description: The scope of the workflow.
-      properties:
-        project:
-          $ref: '#/components/schemas/ProjectId'
-        type:
-          description: The scope of the workflow. `GLOBAL` for company-managed projects and `PROJECT` for team-managed projects.
-          enum:
-          - PROJECT
-          - GLOBAL
-          type: string
+      - newWorkflowId
+      - oldWorkflowId
+      - statusMappings
       type: object
     ProjectUsagePage:
       additionalProperties: false
@@ -1989,43 +2190,12 @@ components:
             $ref: '#/components/schemas/ProjectUsage'
           type: array
       type: object
-    WorkflowSchemeUpdateRequiredMappingsRequest:
+    WorkflowAssociationStatusMapping:
       additionalProperties: false
-      description: The request payload to get the required mappings for updating a workflow scheme.
       properties:
-        defaultWorkflowId:
-          description: The ID of the new default workflow for this workflow scheme. Only used in global-scoped workflow schemes. If it isn't specified, is set to *Jira Workflow (jira)*.
-          type:
-          - string
-          - 'null'
-        id:
-          description: The ID of the workflow scheme.
+        newStatusId:
           type: string
-        workflowsForIssueTypes:
-          description: The new workflow to issue type mappings for this workflow scheme.
-          items:
-            $ref: '#/components/schemas/WorkflowSchemeAssociation'
-          type: array
-      required:
-      - id
-      - workflowsForIssueTypes
-      type: object
-    GroupName:
-      additionalProperties: false
-      description: Details about a group.
-      properties:
-        groupId:
-          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
-          type:
-          - string
-          - 'null'
-        name:
-          description: The name of group.
-          type: string
-        self:
-          description: The URL for these group details.
-          format: uri
-          readOnly: true
+        oldStatusId:
           type: string
       type: object
     ApplicationRole:
@@ -2087,176 +2257,6 @@ components:
           description: The [type of users](https://confluence.atlassian.com/x/lRW3Ng) being counted against your license.
           type: string
       type: object
-    WorkflowSchemeProjectSwitchBean:
-      additionalProperties: true
-      description: Request to switch a project's workflow scheme
-      properties:
-        mappingsByIssueTypeOverride:
-          description: The mappings for migrating issues from old statuses to new statuses when switching from one workflow scheme to another. This field is required if any statuses in the current project's workflows would no longer exist in the target workflow scheme. Each mapping defines how to update issues from an old status to the corresponding new status in the issue’s new workflow.
-          items:
-            $ref: '#/components/schemas/MappingsByIssueTypeOverride'
-          type: array
-        projectId:
-          description: The ID of the project to switch the workflow scheme for
-          example: '10001'
-          type: string
-        targetSchemeId:
-          description: The ID of the target workflow scheme to switch to
-          example: '10002'
-          type: string
-      type: object
-    StatusMetadata:
-      additionalProperties: false
-      description: The details of the statuses in the associated workflows.
-      properties:
-        category:
-          description: The category of the status.
-          enum:
-          - TODO
-          - IN_PROGRESS
-          - DONE
-          type: string
-        id:
-          description: The ID of the status.
-          type: string
-        name:
-          description: The name of the status.
-          type: string
-      type: object
-    ProjectDetails:
-      additionalProperties: false
-      description: Details about a project.
-      properties:
-        avatarUrls:
-          allOf:
-          - $ref: '#/components/schemas/AvatarUrlsBean'
-          description: The URLs of the project's avatars.
-          readOnly: true
-        id:
-          description: The ID of the project.
-          type: string
-        key:
-          description: The key of the project.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the project.
-          readOnly: true
-          type: string
-        projectCategory:
-          allOf:
-          - $ref: '#/components/schemas/UpdatedProjectCategory'
-          description: The category the project belongs to.
-          readOnly: true
-        projectTypeKey:
-          description: The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes) of the project.
-          enum:
-          - software
-          - service_desk
-          - business
-          - product_discovery
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the project details.
-          readOnly: true
-          type: string
-        simplified:
-          description: Whether or not the project is simplified.
-          readOnly: true
-          type: boolean
-      type: object
-    WorkflowSchemeProjectUsageDTO:
-      additionalProperties: false
-      description: Projects using the workflow scheme.
-      properties:
-        projects:
-          $ref: '#/components/schemas/ProjectUsagePage'
-        workflowSchemeId:
-          description: The workflow scheme ID.
-          type: string
-      type: object
-    Scope:
-      additionalProperties: true
-      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
-      properties:
-        project:
-          allOf:
-          - $ref: '#/components/schemas/ProjectDetails'
-          description: The project the item has scope in.
-          readOnly: true
-        type:
-          description: The type of scope.
-          enum:
-          - PROJECT
-          - TEMPLATE
-          readOnly: true
-          type: string
-      type: object
-    StatusesPerWorkflow:
-      additionalProperties: false
-      description: The statuses associated with each workflow.
-      properties:
-        initialStatusId:
-          description: The ID of the initial status for the workflow.
-          type: string
-        statuses:
-          description: The status IDs associated with the workflow.
-          items:
-            description: The status IDs associated with the workflow.
-            type: string
-          type: array
-          uniqueItems: true
-        workflowId:
-          description: The ID of the workflow.
-          type: string
-      type: object
-    UpdatedProjectCategory:
-      additionalProperties: false
-      description: A project category.
-      properties:
-        description:
-          description: The name of the project category.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the project category.
-          readOnly: true
-          type: string
-        name:
-          description: The description of the project category.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the project category.
-          readOnly: true
-          type: string
-      type: object
-    SimpleListWrapperApplicationRole:
-      additionalProperties: false
-      properties:
-        callback:
-          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
-        items:
-          items:
-            $ref: '#/components/schemas/ApplicationRole'
-          type: array
-        max-results:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-            name: max-results
-        pagingCallback:
-          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
-        size:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-      type: object
-      xml:
-        name: list
   securitySchemes:
     OAuth2:
       description: OAuth2 scopes for Jira

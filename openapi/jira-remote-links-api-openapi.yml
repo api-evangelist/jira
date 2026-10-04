@@ -986,6 +986,44 @@ paths:
       x-atlassian-connect-scope: DELETE
 components:
   schemas:
+    ServiceIdOrKeysAssociation:
+      description: 'An association type referencing service ID or keys.
+
+        '
+      type: object
+      required:
+      - associationType
+      - values
+      properties:
+        associationType:
+          description: 'Defines the association type.
+
+            '
+          type: string
+          enum:
+          - serviceIdOrKeys
+          example: serviceIdOrKeys
+        values:
+          description: 'The service ID or keys to associate the entity with.
+
+
+            The number of values counted across all associationTypes must not exceed a limit of 500.
+
+            '
+          type: array
+          items:
+            description: 'A service ID or service key.
+
+              '
+            type: string
+            maxLength: 255
+            example: some-service-key
+          minItems: 1
+          maxItems: 500
+      example:
+        associationType: serviceIdOrKeys
+        values:
+        - some-service-key
     IssueIdOrKeysAssociation:
       description: 'An association type referencing issues in Jira.
 
@@ -1026,44 +1064,6 @@ components:
         values:
         - ABC-123
         - ABC-456
-    ServiceIdOrKeysAssociation:
-      description: 'An association type referencing service ID or keys.
-
-        '
-      type: object
-      required:
-      - associationType
-      - values
-      properties:
-        associationType:
-          description: 'Defines the association type.
-
-            '
-          type: string
-          enum:
-          - serviceIdOrKeys
-          example: serviceIdOrKeys
-        values:
-          description: 'The service ID or keys to associate the entity with.
-
-
-            The number of values counted across all associationTypes must not exceed a limit of 500.
-
-            '
-          type: array
-          items:
-            description: 'A service ID or service key.
-
-              '
-            type: string
-            maxLength: 255
-            example: some-service-key
-          minItems: 1
-          maxItems: 500
-      example:
-        associationType: serviceIdOrKeys
-        values:
-        - some-service-key
   securitySchemes:
     OAuth2:
       description: OAuth2 scopes for Jira

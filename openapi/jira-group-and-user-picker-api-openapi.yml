@@ -179,6 +179,24 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
+    FoundGroups:
+      additionalProperties: false
+      description: The list of groups found in a search, including header text (Showing X of Y matching groups) and total of matched groups.
+      properties:
+        groups:
+          items:
+            $ref: '#/components/schemas/FoundGroup'
+          type: array
+        header:
+          description: Header text indicating the number of groups in the response and the total number of groups found in the search.
+          type: string
+        total:
+          description: The total number of groups found in the search.
+          format: int32
+          type: integer
+      type: object
+      xml:
+        name: groupsuggestions
     GroupLabel:
       additionalProperties: false
       description: A group label.
@@ -199,54 +217,6 @@ components:
       type: object
       xml:
         name: grouplabel
-    UserPickerUser:
-      additionalProperties: false
-      description: A user found in a search.
-      properties:
-        accountId:
-          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
-          type: string
-        accountType:
-          description: "The user account type. Can take the following values:\n\n *  `atlassian` regular Atlassian user account\n *  `app` system account used for Connect applications and OAuth to represent external systems\n *  `customer` Jira Service Desk account representing an external service desk"
-          enum:
-          - atlassian
-          - app
-          - customer
-          - unknown
-          type: string
-        avatarUrl:
-          description: The avatar URL of the user.
-          format: uri
-          type: string
-        displayName:
-          description: The display name of the user. Depending on the user’s privacy setting, this may be returned as null.
-          type: string
-        html:
-          description: The display name, email address, and key of the user with the matched query string highlighted with the HTML bold tag.
-          type: string
-        key:
-          description: This property is no longer available. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        name:
-          description: This property is no longer available . See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-      type: object
-    FoundUsers:
-      additionalProperties: false
-      description: The list of users found in a search, including header text (Showing X of Y matching users) and total of matched users.
-      properties:
-        header:
-          description: Header text indicating the number of users in the response and the total number of users found in the search.
-          type: string
-        total:
-          description: The total number of users found in the search.
-          format: int32
-          type: integer
-        users:
-          items:
-            $ref: '#/components/schemas/UserPickerUser'
-          type: array
-      type: object
     FoundGroup:
       additionalProperties: false
       description: A group found in a search.
@@ -285,6 +255,54 @@ components:
       type: object
       xml:
         name: group
+    FoundUsers:
+      additionalProperties: false
+      description: The list of users found in a search, including header text (Showing X of Y matching users) and total of matched users.
+      properties:
+        header:
+          description: Header text indicating the number of users in the response and the total number of users found in the search.
+          type: string
+        total:
+          description: The total number of users found in the search.
+          format: int32
+          type: integer
+        users:
+          items:
+            $ref: '#/components/schemas/UserPickerUser'
+          type: array
+      type: object
+    UserPickerUser:
+      additionalProperties: false
+      description: A user found in a search.
+      properties:
+        accountId:
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+          type: string
+        accountType:
+          description: "The user account type. Can take the following values:\n\n *  `atlassian` regular Atlassian user account\n *  `app` system account used for Connect applications and OAuth to represent external systems\n *  `customer` Jira Service Desk account representing an external service desk"
+          enum:
+          - atlassian
+          - app
+          - customer
+          - unknown
+          type: string
+        avatarUrl:
+          description: The avatar URL of the user.
+          format: uri
+          type: string
+        displayName:
+          description: The display name of the user. Depending on the user’s privacy setting, this may be returned as null.
+          type: string
+        html:
+          description: The display name, email address, and key of the user with the matched query string highlighted with the HTML bold tag.
+          type: string
+        key:
+          description: This property is no longer available. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        name:
+          description: This property is no longer available . See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+      type: object
     FoundUsersAndGroups:
       additionalProperties: false
       description: List of users and groups found in a search.
@@ -294,24 +312,6 @@ components:
         users:
           $ref: '#/components/schemas/FoundUsers'
       type: object
-    FoundGroups:
-      additionalProperties: false
-      description: The list of groups found in a search, including header text (Showing X of Y matching groups) and total of matched groups.
-      properties:
-        groups:
-          items:
-            $ref: '#/components/schemas/FoundGroup'
-          type: array
-        header:
-          description: Header text indicating the number of groups in the response and the total number of groups found in the search.
-          type: string
-        total:
-          description: The total number of groups found in the search.
-          format: int32
-          type: integer
-      type: object
-      xml:
-        name: groupsuggestions
   securitySchemes:
     OAuth2:
       description: OAuth2 scopes for Jira

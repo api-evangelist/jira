@@ -122,18 +122,6 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    RedactionJobStatusResponse:
-      additionalProperties: false
-      properties:
-        bulkRedactionResponse:
-          $ref: '#/components/schemas/BulkRedactionResponse'
-        jobStatus:
-          enum:
-          - PENDING
-          - IN_PROGRESS
-          - COMPLETED
-          type: string
-      type: object
     ContentItem:
       additionalProperties: false
       description: Represents the content to redact
@@ -158,27 +146,53 @@ components:
       - entityType
       - id
       type: object
-    SingleRedactionRequest:
+    RedactionJobStatusResponse:
       additionalProperties: false
       properties:
-        contentItem:
-          $ref: '#/components/schemas/ContentItem'
+        bulkRedactionResponse:
+          $ref: '#/components/schemas/BulkRedactionResponse'
+        jobStatus:
+          enum:
+          - PENDING
+          - IN_PROGRESS
+          - COMPLETED
+          type: string
+      type: object
+    BulkRedactionRequest:
+      additionalProperties: false
+      properties:
+        redactions:
+          items:
+            $ref: '#/components/schemas/SingleRedactionRequest'
+          type: array
+          uniqueItems: true
+      type: object
+    BulkRedactionResponse:
+      additionalProperties: false
+      properties:
+        results:
+          description: Result for requested redactions
+          items:
+            $ref: '#/components/schemas/SingleRedactionResponse'
+          type: array
+          uniqueItems: true
+      required:
+      - results
+      type: object
+    SingleRedactionResponse:
+      additionalProperties: false
+      description: Result for requested redactions
+      properties:
         externalId:
-          description: Unique id for the redaction request; ID format should be of UUID
-          example: 51101de6-d001-429d-a095-b2b96dd57fcb
+          description: An unique id for the redaction request
           format: uuid
           type: string
-        reason:
-          description: The reason why the content is being redacted
-          example: PII data
-          type: string
-        redactionPosition:
-          $ref: '#/components/schemas/RedactionPosition'
+        successful:
+          description: Indicates if redaction was success/failure
+          type: boolean
       required:
-      - contentItem
       - externalId
-      - reason
-      - redactionPosition
+      - successful
       type: object
     RedactionPosition:
       additionalProperties: false
@@ -207,42 +221,6 @@ components:
       - from
       - to
       type: object
-    BulkRedactionRequest:
-      additionalProperties: false
-      properties:
-        redactions:
-          items:
-            $ref: '#/components/schemas/SingleRedactionRequest'
-          type: array
-          uniqueItems: true
-      type: object
-    SingleRedactionResponse:
-      additionalProperties: false
-      description: Result for requested redactions
-      properties:
-        externalId:
-          description: An unique id for the redaction request
-          format: uuid
-          type: string
-        successful:
-          description: Indicates if redaction was success/failure
-          type: boolean
-      required:
-      - externalId
-      - successful
-      type: object
-    BulkRedactionResponse:
-      additionalProperties: false
-      properties:
-        results:
-          description: Result for requested redactions
-          items:
-            $ref: '#/components/schemas/SingleRedactionResponse'
-          type: array
-          uniqueItems: true
-      required:
-      - results
-      type: object
     ErrorCollection:
       additionalProperties: false
       description: Error messages from an operation.
@@ -260,6 +238,28 @@ components:
         status:
           format: int32
           type: integer
+      type: object
+    SingleRedactionRequest:
+      additionalProperties: false
+      properties:
+        contentItem:
+          $ref: '#/components/schemas/ContentItem'
+        externalId:
+          description: Unique id for the redaction request; ID format should be of UUID
+          example: 51101de6-d001-429d-a095-b2b96dd57fcb
+          format: uuid
+          type: string
+        reason:
+          description: The reason why the content is being redacted
+          example: PII data
+          type: string
+        redactionPosition:
+          $ref: '#/components/schemas/RedactionPosition'
+      required:
+      - contentItem
+      - externalId
+      - reason
+      - redactionPosition
       type: object
   securitySchemes:
     OAuth2:

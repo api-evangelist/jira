@@ -242,6 +242,36 @@ components:
           readOnly: true
           type: array
       type: object
+    JqlFunctionPrecomputationUpdateRequestBean:
+      additionalProperties: false
+      description: List of pairs (id and value) for precomputation updates.
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/JqlFunctionPrecomputationUpdateBean'
+          type: array
+      type: object
+      writeOnly: true
+    JqlFunctionPrecomputationUpdateErrorResponse:
+      additionalProperties: false
+      description: Error response returned updating JQL Function precomputations fails.
+      properties:
+        errorMessages:
+          description: The list of error messages produced by this operation.
+          items:
+            readOnly: true
+            type: string
+          readOnly: true
+          type: array
+        notFoundPrecomputationIDs:
+          description: List of precomputations that were not found.
+          items:
+            readOnly: true
+            type: string
+          readOnly: true
+          type: array
+          uniqueItems: true
+      type: object
     PageBean2JqlFunctionPrecomputationBean:
       additionalProperties: false
       description: A page of items.
@@ -337,6 +367,31 @@ components:
           readOnly: true
           type: string
       type: object
+    JqlFunctionPrecomputationUpdateResponse:
+      additionalProperties: false
+      description: Result of updating JQL Function precomputations.
+      properties:
+        notFoundPrecomputationIDs:
+          description: List of precomputations that were not found and skipped. Only returned if the request passed skipNotFoundPrecomputations=true.
+          items:
+            readOnly: true
+            type: string
+          readOnly: true
+          type: array
+          uniqueItems: true
+      type: object
+    JqlFunctionPrecomputationGetByIdRequest:
+      additionalProperties: false
+      description: Request to fetch precomputations by ID.
+      properties:
+        precomputationIDs:
+          items:
+            type: string
+            writeOnly: true
+          type: array
+          writeOnly: true
+      type: object
+      writeOnly: true
     JqlFunctionPrecomputationUpdateBean:
       additionalProperties: false
       description: Precomputation id and its new value.
@@ -355,61 +410,6 @@ components:
           writeOnly: true
       required:
       - id
-      type: object
-      writeOnly: true
-    JqlFunctionPrecomputationGetByIdRequest:
-      additionalProperties: false
-      description: Request to fetch precomputations by ID.
-      properties:
-        precomputationIDs:
-          items:
-            type: string
-            writeOnly: true
-          type: array
-          writeOnly: true
-      type: object
-      writeOnly: true
-    JqlFunctionPrecomputationUpdateResponse:
-      additionalProperties: false
-      description: Result of updating JQL Function precomputations.
-      properties:
-        notFoundPrecomputationIDs:
-          description: List of precomputations that were not found and skipped. Only returned if the request passed skipNotFoundPrecomputations=true.
-          items:
-            readOnly: true
-            type: string
-          readOnly: true
-          type: array
-          uniqueItems: true
-      type: object
-    JqlFunctionPrecomputationUpdateErrorResponse:
-      additionalProperties: false
-      description: Error response returned updating JQL Function precomputations fails.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation.
-          items:
-            readOnly: true
-            type: string
-          readOnly: true
-          type: array
-        notFoundPrecomputationIDs:
-          description: List of precomputations that were not found.
-          items:
-            readOnly: true
-            type: string
-          readOnly: true
-          type: array
-          uniqueItems: true
-      type: object
-    JqlFunctionPrecomputationUpdateRequestBean:
-      additionalProperties: false
-      description: List of pairs (id and value) for precomputation updates.
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/JqlFunctionPrecomputationUpdateBean'
-          type: array
       type: object
       writeOnly: true
   securitySchemes:

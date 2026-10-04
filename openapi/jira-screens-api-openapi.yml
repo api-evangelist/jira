@@ -490,7 +490,7 @@ paths:
       x-atlassian-connect-scope: ADMIN
 components:
   schemas:
-    PageBeanScreen:
+    PageBeanScreenWithTab:
       additionalProperties: false
       description: A page of items.
       properties:
@@ -526,11 +526,28 @@ components:
         values:
           description: The list of items.
           items:
-            $ref: '#/components/schemas/Screen'
+            $ref: '#/components/schemas/ScreenWithTab'
           readOnly: true
           type: array
       type: object
-    UpdateScreenDetails:
+    Scope:
+      additionalProperties: true
+      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
+      properties:
+        project:
+          allOf:
+          - $ref: '#/components/schemas/ProjectDetails'
+          description: The project the item has scope in.
+          readOnly: true
+        type:
+          description: The type of scope.
+          enum:
+          - PROJECT
+          - TEMPLATE
+          readOnly: true
+          type: string
+      type: object
+    ScreenDetails:
       additionalProperties: false
       description: Details of a screen.
       properties:
@@ -542,6 +559,28 @@ components:
           description: The name of the screen. The name must be unique. The maximum length is 255 characters.
           type: string
           writeOnly: true
+      required:
+      - name
+      type: object
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+          type: string
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
       type: object
     ScreenableTab:
       additionalProperties: false
@@ -557,6 +596,52 @@ components:
           type: string
       required:
       - name
+      type: object
+    ScreenableField:
+      additionalProperties: false
+      description: A screen tab field.
+      properties:
+        id:
+          description: The ID of the screen tab field.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the screen tab field. Required on create and update. The maximum length is 255 characters.
+          type: string
+      type: object
+    UpdateScreenDetails:
+      additionalProperties: false
+      description: Details of a screen.
+      properties:
+        description:
+          description: The description of the screen. The maximum length is 255 characters.
+          type: string
+          writeOnly: true
+        name:
+          description: The name of the screen. The name must be unique. The maximum length is 255 characters.
+          type: string
+          writeOnly: true
+      type: object
+    UpdatedProjectCategory:
+      additionalProperties: false
+      description: A project category.
+      properties:
+        description:
+          description: The name of the project category.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the project category.
+          readOnly: true
+          type: string
+        name:
+          description: The description of the project category.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the project category.
+          readOnly: true
+          type: string
       type: object
     ScreenWithTab:
       additionalProperties: false
@@ -583,21 +668,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/ScreenableTab'
           description: The tab for the screen.
-      type: object
-    ScreenDetails:
-      additionalProperties: false
-      description: Details of a screen.
-      properties:
-        description:
-          description: The description of the screen. The maximum length is 255 characters.
-          type: string
-          writeOnly: true
-        name:
-          description: The name of the screen. The name must be unique. The maximum length is 255 characters.
-          type: string
-          writeOnly: true
-      required:
-      - name
       type: object
     ProjectDetails:
       additionalProperties: false
@@ -664,19 +734,7 @@ components:
           - $ref: '#/components/schemas/Scope'
           description: The scope of the screen.
       type: object
-    ScreenableField:
-      additionalProperties: false
-      description: A screen tab field.
-      properties:
-        id:
-          description: The ID of the screen tab field.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the screen tab field. Required on create and update. The maximum length is 255 characters.
-          type: string
-      type: object
-    PageBeanScreenWithTab:
+    PageBeanScreen:
       additionalProperties: false
       description: A page of items.
       properties:
@@ -712,67 +770,9 @@ components:
         values:
           description: The list of items.
           items:
-            $ref: '#/components/schemas/ScreenWithTab'
+            $ref: '#/components/schemas/Screen'
           readOnly: true
           type: array
-      type: object
-    Scope:
-      additionalProperties: true
-      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
-      properties:
-        project:
-          allOf:
-          - $ref: '#/components/schemas/ProjectDetails'
-          description: The project the item has scope in.
-          readOnly: true
-        type:
-          description: The type of scope.
-          enum:
-          - PROJECT
-          - TEMPLATE
-          readOnly: true
-          type: string
-      type: object
-    AvatarUrlsBean:
-      additionalProperties: false
-      properties:
-        16x16:
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
-          type: string
-        24x24:
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
-          type: string
-        32x32:
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-          type: string
-        48x48:
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
-          type: string
-      type: object
-    UpdatedProjectCategory:
-      additionalProperties: false
-      description: A project category.
-      properties:
-        description:
-          description: The name of the project category.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the project category.
-          readOnly: true
-          type: string
-        name:
-          description: The description of the project category.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the project category.
-          readOnly: true
-          type: string
       type: object
   securitySchemes:
     OAuth2:

@@ -1079,6 +1079,36 @@ paths:
       x-atlassian-connect-scope: WRITE
 components:
   schemas:
+    DateDTO:
+      additionalProperties: false
+      properties:
+        epochMillis:
+          description: Date as the number of milliseconds that have elapsed since 00:00:00 Coordinated Universal Time (UTC), 1 January 1970.
+          format: int64
+          type: integer
+        friendly:
+          description: Date in a user-friendly text format.
+          type: string
+        iso8601:
+          description: Date in ISO8601 format.
+          type: string
+        jira:
+          description: Date in the format used in the Jira REST APIs, which is ISO8601 format but extended with milliseconds. For example, 2016-09-28T23:08:32.097+1000.
+          type: string
+      type: object
+    OrganizationServiceDeskUpdateDTO:
+      additionalProperties: true
+      properties:
+        organizationId:
+          description: List of organizations, specified by 'ID' field values, to add to or remove from the service desk.
+          format: int32
+          type: integer
+        serviceDeskId:
+          description: Service desk Id for which, organization needs to be updated
+          type: string
+      required:
+      - organizationId
+      type: object
     UsersOrganizationUpdateDTO:
       additionalProperties: true
       properties:
@@ -1096,104 +1126,6 @@ components:
           items:
             type: string
           type: array
-      type: object
-    PagedLinkDTO:
-      additionalProperties: false
-      properties:
-        base:
-          description: Base URL for the REST API calls.
-          format: uri
-          type: string
-        context:
-          type: string
-        next:
-          description: REST API URL for the next page, if there is one.
-          format: uri
-          type: string
-        prev:
-          description: REST API URL for the previous page, if there is one.
-          format: uri
-          type: string
-        self:
-          description: REST API URL for the current page.
-          format: uri
-          type: string
-      type: object
-    PropertyKeys:
-      additionalProperties: false
-      description: List of property keys.
-      properties:
-        keys:
-          description: Property key details.
-          items:
-            $ref: '#/components/schemas/PropertyKey'
-          readOnly: true
-          type: array
-      type: object
-    PropertyKey:
-      additionalProperties: false
-      description: Property key details.
-      properties:
-        key:
-          description: The key of the property.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the property.
-          readOnly: true
-          type: string
-      type: object
-    I18nErrorMessage:
-      additionalProperties: false
-      properties:
-        i18nKey:
-          type: string
-        parameters:
-          items:
-            type: string
-          type: array
-      type: object
-    OrganizationServiceDeskUpdateDTO:
-      additionalProperties: true
-      properties:
-        organizationId:
-          description: List of organizations, specified by 'ID' field values, to add to or remove from the service desk.
-          format: int32
-          type: integer
-        serviceDeskId:
-          description: Service desk Id for which, organization needs to be updated
-          type: string
-      required:
-      - organizationId
-      type: object
-    UserDTO:
-      additionalProperties: false
-      properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/UserLinkDTO'
-          description: URLs for the customer record and related items.
-        accountId:
-          description: The accountId of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
-          type: string
-        active:
-          description: Indicates if the customer is active (true) or inactive (false)
-          type: boolean
-        displayName:
-          description: Customer's name for display in a UI. Depending on the customer’s privacy settings, this may return an alternative value.
-          type: string
-        emailAddress:
-          description: Customer's email address. Depending on the customer’s privacy settings, this may be returned as null.
-          type: string
-        key:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        name:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        timeZone:
-          description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
-          type: string
       type: object
     PagedDTOOrganizationDTO:
       additionalProperties: false
@@ -1227,21 +1159,49 @@ components:
             $ref: '#/components/schemas/OrganizationDTO'
           type: array
       type: object
-    DateDTO:
+    OrganizationCreateDTO:
       additionalProperties: false
       properties:
-        epochMillis:
-          description: Date as the number of milliseconds that have elapsed since 00:00:00 Coordinated Universal Time (UTC), 1 January 1970.
-          format: int64
-          type: integer
-        friendly:
-          description: Date in a user-friendly text format.
+        name:
+          description: Name of the organization. Must contain 1-200 characters.
           type: string
-        iso8601:
-          description: Date in ISO8601 format.
+      required:
+      - name
+      type: object
+    EntityProperty:
+      additionalProperties: false
+      description: An entity property, for more information see [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).
+      properties:
+        key:
+          description: The key of the property. Required on create and update.
           type: string
-        jira:
-          description: Date in the format used in the Jira REST APIs, which is ISO8601 format but extended with milliseconds. For example, 2016-09-28T23:08:32.097+1000.
+        value:
+          description: The value of the property. Required on create and update.
+      type: object
+    I18nErrorMessage:
+      additionalProperties: false
+      properties:
+        i18nKey:
+          type: string
+        parameters:
+          items:
+            type: string
+          type: array
+      type: object
+    UserLinkDTO:
+      additionalProperties: false
+      properties:
+        avatarUrls:
+          additionalProperties:
+            type: string
+          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
+          type: object
+        jiraRest:
+          description: REST API URL for the customer.
+          format: uri
+          type: string
+        self:
+          format: uri
           type: string
       type: object
     OrganizationDTO:
@@ -1266,6 +1226,88 @@ components:
           type: boolean
         uuid:
           description: A unique system generated ID for the organization. This is identity from the group directory id
+          type: string
+      type: object
+    PropertyKeys:
+      additionalProperties: false
+      description: List of property keys.
+      properties:
+        keys:
+          description: Property key details.
+          items:
+            $ref: '#/components/schemas/PropertyKey'
+          readOnly: true
+          type: array
+      type: object
+    UserDTO:
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/UserLinkDTO'
+          description: URLs for the customer record and related items.
+        accountId:
+          description: The accountId of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+          type: string
+        active:
+          description: Indicates if the customer is active (true) or inactive (false)
+          type: boolean
+        displayName:
+          description: Customer's name for display in a UI. Depending on the customer’s privacy settings, this may return an alternative value.
+          type: string
+        emailAddress:
+          description: Customer's email address. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+        key:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        name:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        timeZone:
+          description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+      type: object
+    PropertyKey:
+      additionalProperties: false
+      description: Property key details.
+      properties:
+        key:
+          description: The key of the property.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the property.
+          readOnly: true
+          type: string
+      type: object
+    PagedLinkDTO:
+      additionalProperties: false
+      properties:
+        base:
+          description: Base URL for the REST API calls.
+          format: uri
+          type: string
+        context:
+          type: string
+        next:
+          description: REST API URL for the next page, if there is one.
+          format: uri
+          type: string
+        prev:
+          description: REST API URL for the previous page, if there is one.
+          format: uri
+          type: string
+        self:
+          description: REST API URL for the current page.
+          format: uri
+          type: string
+      type: object
+    SelfLinkDTO:
+      additionalProperties: false
+      properties:
+        self:
+          format: uri
           type: string
       type: object
     ErrorResponse:
@@ -1307,48 +1349,6 @@ components:
           items:
             $ref: '#/components/schemas/UserDTO'
           type: array
-      type: object
-    SelfLinkDTO:
-      additionalProperties: false
-      properties:
-        self:
-          format: uri
-          type: string
-      type: object
-    EntityProperty:
-      additionalProperties: false
-      description: An entity property, for more information see [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).
-      properties:
-        key:
-          description: The key of the property. Required on create and update.
-          type: string
-        value:
-          description: The value of the property. Required on create and update.
-      type: object
-    OrganizationCreateDTO:
-      additionalProperties: false
-      properties:
-        name:
-          description: Name of the organization. Must contain 1-200 characters.
-          type: string
-      required:
-      - name
-      type: object
-    UserLinkDTO:
-      additionalProperties: false
-      properties:
-        avatarUrls:
-          additionalProperties:
-            type: string
-          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
-          type: object
-        jiraRest:
-          description: REST API URL for the customer.
-          format: uri
-          type: string
-        self:
-          format: uri
-          type: string
       type: object
   securitySchemes:
     OAuth2:

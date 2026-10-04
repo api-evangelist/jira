@@ -163,6 +163,17 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
+    CustomFieldValueUpdateDetails:
+      additionalProperties: false
+      description: Details of updates for a custom field.
+      properties:
+        updates:
+          description: The list of custom field update details.
+          items:
+            $ref: '#/components/schemas/CustomFieldValueUpdate'
+          type: array
+      type: object
+      writeOnly: true
     CustomFieldValueUpdate:
       additionalProperties: false
       description: A list of issue IDs and the value to update a custom field to.
@@ -180,27 +191,6 @@ components:
       required:
       - issueIds
       - value
-      type: object
-      writeOnly: true
-    MultipleCustomFieldValuesUpdateDetails:
-      additionalProperties: false
-      description: List of updates for a custom fields.
-      properties:
-        updates:
-          items:
-            $ref: '#/components/schemas/MultipleCustomFieldValuesUpdate'
-          type: array
-      type: object
-      writeOnly: true
-    CustomFieldValueUpdateDetails:
-      additionalProperties: false
-      description: Details of updates for a custom field.
-      properties:
-        updates:
-          description: The list of custom field update details.
-          items:
-            $ref: '#/components/schemas/CustomFieldValueUpdate'
-          type: array
       type: object
       writeOnly: true
     MultipleCustomFieldValuesUpdate:
@@ -225,6 +215,16 @@ components:
       - customField
       - issueIds
       - value
+      type: object
+      writeOnly: true
+    MultipleCustomFieldValuesUpdateDetails:
+      additionalProperties: false
+      description: List of updates for a custom fields.
+      properties:
+        updates:
+          items:
+            $ref: '#/components/schemas/MultipleCustomFieldValuesUpdate'
+          type: array
       type: object
       writeOnly: true
   securitySchemes:

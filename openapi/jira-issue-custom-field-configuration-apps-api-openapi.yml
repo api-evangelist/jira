@@ -317,22 +317,25 @@ paths:
       x-atlassian-connect-scope: ADMIN
 components:
   schemas:
-    CustomFieldConfigurations:
+    ContextualConfiguration:
       additionalProperties: false
-      description: Details of configurations for a custom field.
+      description: Details of the contextual configuration for a custom field.
       properties:
-        configurations:
-          description: The list of custom field configuration details.
-          items:
-            $ref: '#/components/schemas/ContextualConfiguration'
-          maxItems: 1000
-          minItems: 1
-          type: array
-          uniqueItems: true
+        configuration:
+          description: The field configuration.
+        fieldContextId:
+          description: The ID of the field context the configuration is associated with.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the configuration.
+          type: string
+        schema:
+          description: The field value schema.
       required:
-      - configurations
+      - fieldContextId
+      - id
       type: object
-      writeOnly: true
     BulkContextualConfiguration:
       additionalProperties: false
       description: Details of the contextual configuration for a custom field.
@@ -356,6 +359,22 @@ components:
       - fieldContextId
       - id
       type: object
+    CustomFieldConfigurations:
+      additionalProperties: false
+      description: Details of configurations for a custom field.
+      properties:
+        configurations:
+          description: The list of custom field configuration details.
+          items:
+            $ref: '#/components/schemas/ContextualConfiguration'
+          maxItems: 1000
+          minItems: 1
+          type: array
+          uniqueItems: true
+      required:
+      - configurations
+      type: object
+      writeOnly: true
     PageBeanBulkContextualConfiguration:
       additionalProperties: false
       description: A page of items.
@@ -395,25 +414,6 @@ components:
             $ref: '#/components/schemas/BulkContextualConfiguration'
           readOnly: true
           type: array
-      type: object
-    ContextualConfiguration:
-      additionalProperties: false
-      description: Details of the contextual configuration for a custom field.
-      properties:
-        configuration:
-          description: The field configuration.
-        fieldContextId:
-          description: The ID of the field context the configuration is associated with.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the configuration.
-          type: string
-        schema:
-          description: The field value schema.
-      required:
-      - fieldContextId
-      - id
       type: object
     PageBeanContextualConfiguration:
       additionalProperties: false

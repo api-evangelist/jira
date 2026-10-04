@@ -42,16 +42,6 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
-    I18nErrorMessage:
-      additionalProperties: false
-      properties:
-        i18nKey:
-          type: string
-        parameters:
-          items:
-            type: string
-          type: array
-      type: object
     DateDTO:
       additionalProperties: false
       properties:
@@ -68,6 +58,16 @@ components:
         jira:
           description: Date in the format used in the Jira REST APIs, which is ISO8601 format but extended with milliseconds. For example, 2016-09-28T23:08:32.097+1000.
           type: string
+      type: object
+    I18nErrorMessage:
+      additionalProperties: false
+      properties:
+        i18nKey:
+          type: string
+        parameters:
+          items:
+            type: string
+          type: array
       type: object
     SoftwareInfoDTO:
       additionalProperties: false
@@ -93,6 +93,13 @@ components:
           description: Jira Service Management version.
           type: string
       type: object
+    SelfLinkDTO:
+      additionalProperties: false
+      properties:
+        self:
+          format: uri
+          type: string
+      type: object
     ErrorResponse:
       additionalProperties: false
       properties:
@@ -100,13 +107,6 @@ components:
           type: string
         i18nErrorMessage:
           $ref: '#/components/schemas/I18nErrorMessage'
-      type: object
-    SelfLinkDTO:
-      additionalProperties: false
-      properties:
-        self:
-          format: uri
-          type: string
       type: object
   securitySchemes:
     OAuth2:

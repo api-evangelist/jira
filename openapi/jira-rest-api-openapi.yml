@@ -176,23 +176,17 @@ paths:
     - url: https://your-domain.atlassian.net
 components:
   schemas:
-    BulkWorklogKeyResponseBean:
+    WorklogCompositeKey:
       additionalProperties: false
       properties:
-        worklogs:
-          description: A list of successfully retrieved worklogs with their issue and worklog IDs.
-          items:
-            $ref: '#/components/schemas/WorklogKeyResult'
-          type: array
-      type: object
-    BulkWorklogKeyRequestBean:
-      additionalProperties: false
-      properties:
-        requests:
-          description: A list of issue and worklog ID pairs.
-          items:
-            $ref: '#/components/schemas/WorklogCompositeKey'
-          type: array
+        issueId:
+          description: The issue ID.
+          format: int64
+          type: integer
+        worklogId:
+          description: The worklog ID.
+          format: int64
+          type: integer
       type: object
     WorklogKeyResult:
       additionalProperties: false
@@ -206,33 +200,23 @@ components:
           format: int64
           type: integer
       type: object
-    WorklogCompositeKey:
+    BulkWorklogKeyRequestBean:
       additionalProperties: false
       properties:
-        issueId:
-          description: The issue ID.
-          format: int64
-          type: integer
-        worklogId:
-          description: The worklog ID.
-          format: int64
-          type: integer
+        requests:
+          description: A list of issue and worklog ID pairs.
+          items:
+            $ref: '#/components/schemas/WorklogCompositeKey'
+          type: array
       type: object
-    ServiceDeskCustomerDTO:
+    BulkWorklogKeyResponseBean:
       additionalProperties: false
       properties:
-        accountIds:
-          description: List of users, specified by account IDs, to add to or remove from a service desk.
+        worklogs:
+          description: A list of successfully retrieved worklogs with their issue and worklog IDs.
           items:
-            type: string
+            $ref: '#/components/schemas/WorklogKeyResult'
           type: array
-          uniqueItems: true
-        usernames:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. Use `accountIds` instead.
-          items:
-            type: string
-          type: array
-          uniqueItems: true
       type: object
     UserLinkDTO:
       additionalProperties: false
@@ -248,19 +232,6 @@ components:
           type: string
         self:
           format: uri
-          type: string
-      type: object
-    CustomerCreateDTO:
-      additionalProperties: false
-      properties:
-        displayName:
-          description: Customer's name for display in the UI.
-          type: string
-        email:
-          description: Customer's email address.
-          type: string
-        fullName:
-          description: Deprecated, please use 'displayName'.
           type: string
       type: object
     UserDTO:
@@ -290,6 +261,35 @@ components:
           type: string
         timeZone:
           description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
+          type: string
+      type: object
+    ServiceDeskCustomerDTO:
+      additionalProperties: false
+      properties:
+        accountIds:
+          description: List of users, specified by account IDs, to add to or remove from a service desk.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        usernames:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. Use `accountIds` instead.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    CustomerCreateDTO:
+      additionalProperties: false
+      properties:
+        displayName:
+          description: Customer's name for display in the UI.
+          type: string
+        email:
+          description: Customer's email address.
+          type: string
+        fullName:
+          description: Deprecated, please use 'displayName'.
           type: string
       type: object
   securitySchemes:

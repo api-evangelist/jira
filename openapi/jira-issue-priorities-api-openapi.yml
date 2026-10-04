@@ -679,75 +679,6 @@ components:
       - name
       - statusColor
       type: object
-    PriorityId:
-      additionalProperties: true
-      description: The ID of an issue priority.
-      properties:
-        id:
-          description: The ID of the issue priority.
-          readOnly: true
-          type: string
-      required:
-      - id
-      type: object
-    UpdatePriorityDetails:
-      additionalProperties: true
-      description: Details of an issue priority.
-      properties:
-        avatarId:
-          description: The ID for the avatar for the priority. This parameter is nullable and both iconUrl and avatarId cannot be defined.
-          format: int64
-          type: integer
-          writeOnly: true
-        description:
-          description: The description of the priority.
-          maxLength: 255
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-        iconUrl:
-          description: The URL of an icon for the priority. Accepted protocols are HTTP and HTTPS. Built in icons can also be used. Both iconUrl and avatarId cannot be defined.
-          enum:
-          - /images/icons/priorities/blocker.png
-          - /images/icons/priorities/critical.png
-          - /images/icons/priorities/high.png
-          - /images/icons/priorities/highest.png
-          - /images/icons/priorities/low.png
-          - /images/icons/priorities/lowest.png
-          - /images/icons/priorities/major.png
-          - /images/icons/priorities/medium.png
-          - /images/icons/priorities/minor.png
-          - /images/icons/priorities/trivial.png
-          - /images/icons/priorities/blocker_new.png
-          - /images/icons/priorities/critical_new.png
-          - /images/icons/priorities/high_new.png
-          - /images/icons/priorities/highest_new.png
-          - /images/icons/priorities/low_new.png
-          - /images/icons/priorities/lowest_new.png
-          - /images/icons/priorities/major_new.png
-          - /images/icons/priorities/medium_new.png
-          - /images/icons/priorities/minor_new.png
-          - /images/icons/priorities/trivial_new.png
-          maxLength: 255
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-        name:
-          description: The name of the priority. Must be unique.
-          maxLength: 60
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-        statusColor:
-          description: The status color of the priority in 3-digit or 6-digit hexadecimal format.
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-      type: object
     SetDefaultPriorityRequest:
       additionalProperties: false
       description: The new default issue priority.
@@ -758,115 +689,6 @@ components:
           writeOnly: true
       required:
       - id
-      type: object
-    PageBeanPriority:
-      additionalProperties: false
-      description: A page of items.
-      properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
-          type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/Priority_2'
-          readOnly: true
-          type: array
-      type: object
-    Priority_2:
-      additionalProperties: true
-      description: An issue priority.
-      properties:
-        avatarId:
-          description: The avatarId of the avatar for the issue priority. This parameter is nullable and when set, this avatar references the universal avatar APIs.
-          format: int64
-          type: integer
-        description:
-          description: The description of the issue priority.
-          type: string
-        iconUrl:
-          description: The URL of the icon for the issue priority.
-          type: string
-        id:
-          description: The ID of the issue priority.
-          type: string
-        isDefault:
-          description: Whether this priority is the default.
-          type: boolean
-        name:
-          description: The name of the issue priority.
-          type: string
-        schemes:
-          allOf:
-          - $ref: '#/components/schemas/ExpandPrioritySchemePage'
-          description: Priority schemes associated with the issue priority.
-        self:
-          description: The URL of the issue priority.
-          type: string
-        statusColor:
-          description: The color used to indicate the issue priority.
-          type: string
-      type: object
-    ExpandPrioritySchemePage:
-      additionalProperties: true
-      properties:
-        maxResults:
-          format: int32
-          type: integer
-        startAt:
-          format: int64
-          type: integer
-        total:
-          format: int64
-          type: integer
-      type: object
-    ReorderIssuePriorities:
-      additionalProperties: false
-      description: Change the order of issue priorities.
-      properties:
-        after:
-          description: The ID of the priority. Required if `position` isn't provided.
-          type: string
-          writeOnly: true
-        ids:
-          description: The list of issue IDs to be reordered. Cannot contain duplicates nor after ID.
-          items:
-            type: string
-            writeOnly: true
-          type: array
-          writeOnly: true
-        position:
-          description: The position for issue priorities to be moved to. Required if `after` isn't provided.
-          type: string
-          writeOnly: true
-      required:
-      - ids
       type: object
     TaskProgressBeanObject:
       additionalProperties: false
@@ -936,6 +758,126 @@ components:
       - submitted
       - submittedBy
       type: object
+    PageBeanPriority:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/Priority_2'
+          readOnly: true
+          type: array
+      type: object
+    UpdatePriorityDetails:
+      additionalProperties: true
+      description: Details of an issue priority.
+      properties:
+        avatarId:
+          description: The ID for the avatar for the priority. This parameter is nullable and both iconUrl and avatarId cannot be defined.
+          format: int64
+          type: integer
+          writeOnly: true
+        description:
+          description: The description of the priority.
+          maxLength: 255
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        iconUrl:
+          description: The URL of an icon for the priority. Accepted protocols are HTTP and HTTPS. Built in icons can also be used. Both iconUrl and avatarId cannot be defined.
+          enum:
+          - /images/icons/priorities/blocker.png
+          - /images/icons/priorities/critical.png
+          - /images/icons/priorities/high.png
+          - /images/icons/priorities/highest.png
+          - /images/icons/priorities/low.png
+          - /images/icons/priorities/lowest.png
+          - /images/icons/priorities/major.png
+          - /images/icons/priorities/medium.png
+          - /images/icons/priorities/minor.png
+          - /images/icons/priorities/trivial.png
+          - /images/icons/priorities/blocker_new.png
+          - /images/icons/priorities/critical_new.png
+          - /images/icons/priorities/high_new.png
+          - /images/icons/priorities/highest_new.png
+          - /images/icons/priorities/low_new.png
+          - /images/icons/priorities/lowest_new.png
+          - /images/icons/priorities/major_new.png
+          - /images/icons/priorities/medium_new.png
+          - /images/icons/priorities/minor_new.png
+          - /images/icons/priorities/trivial_new.png
+          maxLength: 255
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        name:
+          description: The name of the priority. Must be unique.
+          maxLength: 60
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        statusColor:
+          description: The status color of the priority in 3-digit or 6-digit hexadecimal format.
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+      type: object
+    ReorderIssuePriorities:
+      additionalProperties: false
+      description: Change the order of issue priorities.
+      properties:
+        after:
+          description: The ID of the priority. Required if `position` isn't provided.
+          type: string
+          writeOnly: true
+        ids:
+          description: The list of issue IDs to be reordered. Cannot contain duplicates nor after ID.
+          items:
+            type: string
+            writeOnly: true
+          type: array
+          writeOnly: true
+        position:
+          description: The position for issue priorities to be moved to. Required if `after` isn't provided.
+          type: string
+          writeOnly: true
+      required:
+      - ids
+      type: object
     ErrorCollection:
       additionalProperties: false
       description: Error messages from an operation.
@@ -953,6 +895,64 @@ components:
         status:
           format: int32
           type: integer
+      type: object
+    Priority_2:
+      additionalProperties: true
+      description: An issue priority.
+      properties:
+        avatarId:
+          description: The avatarId of the avatar for the issue priority. This parameter is nullable and when set, this avatar references the universal avatar APIs.
+          format: int64
+          type: integer
+        description:
+          description: The description of the issue priority.
+          type: string
+        iconUrl:
+          description: The URL of the icon for the issue priority.
+          type: string
+        id:
+          description: The ID of the issue priority.
+          type: string
+        isDefault:
+          description: Whether this priority is the default.
+          type: boolean
+        name:
+          description: The name of the issue priority.
+          type: string
+        schemes:
+          allOf:
+          - $ref: '#/components/schemas/ExpandPrioritySchemePage'
+          description: Priority schemes associated with the issue priority.
+        self:
+          description: The URL of the issue priority.
+          type: string
+        statusColor:
+          description: The color used to indicate the issue priority.
+          type: string
+      type: object
+    ExpandPrioritySchemePage:
+      additionalProperties: true
+      properties:
+        maxResults:
+          format: int32
+          type: integer
+        startAt:
+          format: int64
+          type: integer
+        total:
+          format: int64
+          type: integer
+      type: object
+    PriorityId:
+      additionalProperties: true
+      description: The ID of an issue priority.
+      properties:
+        id:
+          description: The ID of the issue priority.
+          readOnly: true
+          type: string
+      required:
+      - id
       type: object
   securitySchemes:
     basicAuth:

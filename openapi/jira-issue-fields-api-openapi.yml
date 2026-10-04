@@ -882,127 +882,6 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    JsonTypeBean:
-      additionalProperties: false
-      description: The schema of a field.
-      properties:
-        configuration:
-          additionalProperties:
-            readOnly: true
-          description: If the field is a custom field, the configuration of the field.
-          readOnly: true
-          type: object
-        custom:
-          description: If the field is a custom field, the URI of the field.
-          readOnly: true
-          type: string
-        customId:
-          description: If the field is a custom field, the custom ID of the field.
-          format: int64
-          readOnly: true
-          type: integer
-        items:
-          description: When the data type is an array, the name of the field items within the array.
-          readOnly: true
-          type: string
-        system:
-          description: If the field is a system field, the name of the field.
-          readOnly: true
-          type: string
-        type:
-          description: The data type of the field.
-          readOnly: true
-          type: string
-      required:
-      - type
-      type: object
-    UpdateCustomFieldDetails:
-      additionalProperties: false
-      description: Details of a custom field.
-      properties:
-        description:
-          description: The description of the custom field. The maximum length is 40000 characters.
-          type: string
-        name:
-          description: The name of the custom field. It doesn't have to be unique. The maximum length is 255 characters.
-          type: string
-        searcherKey:
-          description: "The searcher that defines the way the field is searched in Jira. It can be set to `null`, otherwise you must specify the valid searcher for the field type, as listed below (abbreviated values shown):\n\n *  `cascadingselect`: `cascadingselectsearcher`\n *  `datepicker`: `daterange`\n *  `datetime`: `datetimerange`\n *  `float`: `exactnumber` or `numberrange`\n *  `grouppicker`: `grouppickersearcher`\n *  `importid`: `exactnumber` or `numberrange`\n *  `labels`: `labelsearcher`\n *  `multicheckboxes`: `multiselectsearcher`\n *  `multigrouppicker`: `multiselectsearcher`\n *  `multiselect`: `multiselectsearcher`\n *  `multiuserpicker`: `userpickergroupsearcher`\n *  `multiversion`: `versionsearcher`\n *  `project`: `projectsearcher`\n *  `radiobuttons`: `multiselectsearcher`\n *  `readonlyfield`: `textsearcher`\n *  `select`: `multiselectsearcher`\n *  `textarea`: `textsearcher`\n *  `textfield`: `textsearcher`\n *  `url`: `exacttextsearcher`\n *  `userpicker`: `userpickergroupsearcher`\n *  `version`: `versionsearcher`"
-          enum:
-          - com.atlassian.jira.plugin.system.customfieldtypes:cascadingselectsearcher
-          - com.atlassian.jira.plugin.system.customfieldtypes:daterange
-          - com.atlassian.jira.plugin.system.customfieldtypes:datetimerange
-          - com.atlassian.jira.plugin.system.customfieldtypes:exactnumber
-          - com.atlassian.jira.plugin.system.customfieldtypes:exacttextsearcher
-          - com.atlassian.jira.plugin.system.customfieldtypes:grouppickersearcher
-          - com.atlassian.jira.plugin.system.customfieldtypes:labelsearcher
-          - com.atlassian.jira.plugin.system.customfieldtypes:multiselectsearcher
-          - com.atlassian.jira.plugin.system.customfieldtypes:numberrange
-          - com.atlassian.jira.plugin.system.customfieldtypes:projectsearcher
-          - com.atlassian.jira.plugin.system.customfieldtypes:textsearcher
-          - com.atlassian.jira.plugin.system.customfieldtypes:userpickergroupsearcher
-          - com.atlassian.jira.plugin.system.customfieldtypes:versionsearcher
-          type: string
-      type: object
-      writeOnly: true
-    PageBeanField:
-      additionalProperties: false
-      description: A page of items.
-      properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
-          type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/Field'
-          readOnly: true
-          type: array
-      type: object
-    ErrorCollection:
-      additionalProperties: false
-      description: Error messages from an operation.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        status:
-          format: int32
-          type: integer
-      type: object
     CustomFieldDefinitionJsonBean:
       additionalProperties: false
       properties:
@@ -1035,6 +914,55 @@ components:
       required:
       - name
       - type
+      type: object
+    UpdateCustomFieldDetails:
+      additionalProperties: false
+      description: Details of a custom field.
+      properties:
+        description:
+          description: The description of the custom field. The maximum length is 40000 characters.
+          type: string
+        name:
+          description: The name of the custom field. It doesn't have to be unique. The maximum length is 255 characters.
+          type: string
+        searcherKey:
+          description: "The searcher that defines the way the field is searched in Jira. It can be set to `null`, otherwise you must specify the valid searcher for the field type, as listed below (abbreviated values shown):\n\n *  `cascadingselect`: `cascadingselectsearcher`\n *  `datepicker`: `daterange`\n *  `datetime`: `datetimerange`\n *  `float`: `exactnumber` or `numberrange`\n *  `grouppicker`: `grouppickersearcher`\n *  `importid`: `exactnumber` or `numberrange`\n *  `labels`: `labelsearcher`\n *  `multicheckboxes`: `multiselectsearcher`\n *  `multigrouppicker`: `multiselectsearcher`\n *  `multiselect`: `multiselectsearcher`\n *  `multiuserpicker`: `userpickergroupsearcher`\n *  `multiversion`: `versionsearcher`\n *  `project`: `projectsearcher`\n *  `radiobuttons`: `multiselectsearcher`\n *  `readonlyfield`: `textsearcher`\n *  `select`: `multiselectsearcher`\n *  `textarea`: `textsearcher`\n *  `textfield`: `textsearcher`\n *  `url`: `exacttextsearcher`\n *  `userpicker`: `userpickergroupsearcher`\n *  `version`: `versionsearcher`"
+          enum:
+          - com.atlassian.jira.plugin.system.customfieldtypes:cascadingselectsearcher
+          - com.atlassian.jira.plugin.system.customfieldtypes:daterange
+          - com.atlassian.jira.plugin.system.customfieldtypes:datetimerange
+          - com.atlassian.jira.plugin.system.customfieldtypes:exactnumber
+          - com.atlassian.jira.plugin.system.customfieldtypes:exacttextsearcher
+          - com.atlassian.jira.plugin.system.customfieldtypes:grouppickersearcher
+          - com.atlassian.jira.plugin.system.customfieldtypes:labelsearcher
+          - com.atlassian.jira.plugin.system.customfieldtypes:multiselectsearcher
+          - com.atlassian.jira.plugin.system.customfieldtypes:numberrange
+          - com.atlassian.jira.plugin.system.customfieldtypes:projectsearcher
+          - com.atlassian.jira.plugin.system.customfieldtypes:textsearcher
+          - com.atlassian.jira.plugin.system.customfieldtypes:userpickergroupsearcher
+          - com.atlassian.jira.plugin.system.customfieldtypes:versionsearcher
+          type: string
+      type: object
+      writeOnly: true
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+          type: string
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
       type: object
     PageBeanFieldProjectAssociation:
       additionalProperties: false
@@ -1118,21 +1046,260 @@ components:
       type: object
       xml:
         name: field
-    ProjectFieldBean:
+    ErrorCollection:
       additionalProperties: false
+      description: Error messages from an operation.
       properties:
-        description:
-          type: string
-        fieldId:
-          type: string
-        isRequired:
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
+          format: int32
+          type: integer
+      type: object
+    PageBeanField:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
           type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/Field'
+          readOnly: true
+          type: array
+      type: object
+    FieldLastUsed:
+      additionalProperties: false
+      description: Information about the most recent use of a field.
+      properties:
+        type:
+          description: "Last used value type:\n\n *  *TRACKED*: field is tracked and a last used date is available.\n *  *NOT\\_TRACKED*: field is not tracked, last used date is not available.\n *  *NO\\_INFORMATION*: field is tracked, but no last used date is available."
+          enum:
+          - TRACKED
+          - NOT_TRACKED
+          - NO_INFORMATION
+          type: string
+        value:
+          description: The date when the value of the field last changed.
+          format: date-time
+          type: string
+      type: object
+    JsonTypeBean:
+      additionalProperties: false
+      description: The schema of a field.
+      properties:
+        configuration:
+          additionalProperties:
+            readOnly: true
+          description: If the field is a custom field, the configuration of the field.
+          readOnly: true
+          type: object
+        custom:
+          description: If the field is a custom field, the URI of the field.
+          readOnly: true
+          type: string
+        customId:
+          description: If the field is a custom field, the custom ID of the field.
+          format: int64
+          readOnly: true
+          type: integer
+        items:
+          description: When the data type is an array, the name of the field items within the array.
+          readOnly: true
+          type: string
+        system:
+          description: If the field is a system field, the name of the field.
+          readOnly: true
+          type: string
+        type:
+          description: The data type of the field.
+          readOnly: true
+          type: string
+      required:
+      - type
+      type: object
+    PageBeanContext:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/Context'
+          readOnly: true
+          type: array
+      type: object
+    PageBean2ProjectFieldBean:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/ProjectFieldBean'
+          readOnly: true
+          type: array
+      type: object
+    FieldProjectAssociation:
+      additionalProperties: false
+      description: List of project associations.
+      properties:
         projectId:
-          format: int64
-          type: integer
-        workTypeId:
-          format: int64
-          type: integer
+          type: string
+      type: object
+    ProjectDetails:
+      additionalProperties: false
+      description: Details about a project.
+      properties:
+        avatarUrls:
+          allOf:
+          - $ref: '#/components/schemas/AvatarUrlsBean'
+          description: The URLs of the project's avatars.
+          readOnly: true
+        id:
+          description: The ID of the project.
+          type: string
+        key:
+          description: The key of the project.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the project.
+          readOnly: true
+          type: string
+        projectCategory:
+          allOf:
+          - $ref: '#/components/schemas/UpdatedProjectCategory'
+          description: The category the project belongs to.
+          readOnly: true
+        projectTypeKey:
+          description: The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes) of the project.
+          enum:
+          - software
+          - service_desk
+          - business
+          - product_discovery
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the project details.
+          readOnly: true
+          type: string
+        simplified:
+          description: Whether or not the project is simplified.
+          readOnly: true
+          type: boolean
+      type: object
+    Scope:
+      additionalProperties: true
+      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
+      properties:
+        project:
+          allOf:
+          - $ref: '#/components/schemas/ProjectDetails'
+          description: The project the item has scope in.
+          readOnly: true
+        type:
+          description: The type of scope.
+          enum:
+          - PROJECT
+          - TEMPLATE
+          readOnly: true
+          type: string
       type: object
     TaskProgressBeanObject:
       additionalProperties: false
@@ -1202,165 +1369,6 @@ components:
       - submitted
       - submittedBy
       type: object
-    PageBean2ProjectFieldBean:
-      additionalProperties: false
-      description: A page of items.
-      properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
-          type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/ProjectFieldBean'
-          readOnly: true
-          type: array
-      type: object
-    FieldLastUsed:
-      additionalProperties: false
-      description: Information about the most recent use of a field.
-      properties:
-        type:
-          description: "Last used value type:\n\n *  *TRACKED*: field is tracked and a last used date is available.\n *  *NOT\\_TRACKED*: field is not tracked, last used date is not available.\n *  *NO\\_INFORMATION*: field is tracked, but no last used date is available."
-          enum:
-          - TRACKED
-          - NOT_TRACKED
-          - NO_INFORMATION
-          type: string
-        value:
-          description: The date when the value of the field last changed.
-          format: date-time
-          type: string
-      type: object
-    AvatarUrlsBean:
-      additionalProperties: false
-      properties:
-        16x16:
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
-          type: string
-        24x24:
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
-          type: string
-        32x32:
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-          type: string
-        48x48:
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
-          type: string
-      type: object
-    PageBeanContext:
-      additionalProperties: false
-      description: A page of items.
-      properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
-          type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/Context'
-          readOnly: true
-          type: array
-      type: object
-    ProjectDetails:
-      additionalProperties: false
-      description: Details about a project.
-      properties:
-        avatarUrls:
-          allOf:
-          - $ref: '#/components/schemas/AvatarUrlsBean'
-          description: The URLs of the project's avatars.
-          readOnly: true
-        id:
-          description: The ID of the project.
-          type: string
-        key:
-          description: The key of the project.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the project.
-          readOnly: true
-          type: string
-        projectCategory:
-          allOf:
-          - $ref: '#/components/schemas/UpdatedProjectCategory'
-          description: The category the project belongs to.
-          readOnly: true
-        projectTypeKey:
-          description: The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes) of the project.
-          enum:
-          - software
-          - service_desk
-          - business
-          - product_discovery
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the project details.
-          readOnly: true
-          type: string
-        simplified:
-          description: Whether or not the project is simplified.
-          readOnly: true
-          type: boolean
-      type: object
     Field:
       additionalProperties: false
       description: Details of a field.
@@ -1419,29 +1427,21 @@ components:
       - name
       - schema
       type: object
-    FieldProjectAssociation:
+    ProjectFieldBean:
       additionalProperties: false
-      description: List of project associations.
       properties:
+        description:
+          type: string
+        fieldId:
+          type: string
+        isRequired:
+          type: boolean
         projectId:
-          type: string
-      type: object
-    Scope:
-      additionalProperties: true
-      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
-      properties:
-        project:
-          allOf:
-          - $ref: '#/components/schemas/ProjectDetails'
-          description: The project the item has scope in.
-          readOnly: true
-        type:
-          description: The type of scope.
-          enum:
-          - PROJECT
-          - TEMPLATE
-          readOnly: true
-          type: string
+          format: int64
+          type: integer
+        workTypeId:
+          format: int64
+          type: integer
       type: object
     UpdatedProjectCategory:
       additionalProperties: false

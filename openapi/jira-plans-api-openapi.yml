@@ -587,195 +587,18 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    GetIssueSourceResponse:
+    GetCustomFieldResponse:
       additionalProperties: false
       properties:
-        type:
-          description: The issue source type. This is "Board", "Project" or "Filter".
-          enum:
-          - Board
-          - Project
-          - Filter
-          - Custom
-          type: string
-        value:
-          description: The issue source value. This is a board ID if the type is "Board", a project ID if the type is "Project" or a filter ID if the type is "Filter".
+        customFieldId:
+          description: The custom field ID.
           format: int64
           type: integer
+        filter:
+          description: Allows filtering issues based on their values for the custom field.
+          type: boolean
       required:
-      - type
-      - value
-      type: object
-    CreateIssueSourceRequest:
-      additionalProperties: false
-      properties:
-        type:
-          description: The issue source type. This must be "Board", "Project" or "Filter".
-          enum:
-          - Board
-          - Project
-          - Filter
-          type: string
-        value:
-          description: The issue source value. This must be a board ID if the type is "Board", a project ID if the type is "Project" or a filter ID if the type is "Filter".
-          format: int64
-          type: integer
-      required:
-      - type
-      - value
-      type: object
-    GetPermissionResponse:
-      additionalProperties: false
-      properties:
-        holder:
-          allOf:
-          - $ref: '#/components/schemas/GetPermissionHolderResponse'
-          description: The permission holder.
-        type:
-          description: The permission type. This is "View" or "Edit".
-          enum:
-          - View
-          - Edit
-          type: string
-      required:
-      - holder
-      - type
-      type: object
-    ErrorCollection:
-      additionalProperties: false
-      description: Error messages from an operation.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        status:
-          format: int32
-          type: integer
-      type: object
-    GetDateFieldResponse:
-      additionalProperties: false
-      properties:
-        dateCustomFieldId:
-          description: A date custom field ID. This is returned if the type is "DateCustomField".
-          format: int64
-          type: integer
-        type:
-          description: The date field type. This is "DueDate", "TargetStartDate", "TargetEndDate" or "DateCustomField".
-          enum:
-          - DueDate
-          - TargetStartDate
-          - TargetEndDate
-          - DateCustomField
-          type: string
-      required:
-      - type
-      type: object
-    CreatePlanRequest:
-      additionalProperties: false
-      properties:
-        crossProjectReleases:
-          description: The cross-project releases to include in the plan.
-          items:
-            $ref: '#/components/schemas/CreateCrossProjectReleaseRequest'
-          type: array
-          uniqueItems: true
-        customFields:
-          description: The custom fields for the plan.
-          items:
-            $ref: '#/components/schemas/CreateCustomFieldRequest'
-          type: array
-          uniqueItems: true
-        exclusionRules:
-          allOf:
-          - $ref: '#/components/schemas/CreateExclusionRulesRequest'
-          description: The exclusion rules for the plan.
-        issueSources:
-          description: The issue sources to include in the plan.
-          items:
-            $ref: '#/components/schemas/CreateIssueSourceRequest'
-          type: array
-          uniqueItems: true
-        leadAccountId:
-          description: The account ID of the plan lead.
-          type: string
-        name:
-          description: The plan name.
-          maxLength: 255
-          minLength: 1
-          type: string
-        permissions:
-          description: The permissions for the plan.
-          items:
-            $ref: '#/components/schemas/CreatePermissionRequest'
-          type: array
-          uniqueItems: true
-        scheduling:
-          allOf:
-          - $ref: '#/components/schemas/CreateSchedulingRequest'
-          description: The scheduling settings for the plan.
-      required:
-      - issueSources
-      - name
-      - scheduling
-      type: object
-    GetSchedulingResponse:
-      additionalProperties: false
-      properties:
-        dependencies:
-          description: The dependencies for the plan. This is "Sequential" or "Concurrent".
-          enum:
-          - Sequential
-          - Concurrent
-          type: string
-        endDate:
-          allOf:
-          - $ref: '#/components/schemas/GetDateFieldResponse'
-          description: The end date field for the plan.
-        estimation:
-          description: The estimation unit for the plan. This is "StoryPoints", "Days" or "Hours".
-          enum:
-          - StoryPoints
-          - Days
-          - Hours
-          type: string
-        inferredDates:
-          description: The inferred dates for the plan. This is "None", "SprintDates" or "ReleaseDates".
-          enum:
-          - None
-          - SprintDates
-          - ReleaseDates
-          type: string
-        startDate:
-          allOf:
-          - $ref: '#/components/schemas/GetDateFieldResponse'
-          description: The start date field for the plan.
-      required:
-      - dependencies
-      - endDate
-      - estimation
-      - inferredDates
-      - startDate
-      type: object
-    GetCrossProjectReleaseResponse:
-      additionalProperties: false
-      properties:
-        name:
-          description: The cross-project release name.
-          type: string
-        releaseIds:
-          description: The IDs of the releases included in the cross-project release.
-          items:
-            format: int64
-            type: integer
-          type: array
-          uniqueItems: true
+      - customFieldId
       type: object
     CreateSchedulingRequest:
       additionalProperties: false
@@ -811,154 +634,24 @@ components:
       required:
       - estimation
       type: object
-    DuplicatePlanRequest:
+    GetIssueSourceResponse:
       additionalProperties: false
       properties:
-        name:
-          description: The plan name.
-          type: string
-      required:
-      - name
-      type: object
-    CreateCustomFieldRequest:
-      additionalProperties: false
-      properties:
-        customFieldId:
-          description: The custom field ID.
-          format: int64
-          type: integer
-        filter:
-          description: Allows filtering issues based on their values for the custom field.
-          type: boolean
-      required:
-      - customFieldId
-      type: object
-    GetCustomFieldResponse:
-      additionalProperties: false
-      properties:
-        customFieldId:
-          description: The custom field ID.
-          format: int64
-          type: integer
-        filter:
-          description: Allows filtering issues based on their values for the custom field.
-          type: boolean
-      required:
-      - customFieldId
-      type: object
-    CreateCrossProjectReleaseRequest:
-      additionalProperties: false
-      properties:
-        name:
-          description: The cross-project release name.
-          type: string
-        releaseIds:
-          description: The IDs of the releases to include in the cross-project release.
-          items:
-            format: int64
-            type: integer
-          type: array
-          uniqueItems: true
-      required:
-      - name
-      type: object
-    CreateExclusionRulesRequest:
-      additionalProperties: false
-      properties:
-        issueIds:
-          description: The IDs of the issues to exclude from the plan.
-          items:
-            format: int64
-            type: integer
-          type: array
-          uniqueItems: true
-        issueTypeIds:
-          description: The IDs of the issue types to exclude from the plan.
-          items:
-            format: int64
-            type: integer
-          type: array
-          uniqueItems: true
-        numberOfDaysToShowCompletedIssues:
-          description: Issues completed this number of days ago will be excluded from the plan.
-          format: int32
-          type: integer
-        releaseIds:
-          description: The IDs of the releases to exclude from the plan.
-          items:
-            format: int64
-            type: integer
-          type: array
-          uniqueItems: true
-        workStatusCategoryIds:
-          description: The IDs of the work status categories to exclude from the plan.
-          items:
-            format: int64
-            type: integer
-          type: array
-          uniqueItems: true
-        workStatusIds:
-          description: The IDs of the work statuses to exclude from the plan.
-          items:
-            format: int64
-            type: integer
-          type: array
-          uniqueItems: true
-      type: object
-    CreatePermissionRequest:
-      additionalProperties: false
-      properties:
-        holder:
-          allOf:
-          - $ref: '#/components/schemas/CreatePermissionHolderRequest'
-          description: The permission holder.
         type:
-          description: The permission type. This must be "View" or "Edit".
+          description: The issue source type. This is "Board", "Project" or "Filter".
           enum:
-          - View
-          - Edit
+          - Board
+          - Project
+          - Filter
+          - Custom
           type: string
-      required:
-      - holder
-      - type
-      type: object
-    PageWithCursorGetPlanResponseForPage:
-      additionalProperties: false
-      properties:
-        cursor:
-          type: string
-        last:
-          type: boolean
-        nextPageCursor:
-          type: string
-        size:
-          format: int32
-          type: integer
-        total:
+        value:
+          description: The issue source value. This is a board ID if the type is "Board", a project ID if the type is "Project" or a filter ID if the type is "Filter".
           format: int64
           type: integer
-        values:
-          items:
-            $ref: '#/components/schemas/GetPlanResponseForPage'
-          type: array
-      type: object
-    CreateDateFieldRequest:
-      additionalProperties: false
-      properties:
-        dateCustomFieldId:
-          description: A date custom field ID. This is required if the type is "DateCustomField".
-          format: int64
-          type: integer
-        type:
-          description: The date field type. This must be "DueDate", "TargetStartDate", "TargetEndDate" or "DateCustomField".
-          enum:
-          - DueDate
-          - TargetStartDate
-          - TargetEndDate
-          - DateCustomField
-          type: string
       required:
       - type
+      - value
       type: object
     CreatePermissionHolderRequest:
       additionalProperties: false
@@ -975,6 +668,20 @@ components:
       required:
       - type
       - value
+      type: object
+    GetCrossProjectReleaseResponse:
+      additionalProperties: false
+      properties:
+        name:
+          description: The cross-project release name.
+          type: string
+        releaseIds:
+          description: The IDs of the releases included in the cross-project release.
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
       type: object
     GetExclusionRulesResponse:
       additionalProperties: false
@@ -1021,21 +728,14 @@ components:
       required:
       - numberOfDaysToShowCompletedIssues
       type: object
-    GetPermissionHolderResponse:
+    DuplicatePlanRequest:
       additionalProperties: false
       properties:
-        type:
-          description: The permission holder type. This is "Group" or "AccountId".
-          enum:
-          - Group
-          - AccountId
-          type: string
-        value:
-          description: The permission holder value. This is a group name if the type is "Group" or an account ID if the type is "AccountId".
+        name:
+          description: The plan name.
           type: string
       required:
-      - type
-      - value
+      - name
       type: object
     GetPlanResponse:
       additionalProperties: false
@@ -1093,6 +793,62 @@ components:
       - scheduling
       - status
       type: object
+    CreateExclusionRulesRequest:
+      additionalProperties: false
+      properties:
+        issueIds:
+          description: The IDs of the issues to exclude from the plan.
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+        issueTypeIds:
+          description: The IDs of the issue types to exclude from the plan.
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+        numberOfDaysToShowCompletedIssues:
+          description: Issues completed this number of days ago will be excluded from the plan.
+          format: int32
+          type: integer
+        releaseIds:
+          description: The IDs of the releases to exclude from the plan.
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+        workStatusCategoryIds:
+          description: The IDs of the work status categories to exclude from the plan.
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+        workStatusIds:
+          description: The IDs of the work statuses to exclude from the plan.
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+      type: object
+    CreateCustomFieldRequest:
+      additionalProperties: false
+      properties:
+        customFieldId:
+          description: The custom field ID.
+          format: int64
+          type: integer
+        filter:
+          description: Allows filtering issues based on their values for the custom field.
+          type: boolean
+      required:
+      - customFieldId
+      type: object
     GetPlanResponseForPage:
       additionalProperties: false
       properties:
@@ -1123,6 +879,250 @@ components:
       - name
       - scenarioId
       - status
+      type: object
+    ErrorCollection:
+      additionalProperties: false
+      description: Error messages from an operation.
+      properties:
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
+          format: int32
+          type: integer
+      type: object
+    CreateIssueSourceRequest:
+      additionalProperties: false
+      properties:
+        type:
+          description: The issue source type. This must be "Board", "Project" or "Filter".
+          enum:
+          - Board
+          - Project
+          - Filter
+          type: string
+        value:
+          description: The issue source value. This must be a board ID if the type is "Board", a project ID if the type is "Project" or a filter ID if the type is "Filter".
+          format: int64
+          type: integer
+      required:
+      - type
+      - value
+      type: object
+    GetPermissionHolderResponse:
+      additionalProperties: false
+      properties:
+        type:
+          description: The permission holder type. This is "Group" or "AccountId".
+          enum:
+          - Group
+          - AccountId
+          type: string
+        value:
+          description: The permission holder value. This is a group name if the type is "Group" or an account ID if the type is "AccountId".
+          type: string
+      required:
+      - type
+      - value
+      type: object
+    GetDateFieldResponse:
+      additionalProperties: false
+      properties:
+        dateCustomFieldId:
+          description: A date custom field ID. This is returned if the type is "DateCustomField".
+          format: int64
+          type: integer
+        type:
+          description: The date field type. This is "DueDate", "TargetStartDate", "TargetEndDate" or "DateCustomField".
+          enum:
+          - DueDate
+          - TargetStartDate
+          - TargetEndDate
+          - DateCustomField
+          type: string
+      required:
+      - type
+      type: object
+    CreatePermissionRequest:
+      additionalProperties: false
+      properties:
+        holder:
+          allOf:
+          - $ref: '#/components/schemas/CreatePermissionHolderRequest'
+          description: The permission holder.
+        type:
+          description: The permission type. This must be "View" or "Edit".
+          enum:
+          - View
+          - Edit
+          type: string
+      required:
+      - holder
+      - type
+      type: object
+    CreateDateFieldRequest:
+      additionalProperties: false
+      properties:
+        dateCustomFieldId:
+          description: A date custom field ID. This is required if the type is "DateCustomField".
+          format: int64
+          type: integer
+        type:
+          description: The date field type. This must be "DueDate", "TargetStartDate", "TargetEndDate" or "DateCustomField".
+          enum:
+          - DueDate
+          - TargetStartDate
+          - TargetEndDate
+          - DateCustomField
+          type: string
+      required:
+      - type
+      type: object
+    PageWithCursorGetPlanResponseForPage:
+      additionalProperties: false
+      properties:
+        cursor:
+          type: string
+        last:
+          type: boolean
+        nextPageCursor:
+          type: string
+        size:
+          format: int32
+          type: integer
+        total:
+          format: int64
+          type: integer
+        values:
+          items:
+            $ref: '#/components/schemas/GetPlanResponseForPage'
+          type: array
+      type: object
+    GetSchedulingResponse:
+      additionalProperties: false
+      properties:
+        dependencies:
+          description: The dependencies for the plan. This is "Sequential" or "Concurrent".
+          enum:
+          - Sequential
+          - Concurrent
+          type: string
+        endDate:
+          allOf:
+          - $ref: '#/components/schemas/GetDateFieldResponse'
+          description: The end date field for the plan.
+        estimation:
+          description: The estimation unit for the plan. This is "StoryPoints", "Days" or "Hours".
+          enum:
+          - StoryPoints
+          - Days
+          - Hours
+          type: string
+        inferredDates:
+          description: The inferred dates for the plan. This is "None", "SprintDates" or "ReleaseDates".
+          enum:
+          - None
+          - SprintDates
+          - ReleaseDates
+          type: string
+        startDate:
+          allOf:
+          - $ref: '#/components/schemas/GetDateFieldResponse'
+          description: The start date field for the plan.
+      required:
+      - dependencies
+      - endDate
+      - estimation
+      - inferredDates
+      - startDate
+      type: object
+    GetPermissionResponse:
+      additionalProperties: false
+      properties:
+        holder:
+          allOf:
+          - $ref: '#/components/schemas/GetPermissionHolderResponse'
+          description: The permission holder.
+        type:
+          description: The permission type. This is "View" or "Edit".
+          enum:
+          - View
+          - Edit
+          type: string
+      required:
+      - holder
+      - type
+      type: object
+    CreateCrossProjectReleaseRequest:
+      additionalProperties: false
+      properties:
+        name:
+          description: The cross-project release name.
+          type: string
+        releaseIds:
+          description: The IDs of the releases to include in the cross-project release.
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+      required:
+      - name
+      type: object
+    CreatePlanRequest:
+      additionalProperties: false
+      properties:
+        crossProjectReleases:
+          description: The cross-project releases to include in the plan.
+          items:
+            $ref: '#/components/schemas/CreateCrossProjectReleaseRequest'
+          type: array
+          uniqueItems: true
+        customFields:
+          description: The custom fields for the plan.
+          items:
+            $ref: '#/components/schemas/CreateCustomFieldRequest'
+          type: array
+          uniqueItems: true
+        exclusionRules:
+          allOf:
+          - $ref: '#/components/schemas/CreateExclusionRulesRequest'
+          description: The exclusion rules for the plan.
+        issueSources:
+          description: The issue sources to include in the plan.
+          items:
+            $ref: '#/components/schemas/CreateIssueSourceRequest'
+          type: array
+          uniqueItems: true
+        leadAccountId:
+          description: The account ID of the plan lead.
+          type: string
+        name:
+          description: The plan name.
+          maxLength: 255
+          minLength: 1
+          type: string
+        permissions:
+          description: The permissions for the plan.
+          items:
+            $ref: '#/components/schemas/CreatePermissionRequest'
+          type: array
+          uniqueItems: true
+        scheduling:
+          allOf:
+          - $ref: '#/components/schemas/CreateSchedulingRequest'
+          description: The scheduling settings for the plan.
+      required:
+      - issueSources
+      - name
+      - scheduling
       type: object
   securitySchemes:
     OAuth2:

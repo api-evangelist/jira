@@ -109,6 +109,64 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
+    AssetsWorkspaceDTO:
+      additionalProperties: false
+      description: Details of an Assets workspace ID.
+      properties:
+        workspaceId:
+          description: The workspace ID used as the identifier to access the Assets REST API.
+          type: string
+      type: object
+    InsightWorkspaceDTO:
+      additionalProperties: false
+      description: Details of an insight workspace ID.
+      properties:
+        workspaceId:
+          description: The workspace ID used as the identifier to access the Insight REST API.
+          type: string
+      type: object
+    I18nErrorMessage:
+      additionalProperties: false
+      properties:
+        i18nKey:
+          type: string
+        parameters:
+          items:
+            type: string
+          type: array
+      type: object
+    PagedDTOInsightWorkspaceDTO:
+      additionalProperties: false
+      properties:
+        _expands:
+          items:
+            type: string
+          type: array
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PagedLinkDTO'
+          description: List of the links relating to the page.
+        isLastPage:
+          description: Indicates if this is the last page of records (true) or not (false).
+          type: boolean
+        limit:
+          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
+          format: int32
+          type: integer
+        size:
+          description: Number of items returned in the page.
+          format: int32
+          type: integer
+        start:
+          description: Index of the first item returned in the page.
+          format: int32
+          type: integer
+        values:
+          description: Details of the items included in the page.
+          items:
+            $ref: '#/components/schemas/InsightWorkspaceDTO'
+          type: array
+      type: object
     PagedDTOAssetsWorkspaceDTO:
       additionalProperties: false
       properties:
@@ -163,48 +221,6 @@ components:
           format: uri
           type: string
       type: object
-    I18nErrorMessage:
-      additionalProperties: false
-      properties:
-        i18nKey:
-          type: string
-        parameters:
-          items:
-            type: string
-          type: array
-      type: object
-    PagedDTOInsightWorkspaceDTO:
-      additionalProperties: false
-      properties:
-        _expands:
-          items:
-            type: string
-          type: array
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/PagedLinkDTO'
-          description: List of the links relating to the page.
-        isLastPage:
-          description: Indicates if this is the last page of records (true) or not (false).
-          type: boolean
-        limit:
-          description: Number of items to be returned per page, up to the maximum set for these objects in the current implementation.
-          format: int32
-          type: integer
-        size:
-          description: Number of items returned in the page.
-          format: int32
-          type: integer
-        start:
-          description: Index of the first item returned in the page.
-          format: int32
-          type: integer
-        values:
-          description: Details of the items included in the page.
-          items:
-            $ref: '#/components/schemas/InsightWorkspaceDTO'
-          type: array
-      type: object
     ErrorResponse:
       additionalProperties: false
       properties:
@@ -212,22 +228,6 @@ components:
           type: string
         i18nErrorMessage:
           $ref: '#/components/schemas/I18nErrorMessage'
-      type: object
-    AssetsWorkspaceDTO:
-      additionalProperties: false
-      description: Details of an Assets workspace ID.
-      properties:
-        workspaceId:
-          description: The workspace ID used as the identifier to access the Assets REST API.
-          type: string
-      type: object
-    InsightWorkspaceDTO:
-      additionalProperties: false
-      description: Details of an insight workspace ID.
-      properties:
-        workspaceId:
-          description: The workspace ID used as the identifier to access the Insight REST API.
-          type: string
       type: object
   securitySchemes:
     OAuth2:

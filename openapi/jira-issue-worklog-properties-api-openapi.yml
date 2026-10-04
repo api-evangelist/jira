@@ -306,6 +306,16 @@ paths:
       x-atlassian-connect-scope: WRITE
 components:
   schemas:
+    EntityProperty:
+      additionalProperties: false
+      description: An entity property, for more information see [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).
+      properties:
+        key:
+          description: The key of the property. Required on create and update.
+          type: string
+        value:
+          description: The value of the property. Required on create and update.
+      type: object
     PropertyKeys:
       additionalProperties: false
       description: List of property keys.
@@ -316,16 +326,6 @@ components:
             $ref: '#/components/schemas/PropertyKey'
           readOnly: true
           type: array
-      type: object
-    EntityProperty:
-      additionalProperties: false
-      description: An entity property, for more information see [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).
-      properties:
-        key:
-          description: The key of the property. Required on create and update.
-          type: string
-        value:
-          description: The value of the property. Required on create and update.
       type: object
     PropertyKey:
       additionalProperties: false

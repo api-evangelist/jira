@@ -272,43 +272,17 @@ paths:
       x-atlassian-connect-scope: WRITE
 components:
   schemas:
-    Watchers:
+    BulkIssueIsWatching:
       additionalProperties: false
-      description: The details of watchers on an issue.
+      description: A container for the watch status of a list of issues.
       properties:
-        isWatching:
-          description: Whether the calling user is watching this issue.
+        issuesIsWatching:
+          additionalProperties:
+            readOnly: true
+            type: boolean
+          description: The map of issue ID to boolean watch status.
           readOnly: true
-          type: boolean
-        self:
-          description: The URL of these issue watcher details.
-          readOnly: true
-          type: string
-        watchCount:
-          description: The number of users watching this issue.
-          format: int32
-          readOnly: true
-          type: integer
-        watchers:
-          description: Details of the users watching this issue.
-          items:
-            $ref: '#/components/schemas/UserDetails'
-          readOnly: true
-          type: array
-      type: object
-      xml:
-        name: watchers
-    IssueList:
-      additionalProperties: false
-      description: A list of issue IDs.
-      properties:
-        issueIds:
-          description: The list of issue IDs.
-          items:
-            type: string
-          type: array
-      required:
-      - issueIds
+          type: object
       type: object
     UserDetails:
       additionalProperties: false
@@ -356,6 +330,44 @@ components:
           readOnly: true
           type: string
       type: object
+    Watchers:
+      additionalProperties: false
+      description: The details of watchers on an issue.
+      properties:
+        isWatching:
+          description: Whether the calling user is watching this issue.
+          readOnly: true
+          type: boolean
+        self:
+          description: The URL of these issue watcher details.
+          readOnly: true
+          type: string
+        watchCount:
+          description: The number of users watching this issue.
+          format: int32
+          readOnly: true
+          type: integer
+        watchers:
+          description: Details of the users watching this issue.
+          items:
+            $ref: '#/components/schemas/UserDetails'
+          readOnly: true
+          type: array
+      type: object
+      xml:
+        name: watchers
+    IssueList:
+      additionalProperties: false
+      description: A list of issue IDs.
+      properties:
+        issueIds:
+          description: The list of issue IDs.
+          items:
+            type: string
+          type: array
+      required:
+      - issueIds
+      type: object
     AvatarUrlsBean:
       additionalProperties: false
       properties:
@@ -375,18 +387,6 @@ components:
           description: The URL of the item's 48x48 pixel avatar.
           format: uri
           type: string
-      type: object
-    BulkIssueIsWatching:
-      additionalProperties: false
-      description: A container for the watch status of a list of issues.
-      properties:
-        issuesIsWatching:
-          additionalProperties:
-            readOnly: true
-            type: boolean
-          description: The map of issue ID to boolean watch status.
-          readOnly: true
-          type: object
       type: object
   securitySchemes:
     OAuth2:

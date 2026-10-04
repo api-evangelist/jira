@@ -165,6 +165,35 @@ components:
             type: string
           type: array
       type: object
+    CustomerCreateDTO:
+      additionalProperties: false
+      properties:
+        displayName:
+          description: Customer's name for display in the UI.
+          type: string
+        email:
+          description: Customer's email address.
+          type: string
+        fullName:
+          description: Deprecated, please use 'displayName'.
+          type: string
+      type: object
+    UserLinkDTO:
+      additionalProperties: false
+      properties:
+        avatarUrls:
+          additionalProperties:
+            type: string
+          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
+          type: object
+        jiraRest:
+          description: REST API URL for the customer.
+          format: uri
+          type: string
+        self:
+          format: uri
+          type: string
+      type: object
     UserDTO:
       additionalProperties: false
       properties:
@@ -194,19 +223,6 @@ components:
           description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
           type: string
       type: object
-    CustomerCreateDTO:
-      additionalProperties: false
-      properties:
-        displayName:
-          description: Customer's name for display in the UI.
-          type: string
-        email:
-          description: Customer's email address.
-          type: string
-        fullName:
-          description: Deprecated, please use 'displayName'.
-          type: string
-      type: object
     ErrorResponse:
       additionalProperties: false
       properties:
@@ -214,22 +230,6 @@ components:
           type: string
         i18nErrorMessage:
           $ref: '#/components/schemas/I18nErrorMessage'
-      type: object
-    UserLinkDTO:
-      additionalProperties: false
-      properties:
-        avatarUrls:
-          additionalProperties:
-            type: string
-          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
-          type: object
-        jiraRest:
-          description: REST API URL for the customer.
-          format: uri
-          type: string
-        self:
-          format: uri
-          type: string
       type: object
   securitySchemes:
     OAuth2:

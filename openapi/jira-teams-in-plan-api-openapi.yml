@@ -677,26 +677,6 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    PageWithCursorGetTeamResponseForPage:
-      additionalProperties: false
-      properties:
-        cursor:
-          type: string
-        last:
-          type: boolean
-        nextPageCursor:
-          type: string
-        size:
-          format: int32
-          type: integer
-        total:
-          format: int64
-          type: integer
-        values:
-          items:
-            $ref: '#/components/schemas/GetTeamResponseForPage'
-          type: array
-      type: object
     GetPlanOnlyTeamResponse:
       additionalProperties: false
       properties:
@@ -771,34 +751,6 @@ components:
       - name
       - planningStyle
       type: object
-    GetAtlassianTeamResponse:
-      additionalProperties: false
-      properties:
-        capacity:
-          description: The capacity for the Atlassian team.
-          format: double
-          type: number
-        id:
-          description: The Atlassian team ID.
-          type: string
-        issueSourceId:
-          description: The ID of the issue source for the Atlassian team.
-          format: int64
-          type: integer
-        planningStyle:
-          description: The planning style for the Atlassian team. This is "Scrum" or "Kanban".
-          enum:
-          - Scrum
-          - Kanban
-          type: string
-        sprintLength:
-          description: The sprint length for the Atlassian team.
-          format: int64
-          type: integer
-      required:
-      - id
-      - planningStyle
-      type: object
     AddAtlassianTeamRequest:
       additionalProperties: false
       properties:
@@ -815,6 +767,72 @@ components:
           type: integer
         planningStyle:
           description: The planning style for the Atlassian team. This must be "Scrum" or "Kanban".
+          enum:
+          - Scrum
+          - Kanban
+          type: string
+        sprintLength:
+          description: The sprint length for the Atlassian team.
+          format: int64
+          type: integer
+      required:
+      - id
+      - planningStyle
+      type: object
+    ErrorCollection:
+      additionalProperties: false
+      description: Error messages from an operation.
+      properties:
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
+          format: int32
+          type: integer
+      type: object
+    PageWithCursorGetTeamResponseForPage:
+      additionalProperties: false
+      properties:
+        cursor:
+          type: string
+        last:
+          type: boolean
+        nextPageCursor:
+          type: string
+        size:
+          format: int32
+          type: integer
+        total:
+          format: int64
+          type: integer
+        values:
+          items:
+            $ref: '#/components/schemas/GetTeamResponseForPage'
+          type: array
+      type: object
+    GetAtlassianTeamResponse:
+      additionalProperties: false
+      properties:
+        capacity:
+          description: The capacity for the Atlassian team.
+          format: double
+          type: number
+        id:
+          description: The Atlassian team ID.
+          type: string
+        issueSourceId:
+          description: The ID of the issue source for the Atlassian team.
+          format: int64
+          type: integer
+        planningStyle:
+          description: The planning style for the Atlassian team. This is "Scrum" or "Kanban".
           enum:
           - Scrum
           - Kanban
@@ -845,24 +863,6 @@ components:
       required:
       - id
       - type
-      type: object
-    ErrorCollection:
-      additionalProperties: false
-      description: Error messages from an operation.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        status:
-          format: int32
-          type: integer
       type: object
   securitySchemes:
     OAuth2:

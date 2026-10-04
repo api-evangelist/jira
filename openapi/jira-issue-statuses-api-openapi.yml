@@ -67,6 +67,15 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  parameters:
+    projectIdOrKey:
+      name: projectIdOrKey
+      in: path
+      description: The ID or key of the project (e.g., 10000 or PROJ).
+      required: true
+      schema:
+        type: string
+      example: PROJ
   schemas:
     IssueTypeWithStatus:
       type: object
@@ -138,15 +147,6 @@ components:
           example: https://www.example.com
         statusCategory:
           $ref: '#/components/schemas/StatusCategory'
-  parameters:
-    projectIdOrKey:
-      name: projectIdOrKey
-      in: path
-      description: The ID or key of the project (e.g., 10000 or PROJ).
-      required: true
-      schema:
-        type: string
-      example: PROJ
   securitySchemes:
     basicAuth:
       type: http

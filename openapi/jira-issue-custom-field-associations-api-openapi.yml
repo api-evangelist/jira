@@ -156,26 +156,6 @@ paths:
       x-atlassian-connect-scope: ADMIN
 components:
   schemas:
-    FieldAssociationsRequest:
-      additionalProperties: false
-      description: Details of field associations with projects.
-      properties:
-        associationContexts:
-          description: Contexts to associate/unassociate the fields with.
-          items:
-            $ref: '#/components/schemas/AssociationContextObject'
-          type: array
-          writeOnly: true
-        fields:
-          description: Fields to associate/unassociate with projects.
-          items:
-            $ref: '#/components/schemas/FieldIdentifierObject'
-          type: array
-          writeOnly: true
-      required:
-      - associationContexts
-      - fields
-      type: object
     AssociationContextObject:
       additionalProperties: false
       description: Field association for example PROJECT\_ID.
@@ -204,6 +184,26 @@ components:
       - type
       type: object
       writeOnly: true
+    FieldAssociationsRequest:
+      additionalProperties: false
+      description: Details of field associations with projects.
+      properties:
+        associationContexts:
+          description: Contexts to associate/unassociate the fields with.
+          items:
+            $ref: '#/components/schemas/AssociationContextObject'
+          type: array
+          writeOnly: true
+        fields:
+          description: Fields to associate/unassociate with projects.
+          items:
+            $ref: '#/components/schemas/FieldIdentifierObject'
+          type: array
+          writeOnly: true
+      required:
+      - associationContexts
+      - fields
+      type: object
   securitySchemes:
     OAuth2:
       description: OAuth2 scopes for Jira
