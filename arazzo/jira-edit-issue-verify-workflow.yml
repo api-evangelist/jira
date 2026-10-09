@@ -50,7 +50,7 @@ workflows:
     description: >-
       Capture the summary and labels before the edit so the change can be
       confirmed as a real difference.
-    operationId: getIssue
+    operationId: getRestApi3IssueByIssueIdOrKey
     parameters:
     - name: issueIdOrKey
       in: path
@@ -75,7 +75,7 @@ workflows:
       Edit the issue. The fields map sets the summary and description outright,
       while the update map adds a label additively so existing labels survive.
       This operation returns 204 with no body on success.
-    operationId: editIssue
+    operationId: putRestApi3IssueByIssueIdOrKey
     parameters:
     - name: issueIdOrKey
       in: path
@@ -111,7 +111,7 @@ workflows:
     description: >-
       Re-read the issue and confirm the stored summary now matches what was sent
       and that the update timestamp advanced.
-    operationId: getIssue
+    operationId: getRestApi3IssueByIssueIdOrKey
     parameters:
     - name: issueIdOrKey
       in: path

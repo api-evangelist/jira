@@ -50,7 +50,7 @@ workflows:
     description: >-
       Read the issue and capture its current status so the transition can be
       confirmed as an actual change rather than a no-op.
-    operationId: getIssue
+    operationId: getRestApi3IssueByIssueIdOrKey
     parameters:
     - name: issueIdOrKey
       in: path
@@ -113,7 +113,7 @@ workflows:
     description: >-
       Re-read the issue to confirm the workflow status changed and to capture the
       resolution recorded by the transition.
-    operationId: getIssue
+    operationId: getRestApi3IssueByIssueIdOrKey
     parameters:
     - name: issueIdOrKey
       in: path

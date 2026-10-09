@@ -1,4 +1,4 @@
-generated: '2026-09-16'
+generated: '2026-09-23'
 method: generated
 source: openapi/jira-announcement-banner-api-openapi.yml, openapi/jira-app-data-policies-api-openapi.yml,
   openapi/jira-app-migration-api-openapi.yml, openapi/jira-app-properties-api-openapi.yml, openapi/jira-application-roles-api-openapi.yml,
@@ -57,11 +57,11 @@ description: Recommended x-agentic-access execution contracts, classified heuris
 summary:
   operations: 814
   by_action_class:
-    connected: 382
-    acting: 432
+    connected: 398
+    acting: 416
   by_consequence:
-    read: 382
-    write: 421
+    read: 398
+    write: 405
     safety-critical: 4
     physical: 7
   human_in_the_loop_required: 4
@@ -156,18 +156,12 @@ operations:
   method: post
   operationId: MigrationResource.workflowRuleSearch_post
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/atlassian-connect/1/addons/{addonKey}/properties
   method: get
   operationId: AddonPropertiesResource.getAddonProperties_get
@@ -2860,20 +2854,14 @@ operations:
   method: post
   operationId: getCommentsByIds
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - read:jira-work
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/issue/{issueIdOrKey}/comment
   method: get
   operationId: getComments
@@ -2992,20 +2980,14 @@ operations:
   method: post
   operationId: getCustomFieldsConfigurations
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - manage:jira-configuration
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/app/field/{fieldIdOrKey}/context/configuration
   method: get
   operationId: getCustomFieldConfiguration
@@ -4758,18 +4740,12 @@ operations:
   method: post
   operationId: searchForIssuesUsingJqlPost
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/issue/picker
   method: get
   operationId: getIssuePickerResource
@@ -4816,38 +4792,26 @@ operations:
   method: post
   operationId: searchForIssuesUsingJqlPost
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - read:jira-work
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/search/approximate-count
   method: post
   operationId: countIssues
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - read:jira-work
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/search/jql
   method: get
   operationId: searchAndReconsileIssuesUsingJql
@@ -5770,20 +5734,14 @@ operations:
   method: post
   operationId: getIsWatchingIssueBulk
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - read:jira-work
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/issue/{issueIdOrKey}/watchers
   method: delete
   operationId: removeWatcher
@@ -6022,20 +5980,14 @@ operations:
   method: post
   operationId: getWorklogsForIds
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - read:jira-work
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/worklog/updated
   method: get
   operationId: getIdsOfWorklogsModifiedSince
@@ -6110,20 +6062,14 @@ operations:
   method: post
   operationId: getBulkChangelogs
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - read:jira-work
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/events
   method: get
   operationId: getEvents
@@ -6386,20 +6332,14 @@ operations:
   method: post
   operationId: getChangeLogsByIds
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - read:jira-work
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/issue/{issueIdOrKey}/editmeta
   method: get
   operationId: getEditIssueMeta
@@ -6607,20 +6547,14 @@ operations:
   method: post
   operationId: getAutoCompletePost
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - read:jira-work
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/jql/autocompletedata/suggestions
   method: get
   operationId: getFieldAutoCompleteForQueryString
@@ -6717,18 +6651,12 @@ operations:
   method: post
   operationId: getPrecomputationsByID
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/servicedeskapi/knowledgebase/article
   method: get
   operationId: getArticles
@@ -7411,36 +7339,24 @@ operations:
   method: post
   operationId: getBulkPermissions
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/permissions/project
   method: post
   operationId: getPermittedProjects
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - read:jira-work
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/plans/plan
   method: get
   operationId: getPlans
@@ -11803,20 +11719,14 @@ operations:
   method: post
   operationId: getRequiredWorkflowSchemeMappings
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - manage:jira-configuration
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/workflowscheme/{id}
   method: delete
   operationId: deleteWorkflowScheme
@@ -12137,20 +12047,14 @@ operations:
   method: post
   operationId: listWorkflowHistory
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - manage:jira-configuration
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /rest/api/3/workflow/search
   method: get
   operationId: getWorkflowsPaginated

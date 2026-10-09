@@ -51,7 +51,7 @@ workflows:
     description: >-
       Read the issue to confirm it is visible to the caller and to capture the
       summary and status that give the thread its context.
-    operationId: getIssue
+    operationId: getRestApi3IssueByIssueIdOrKey
     parameters:
     - name: issueIdOrKey
       in: path
@@ -71,7 +71,7 @@ workflows:
     description: >-
       Page the comment thread oldest-first, rendering bodies to HTML so the
       caller can mirror the thread without parsing Atlassian Document Format.
-    operationId: getComments
+    operationId: getRestApi3IssueByIssueIdOrKeyComment
     parameters:
     - name: issueIdOrKey
       in: path
@@ -98,7 +98,7 @@ workflows:
     description: >-
       Post the reply into the thread as an Atlassian Document Format document,
       optionally restricting it to a single project role.
-    operationId: addComment
+    operationId: postRestApi3IssueByIssueIdOrKeyComment
     parameters:
     - name: issueIdOrKey
       in: path

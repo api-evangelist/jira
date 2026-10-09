@@ -49,7 +49,7 @@ workflows:
       Run the JQL query with a thin field projection suitable for rendering a
       list. Query validation is set to warn so a soft query issue surfaces as a
       warning message rather than failing the whole report.
-    operationId: searchForIssuesUsingJql
+    operationId: getRestApi3Search
     parameters:
     - name: jql
       in: query
@@ -89,7 +89,7 @@ workflows:
     description: >-
       Read the first matched issue in full, expanding the changelog and rendered
       fields so the caller sees the issue's history alongside its current state.
-    operationId: getIssue
+    operationId: getRestApi3IssueByIssueIdOrKey
     parameters:
     - name: issueIdOrKey
       in: path
@@ -113,7 +113,7 @@ workflows:
     description: >-
       Retrieve the most recent comments on the drilled-into issue, newest first,
       to surface the current discussion alongside the report row.
-    operationId: getComments
+    operationId: getRestApi3IssueByIssueIdOrKeyComment
     parameters:
     - name: issueIdOrKey
       in: path

@@ -65,7 +65,7 @@ workflows:
     description: >-
       Read the target project and expand its issue types, confirming the project
       is visible to the caller before attempting a write.
-    operationId: getProject
+    operationId: getRestApi3ProjectByProjectIdOrKey
     parameters:
     - name: projectIdOrKey
       in: path
@@ -84,7 +84,7 @@ workflows:
     description: >-
       Retrieve the issue types available to the user so the supplied issue type
       name can be matched against a real type rather than guessed.
-    operationId: getIssueAllTypes
+    operationId: getRestApi3Issuetype
     successCriteria:
     - condition: $statusCode == 200
     outputs:
@@ -93,7 +93,7 @@ workflows:
     description: >-
       Retrieve the priority vocabulary of the instance so the supplied priority
       name resolves to a configured priority.
-    operationId: getPriorities
+    operationId: getRestApi3Priority
     successCriteria:
     - condition: $statusCode == 200
     outputs:
@@ -103,7 +103,7 @@ workflows:
       Create the issue in the resolved project. The description is sent as an
       Atlassian Document Format document, which REST API v3 requires for rich
       text fields.
-    operationId: createIssue
+    operationId: postRestApi3Issue
     parameters:
     - name: updateHistory
       in: query
@@ -138,7 +138,7 @@ workflows:
     description: >-
       Read the created issue back by its key to confirm the stored summary,
       status, and issue type match what was submitted.
-    operationId: getIssue
+    operationId: getRestApi3IssueByIssueIdOrKey
     parameters:
     - name: issueIdOrKey
       in: path

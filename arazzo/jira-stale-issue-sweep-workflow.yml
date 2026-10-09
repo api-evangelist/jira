@@ -57,7 +57,7 @@ workflows:
       Run the stale-issue JQL query via POST and take the first match. The query
       is validated strictly so a malformed query fails loudly instead of
       silently sweeping the wrong issues.
-    operationId: searchForIssuesUsingJqlPost
+    operationId: postRestApi3Search
     requestBody:
       contentType: application/json
       payload:
@@ -85,7 +85,7 @@ workflows:
     description: >-
       Leave an audit trail on the issue before it is closed, so the record of why
       it was swept survives the transition.
-    operationId: addComment
+    operationId: postRestApi3IssueByIssueIdOrKeyComment
     parameters:
     - name: issueIdOrKey
       in: path

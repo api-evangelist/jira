@@ -43,7 +43,7 @@ workflows:
     description: >-
       List the projects visible to the caller, expanding issue types and lead so
       the create-issue surface can scope issue types per project.
-    operationId: getAllProjects
+    operationId: getRestApi3Project
     parameters:
     - name: expand
       in: query
@@ -61,7 +61,7 @@ workflows:
     description: >-
       List every issue type available to the user across the instance, including
       whether each is a sub-task type and where it sits in the hierarchy.
-    operationId: getIssueAllTypes
+    operationId: getRestApi3Issuetype
     successCriteria:
     - condition: $statusCode == 200
     outputs:
@@ -72,7 +72,7 @@ workflows:
     description: >-
       List the priority scheme of the instance, which supplies the valid values
       for the priority field on an issue.
-    operationId: getPriorities
+    operationId: getRestApi3Priority
     successCriteria:
     - condition: $statusCode == 200
     outputs:

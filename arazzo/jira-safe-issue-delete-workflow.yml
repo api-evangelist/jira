@@ -44,7 +44,7 @@ workflows:
     description: >-
       Read the issue and its sub-tasks before destroying it, so the caller can
       record what was deleted and know whether the sub-task flag is required.
-    operationId: getIssue
+    operationId: getRestApi3IssueByIssueIdOrKey
     parameters:
     - name: issueIdOrKey
       in: path
@@ -69,7 +69,7 @@ workflows:
     description: >-
       Delete the inspected issue by the key returned from the read, with an
       explicit decision about its sub-tasks. Returns 204 with no body on success.
-    operationId: deleteIssue
+    operationId: deleteRestApi3IssueByIssueIdOrKey
     parameters:
     - name: issueIdOrKey
       in: path
