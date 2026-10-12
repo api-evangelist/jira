@@ -1,0 +1,550 @@
+generated: '2026-10-12'
+method: searched
+source:
+- https://zapier.com/apps/jira/integrations
+- https://composio.dev/toolkits/jira
+checked:
+- https://composio.dev/toolkits/jira
+- https://monid.ai/tools/jira
+- https://n8n.io/integrations/jira/
+- https://zapier.com/apps/jira/integrations
+summary: null
+marketplace_apps:
+- marketplace: zapier
+  channel: ipaas-listing
+  app: jira
+  url: https://zapier.com/apps/jira/integrations
+  external_url: https://www.atlassian.com/software/jira
+  partner_tier: SILVER
+  triggers:
+  - key: issue
+    label: New Issue
+  - key: issue_jql
+    label: New Issue (Via JQL)
+  - key: issue_type
+    label: New Issue Type
+  - key: priority
+    label: New Priority
+  - key: project
+    label: New Project
+  - key: updated_issue
+    label: Updated Issue
+  actions:
+  - key: add_comment
+    label: Add Comment to Issue
+  - key: add_issue_link
+    label: Link Issues
+  - key: add_watcher_to_issue
+    label: Add Watcher to Issue
+  - key: attach_file
+    label: Attach File to Issue
+  - key: create_issue_v2
+    label: Create Issue
+  - key: update_issue
+    label: Update Issue
+  - key: _zap_raw_request
+    label: API Request (Beta)
+  searches:
+  - key: find_issue
+    label: Find Issue
+  - key: find_issue_jql
+    label: Find Issue (Via JQL)
+  - key: find_user
+    label: Find User
+- marketplace: composio
+  channel: agent-gateway
+  app: jira
+  url: https://composio.dev/toolkits/jira
+  identity: action-prefix
+  actions:
+  - key: JIRA_ADD_ATTACHMENT
+  - key: JIRA_ADD_COMMENT
+  - key: JIRA_ADD_USERS_TO_PROJECT_ROLE
+  - key: JIRA_ADD_USER_TO_GROUP
+  - key: JIRA_ADD_WATCHER_TO_ISSUE
+  - key: JIRA_ADD_WORKLOG
+  - key: JIRA_ANALYSE_EXPRESSION
+  - key: JIRA_ASSIGN_ISSUE
+  - key: JIRA_BULK_CREATE_ISSUE
+  - key: JIRA_CHECK_PERMISSIONS
+  - key: JIRA_CREATE_GROUP
+  - key: JIRA_CREATE_ISSUE
+  - key: JIRA_CREATE_ISSUE_LINK
+  - key: JIRA_CREATE_JQL_AUTOCOMPLETEDATA
+  - key: JIRA_CREATE_PROJECT
+  - key: JIRA_CREATE_SPRINT
+  - key: JIRA_CREATE_VERSION
+  - key: JIRA_DELETE_COMMENT
+  - key: JIRA_DELETE_ISSUE
+  - key: JIRA_DELETE_VERSION
+  - key: JIRA_DELETE_WORKLOG
+  - key: JIRA_EDIT_ISSUE
+  - key: JIRA_EVALUATE_JIRA_EXPRESSION
+  - key: JIRA_FETCH_BULK_ISSUES
+  - key: JIRA_FIND_USERS2
+  - key: JIRA_FIND_USERS_FOR_PICKER
+  - key: JIRA_GET_ALL_GROUPS
+  - key: JIRA_GET_ALL_ISSUE_TYPE_SCHEMES
+  - key: JIRA_GET_ALL_PROJECTS
+  - key: JIRA_GET_ALL_STATUSES
+  - key: JIRA_GET_ALL_USERS
+  - key: JIRA_GET_ATTACHMENT
+  - key: JIRA_GET_ATTACHMENT_META
+  - key: JIRA_GET_COMMENT
+  - key: JIRA_GET_COMPONENTS
+  - key: JIRA_GET_CREATE_METADATA_ISSUE_TYPE_FIELDS
+  - key: JIRA_GET_CURRENT_USER
+  - key: JIRA_GET_DASHBOARDS
+  - key: JIRA_GET_FAVORITE_FILTERS
+  - key: JIRA_GET_FIELDS
+  - key: JIRA_GET_FIELDS_PAGINATED
+  - key: JIRA_GET_FILTER
+  - key: JIRA_GET_GROUP
+  - key: JIRA_GET_INFO
+  - key: JIRA_GET_ISSUE
+  - key: JIRA_GET_ISSUE_CREATE_METADATA
+  - key: JIRA_GET_ISSUE_EDIT_META
+  - key: JIRA_GET_ISSUE_EDIT_METADATA
+  - key: JIRA_GET_ISSUE_LINK_TYPES
+  - key: JIRA_GET_ISSUE_PICKER_SUGGESTIONS
+  - key: JIRA_GET_ISSUE_PROPERTY
+  - key: JIRA_GET_ISSUE_RESOLUTIONS
+  - key: JIRA_GET_ISSUE_TYPES
+  - key: JIRA_GET_ISSUE_WATCHERS
+  - key: JIRA_GET_JQL_AUTOCOMPLETEDATA
+  - key: JIRA_GET_JQL_AUTOCOMPLETEDATA_SUGGESTIONS
+  - key: JIRA_GET_MYPREFERENCES_LOCALE
+  - key: JIRA_GET_MY_PERMISSIONS
+  - key: JIRA_GET_PERMISSIONS
+  - key: JIRA_GET_PERMITTED_PROJECTS
+  - key: JIRA_GET_PROJECT
+  - key: JIRA_GET_PROJECT_ROLES
+  - key: JIRA_GET_PROJECT_TYPE
+  - key: JIRA_GET_PROJECT_VERSIONS
+  - key: JIRA_GET_RECENT_PROJECTS
+  - key: JIRA_GET_REMOTE_ISSUE_LINKS
+  - key: JIRA_GET_SERVER_INFO
+  - key: JIRA_GET_SERVICE_DESK_REQUEST_TYPE_FIELDS
+  - key: JIRA_GET_SYSTEM_AVATARS
+  - key: JIRA_GET_TRANSITIONS
+  - key: JIRA_GET_UNIVERSAL_AVATAR_TYPE_OWNER
+  - key: JIRA_GET_UNIVERSAL_AVATAR_VIEW_TYPE
+  - key: JIRA_GET_VIEW_TYPE_AVATAR
+  - key: JIRA_GET_VOTES
+  - key: JIRA_GET_WORKLOG
+  - key: JIRA_LIST_ALL_PROJECTS
+  - key: JIRA_LIST_BOARDS
+  - key: JIRA_LIST_COMMENTS
+  - key: JIRA_LIST_FILTERS
+  - key: JIRA_LIST_GROUPS_PICKER
+  - key: JIRA_LIST_ISSUE_COMMENTS
+  - key: JIRA_LIST_PROJECT_TYPES
+  - key: JIRA_LIST_SPRINTS
+  - key: JIRA_MOVE_ISSUE_TO_SPRINT
+  - key: JIRA_NEW_ISSUE_TRIGGER
+  - key: JIRA_NEW_PROJECT_TRIGGER
+  - key: JIRA_PARSE_JQL_QUERIES
+  - key: JIRA_REMOVE_USER_FROM_GROUP
+  - key: JIRA_REMOVE_USER_FROM_PROJECT_ROLE
+  - key: JIRA_REMOVE_WATCHER_FROM_ISSUE
+  - key: JIRA_SEARCH_APPROXIMATE_COUNT
+  - key: JIRA_SEARCH_DASHBOARDS
+  - key: JIRA_SEARCH_FOR_ISSUES_USING_JQL_GET
+  - key: JIRA_SEARCH_ISSUES
+  - key: JIRA_SEND_NOTIFICATION_FOR_ISSUE
+  - key: JIRA_TRANSITION_ISSUE
+  - key: JIRA_UPDATED_ISSUE_TRIGGER
+  - key: JIRA_UPDATE_COMMENT
+edges:
+- partner_name: Asana
+  partner: asana
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/asana
+  direction: third-party
+  category: Project Management
+  partner_url: http://asana.com/
+- partner_name: Todoist
+  partner: todoist
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/todoist
+  direction: third-party
+  category: Task Management
+  partner_url: https://todoist.com/
+- partner_name: ClickUp
+  partner: clickup
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/clickup
+  direction: third-party
+  category: Project Management
+  partner_url: https://clickup.com/zapier
+- partner_name: Typeform
+  partner: typeform
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/typeform
+  direction: third-party
+  category: Forms & Surveys
+  partner_url: https://www.typeform.com/signup?utm_medium=referral&utm_source=zapier&utm_campaign=zapier_integration&utm_content=marketplace
+- partner_name: Basecamp
+  partner: basecamp
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/basecamp
+  direction: third-party
+  category: Project Management
+  partner_url: https://basecamp.com/
+- partner_name: OmniFocus
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/omnifocus
+  direction: third-party
+  category: Task Management
+  partner_url: https://www.omnigroup.com/omnifocus
+- partner_name: Slack
+  partner: slack
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/slack
+  direction: third-party
+  category: Team Chat
+  partner_url: https://slack.com/
+- partner_name: Google Forms
+  partner: google-forms
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/google-forms
+  direction: third-party
+  category: Forms & Surveys
+  partner_url: http://google.com/
+- partner_name: HubSpot
+  partner: hubspot
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/hubspot
+  direction: third-party
+  category: Marketing Automation
+  partner_url: http://www.hubspot.com/
+- partner_name: Wrike
+  partner: wrike
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/wrike
+  direction: third-party
+  category: Project Management
+  partner_url: http://www.wrike.com/
+- partner_name: Things
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/things
+  direction: third-party
+  category: Task Management
+  partner_url: https://culturedcode.com/things/
+- partner_name: ConnectWise Manage
+  partner: null
+  partner_match: null
+  partner_candidate: skykick
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/connectwise-manage
+  direction: third-party
+  category: CRM (Customer Relationship Management)
+  partner_url: http://www.connectwise.com/
+- partner_name: Superhuman Docs
+  partner: superhuman
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/superhuman-docs
+  direction: third-party
+  category: Documents
+  partner_url: https://id.superhuman.com/signup
+- partner_name: Google Calendar
+  partner: google-calendar
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/google-calendar
+  direction: third-party
+  category: Calendar
+  partner_url: https://calendar.google.com/
+- partner_name: monday.com
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/monday
+  direction: third-party
+  category: Project Management
+  partner_url: https://monday.com/
+- partner_name: Notion
+  partner: notion
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/notion
+  direction: third-party
+  category: Task Management
+  partner_url: https://www.notion.so/
+- partner_name: Google Docs
+  partner: google-docs
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/google-docs
+  direction: third-party
+  category: Documents
+  partner_url: http://google.com/
+- partner_name: Trello
+  partner: trello
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/trello
+  direction: third-party
+  category: Project Management
+  partner_url: https://trello.com/
+- partner_name: Smartsheet
+  partner: smartsheet
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/smartsheet
+  direction: third-party
+  category: Spreadsheets
+  partner_url: https://www.smartsheet.com/
+- partner_name: Google Tasks
+  partner: google-tasks
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/google-tasks
+  direction: third-party
+  category: Google
+  partner_url: https://google.com/
+- partner_name: Intercom
+  partner: intercom
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/intercom
+  direction: third-party
+  category: Customer Support
+  partner_url: https://www.intercom.com/welcome-to-intercom?utm_source=external-website&utm_medium=partner&utm_campaign=20220503_all_oc_all_global_gl_all_all_par_extmktplc&utm_term=zapier
+- partner_name: Microsoft OneNote
+  partner: microsoft-onenote
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/microsoft-onenote
+  direction: third-party
+  category: Microsoft
+  partner_url: https://www.onenote.com/
+- partner_name: Ryver
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/ryver
+  direction: third-party
+  category: Team Collaboration
+  partner_url: http://www.rvyer.com/
+- partner_name: Pipedrive
+  partner: pipedrive
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/pipedrive
+  direction: third-party
+  category: CRM (Customer Relationship Management)
+  partner_url: https://pipedrive.com/
+- partner_name: Dropbox
+  partner: dropbox
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/dropbox
+  direction: third-party
+  category: File Management & Storage
+  partner_url: https://dropbox.com/
+- partner_name: Freshping
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/freshping
+  direction: third-party
+  category: Server Monitoring
+  partner_url: https://www.freshping.com/
+- partner_name: Jenkins
+  partner: jenkins
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/jenkins
+  direction: third-party
+  category: Developer Tools
+  partner_url: https://jenkins-ci.org/
+- partner_name: Kayako
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/kayako
+  direction: third-party
+  category: Customer Support
+  partner_url: https://www.kayako.com/
+- partner_name: Microsoft To Do
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/microsoft-todo
+  direction: third-party
+  category: Microsoft
+  partner_url: https://todo.microsoft.com/
+- partner_name: BambooHR
+  partner: bamboohr
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/bamboohr
+  direction: third-party
+  category: HR Talent & Recruitment
+  partner_url: https://www.bamboohr.com/lp/c-hr-saas-software/d/?utm_source=PT&utm_medium=MKP&utm_campaign=Zapi-TR-FreeTrialR-20181111-01&utm_content=blank&utm_term=blank
+templates:
+- title: Create Jira issues from new Google Forms responses
+  url: https://zapier.com/apps/google-forms/integrations/jira-software-server/11098/create-jira-issues-from-new-google-forms-responses
+  apps:
+  - google-forms
+  - jira-software-server
+- title: Add new GitHub issues to JIRA
+  url: https://zapier.com/apps/github/integrations/jira-software-server/2412/add-new-github-issues-to-jira
+  apps:
+  - github
+  - jira-software-server
+- title: Add new Email messages to JIRA as new issues
+  url: https://zapier.com/apps/email/integrations/jira-software-server/2411/add-new-email-messages-to-jira-as-new-issues
+  apps:
+  - email
+  - jira-software-server
+- title: Add new Typeform entries to JIRA as issues
+  url: https://zapier.com/apps/jira-software-server/integrations/typeform/2484/add-new-typeform-entries-to-jira-as-issues
+  apps:
+  - typeform
+  - jira-software-server
+- title: Add new JIRA issues as detailed events in Google Calendar
+  url: https://zapier.com/apps/google-calendar/integrations/jira-software-server/2489/add-new-jira-issues-as-detailed-events-in-google-calendar
+  apps:
+  - jira-software-server
+  - google-calendar
+- title: Create JIRA issues from new Slack reactions
+  url: https://zapier.com/apps/jira-software-server/integrations/slack/509376/create-jira-issues-from-new-slack-reactions
+  apps:
+  - slack
+  - jira-software-server
+- title: Create new JIRA issues from newly-caught webhooks
+  url: https://zapier.com/apps/jira-software-server/integrations/webhook/10645/create-new-jira-issues-from-newly-caught-webhooks
+  apps:
+  - webhook
+  - jira-software-server
+- title: Create Trello cards from new Jira issues
+  url: https://zapier.com/apps/jira-software-server/integrations/trello/1106/create-trello-cards-from-new-jira-issues
+  apps:
+  - jira-software-server
+  - trello
+- title: Get Slack notifications for new Jira issues
+  url: https://zapier.com/apps/jira-software-server/integrations/slack/1594/get-slack-notifications-for-new-jira-issues
+  apps:
+  - jira-software-server
+  - slack
+- title: Add new JIRA issues to Asana as tasks
+  url: https://zapier.com/apps/asana/integrations/jira-software-server/1308/add-new-jira-issues-to-asana-as-tasks
+  apps:
+  - jira-software-server
+  - asana
+- title: Create issues in Jira Software Server for new submissions in Jotform
+  url: https://zapier.com/apps/jira-software-server/integrations/jotform/255622682/create-issues-in-jira-software-server-for-new-submissions-in-jotform
+  apps:
+  - jotform
+  - jira-software-server
+- title: Create JIRA issues from new Salesforce cases
+  url: https://zapier.com/apps/jira-software-server/integrations/salesforce/1904/create-jira-issues-from-new-salesforce-cases
+  apps:
+  - salesforce
+  - jira-software-server
+template_total: 313
