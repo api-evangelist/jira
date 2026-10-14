@@ -208,7 +208,6 @@
   arazzo: null
 - slug: jira-monday-com
   label: monday.com
-  partner: monday-com
   partner_name: monday.com
   category: Project Management
   type: marketplace
@@ -216,7 +215,7 @@
   channel: ipaas-usage
   evidence: https://zapier.com/apps/jira/integrations/monday
   source: edge
-  status: pending-generation
+  status: pending-partner-spec
   arazzo: null
 - slug: jira-notion
   label: Notion
@@ -361,7 +360,6 @@
   arazzo: null
 - slug: jira-microsoft-to-do
   label: Microsoft To Do
-  partner: microsoft-to-do
   partner_name: Microsoft To Do
   category: Microsoft
   type: marketplace
@@ -369,7 +367,7 @@
   channel: ipaas-usage
   evidence: https://zapier.com/apps/jira/integrations/microsoft-todo
   source: edge
-  status: pending-generation
+  status: pending-partner-spec
   arazzo: null
 - slug: jira-bamboohr
   label: BambooHR
@@ -382,4 +380,16 @@
   evidence: https://zapier.com/apps/jira/integrations/bamboohr
   source: edge
   status: pending-generation
+  arazzo: null
+- slug: jira-hightouch
+  label: Hightouch
+  partner: hightouch
+  partner_name: Hightouch
+  type: coverage
+  marketplace: coverage
+  channel: partner-built
+  evidence: https://hightouch.com/docs/destinations/jira
+  source: edge
+  relationship: connector-coverage
+  status: not-a-workflow
   arazzo: null
