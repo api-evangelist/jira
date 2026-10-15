@@ -433,7 +433,7 @@
     - jira-service-management
     - jira-service-management-alert-ca
     - jira-software-server
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: jira-n8n
   label: n8n
@@ -460,7 +460,7 @@
     builder: n8n (built-in node)
     other_nodes:
     - Jira
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: jira-pipedream
   label: Pipedream
@@ -486,5 +486,5 @@
     actions: true
     sources: true
     builder: Pipedream repo (component)
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
