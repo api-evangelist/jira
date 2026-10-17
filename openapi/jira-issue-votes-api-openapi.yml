@@ -185,54 +185,34 @@ paths:
       x-atlassian-connect-scope: WRITE
 components:
   schemas:
-    ListWrapperCallbackGroupName:
+    ListWrapperCallbackApplicationRole:
       additionalProperties: false
       type: object
-    Votes:
+    SimpleListWrapperGroupName:
       additionalProperties: false
-      description: The details of votes on an issue.
       properties:
-        hasVoted:
-          description: Whether the user making this request has voted on the issue.
-          readOnly: true
-          type: boolean
-        self:
-          description: The URL of these issue vote details.
-          format: uri
-          readOnly: true
-          type: string
-        voters:
-          description: List of the users who have voted on this issue. An empty list is returned when the calling user doesn't have the *View voters and watchers* project permission.
+        callback:
+          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
+        items:
           items:
-            $ref: '#/components/schemas/User'
-          readOnly: true
+            $ref: '#/components/schemas/GroupName'
           type: array
-        votes:
-          description: The number of votes on the issue.
-          format: int64
-          readOnly: true
+        max-results:
+          format: int32
           type: integer
+          xml:
+            attribute: true
+            name: max-results
+        pagingCallback:
+          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
+        size:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
       type: object
-    AvatarUrlsBean:
-      additionalProperties: false
-      properties:
-        16x16:
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
-          type: string
-        24x24:
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
-          type: string
-        32x32:
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-          type: string
-        48x48:
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
-          type: string
-      type: object
+      xml:
+        name: list
     GroupName:
       additionalProperties: false
       description: Details about a group.
@@ -251,34 +231,6 @@ components:
           readOnly: true
           type: string
       type: object
-    ListWrapperCallbackApplicationRole:
-      additionalProperties: false
-      type: object
-    SimpleListWrapperApplicationRole:
-      additionalProperties: false
-      properties:
-        callback:
-          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
-        items:
-          items:
-            $ref: '#/components/schemas/ApplicationRole'
-          type: array
-        max-results:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-            name: max-results
-        pagingCallback:
-          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
-        size:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-      type: object
-      xml:
-        name: list
     User:
       additionalProperties: false
       description: "A user with details as permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
@@ -359,6 +311,54 @@ components:
       type: object
       xml:
         name: user
+    SimpleListWrapperApplicationRole:
+      additionalProperties: false
+      properties:
+        callback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        items:
+          items:
+            $ref: '#/components/schemas/ApplicationRole'
+          type: array
+        max-results:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+            name: max-results
+        pagingCallback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        size:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+      type: object
+      xml:
+        name: list
+    ListWrapperCallbackGroupName:
+      additionalProperties: false
+      type: object
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+          type: string
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
+      type: object
     ApplicationRole:
       additionalProperties: false
       description: Details of an application role.
@@ -418,31 +418,31 @@ components:
           description: The [type of users](https://confluence.atlassian.com/x/lRW3Ng) being counted against your license.
           type: string
       type: object
-    SimpleListWrapperGroupName:
+    Votes:
       additionalProperties: false
+      description: The details of votes on an issue.
       properties:
-        callback:
-          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
-        items:
+        hasVoted:
+          description: Whether the user making this request has voted on the issue.
+          readOnly: true
+          type: boolean
+        self:
+          description: The URL of these issue vote details.
+          format: uri
+          readOnly: true
+          type: string
+        voters:
+          description: List of the users who have voted on this issue. An empty list is returned when the calling user doesn't have the *View voters and watchers* project permission.
           items:
-            $ref: '#/components/schemas/GroupName'
+            $ref: '#/components/schemas/User'
+          readOnly: true
           type: array
-        max-results:
-          format: int32
+        votes:
+          description: The number of votes on the issue.
+          format: int64
+          readOnly: true
           type: integer
-          xml:
-            attribute: true
-            name: max-results
-        pagingCallback:
-          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
-        size:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
       type: object
-      xml:
-        name: list
   securitySchemes:
     OAuth2:
       description: OAuth2 scopes for Jira

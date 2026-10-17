@@ -596,37 +596,30 @@ paths:
       x-atlassian-connect-scope: ADMIN
 components:
   schemas:
-    BulkCustomFieldOptionUpdateRequest:
+    OrderOfCustomFieldOptions:
       additionalProperties: false
-      description: Details of the options to update for a custom field.
+      description: An ordered list of custom field option IDs and information on where to move them.
       properties:
-        options:
-          description: Details of the options to update.
+        after:
+          description: The ID of the custom field option or cascading option to place the moved options after. Required if `position` isn't provided.
+          type: string
+          writeOnly: true
+        customFieldOptionIds:
+          description: A list of IDs of custom field options to move. The order of the custom field option IDs in the list is the order they are given after the move. The list must contain custom field options or cascading options, but not both.
           items:
-            $ref: '#/components/schemas/CustomFieldOptionUpdate'
+            type: string
+            writeOnly: true
           type: array
-      type: object
-      writeOnly: true
-    CustomFieldContextOption:
-      additionalProperties: false
-      description: Details of the custom field options for a context.
-      properties:
-        disabled:
-          description: Whether the option is disabled.
-          type: boolean
-        id:
-          description: The ID of the custom field option.
+          writeOnly: true
+        position:
+          description: The position the custom field options should be moved to. Required if `after` isn't provided.
+          enum:
+          - First
+          - Last
           type: string
-        optionId:
-          description: For cascading options, the ID of the custom field option containing the cascading option.
-          type: string
-        value:
-          description: The value of the custom field option.
-          type: string
+          writeOnly: true
       required:
-      - disabled
-      - id
-      - value
+      - customFieldOptionIds
       type: object
     TaskProgressBeanRemoveOptionFromIssuesResult:
       additionalProperties: false
@@ -698,17 +691,66 @@ components:
       - submitted
       - submittedBy
       type: object
-    BulkCustomFieldOptionCreateRequest:
+    CustomFieldOptionCreate:
       additionalProperties: false
-      description: Details of the options to create for a custom field.
+      description: Details of a custom field option to create.
+      properties:
+        disabled:
+          description: Whether the option is disabled.
+          type: boolean
+        optionId:
+          description: For cascading options, the ID of a parent option.
+          type: string
+        value:
+          description: The value of the custom field option.
+          type: string
+      required:
+      - value
+      type: object
+    CustomFieldOption:
+      additionalProperties: false
+      description: Details of a custom option for a field.
+      properties:
+        self:
+          description: The URL of these custom field option details.
+          format: uri
+          readOnly: true
+          type: string
+        value:
+          description: The value of the custom field option.
+          readOnly: true
+          type: string
+      type: object
+      xml:
+        name: customFieldOption
+    BulkCustomFieldOptionUpdateRequest:
+      additionalProperties: false
+      description: Details of the options to update for a custom field.
       properties:
         options:
-          description: Details of options to create.
+          description: Details of the options to update.
           items:
-            $ref: '#/components/schemas/CustomFieldOptionCreate'
+            $ref: '#/components/schemas/CustomFieldOptionUpdate'
           type: array
       type: object
       writeOnly: true
+    SimpleErrorCollection:
+      additionalProperties: false
+      properties:
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
+          items:
+            type: string
+          type: array
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        httpStatusCode:
+          format: int32
+          type: integer
+      type: object
     PageBeanCustomFieldContextOption:
       additionalProperties: false
       description: A page of items.
@@ -749,57 +791,63 @@ components:
           readOnly: true
           type: array
       type: object
-    OrderOfCustomFieldOptions:
-      additionalProperties: false
-      description: An ordered list of custom field option IDs and information on where to move them.
-      properties:
-        after:
-          description: The ID of the custom field option or cascading option to place the moved options after. Required if `position` isn't provided.
-          type: string
-          writeOnly: true
-        customFieldOptionIds:
-          description: A list of IDs of custom field options to move. The order of the custom field option IDs in the list is the order they are given after the move. The list must contain custom field options or cascading options, but not both.
-          items:
-            type: string
-            writeOnly: true
-          type: array
-          writeOnly: true
-        position:
-          description: The position the custom field options should be moved to. Required if `after` isn't provided.
-          enum:
-          - First
-          - Last
-          type: string
-          writeOnly: true
-      required:
-      - customFieldOptionIds
-      type: object
-    SimpleErrorCollection:
-      additionalProperties: false
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        httpStatusCode:
-          format: int32
-          type: integer
-      type: object
-    CustomFieldUpdatedContextOptionsList:
+    CustomFieldCreatedContextOptionsList:
       additionalProperties: false
       description: A list of custom field options for a context.
       properties:
         options:
-          description: The updated custom field options.
+          description: The created custom field options.
           items:
-            $ref: '#/components/schemas/CustomFieldOptionUpdate'
+            $ref: '#/components/schemas/CustomFieldContextOption'
           type: array
+      type: object
+    BulkCustomFieldOptionCreateRequest:
+      additionalProperties: false
+      description: Details of the options to create for a custom field.
+      properties:
+        options:
+          description: Details of options to create.
+          items:
+            $ref: '#/components/schemas/CustomFieldOptionCreate'
+          type: array
+      type: object
+      writeOnly: true
+    CustomFieldContextOption:
+      additionalProperties: false
+      description: Details of the custom field options for a context.
+      properties:
+        disabled:
+          description: Whether the option is disabled.
+          type: boolean
+        id:
+          description: The ID of the custom field option.
+          type: string
+        optionId:
+          description: For cascading options, the ID of the custom field option containing the cascading option.
+          type: string
+        value:
+          description: The value of the custom field option.
+          type: string
+      required:
+      - disabled
+      - id
+      - value
+      type: object
+    CustomFieldOptionUpdate:
+      additionalProperties: false
+      description: Details of a custom field option for a context.
+      properties:
+        disabled:
+          description: Whether the option is disabled.
+          type: boolean
+        id:
+          description: The ID of the custom field option.
+          type: string
+        value:
+          description: The value of the custom field option.
+          type: string
+      required:
+      - id
       type: object
     RemoveOptionFromIssuesResult:
       additionalProperties: false
@@ -821,62 +869,14 @@ components:
             type: integer
           type: array
       type: object
-    CustomFieldOption:
-      additionalProperties: false
-      description: Details of a custom option for a field.
-      properties:
-        self:
-          description: The URL of these custom field option details.
-          format: uri
-          readOnly: true
-          type: string
-        value:
-          description: The value of the custom field option.
-          readOnly: true
-          type: string
-      type: object
-      xml:
-        name: customFieldOption
-    CustomFieldOptionCreate:
-      additionalProperties: false
-      description: Details of a custom field option to create.
-      properties:
-        disabled:
-          description: Whether the option is disabled.
-          type: boolean
-        optionId:
-          description: For cascading options, the ID of a parent option.
-          type: string
-        value:
-          description: The value of the custom field option.
-          type: string
-      required:
-      - value
-      type: object
-    CustomFieldOptionUpdate:
-      additionalProperties: false
-      description: Details of a custom field option for a context.
-      properties:
-        disabled:
-          description: Whether the option is disabled.
-          type: boolean
-        id:
-          description: The ID of the custom field option.
-          type: string
-        value:
-          description: The value of the custom field option.
-          type: string
-      required:
-      - id
-      type: object
-    CustomFieldCreatedContextOptionsList:
+    CustomFieldUpdatedContextOptionsList:
       additionalProperties: false
       description: A list of custom field options for a context.
       properties:
         options:
-          description: The created custom field options.
+          description: The updated custom field options.
           items:
-            $ref: '#/components/schemas/CustomFieldContextOption'
+            $ref: '#/components/schemas/CustomFieldOptionUpdate'
           type: array
       type: object
   securitySchemes:

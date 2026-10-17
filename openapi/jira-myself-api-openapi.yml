@@ -357,29 +357,39 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
-    ListWrapperCallbackGroupName:
+    Locale:
       additionalProperties: false
+      description: Details of a locale.
+      properties:
+        locale:
+          description: 'The locale code. The Java the locale format is used: a two character language code (ISO 639), an underscore, and two letter country code (ISO 3166). For example, en\_US represents a locale of English (United States). Required on create.'
+          type: string
       type: object
-    AvatarUrlsBean:
+    SimpleListWrapperGroupName:
       additionalProperties: false
       properties:
-        16x16:
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
-          type: string
-        24x24:
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
-          type: string
-        32x32:
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-          type: string
-        48x48:
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
-          type: string
+        callback:
+          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
+        items:
+          items:
+            $ref: '#/components/schemas/GroupName'
+          type: array
+        max-results:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+            name: max-results
+        pagingCallback:
+          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
+        size:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
       type: object
+      xml:
+        name: list
     GroupName:
       additionalProperties: false
       description: Details about a group.
@@ -397,17 +407,6 @@ components:
           format: uri
           readOnly: true
           type: string
-      type: object
-    Locale:
-      additionalProperties: false
-      description: Details of a locale.
-      properties:
-        locale:
-          description: 'The locale code. The Java the locale format is used: a two character language code (ISO 639), an underscore, and two letter country code (ISO 3166). For example, en\_US represents a locale of English (United States). Required on create.'
-          type: string
-      type: object
-    ListWrapperCallbackApplicationRole:
-      additionalProperties: false
       type: object
     SimpleListWrapperApplicationRole:
       additionalProperties: false
@@ -514,6 +513,29 @@ components:
       type: object
       xml:
         name: user
+    ListWrapperCallbackGroupName:
+      additionalProperties: false
+      type: object
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+          type: string
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
+      type: object
     ApplicationRole:
       additionalProperties: false
       description: Details of an application role.
@@ -573,31 +595,9 @@ components:
           description: The [type of users](https://confluence.atlassian.com/x/lRW3Ng) being counted against your license.
           type: string
       type: object
-    SimpleListWrapperGroupName:
+    ListWrapperCallbackApplicationRole:
       additionalProperties: false
-      properties:
-        callback:
-          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
-        items:
-          items:
-            $ref: '#/components/schemas/GroupName'
-          type: array
-        max-results:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-            name: max-results
-        pagingCallback:
-          $ref: '#/components/schemas/ListWrapperCallbackGroupName'
-        size:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
       type: object
-      xml:
-        name: list
   securitySchemes:
     OAuth2:
       description: OAuth2 scopes for Jira

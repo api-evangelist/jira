@@ -507,27 +507,82 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    ReorderIssueResolutionsRequest:
+    Resolution:
       additionalProperties: false
-      description: Change the order of issue resolutions.
+      description: Details of an issue resolution.
       properties:
-        after:
-          description: The ID of the resolution. Required if `position` isn't provided.
+        description:
+          description: The description of the issue resolution.
           type: string
-          writeOnly: true
-        ids:
-          description: The list of resolution IDs to be reordered. Cannot contain duplicates nor after ID.
+        id:
+          description: The ID of the issue resolution.
+          type: string
+        name:
+          description: The name of the issue resolution.
+          type: string
+        self:
+          description: The URL of the issue resolution.
+          format: uri
+          type: string
+      type: object
+      xml:
+        name: resolution
+    ErrorCollection:
+      additionalProperties: false
+      description: Error messages from an operation.
+      properties:
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
           items:
             type: string
-            writeOnly: true
           type: array
-          writeOnly: true
-        position:
-          description: The position for issue resolutions to be moved to. Required if `after` isn't provided.
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
+          format: int32
+          type: integer
+      type: object
+    ResolutionId:
+      additionalProperties: true
+      description: The ID of an issue resolution.
+      properties:
+        id:
+          description: The ID of the issue resolution.
+          readOnly: true
+          type: string
+      required:
+      - id
+      type: object
+    SetDefaultResolutionRequest:
+      additionalProperties: false
+      description: The new default issue resolution.
+      properties:
+        id:
+          description: The ID of the new default issue resolution. Must be an existing ID or null. Setting this to null erases the default resolution setting.
           type: string
           writeOnly: true
       required:
-      - ids
+      - id
+      type: object
+    CreateResolutionDetails:
+      additionalProperties: true
+      description: Details of an issue resolution.
+      properties:
+        description:
+          description: The description of the resolution.
+          maxLength: 255
+          type: string
+          writeOnly: true
+        name:
+          description: The name of the resolution. Must be unique (case-insensitive).
+          maxLength: 60
+          type: string
+          writeOnly: true
+      required:
+      - name
       type: object
     TaskProgressBeanObject:
       additionalProperties: false
@@ -597,86 +652,27 @@ components:
       - submitted
       - submittedBy
       type: object
-    CreateResolutionDetails:
-      additionalProperties: true
-      description: Details of an issue resolution.
+    ReorderIssueResolutionsRequest:
+      additionalProperties: false
+      description: Change the order of issue resolutions.
       properties:
-        description:
-          description: The description of the resolution.
-          maxLength: 255
+        after:
+          description: The ID of the resolution. Required if `position` isn't provided.
           type: string
           writeOnly: true
-        name:
-          description: The name of the resolution. Must be unique (case-insensitive).
-          maxLength: 60
+        ids:
+          description: The list of resolution IDs to be reordered. Cannot contain duplicates nor after ID.
+          items:
+            type: string
+            writeOnly: true
+          type: array
+          writeOnly: true
+        position:
+          description: The position for issue resolutions to be moved to. Required if `after` isn't provided.
           type: string
           writeOnly: true
       required:
-      - name
-      type: object
-    SetDefaultResolutionRequest:
-      additionalProperties: false
-      description: The new default issue resolution.
-      properties:
-        id:
-          description: The ID of the new default issue resolution. Must be an existing ID or null. Setting this to null erases the default resolution setting.
-          type: string
-          writeOnly: true
-      required:
-      - id
-      type: object
-    ResolutionJsonBean:
-      additionalProperties: false
-      properties:
-        default:
-          type: boolean
-        description:
-          type: string
-        iconUrl:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        self:
-          type: string
-      type: object
-    Resolution:
-      additionalProperties: false
-      description: Details of an issue resolution.
-      properties:
-        description:
-          description: The description of the issue resolution.
-          type: string
-        id:
-          description: The ID of the issue resolution.
-          type: string
-        name:
-          description: The name of the issue resolution.
-          type: string
-        self:
-          description: The URL of the issue resolution.
-          format: uri
-          type: string
-      type: object
-      xml:
-        name: resolution
-    UpdateResolutionDetails:
-      additionalProperties: true
-      description: Details of an issue resolution.
-      properties:
-        description:
-          description: The description of the resolution.
-          maxLength: 255
-          type: string
-          writeOnly: true
-        name:
-          description: The name of the resolution. Must be unique.
-          maxLength: 60
-          type: string
-          writeOnly: true
-      required:
-      - name
+      - ids
       type: object
     PageBeanResolutionJsonBean:
       additionalProperties: false
@@ -718,34 +714,38 @@ components:
           readOnly: true
           type: array
       type: object
-    ErrorCollection:
-      additionalProperties: false
-      description: Error messages from an operation.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        status:
-          format: int32
-          type: integer
-      type: object
-    ResolutionId:
+    UpdateResolutionDetails:
       additionalProperties: true
-      description: The ID of an issue resolution.
+      description: Details of an issue resolution.
       properties:
-        id:
-          description: The ID of the issue resolution.
-          readOnly: true
+        description:
+          description: The description of the resolution.
+          maxLength: 255
           type: string
+          writeOnly: true
+        name:
+          description: The name of the resolution. Must be unique.
+          maxLength: 60
+          type: string
+          writeOnly: true
       required:
-      - id
+      - name
+      type: object
+    ResolutionJsonBean:
+      additionalProperties: false
+      properties:
+        default:
+          type: boolean
+        description:
+          type: string
+        iconUrl:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        self:
+          type: string
       type: object
   securitySchemes:
     OAuth2:

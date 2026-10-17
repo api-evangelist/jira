@@ -317,25 +317,6 @@ paths:
       x-atlassian-connect-scope: ADMIN
 components:
   schemas:
-    ContextualConfiguration:
-      additionalProperties: false
-      description: Details of the contextual configuration for a custom field.
-      properties:
-        configuration:
-          description: The field configuration.
-        fieldContextId:
-          description: The ID of the field context the configuration is associated with.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the configuration.
-          type: string
-        schema:
-          description: The field value schema.
-      required:
-      - fieldContextId
-      - id
-      type: object
     BulkContextualConfiguration:
       additionalProperties: false
       description: Details of the contextual configuration for a custom field.
@@ -415,6 +396,20 @@ components:
           readOnly: true
           type: array
       type: object
+    ConfigurationsListParameters:
+      additionalProperties: false
+      description: List of custom fields identifiers which will be used to filter configurations
+      properties:
+        fieldIdsOrKeys:
+          description: List of IDs or keys of the custom fields. It can be a mix of IDs and keys in the same query.
+          items:
+            type: string
+          minItems: 1
+          type: array
+      required:
+      - fieldIdsOrKeys
+      type: object
+      writeOnly: true
     PageBeanContextualConfiguration:
       additionalProperties: false
       description: A page of items.
@@ -455,20 +450,25 @@ components:
           readOnly: true
           type: array
       type: object
-    ConfigurationsListParameters:
+    ContextualConfiguration:
       additionalProperties: false
-      description: List of custom fields identifiers which will be used to filter configurations
+      description: Details of the contextual configuration for a custom field.
       properties:
-        fieldIdsOrKeys:
-          description: List of IDs or keys of the custom fields. It can be a mix of IDs and keys in the same query.
-          items:
-            type: string
-          minItems: 1
-          type: array
+        configuration:
+          description: The field configuration.
+        fieldContextId:
+          description: The ID of the field context the configuration is associated with.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the configuration.
+          type: string
+        schema:
+          description: The field value schema.
       required:
-      - fieldIdsOrKeys
+      - fieldContextId
+      - id
       type: object
-      writeOnly: true
   securitySchemes:
     OAuth2:
       description: OAuth2 scopes for Jira

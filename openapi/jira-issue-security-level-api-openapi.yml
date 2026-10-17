@@ -157,26 +157,6 @@ paths:
       x-atlassian-connect-scope: PROJECT_ADMIN
 components:
   schemas:
-    PermissionHolder:
-      additionalProperties: false
-      description: Details of a user, group, field, or project role that holds a permission. See [Holder object](../api-group-permission-schemes/#holder-object) in *Get all permission schemes* for more information.
-      properties:
-        expand:
-          description: Expand options that include additional permission holder details in the response.
-          readOnly: true
-          type: string
-        parameter:
-          description: As a group's name can change, use of `value` is recommended. The identifier associated withthe `type` value that defines the holder of the permission.
-          type: string
-        type:
-          description: The type of permission holder.
-          type: string
-        value:
-          description: The identifier associated with the `type` value that defines the holder of the permission.
-          type: string
-      required:
-      - type
-      type: object
     IssueSecurityLevelMember:
       additionalProperties: false
       description: Issue security level member.
@@ -197,6 +177,55 @@ components:
       - holder
       - id
       - issueSecurityLevelId
+      type: object
+    PermissionHolder:
+      additionalProperties: false
+      description: Details of a user, group, field, or project role that holds a permission. See [Holder object](../api-group-permission-schemes/#holder-object) in *Get all permission schemes* for more information.
+      properties:
+        expand:
+          description: Expand options that include additional permission holder details in the response.
+          readOnly: true
+          type: string
+        parameter:
+          description: As a group's name can change, use of `value` is recommended. The identifier associated withthe `type` value that defines the holder of the permission.
+          type: string
+        type:
+          description: The type of permission holder.
+          type: string
+        value:
+          description: The identifier associated with the `type` value that defines the holder of the permission.
+          type: string
+      required:
+      - type
+      type: object
+    SecurityLevel:
+      additionalProperties: false
+      description: Details of an issue level security item.
+      properties:
+        description:
+          description: The description of the issue level security item.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the issue level security item.
+          readOnly: true
+          type: string
+        isDefault:
+          description: Whether the issue level security item is the default.
+          readOnly: true
+          type: boolean
+        issueSecuritySchemeId:
+          description: The ID of the issue level security scheme.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the issue level security item.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the issue level security item.
+          readOnly: true
+          type: string
       type: object
     PageBeanIssueSecurityLevelMember:
       additionalProperties: false
@@ -237,35 +266,6 @@ components:
             $ref: '#/components/schemas/IssueSecurityLevelMember'
           readOnly: true
           type: array
-      type: object
-    SecurityLevel:
-      additionalProperties: false
-      description: Details of an issue level security item.
-      properties:
-        description:
-          description: The description of the issue level security item.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the issue level security item.
-          readOnly: true
-          type: string
-        isDefault:
-          description: Whether the issue level security item is the default.
-          readOnly: true
-          type: boolean
-        issueSecuritySchemeId:
-          description: The ID of the issue level security scheme.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the issue level security item.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the issue level security item.
-          readOnly: true
-          type: string
       type: object
   securitySchemes:
     OAuth2:

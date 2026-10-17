@@ -602,37 +602,48 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
-    GroupDetails:
+    PagedListUserDetailsApplicationUser:
       additionalProperties: false
-      description: Details about a group.
+      description: A paged list. To access additional details append `[start-index:end-index]` to the expand request. For example, `?expand=sharedUsers[10:40]` returns a list starting at item 10 and finishing at item 40.
       properties:
-        groupId:
-          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
-          type:
-          - string
-          - 'null'
-        name:
-          description: The name of the group.
-          type: string
-      type: object
-    FoundGroups:
-      additionalProperties: false
-      description: The list of groups found in a search, including header text (Showing X of Y matching groups) and total of matched groups.
-      properties:
-        groups:
-          items:
-            $ref: '#/components/schemas/FoundGroup'
-          type: array
-        header:
-          description: Header text indicating the number of groups in the response and the total number of groups found in the search.
-          type: string
-        total:
-          description: The total number of groups found in the search.
+        end-index:
+          description: The index of the last item returned on the page.
           format: int32
+          readOnly: true
           type: integer
+          xml:
+            attribute: true
+            name: end-index
+        items:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/UserDetails'
+          readOnly: true
+          type: array
+        max-results:
+          description: The maximum number of results that could be on the page.
+          format: int32
+          readOnly: true
+          type: integer
+          xml:
+            attribute: true
+            name: max-results
+        size:
+          description: The number of items on the page.
+          format: int32
+          readOnly: true
+          type: integer
+          xml:
+            attribute: true
+        start-index:
+          description: The index of the first item returned on the page.
+          format: int32
+          readOnly: true
+          type: integer
+          xml:
+            attribute: true
+            name: start-index
       type: object
-      xml:
-        name: groupsuggestions
     GroupLabel:
       additionalProperties: false
       description: A group label.
@@ -653,91 +664,6 @@ components:
       type: object
       xml:
         name: grouplabel
-    Group:
-      additionalProperties: false
-      properties:
-        expand:
-          description: Expand options that include additional group details in the response.
-          readOnly: true
-          type: string
-          xml:
-            attribute: true
-        groupId:
-          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
-          type:
-          - string
-          - 'null'
-        name:
-          description: The name of group.
-          type: string
-        self:
-          description: The URL for these group details.
-          format: uri
-          readOnly: true
-          type: string
-        users:
-          allOf:
-          - $ref: '#/components/schemas/PagedListUserDetailsApplicationUser'
-          description: A paginated list of the users that are members of the group. A maximum of 50 users is returned in the list, to access additional users append `[start-index:end-index]` to the expand request. For example, to access the next 50 users, use`?expand=users[51:100]`.
-          readOnly: true
-      type: object
-    UpdateUserToGroupBean:
-      additionalProperties: true
-      properties:
-        accountId:
-          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
-          maxLength: 128
-          type: string
-        name:
-          description: This property is no longer available. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-      type: object
-    UserDetails:
-      additionalProperties: false
-      description: "User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
-      properties:
-        accountId:
-          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
-          maxLength: 128
-          type: string
-        accountType:
-          description: The type of account represented by this user. This will be one of 'atlassian' (normal users), 'app' (application user) or 'customer' (Jira Service Desk customer user)
-          readOnly: true
-          type: string
-        active:
-          description: Whether the user is active.
-          readOnly: true
-          type: boolean
-        avatarUrls:
-          allOf:
-          - $ref: '#/components/schemas/AvatarUrlsBean'
-          description: The avatars of the user.
-          readOnly: true
-        displayName:
-          description: The display name of the user. Depending on the user’s privacy settings, this may return an alternative value.
-          readOnly: true
-          type: string
-        emailAddress:
-          description: The email address of the user. Depending on the user’s privacy settings, this may be returned as null.
-          readOnly: true
-          type: string
-        key:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          readOnly: true
-          type: string
-        name:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the user.
-          readOnly: true
-          type: string
-        timeZone:
-          description: The time zone specified in the user's profile. Depending on the user’s privacy settings, this may be returned as null.
-          readOnly: true
-          type: string
-      type: object
     PageBeanGroupDetails:
       additionalProperties: false
       description: A page of items.
@@ -777,6 +703,47 @@ components:
             $ref: '#/components/schemas/GroupDetails'
           readOnly: true
           type: array
+      type: object
+    Group:
+      additionalProperties: false
+      properties:
+        expand:
+          description: Expand options that include additional group details in the response.
+          readOnly: true
+          type: string
+          xml:
+            attribute: true
+        groupId:
+          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The name of group.
+          type: string
+        self:
+          description: The URL for these group details.
+          format: uri
+          readOnly: true
+          type: string
+        users:
+          allOf:
+          - $ref: '#/components/schemas/PagedListUserDetailsApplicationUser'
+          description: A paginated list of the users that are members of the group. A maximum of 50 users is returned in the list, to access additional users append `[start-index:end-index]` to the expand request. For example, to access the next 50 users, use`?expand=users[51:100]`.
+          readOnly: true
+      type: object
+    GroupDetails:
+      additionalProperties: false
+      description: Details about a group.
+      properties:
+        groupId:
+          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The name of the group.
+          type: string
       type: object
     PageBeanUserDetails:
       additionalProperties: false
@@ -856,48 +823,6 @@ components:
       type: object
       xml:
         name: group
-    PagedListUserDetailsApplicationUser:
-      additionalProperties: false
-      description: A paged list. To access additional details append `[start-index:end-index]` to the expand request. For example, `?expand=sharedUsers[10:40]` returns a list starting at item 10 and finishing at item 40.
-      properties:
-        end-index:
-          description: The index of the last item returned on the page.
-          format: int32
-          readOnly: true
-          type: integer
-          xml:
-            attribute: true
-            name: end-index
-        items:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/UserDetails'
-          readOnly: true
-          type: array
-        max-results:
-          description: The maximum number of results that could be on the page.
-          format: int32
-          readOnly: true
-          type: integer
-          xml:
-            attribute: true
-            name: max-results
-        size:
-          description: The number of items on the page.
-          format: int32
-          readOnly: true
-          type: integer
-          xml:
-            attribute: true
-        start-index:
-          description: The index of the first item returned on the page.
-          format: int32
-          readOnly: true
-          type: integer
-          xml:
-            attribute: true
-            name: start-index
-      type: object
     AddGroupBean:
       additionalProperties: true
       properties:
@@ -906,6 +831,81 @@ components:
           type: string
       required:
       - name
+      type: object
+    FoundGroups:
+      additionalProperties: false
+      description: The list of groups found in a search, including header text (Showing X of Y matching groups) and total of matched groups.
+      properties:
+        groups:
+          items:
+            $ref: '#/components/schemas/FoundGroup'
+          type: array
+        header:
+          description: Header text indicating the number of groups in the response and the total number of groups found in the search.
+          type: string
+        total:
+          description: The total number of groups found in the search.
+          format: int32
+          type: integer
+      type: object
+      xml:
+        name: groupsuggestions
+    UserDetails:
+      additionalProperties: false
+      description: "User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
+      properties:
+        accountId:
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+          maxLength: 128
+          type: string
+        accountType:
+          description: The type of account represented by this user. This will be one of 'atlassian' (normal users), 'app' (application user) or 'customer' (Jira Service Desk customer user)
+          readOnly: true
+          type: string
+        active:
+          description: Whether the user is active.
+          readOnly: true
+          type: boolean
+        avatarUrls:
+          allOf:
+          - $ref: '#/components/schemas/AvatarUrlsBean'
+          description: The avatars of the user.
+          readOnly: true
+        displayName:
+          description: The display name of the user. Depending on the user’s privacy settings, this may return an alternative value.
+          readOnly: true
+          type: string
+        emailAddress:
+          description: The email address of the user. Depending on the user’s privacy settings, this may be returned as null.
+          readOnly: true
+          type: string
+        key:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          readOnly: true
+          type: string
+        name:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the user.
+          readOnly: true
+          type: string
+        timeZone:
+          description: The time zone specified in the user's profile. Depending on the user’s privacy settings, this may be returned as null.
+          readOnly: true
+          type: string
+      type: object
+    UpdateUserToGroupBean:
+      additionalProperties: true
+      properties:
+        accountId:
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+          maxLength: 128
+          type: string
+        name:
+          description: This property is no longer available. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
       type: object
     AvatarUrlsBean:
       additionalProperties: false

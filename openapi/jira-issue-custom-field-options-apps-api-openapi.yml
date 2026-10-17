@@ -590,6 +590,75 @@ paths:
       x-atlassian-connect-scope: NONE
 components:
   schemas:
+    ProjectScopeBean:
+      additionalProperties: false
+      properties:
+        attributes:
+          description: Defines the behavior of the option in the project.If notSelectable is set, the option cannot be set as the field's value. This is useful for archiving an option that has previously been selected but shouldn't be used anymore.If defaultValue is set, the option is selected by default.
+          items:
+            enum:
+            - notSelectable
+            - defaultValue
+            type: string
+          type: array
+          uniqueItems: true
+        id:
+          description: The ID of the project that the option's behavior applies to.
+          format: int64
+          type: integer
+      type: object
+    GlobalScopeBean:
+      additionalProperties: false
+      properties:
+        attributes:
+          description: Defines the behavior of the option in the global context.If notSelectable is set, the option cannot be set as the field's value. This is useful for archiving an option that has previously been selected but shouldn't be used anymore.If defaultValue is set, the option is selected by default.
+          items:
+            enum:
+            - notSelectable
+            - defaultValue
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    IssueFieldOptionScopeBean:
+      additionalProperties: false
+      properties:
+        global:
+          allOf:
+          - $ref: '#/components/schemas/GlobalScopeBean'
+          description: Defines the behavior of the option within the global context. If this property is set, even if set to an empty object, then the option is available in all projects.
+        projects:
+          description: DEPRECATED
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+        projects2:
+          description: Defines the projects in which the option is available and the behavior of the option within each project. Specify one object per project. The behavior of the option in a project context overrides the behavior in the global context.
+          items:
+            $ref: '#/components/schemas/ProjectScopeBean'
+          type: array
+          uniqueItems: true
+      type: object
+    IssueFieldOptionConfiguration:
+      additionalProperties: false
+      description: Details of the projects the option is available in.
+      properties:
+        attributes:
+          description: DEPRECATED
+          items:
+            enum:
+            - notSelectable
+            - defaultValue
+            type: string
+          type: array
+          uniqueItems: true
+        scope:
+          allOf:
+          - $ref: '#/components/schemas/IssueFieldOptionScopeBean'
+          description: Defines the projects that the option is available in. If the scope is not defined, then the option is available in all projects.
+      type: object
     TaskProgressBeanRemoveOptionFromIssuesResult:
       additionalProperties: false
       description: Details about a task.
@@ -660,27 +729,6 @@ components:
       - submitted
       - submittedBy
       type: object
-    IssueFieldOptionScopeBean:
-      additionalProperties: false
-      properties:
-        global:
-          allOf:
-          - $ref: '#/components/schemas/GlobalScopeBean'
-          description: Defines the behavior of the option within the global context. If this property is set, even if set to an empty object, then the option is available in all projects.
-        projects:
-          description: DEPRECATED
-          items:
-            format: int64
-            type: integer
-          type: array
-          uniqueItems: true
-        projects2:
-          description: Defines the projects in which the option is available and the behavior of the option within each project. Specify one object per project. The behavior of the option in a project context overrides the behavior in the global context.
-          items:
-            $ref: '#/components/schemas/ProjectScopeBean'
-          type: array
-          uniqueItems: true
-      type: object
     IssueFieldOptionCreateBean:
       additionalProperties: true
       properties:
@@ -695,23 +743,6 @@ components:
           type: string
       required:
       - value
-      type: object
-    ProjectScopeBean:
-      additionalProperties: false
-      properties:
-        attributes:
-          description: Defines the behavior of the option in the project.If notSelectable is set, the option cannot be set as the field's value. This is useful for archiving an option that has previously been selected but shouldn't be used anymore.If defaultValue is set, the option is selected by default.
-          items:
-            enum:
-            - notSelectable
-            - defaultValue
-            type: string
-          type: array
-          uniqueItems: true
-        id:
-          description: The ID of the project that the option's behavior applies to.
-          format: int64
-          type: integer
       type: object
     SimpleErrorCollection:
       additionalProperties: false
@@ -729,27 +760,6 @@ components:
         httpStatusCode:
           format: int32
           type: integer
-      type: object
-    IssueFieldOption:
-      additionalProperties: false
-      description: Details of the options for a select list issue field.
-      properties:
-        config:
-          $ref: '#/components/schemas/IssueFieldOptionConfiguration'
-        id:
-          description: The unique identifier for the option. This is only unique within the select field's set of options.
-          format: int64
-          type: integer
-        properties:
-          additionalProperties: {}
-          description: The properties of the object, as arbitrary key-value pairs. These properties can be searched using JQL, if the extractions (see [Issue Field Option Property Index](https://developer.atlassian.com/cloud/jira/platform/modules/issue-field-option-property-index/)) are defined in the descriptor for the issue field module.
-          type: object
-        value:
-          description: The option's name, which is displayed in Jira.
-          type: string
-      required:
-      - id
-      - value
       type: object
     RemoveOptionFromIssuesResult:
       additionalProperties: false
@@ -771,36 +781,26 @@ components:
             type: integer
           type: array
       type: object
-    GlobalScopeBean:
+    IssueFieldOption:
       additionalProperties: false
+      description: Details of the options for a select list issue field.
       properties:
-        attributes:
-          description: Defines the behavior of the option in the global context.If notSelectable is set, the option cannot be set as the field's value. This is useful for archiving an option that has previously been selected but shouldn't be used anymore.If defaultValue is set, the option is selected by default.
-          items:
-            enum:
-            - notSelectable
-            - defaultValue
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
-    IssueFieldOptionConfiguration:
-      additionalProperties: false
-      description: Details of the projects the option is available in.
-      properties:
-        attributes:
-          description: DEPRECATED
-          items:
-            enum:
-            - notSelectable
-            - defaultValue
-            type: string
-          type: array
-          uniqueItems: true
-        scope:
-          allOf:
-          - $ref: '#/components/schemas/IssueFieldOptionScopeBean'
-          description: Defines the projects that the option is available in. If the scope is not defined, then the option is available in all projects.
+        config:
+          $ref: '#/components/schemas/IssueFieldOptionConfiguration'
+        id:
+          description: The unique identifier for the option. This is only unique within the select field's set of options.
+          format: int64
+          type: integer
+        properties:
+          additionalProperties: {}
+          description: The properties of the object, as arbitrary key-value pairs. These properties can be searched using JQL, if the extractions (see [Issue Field Option Property Index](https://developer.atlassian.com/cloud/jira/platform/modules/issue-field-option-property-index/)) are defined in the descriptor for the issue field module.
+          type: object
+        value:
+          description: The option's name, which is displayed in Jira.
+          type: string
+      required:
+      - id
+      - value
       type: object
     PageBeanIssueFieldOption:
       additionalProperties: false

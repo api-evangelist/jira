@@ -396,119 +396,25 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
-    JiraExpressionResult:
+    IssuesMetaBean:
       additionalProperties: false
-      description: The result of evaluating a Jira expression.
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/JiraExpressionEvaluationMetaDataBean'
-          description: Contains various characteristics of the performed expression evaluation.
-        value:
-          description: The value of the evaluated expression. It may be a primitive JSON value or a Jira REST API object. (Some expressions do not produce any meaningful results—for example, an expression that returns a lambda function—if that's the case a simple string representation is returned. These string representations should not be relied upon and may change without notice.)
-      required:
-      - value
-      type: object
-    JiraExpressionForAnalysis:
-      additionalProperties: false
-      description: Details of Jira expressions for analysis.
-      properties:
-        contextVariables:
-          additionalProperties:
-            description: Context variables and their types. The type checker assumes that <a href="https://developer.atlassian.com/cloud/jira/platform/jira-expressions/#context-variables">common context variables</a>, such as <code>issue</code> or <code>project</code>, are available in context and sets their type. Use this property to override the default types or provide details of new variables.
-            type: string
-          description: Context variables and their types. The type checker assumes that [common context variables](https://developer.atlassian.com/cloud/jira/platform/jira-expressions/#context-variables), such as `issue` or `project`, are available in context and sets their type. Use this property to override the default types or provide details of new variables.
-          type: object
-        expressions:
-          description: The list of Jira expressions to analyse.
-          example: issues.map(issue => issue.properties['property_key'])
-          items:
-            description: The list of Jira expressions to analyse.
-            example: issues.map(issue => issue.properties['property_key'])
-            type: string
-          type: array
-      required:
-      - expressions
-      type: object
-    JiraExpressionAnalysis:
-      additionalProperties: false
-      description: Details about the analysed Jira expression.
-      properties:
-        complexity:
-          $ref: '#/components/schemas/JiraExpressionComplexity'
-        errors:
-          description: A list of validation errors. Not included if the expression is valid.
-          items:
-            $ref: '#/components/schemas/JiraExpressionValidationError'
-          type: array
-        expression:
-          description: The analysed expression.
-          type: string
-        type:
-          description: EXPERIMENTAL. The inferred type of the expression.
-          type: string
-        valid:
-          description: Whether the expression is valid and the interpreter will evaluate it. Note that the expression may fail at runtime (for example, if it executes too many expensive operations).
-          type: boolean
-      required:
-      - expression
-      - valid
-      type: object
-    CustomContextVariable:
-      additionalProperties: false
-      discriminator:
-        mapping:
-          issue: '#/components/schemas/IssueContextVariable'
-          json: '#/components/schemas/JsonContextVariable'
-          user: '#/components/schemas/UserContextVariable'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/UserContextVariable'
-      - $ref: '#/components/schemas/IssueContextVariable'
-      - $ref: '#/components/schemas/JsonContextVariable'
-      properties:
-        type:
-          description: Type of custom context variable.
-          type: string
-      required:
-      - type
-      type: object
-    JiraExpressionsAnalysis:
-      additionalProperties: false
-      description: Details about the analysed Jira expression.
-      properties:
-        results:
-          description: The results of Jira expressions analysis.
-          items:
-            $ref: '#/components/schemas/JiraExpressionAnalysis'
-          type: array
-      required:
-      - results
-      type: object
-    IssueContextVariable:
-      description: An [issue](https://developer.atlassian.com/cloud/jira/platform/jira-expressions-type-reference#issue) specified by ID or key. All the fields of the issue object are available in the Jira expression.
-      properties:
-        id:
-          description: The issue ID.
-          format: int64
-          type: integer
-        key:
-          description: The issue key.
-          type: string
-        type:
-          description: Type of custom context variable.
-          type: string
-      required:
-      - type
-      type: object
-    JexpEvaluateCtxIssues:
-      additionalProperties: false
-      description: The JQL specifying the issues available in the evaluated Jira expression under the `issues` context variable. This bean will be replacing `JexpIssues` bean as part of new `evaluate` endpoint
+      description: Meta data describing the `issues` context variable.
       properties:
         jql:
-          allOf:
-          - $ref: '#/components/schemas/JexpEvaluateCtxJqlIssues'
-          description: The JQL query that specifies the set of issues available in the Jira expression.
+          $ref: '#/components/schemas/IssuesJqlMetaDataBean'
+      type: object
+    UserContextVariable:
+      description: A [user](https://developer.atlassian.com/cloud/jira/platform/jira-expressions-type-reference#user) specified as an Atlassian account ID.
+      properties:
+        accountId:
+          description: The account ID of the user.
+          type: string
+        type:
+          description: Type of custom context variable.
+          type: string
+      required:
+      - accountId
+      - type
       type: object
     JiraExpressionEvaluateRequestBean:
       additionalProperties: false
@@ -524,200 +430,6 @@ components:
           type: string
       required:
       - expression
-      type: object
-    JExpEvaluateJiraExpressionResultBean:
-      additionalProperties: false
-      description: The result of evaluating a Jira expression.This bean will be replacing `JiraExpressionResultBean` bean as part of new evaluate endpoint
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/JExpEvaluateMetaDataBean'
-          description: Contains various characteristics of the performed expression evaluation.
-        value:
-          description: The value of the evaluated expression. It may be a primitive JSON value or a Jira REST API object. (Some expressions do not produce any meaningful results—for example, an expression that returns a lambda function—if that's the case a simple string representation is returned. These string representations should not be relied upon and may change without notice.)
-      required:
-      - value
-      type: object
-    JExpEvaluateMetaDataBean:
-      additionalProperties: false
-      description: Contains information about the expression evaluation. This bean will be replacing `JiraExpressionEvaluationMetaDataBean` bean as part of new `evaluate` endpoint
-      properties:
-        complexity:
-          allOf:
-          - $ref: '#/components/schemas/JiraExpressionsComplexityBean'
-          description: Contains information about the expression complexity. For example, the number of steps it took to evaluate the expression.
-        issues:
-          allOf:
-          - $ref: '#/components/schemas/JExpEvaluateIssuesMetaBean'
-          description: Contains information about the `issues` variable in the context. For example, is the issues were loaded with JQL, information about the page will be included here.
-      type: object
-    JiraExpressionValidationError:
-      additionalProperties: false
-      description: "Details about syntax and type errors. The error details apply to the entire expression, unless the object includes:\n\n *  `line` and `column`\n *  `expression`"
-      properties:
-        column:
-          description: The text column in which the error occurred.
-          format: int32
-          type: integer
-        expression:
-          description: The part of the expression in which the error occurred.
-          type: string
-        line:
-          description: The text line in which the error occurred.
-          format: int32
-          type: integer
-        message:
-          description: Details about the error.
-          example: '!, -, typeof, (, IDENTIFIER, null, true, false, NUMBER, STRING, TEMPLATE_LITERAL, new, [ or { expected, > encountered.'
-          type: string
-        type:
-          description: The error type.
-          enum:
-          - syntax
-          - type
-          - other
-          type: string
-      required:
-      - message
-      - type
-      type: object
-    JiraExpressionComplexity:
-      additionalProperties: false
-      description: Details about the complexity of the analysed Jira expression.
-      properties:
-        expensiveOperations:
-          description: "Information that can be used to determine how many [expensive operations](https://developer.atlassian.com/cloud/jira/platform/jira-expressions/#expensive-operations) the evaluation of the expression will perform. This information may be a formula or number. For example:\n\n *  `issues.map(i => i.comments)` performs as many expensive operations as there are issues on the issues list. So this parameter returns `N`, where `N` is the size of issue list.\n *  `new Issue(10010).comments` gets comments for one issue, so its complexity is `2` (`1` to retrieve issue 10010 from the database plus `1` to get its comments)."
-          type: string
-        variables:
-          additionalProperties:
-            description: Variables used in the formula, mapped to the parts of the expression they refer to.
-            type: string
-          description: Variables used in the formula, mapped to the parts of the expression they refer to.
-          type: object
-      required:
-      - expensiveOperations
-      type: object
-    JExpEvaluateIssuesMetaBean:
-      additionalProperties: false
-      description: Meta data describing the `issues` context variable.This bean will be replacing IssuesMetaBean bean as part of new `evaluate` endpoint
-      properties:
-        jql:
-          $ref: '#/components/schemas/JExpEvaluateIssuesJqlMetaDataBean'
-      type: object
-    ErrorCollection:
-      additionalProperties: false
-      description: Error messages from an operation.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
-          additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
-          type: object
-        status:
-          format: int32
-          type: integer
-      type: object
-    JexpJqlIssues:
-      additionalProperties: false
-      description: The JQL specifying the issues available in the evaluated Jira expression under the `issues` context variable. Not all issues returned by the JQL query are loaded, only those described by the `startAt` and `maxResults` properties. To determine whether it is necessary to iterate to ensure all the issues returned by the JQL query are evaluated, inspect `meta.issues.jql.count` in the response.
-      properties:
-        maxResults:
-          description: The maximum number of issues to return from the JQL query. Inspect `meta.issues.jql.maxResults` in the response to ensure the maximum value has not been exceeded.
-          format: int32
-          type: integer
-        query:
-          description: The JQL query.
-          type: string
-        startAt:
-          description: The index of the first issue to return from the JQL query.
-          format: int64
-          type: integer
-        validation:
-          default: strict
-          description: Determines how to validate the JQL query and treat the validation results.
-          enum:
-          - strict
-          - warn
-          - none
-          type: string
-      type: object
-    JsonContextVariable:
-      description: A JSON object with custom content.
-      properties:
-        type:
-          description: Type of custom context variable.
-          type: string
-        value:
-          description: A JSON object containing custom content.
-          type: object
-      required:
-      - type
-      type: object
-    IdOrKeyBean:
-      additionalProperties: false
-      properties:
-        id:
-          description: The ID of the referenced item.
-          format: int64
-          type: integer
-        key:
-          description: The key of the referenced item.
-          type: string
-      type: object
-    IssuesMetaBean:
-      additionalProperties: false
-      description: Meta data describing the `issues` context variable.
-      properties:
-        jql:
-          $ref: '#/components/schemas/IssuesJqlMetaDataBean'
-      type: object
-    JiraExpressionEvalRequestBean:
-      additionalProperties: false
-      properties:
-        context:
-          allOf:
-          - $ref: '#/components/schemas/JiraExpressionEvalContextBean'
-          description: The context in which the Jira expression is evaluated.
-        expression:
-          description: The Jira expression to evaluate.
-          example: '{ key: issue.key, type: issue.issueType.name, links: issue.links.map(link => link.linkedIssue.id) }'
-          type: string
-      required:
-      - expression
-      type: object
-    JiraExpressionsComplexityValueBean:
-      additionalProperties: false
-      properties:
-        limit:
-          description: The maximum allowed complexity. The evaluation will fail if this value is exceeded.
-          format: int32
-          type: integer
-        value:
-          description: The complexity value of the current expression.
-          format: int32
-          type: integer
-      required:
-      - limit
-      - value
-      type: object
-    JExpEvaluateIssuesJqlMetaDataBean:
-      additionalProperties: false
-      description: The description of the page of issues loaded by the provided JQL query.This bean will be replacing IssuesJqlMetaDataBean bean as part of new `evaluate` endpoint
-      properties:
-        isLast:
-          description: Indicates whether this is the last page of the paginated response.
-          readOnly: true
-          type: boolean
-        nextPageToken:
-          description: Next Page token for the next page of issues.
-          type: string
-      required:
-      - nextPageToken
       type: object
     JiraExpressionsComplexityBean:
       additionalProperties: false
@@ -781,64 +493,70 @@ components:
           format: int64
           type: integer
       type: object
-    JexpEvaluateCtxJqlIssues:
+    JExpEvaluateIssuesMetaBean:
       additionalProperties: false
-      description: The JQL specifying the issues available in the evaluated Jira expression under the `issues` context variable. Not all issues returned by the JQL query are loaded, only those described by the `nextPageToken` and `maxResults` properties. This bean will be replacing JexpJqlIssues bean as part of new `evaluate` endpoint
+      description: Meta data describing the `issues` context variable.This bean will be replacing IssuesMetaBean bean as part of new `evaluate` endpoint
       properties:
-        maxResults:
-          description: The maximum number of issues to return from the JQL query. max results value considered may be lower than the number specific here.
-          format: int32
-          type: integer
-        nextPageToken:
-          description: The token for a page to fetch that is not the first page. The first page has a `nextPageToken` of `null`. Use the `nextPageToken` to fetch the next page of issues.
-          type: string
-        query:
-          description: The JQL query, required to be bounded. Additionally, `orderBy` clause can contain a maximum of 7 fields
-          type: string
+        jql:
+          $ref: '#/components/schemas/JExpEvaluateIssuesJqlMetaDataBean'
       type: object
-    IssuesJqlMetaDataBean:
+    ErrorCollection:
       additionalProperties: false
-      description: The description of the page of issues loaded by the provided JQL query.
+      description: Error messages from an operation.
       properties:
-        count:
-          description: The number of issues that were loaded in this evaluation.
-          format: int32
-          type: integer
-        maxResults:
-          description: The maximum number of issues that could be loaded in this evaluation.
-          format: int32
-          type: integer
-        startAt:
-          description: The index of the first issue.
-          format: int64
-          type: integer
-        totalCount:
-          description: The total number of issues the JQL returned.
-          format: int64
-          type: integer
-        validationWarnings:
-          description: Any warnings related to the JQL query. Present only if the validation mode was set to `warn`.
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
           items:
             type: string
           type: array
-      required:
-      - count
-      - maxResults
-      - startAt
-      - totalCount
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
+          format: int32
+          type: integer
       type: object
-    UserContextVariable:
-      description: A [user](https://developer.atlassian.com/cloud/jira/platform/jira-expressions-type-reference#user) specified as an Atlassian account ID.
+    IssueContextVariable:
+      description: An [issue](https://developer.atlassian.com/cloud/jira/platform/jira-expressions-type-reference#issue) specified by ID or key. All the fields of the issue object are available in the Jira expression.
       properties:
-        accountId:
-          description: The account ID of the user.
+        id:
+          description: The issue ID.
+          format: int64
+          type: integer
+        key:
+          description: The issue key.
           type: string
         type:
           description: Type of custom context variable.
           type: string
       required:
-      - accountId
       - type
+      type: object
+    JexpJqlIssues:
+      additionalProperties: false
+      description: The JQL specifying the issues available in the evaluated Jira expression under the `issues` context variable. Not all issues returned by the JQL query are loaded, only those described by the `startAt` and `maxResults` properties. To determine whether it is necessary to iterate to ensure all the issues returned by the JQL query are evaluated, inspect `meta.issues.jql.count` in the response.
+      properties:
+        maxResults:
+          description: The maximum number of issues to return from the JQL query. Inspect `meta.issues.jql.maxResults` in the response to ensure the maximum value has not been exceeded.
+          format: int32
+          type: integer
+        query:
+          description: The JQL query.
+          type: string
+        startAt:
+          description: The index of the first issue to return from the JQL query.
+          format: int64
+          type: integer
+        validation:
+          default: strict
+          description: Determines how to validate the JQL query and treat the validation results.
+          enum:
+          - strict
+          - warn
+          - none
+          type: string
       type: object
     JiraExpressionEvaluateContextBean:
       additionalProperties: false
@@ -877,6 +595,233 @@ components:
           format: int64
           type: integer
       type: object
+    JExpEvaluateIssuesJqlMetaDataBean:
+      additionalProperties: false
+      description: The description of the page of issues loaded by the provided JQL query.This bean will be replacing IssuesJqlMetaDataBean bean as part of new `evaluate` endpoint
+      properties:
+        isLast:
+          description: Indicates whether this is the last page of the paginated response.
+          readOnly: true
+          type: boolean
+        nextPageToken:
+          description: Next Page token for the next page of issues.
+          type: string
+      required:
+      - nextPageToken
+      type: object
+    JiraExpressionAnalysis:
+      additionalProperties: false
+      description: Details about the analysed Jira expression.
+      properties:
+        complexity:
+          $ref: '#/components/schemas/JiraExpressionComplexity'
+        errors:
+          description: A list of validation errors. Not included if the expression is valid.
+          items:
+            $ref: '#/components/schemas/JiraExpressionValidationError'
+          type: array
+        expression:
+          description: The analysed expression.
+          type: string
+        type:
+          description: EXPERIMENTAL. The inferred type of the expression.
+          type: string
+        valid:
+          description: Whether the expression is valid and the interpreter will evaluate it. Note that the expression may fail at runtime (for example, if it executes too many expensive operations).
+          type: boolean
+      required:
+      - expression
+      - valid
+      type: object
+    JexpEvaluateCtxJqlIssues:
+      additionalProperties: false
+      description: The JQL specifying the issues available in the evaluated Jira expression under the `issues` context variable. Not all issues returned by the JQL query are loaded, only those described by the `nextPageToken` and `maxResults` properties. This bean will be replacing JexpJqlIssues bean as part of new `evaluate` endpoint
+      properties:
+        maxResults:
+          description: The maximum number of issues to return from the JQL query. max results value considered may be lower than the number specific here.
+          format: int32
+          type: integer
+        nextPageToken:
+          description: The token for a page to fetch that is not the first page. The first page has a `nextPageToken` of `null`. Use the `nextPageToken` to fetch the next page of issues.
+          type: string
+        query:
+          description: The JQL query, required to be bounded. Additionally, `orderBy` clause can contain a maximum of 7 fields
+          type: string
+      type: object
+    JiraExpressionEvalRequestBean:
+      additionalProperties: false
+      properties:
+        context:
+          allOf:
+          - $ref: '#/components/schemas/JiraExpressionEvalContextBean'
+          description: The context in which the Jira expression is evaluated.
+        expression:
+          description: The Jira expression to evaluate.
+          example: '{ key: issue.key, type: issue.issueType.name, links: issue.links.map(link => link.linkedIssue.id) }'
+          type: string
+      required:
+      - expression
+      type: object
+    JiraExpressionValidationError:
+      additionalProperties: false
+      description: "Details about syntax and type errors. The error details apply to the entire expression, unless the object includes:\n\n *  `line` and `column`\n *  `expression`"
+      properties:
+        column:
+          description: The text column in which the error occurred.
+          format: int32
+          type: integer
+        expression:
+          description: The part of the expression in which the error occurred.
+          type: string
+        line:
+          description: The text line in which the error occurred.
+          format: int32
+          type: integer
+        message:
+          description: Details about the error.
+          example: '!, -, typeof, (, IDENTIFIER, null, true, false, NUMBER, STRING, TEMPLATE_LITERAL, new, [ or { expected, > encountered.'
+          type: string
+        type:
+          description: The error type.
+          enum:
+          - syntax
+          - type
+          - other
+          type: string
+      required:
+      - message
+      - type
+      type: object
+    IdOrKeyBean:
+      additionalProperties: false
+      properties:
+        id:
+          description: The ID of the referenced item.
+          format: int64
+          type: integer
+        key:
+          description: The key of the referenced item.
+          type: string
+      type: object
+    JExpEvaluateMetaDataBean:
+      additionalProperties: false
+      description: Contains information about the expression evaluation. This bean will be replacing `JiraExpressionEvaluationMetaDataBean` bean as part of new `evaluate` endpoint
+      properties:
+        complexity:
+          allOf:
+          - $ref: '#/components/schemas/JiraExpressionsComplexityBean'
+          description: Contains information about the expression complexity. For example, the number of steps it took to evaluate the expression.
+        issues:
+          allOf:
+          - $ref: '#/components/schemas/JExpEvaluateIssuesMetaBean'
+          description: Contains information about the `issues` variable in the context. For example, is the issues were loaded with JQL, information about the page will be included here.
+      type: object
+    JExpEvaluateJiraExpressionResultBean:
+      additionalProperties: false
+      description: The result of evaluating a Jira expression.This bean will be replacing `JiraExpressionResultBean` bean as part of new evaluate endpoint
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/JExpEvaluateMetaDataBean'
+          description: Contains various characteristics of the performed expression evaluation.
+        value:
+          description: The value of the evaluated expression. It may be a primitive JSON value or a Jira REST API object. (Some expressions do not produce any meaningful results—for example, an expression that returns a lambda function—if that's the case a simple string representation is returned. These string representations should not be relied upon and may change without notice.)
+      required:
+      - value
+      type: object
+    JiraExpressionResult:
+      additionalProperties: false
+      description: The result of evaluating a Jira expression.
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/JiraExpressionEvaluationMetaDataBean'
+          description: Contains various characteristics of the performed expression evaluation.
+        value:
+          description: The value of the evaluated expression. It may be a primitive JSON value or a Jira REST API object. (Some expressions do not produce any meaningful results—for example, an expression that returns a lambda function—if that's the case a simple string representation is returned. These string representations should not be relied upon and may change without notice.)
+      required:
+      - value
+      type: object
+    CustomContextVariable:
+      additionalProperties: false
+      discriminator:
+        mapping:
+          issue: '#/components/schemas/IssueContextVariable'
+          json: '#/components/schemas/JsonContextVariable'
+          user: '#/components/schemas/UserContextVariable'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/UserContextVariable'
+      - $ref: '#/components/schemas/IssueContextVariable'
+      - $ref: '#/components/schemas/JsonContextVariable'
+      properties:
+        type:
+          description: Type of custom context variable.
+          type: string
+      required:
+      - type
+      type: object
+    JiraExpressionForAnalysis:
+      additionalProperties: false
+      description: Details of Jira expressions for analysis.
+      properties:
+        contextVariables:
+          additionalProperties:
+            description: Context variables and their types. The type checker assumes that <a href="https://developer.atlassian.com/cloud/jira/platform/jira-expressions/#context-variables">common context variables</a>, such as <code>issue</code> or <code>project</code>, are available in context and sets their type. Use this property to override the default types or provide details of new variables.
+            type: string
+          description: Context variables and their types. The type checker assumes that [common context variables](https://developer.atlassian.com/cloud/jira/platform/jira-expressions/#context-variables), such as `issue` or `project`, are available in context and sets their type. Use this property to override the default types or provide details of new variables.
+          type: object
+        expressions:
+          description: The list of Jira expressions to analyse.
+          example: issues.map(issue => issue.properties['property_key'])
+          items:
+            description: The list of Jira expressions to analyse.
+            example: issues.map(issue => issue.properties['property_key'])
+            type: string
+          type: array
+      required:
+      - expressions
+      type: object
+    JiraExpressionComplexity:
+      additionalProperties: false
+      description: Details about the complexity of the analysed Jira expression.
+      properties:
+        expensiveOperations:
+          description: "Information that can be used to determine how many [expensive operations](https://developer.atlassian.com/cloud/jira/platform/jira-expressions/#expensive-operations) the evaluation of the expression will perform. This information may be a formula or number. For example:\n\n *  `issues.map(i => i.comments)` performs as many expensive operations as there are issues on the issues list. So this parameter returns `N`, where `N` is the size of issue list.\n *  `new Issue(10010).comments` gets comments for one issue, so its complexity is `2` (`1` to retrieve issue 10010 from the database plus `1` to get its comments)."
+          type: string
+        variables:
+          additionalProperties:
+            description: Variables used in the formula, mapped to the parts of the expression they refer to.
+            type: string
+          description: Variables used in the formula, mapped to the parts of the expression they refer to.
+          type: object
+      required:
+      - expensiveOperations
+      type: object
+    JsonContextVariable:
+      description: A JSON object with custom content.
+      properties:
+        type:
+          description: Type of custom context variable.
+          type: string
+        value:
+          description: A JSON object containing custom content.
+          type: object
+      required:
+      - type
+      type: object
+    JiraExpressionsAnalysis:
+      additionalProperties: false
+      description: Details about the analysed Jira expression.
+      properties:
+        results:
+          description: The results of Jira expressions analysis.
+          items:
+            $ref: '#/components/schemas/JiraExpressionAnalysis'
+          type: array
+      required:
+      - results
+      type: object
     JexpIssues:
       additionalProperties: false
       description: The JQL specifying the issues available in the evaluated Jira expression under the `issues` context variable.
@@ -897,6 +842,61 @@ components:
           allOf:
           - $ref: '#/components/schemas/IssuesMetaBean'
           description: Contains information about the `issues` variable in the context. For example, is the issues were loaded with JQL, information about the page will be included here.
+      type: object
+    IssuesJqlMetaDataBean:
+      additionalProperties: false
+      description: The description of the page of issues loaded by the provided JQL query.
+      properties:
+        count:
+          description: The number of issues that were loaded in this evaluation.
+          format: int32
+          type: integer
+        maxResults:
+          description: The maximum number of issues that could be loaded in this evaluation.
+          format: int32
+          type: integer
+        startAt:
+          description: The index of the first issue.
+          format: int64
+          type: integer
+        totalCount:
+          description: The total number of issues the JQL returned.
+          format: int64
+          type: integer
+        validationWarnings:
+          description: Any warnings related to the JQL query. Present only if the validation mode was set to `warn`.
+          items:
+            type: string
+          type: array
+      required:
+      - count
+      - maxResults
+      - startAt
+      - totalCount
+      type: object
+    JiraExpressionsComplexityValueBean:
+      additionalProperties: false
+      properties:
+        limit:
+          description: The maximum allowed complexity. The evaluation will fail if this value is exceeded.
+          format: int32
+          type: integer
+        value:
+          description: The complexity value of the current expression.
+          format: int32
+          type: integer
+      required:
+      - limit
+      - value
+      type: object
+    JexpEvaluateCtxIssues:
+      additionalProperties: false
+      description: The JQL specifying the issues available in the evaluated Jira expression under the `issues` context variable. This bean will be replacing `JexpIssues` bean as part of new `evaluate` endpoint
+      properties:
+        jql:
+          allOf:
+          - $ref: '#/components/schemas/JexpEvaluateCtxJqlIssues'
+          description: The JQL query that specifies the set of issues available in the Jira expression.
       type: object
   securitySchemes:
     OAuth2:

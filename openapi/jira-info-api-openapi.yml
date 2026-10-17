@@ -42,32 +42,13 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
-    DateDTO:
+    ErrorResponse:
       additionalProperties: false
       properties:
-        epochMillis:
-          description: Date as the number of milliseconds that have elapsed since 00:00:00 Coordinated Universal Time (UTC), 1 January 1970.
-          format: int64
-          type: integer
-        friendly:
-          description: Date in a user-friendly text format.
+        errorMessage:
           type: string
-        iso8601:
-          description: Date in ISO8601 format.
-          type: string
-        jira:
-          description: Date in the format used in the Jira REST APIs, which is ISO8601 format but extended with milliseconds. For example, 2016-09-28T23:08:32.097+1000.
-          type: string
-      type: object
-    I18nErrorMessage:
-      additionalProperties: false
-      properties:
-        i18nKey:
-          type: string
-        parameters:
-          items:
-            type: string
-          type: array
+        i18nErrorMessage:
+          $ref: '#/components/schemas/I18nErrorMessage'
       type: object
     SoftwareInfoDTO:
       additionalProperties: false
@@ -93,6 +74,16 @@ components:
           description: Jira Service Management version.
           type: string
       type: object
+    I18nErrorMessage:
+      additionalProperties: false
+      properties:
+        i18nKey:
+          type: string
+        parameters:
+          items:
+            type: string
+          type: array
+      type: object
     SelfLinkDTO:
       additionalProperties: false
       properties:
@@ -100,13 +91,22 @@ components:
           format: uri
           type: string
       type: object
-    ErrorResponse:
+    DateDTO:
       additionalProperties: false
       properties:
-        errorMessage:
+        epochMillis:
+          description: Date as the number of milliseconds that have elapsed since 00:00:00 Coordinated Universal Time (UTC), 1 January 1970.
+          format: int64
+          type: integer
+        friendly:
+          description: Date in a user-friendly text format.
           type: string
-        i18nErrorMessage:
-          $ref: '#/components/schemas/I18nErrorMessage'
+        iso8601:
+          description: Date in ISO8601 format.
+          type: string
+        jira:
+          description: Date in the format used in the Jira REST APIs, which is ISO8601 format but extended with milliseconds. For example, 2016-09-28T23:08:32.097+1000.
+          type: string
       type: object
   securitySchemes:
     OAuth2:

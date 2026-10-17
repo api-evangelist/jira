@@ -852,18 +852,17 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    ListWrapperCallbackGroupName:
+    ListWrapperCallbackApplicationRole:
       additionalProperties: false
       type: object
-    ColumnItem:
+    UserMigrationBean:
       additionalProperties: false
-      description: Details of an issue navigator column item.
       properties:
-        label:
-          description: The issue navigator column label.
+        accountId:
           type: string
-        value:
-          description: The issue navigator column value.
+        key:
+          type: string
+        username:
           type: string
       type: object
     SimpleListWrapperGroupName:
@@ -891,100 +890,27 @@ components:
       type: object
       xml:
         name: list
-    GroupName:
+    ColumnItem:
       additionalProperties: false
-      description: Details about a group.
+      description: Details of an issue navigator column item.
       properties:
-        groupId:
-          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
-          type:
-          - string
-          - 'null'
-        name:
-          description: The name of group.
+        label:
+          description: The issue navigator column label.
           type: string
-        self:
-          description: The URL for these group details.
-          format: uri
-          readOnly: true
+        value:
+          description: The issue navigator column value.
           type: string
       type: object
-    ListWrapperCallbackApplicationRole:
-      additionalProperties: false
-      type: object
-    PageBeanUser:
-      additionalProperties: false
-      description: A page of items.
+    UnrestrictedUserEmail:
+      additionalProperties: true
       properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
+        accountId:
+          description: The accountId of the user
           type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
+        email:
+          description: The email of the user
           type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/User'
-          readOnly: true
-          type: array
       type: object
-    UserColumnRequestBody:
-      additionalProperties: false
-      properties:
-        columns:
-          items:
-            type: string
-          type: array
-      type: object
-    SimpleListWrapperApplicationRole:
-      additionalProperties: false
-      properties:
-        callback:
-          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
-        items:
-          items:
-            $ref: '#/components/schemas/ApplicationRole'
-          type: array
-        max-results:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-            name: max-results
-        pagingCallback:
-          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
-        size:
-          format: int32
-          type: integer
-          xml:
-            attribute: true
-      type: object
-      xml:
-        name: list
     User:
       additionalProperties: false
       description: "A user with details as permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
@@ -1065,14 +991,156 @@ components:
       type: object
       xml:
         name: user
-    UnrestrictedUserEmail:
-      additionalProperties: true
+    UserColumnRequestBody:
+      additionalProperties: false
       properties:
-        accountId:
-          description: The accountId of the user
+        columns:
+          items:
+            type: string
+          type: array
+      type: object
+    SimpleListWrapperApplicationRole:
+      additionalProperties: false
+      properties:
+        callback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        items:
+          items:
+            $ref: '#/components/schemas/ApplicationRole'
+          type: array
+        max-results:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+            name: max-results
+        pagingCallback:
+          $ref: '#/components/schemas/ListWrapperCallbackApplicationRole'
+        size:
+          format: int32
+          type: integer
+          xml:
+            attribute: true
+      type: object
+      xml:
+        name: list
+    GroupName:
+      additionalProperties: false
+      description: Details about a group.
+      properties:
+        groupId:
+          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The name of group.
           type: string
-        email:
-          description: The email of the user
+        self:
+          description: The URL for these group details.
+          format: uri
+          readOnly: true
+          type: string
+      type: object
+    PageBeanUser:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
+          format: uri
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/User'
+          readOnly: true
+          type: array
+      type: object
+    ListWrapperCallbackGroupName:
+      additionalProperties: false
+      type: object
+    NewUserDetails:
+      additionalProperties: true
+      description: The user details.
+      properties:
+        applicationKeys:
+          description: Deprecated, do not use.
+          items:
+            type: string
+          type: array
+        displayName:
+          description: This property is no longer available. If the user has an Atlassian account, their display name is not changed. If the user does not have an Atlassian account, they are sent an email asking them set up an account.
+          type: string
+        emailAddress:
+          description: The email address for the user.
+          type: string
+        key:
+          description: This property is no longer available. See the [migration guide](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        name:
+          description: This property is no longer available. See the [migration guide](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          type: string
+        password:
+          description: This property is no longer available. If the user has an Atlassian account, their password is not changed. If the user does not have an Atlassian account, they are sent an email asking them set up an account.
+          type: string
+        products:
+          description: 'Products the new user has access to. Valid products are: jira-core, jira-servicedesk, jira-product-discovery, jira-software. To create a user without product access, set this field to be an empty array.'
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        self:
+          description: The URL of the user.
+          readOnly: true
+          type: string
+      required:
+      - emailAddress
+      - products
+      type: object
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+          type: string
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
           type: string
       type: object
     ApplicationRole:
@@ -1133,74 +1201,6 @@ components:
         userCountDescription:
           description: The [type of users](https://confluence.atlassian.com/x/lRW3Ng) being counted against your license.
           type: string
-      type: object
-    UserMigrationBean:
-      additionalProperties: false
-      properties:
-        accountId:
-          type: string
-        key:
-          type: string
-        username:
-          type: string
-      type: object
-    AvatarUrlsBean:
-      additionalProperties: false
-      properties:
-        16x16:
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
-          type: string
-        24x24:
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
-          type: string
-        32x32:
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-          type: string
-        48x48:
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
-          type: string
-      type: object
-    NewUserDetails:
-      additionalProperties: true
-      description: The user details.
-      properties:
-        applicationKeys:
-          description: Deprecated, do not use.
-          items:
-            type: string
-          type: array
-        displayName:
-          description: This property is no longer available. If the user has an Atlassian account, their display name is not changed. If the user does not have an Atlassian account, they are sent an email asking them set up an account.
-          type: string
-        emailAddress:
-          description: The email address for the user.
-          type: string
-        key:
-          description: This property is no longer available. See the [migration guide](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        name:
-          description: This property is no longer available. See the [migration guide](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          type: string
-        password:
-          description: This property is no longer available. If the user has an Atlassian account, their password is not changed. If the user does not have an Atlassian account, they are sent an email asking them set up an account.
-          type: string
-        products:
-          description: 'Products the new user has access to. Valid products are: jira-core, jira-servicedesk, jira-product-discovery, jira-software. To create a user without product access, set this field to be an empty array.'
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        self:
-          description: The URL of the user.
-          readOnly: true
-          type: string
-      required:
-      - emailAddress
-      - products
       type: object
   securitySchemes:
     OAuth2:

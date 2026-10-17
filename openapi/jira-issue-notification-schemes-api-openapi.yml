@@ -578,6 +578,186 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
+    NotificationSchemeEvent:
+      additionalProperties: false
+      description: Details about a notification scheme event.
+      properties:
+        event:
+          $ref: '#/components/schemas/NotificationEvent'
+        notifications:
+          items:
+            $ref: '#/components/schemas/EventNotification'
+          type: array
+      type: object
+    NotificationSchemeNotificationDetails:
+      additionalProperties: true
+      description: Details of a notification within a notification scheme.
+      maxLength: 255
+      properties:
+        notificationType:
+          description: The notification type, e.g `CurrentAssignee`, `Group`, `EmailAddress`.
+          type: string
+          writeOnly: true
+        parameter:
+          description: The value corresponding to the specified notification type.
+          type: string
+          writeOnly: true
+      required:
+      - notificationType
+      type: object
+      writeOnly: true
+    UpdatedProjectCategory:
+      additionalProperties: false
+      description: A project category.
+      properties:
+        description:
+          description: The name of the project category.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the project category.
+          readOnly: true
+          type: string
+        name:
+          description: The description of the project category.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the project category.
+          readOnly: true
+          type: string
+      type: object
+    NotificationScheme:
+      additionalProperties: false
+      description: Details about a notification scheme.
+      properties:
+        description:
+          description: The description of the notification scheme.
+          type: string
+        expand:
+          description: Expand options that include additional notification scheme details in the response.
+          type: string
+        id:
+          description: The ID of the notification scheme.
+          format: int64
+          type: integer
+        name:
+          description: The name of the notification scheme.
+          type: string
+        notificationSchemeEvents:
+          description: The notification events and associated recipients.
+          items:
+            $ref: '#/components/schemas/NotificationSchemeEvent'
+          type: array
+        projects:
+          description: The list of project IDs associated with the notification scheme.
+          items:
+            format: int64
+            type: integer
+          type: array
+        scope:
+          allOf:
+          - $ref: '#/components/schemas/Scope'
+          description: The scope of the notification scheme.
+        self:
+          type: string
+      type: object
+    GroupName:
+      additionalProperties: false
+      description: Details about a group.
+      properties:
+        groupId:
+          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The name of group.
+          type: string
+        self:
+          description: The URL for these group details.
+          format: uri
+          readOnly: true
+          type: string
+      type: object
+    Scope:
+      additionalProperties: true
+      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
+      properties:
+        project:
+          allOf:
+          - $ref: '#/components/schemas/ProjectDetails'
+          description: The project the item has scope in.
+          readOnly: true
+        type:
+          description: The type of scope.
+          enum:
+          - PROJECT
+          - TEMPLATE
+          readOnly: true
+          type: string
+      type: object
+    UserDetails:
+      additionalProperties: false
+      description: "User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
+      properties:
+        accountId:
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+          maxLength: 128
+          type: string
+        accountType:
+          description: The type of account represented by this user. This will be one of 'atlassian' (normal users), 'app' (application user) or 'customer' (Jira Service Desk customer user)
+          readOnly: true
+          type: string
+        active:
+          description: Whether the user is active.
+          readOnly: true
+          type: boolean
+        avatarUrls:
+          allOf:
+          - $ref: '#/components/schemas/AvatarUrlsBean'
+          description: The avatars of the user.
+          readOnly: true
+        displayName:
+          description: The display name of the user. Depending on the user’s privacy settings, this may return an alternative value.
+          readOnly: true
+          type: string
+        emailAddress:
+          description: The email address of the user. Depending on the user’s privacy settings, this may be returned as null.
+          readOnly: true
+          type: string
+        key:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          readOnly: true
+          type: string
+        name:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the user.
+          readOnly: true
+          type: string
+        timeZone:
+          description: The time zone specified in the user's profile. Depending on the user’s privacy settings, this may be returned as null.
+          readOnly: true
+          type: string
+      type: object
+    UpdateNotificationSchemeDetails:
+      additionalProperties: true
+      description: Details of a notification scheme.
+      properties:
+        description:
+          description: The description of the notification scheme.
+          maxLength: 4000
+          type: string
+          writeOnly: true
+        name:
+          description: The name of the notification scheme. Must be unique.
+          maxLength: 255
+          type: string
+          writeOnly: true
+      type: object
     ProjectRoleUser:
       additionalProperties: false
       description: Details of the user associated with the role.
@@ -588,56 +768,86 @@ components:
           readOnly: true
           type: string
       type: object
-    ProjectRole:
+    ErrorCollection:
       additionalProperties: false
-      description: Details about the roles in a project.
+      description: Error messages from an operation.
       properties:
-        actors:
-          description: The list of users who act in this role.
+        errorMessages:
+          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
           items:
-            $ref: '#/components/schemas/RoleActor'
-          readOnly: true
+            type: string
           type: array
-        admin:
-          description: Whether this role is the admin role for the project.
-          readOnly: true
-          type: boolean
-        currentUserRole:
-          description: Whether the calling user is part of this role.
-          type: boolean
-        default:
-          description: Whether this role is the default role for the project
-          readOnly: true
-          type: boolean
-        description:
-          description: The description of the project role.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the project role.
-          format: int64
-          readOnly: true
+        errors:
+          additionalProperties:
+            type: string
+          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+          type: object
+        status:
+          format: int32
           type: integer
-        name:
-          description: The name of the project role.
+      type: object
+    NotificationSchemeAndProjectMappingJsonBean:
+      additionalProperties: false
+      properties:
+        notificationSchemeId:
           type: string
-        roleConfigurable:
-          description: Whether the roles are configurable for this project.
+        projectId:
+          type: string
+      type: object
+    NotificationSchemeEventTypeId:
+      additionalProperties: true
+      description: The ID of an event that is being mapped to notifications.
+      properties:
+        id:
+          description: The ID of the notification scheme event.
+          type: string
+          writeOnly: true
+      required:
+      - id
+      type: object
+      writeOnly: true
+    ProjectDetails:
+      additionalProperties: false
+      description: Details about a project.
+      properties:
+        avatarUrls:
+          allOf:
+          - $ref: '#/components/schemas/AvatarUrlsBean'
+          description: The URLs of the project's avatars.
+          readOnly: true
+        id:
+          description: The ID of the project.
+          type: string
+        key:
+          description: The key of the project.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the project.
+          readOnly: true
+          type: string
+        projectCategory:
+          allOf:
+          - $ref: '#/components/schemas/UpdatedProjectCategory'
+          description: The category the project belongs to.
+          readOnly: true
+        projectTypeKey:
+          description: The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes) of the project.
+          enum:
+          - software
+          - service_desk
+          - business
+          - product_discovery
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the project details.
+          readOnly: true
+          type: string
+        simplified:
+          description: Whether or not the project is simplified.
           readOnly: true
           type: boolean
-        scope:
-          allOf:
-          - $ref: '#/components/schemas/Scope'
-          description: The scope of the role. Indicated for roles associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
-          readOnly: true
-        self:
-          description: The URL the project role details.
-          format: uri
-          readOnly: true
-          type: string
-        translatedName:
-          description: The translated name of the project role.
-          type: string
       type: object
     PageBeanNotificationScheme:
       additionalProperties: false
@@ -679,39 +889,18 @@ components:
           readOnly: true
           type: array
       type: object
-    UpdateNotificationSchemeDetails:
-      additionalProperties: true
-      description: Details of a notification scheme.
-      properties:
-        description:
-          description: The description of the notification scheme.
-          maxLength: 4000
-          type: string
-          writeOnly: true
-        name:
-          description: The name of the notification scheme. Must be unique.
-          maxLength: 255
-          type: string
-          writeOnly: true
-      type: object
-    AvatarUrlsBean:
+    ProjectRoleGroup:
       additionalProperties: false
+      description: Details of the group associated with the role.
       properties:
-        16x16:
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
+        displayName:
+          description: The display name of the group.
           type: string
-        24x24:
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
+        groupId:
+          description: The ID of the group.
           type: string
-        32x32:
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-          type: string
-        48x48:
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
+        name:
+          description: The name of the group. As a group's name can change, use of `groupId` is recommended to identify the group.
           type: string
       type: object
     FieldDetails:
@@ -756,69 +945,146 @@ components:
       type: object
       xml:
         name: field
-    GroupName:
-      additionalProperties: false
-      description: Details about a group.
+    AddNotificationsDetails:
+      additionalProperties: true
+      description: Details of notifications which should be added to the notification scheme.
       properties:
-        groupId:
-          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
-          type:
-          - string
-          - 'null'
-        name:
-          description: The name of group.
+        notificationSchemeEvents:
+          description: The list of notifications which should be added to the notification scheme.
+          items:
+            $ref: '#/components/schemas/NotificationSchemeEventDetails'
+          type: array
+          writeOnly: true
+      required:
+      - notificationSchemeEvents
+      type: object
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
           type: string
-        self:
-          description: The URL for these group details.
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
+      type: object
+    PageBeanNotificationSchemeAndProjectMappingJsonBean:
+      additionalProperties: false
+      description: A page of items.
+      properties:
+        isLast:
+          description: Whether this is the last page.
+          readOnly: true
+          type: boolean
+        maxResults:
+          description: The maximum number of items that could be returned.
+          format: int32
+          readOnly: true
+          type: integer
+        nextPage:
+          description: If there is another page of results, the URL of the next page.
           format: uri
           readOnly: true
           type: string
+        self:
+          description: The URL of the page.
+          format: uri
+          readOnly: true
+          type: string
+        startAt:
+          description: The index of the first item returned.
+          format: int64
+          readOnly: true
+          type: integer
+        total:
+          description: The number of items returned.
+          format: int64
+          readOnly: true
+          type: integer
+        values:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/NotificationSchemeAndProjectMappingJsonBean'
+          readOnly: true
+          type: array
       type: object
-    NotificationSchemeNotificationDetails:
+    CreateNotificationSchemeDetails:
       additionalProperties: true
-      description: Details of a notification within a notification scheme.
-      maxLength: 255
+      description: Details of an notification scheme.
       properties:
-        notificationType:
-          description: The notification type, e.g `CurrentAssignee`, `Group`, `EmailAddress`.
+        description:
+          description: The description of the notification scheme.
+          maxLength: 4000
           type: string
           writeOnly: true
-        parameter:
-          description: The value corresponding to the specified notification type.
+        name:
+          description: The name of the notification scheme. Must be unique (case-insensitive).
+          maxLength: 255
           type: string
+          writeOnly: true
+        notificationSchemeEvents:
+          description: The list of notifications which should be added to the notification scheme.
+          items:
+            $ref: '#/components/schemas/NotificationSchemeEventDetails'
+          type: array
           writeOnly: true
       required:
-      - notificationType
+      - name
       type: object
-      writeOnly: true
-    NotificationSchemeEvent:
+    JsonTypeBean:
       additionalProperties: false
-      description: Details about a notification scheme event.
+      description: The schema of a field.
       properties:
-        event:
-          $ref: '#/components/schemas/NotificationEvent'
-        notifications:
-          items:
-            $ref: '#/components/schemas/EventNotification'
-          type: array
-      type: object
-    ErrorCollection:
-      additionalProperties: false
-      description: Error messages from an operation.
-      properties:
-        errorMessages:
-          description: The list of error messages produced by this operation. For example, "input parameter 'key' must be provided"
-          items:
-            type: string
-          type: array
-        errors:
+        configuration:
           additionalProperties:
-            type: string
-          description: 'The list of errors by parameter returned by the operation. For example,"projectKey": "Project keys must start with an uppercase letter, followed by one or more uppercase alphanumeric characters."'
+            readOnly: true
+          description: If the field is a custom field, the configuration of the field.
+          readOnly: true
           type: object
-        status:
-          format: int32
+        custom:
+          description: If the field is a custom field, the URI of the field.
+          readOnly: true
+          type: string
+        customId:
+          description: If the field is a custom field, the custom ID of the field.
+          format: int64
+          readOnly: true
           type: integer
+        items:
+          description: When the data type is an array, the name of the field items within the array.
+          readOnly: true
+          type: string
+        system:
+          description: If the field is a system field, the name of the field.
+          readOnly: true
+          type: string
+        type:
+          description: The data type of the field.
+          readOnly: true
+          type: string
+      required:
+      - type
+      type: object
+    NotificationSchemeId:
+      additionalProperties: true
+      description: The ID of a notification scheme.
+      properties:
+        id:
+          description: The ID of a notification scheme.
+          readOnly: true
+          type: string
+      required:
+      - id
       type: object
     EventNotification:
       additionalProperties: false
@@ -873,254 +1139,6 @@ components:
           - $ref: '#/components/schemas/UserDetails'
           description: The specified user.
       type: object
-    CreateNotificationSchemeDetails:
-      additionalProperties: true
-      description: Details of an notification scheme.
-      properties:
-        description:
-          description: The description of the notification scheme.
-          maxLength: 4000
-          type: string
-          writeOnly: true
-        name:
-          description: The name of the notification scheme. Must be unique (case-insensitive).
-          maxLength: 255
-          type: string
-          writeOnly: true
-        notificationSchemeEvents:
-          description: The list of notifications which should be added to the notification scheme.
-          items:
-            $ref: '#/components/schemas/NotificationSchemeEventDetails'
-          type: array
-          writeOnly: true
-      required:
-      - name
-      type: object
-    PageBeanNotificationSchemeAndProjectMappingJsonBean:
-      additionalProperties: false
-      description: A page of items.
-      properties:
-        isLast:
-          description: Whether this is the last page.
-          readOnly: true
-          type: boolean
-        maxResults:
-          description: The maximum number of items that could be returned.
-          format: int32
-          readOnly: true
-          type: integer
-        nextPage:
-          description: If there is another page of results, the URL of the next page.
-          format: uri
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the page.
-          format: uri
-          readOnly: true
-          type: string
-        startAt:
-          description: The index of the first item returned.
-          format: int64
-          readOnly: true
-          type: integer
-        total:
-          description: The number of items returned.
-          format: int64
-          readOnly: true
-          type: integer
-        values:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/NotificationSchemeAndProjectMappingJsonBean'
-          readOnly: true
-          type: array
-      type: object
-    NotificationSchemeId:
-      additionalProperties: true
-      description: The ID of a notification scheme.
-      properties:
-        id:
-          description: The ID of a notification scheme.
-          readOnly: true
-          type: string
-      required:
-      - id
-      type: object
-    JsonTypeBean:
-      additionalProperties: false
-      description: The schema of a field.
-      properties:
-        configuration:
-          additionalProperties:
-            readOnly: true
-          description: If the field is a custom field, the configuration of the field.
-          readOnly: true
-          type: object
-        custom:
-          description: If the field is a custom field, the URI of the field.
-          readOnly: true
-          type: string
-        customId:
-          description: If the field is a custom field, the custom ID of the field.
-          format: int64
-          readOnly: true
-          type: integer
-        items:
-          description: When the data type is an array, the name of the field items within the array.
-          readOnly: true
-          type: string
-        system:
-          description: If the field is a system field, the name of the field.
-          readOnly: true
-          type: string
-        type:
-          description: The data type of the field.
-          readOnly: true
-          type: string
-      required:
-      - type
-      type: object
-    NotificationSchemeEventTypeId:
-      additionalProperties: true
-      description: The ID of an event that is being mapped to notifications.
-      properties:
-        id:
-          description: The ID of the notification scheme event.
-          type: string
-          writeOnly: true
-      required:
-      - id
-      type: object
-      writeOnly: true
-    AddNotificationsDetails:
-      additionalProperties: true
-      description: Details of notifications which should be added to the notification scheme.
-      properties:
-        notificationSchemeEvents:
-          description: The list of notifications which should be added to the notification scheme.
-          items:
-            $ref: '#/components/schemas/NotificationSchemeEventDetails'
-          type: array
-          writeOnly: true
-      required:
-      - notificationSchemeEvents
-      type: object
-    UserDetails:
-      additionalProperties: false
-      description: "User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
-      properties:
-        accountId:
-          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
-          maxLength: 128
-          type: string
-        accountType:
-          description: The type of account represented by this user. This will be one of 'atlassian' (normal users), 'app' (application user) or 'customer' (Jira Service Desk customer user)
-          readOnly: true
-          type: string
-        active:
-          description: Whether the user is active.
-          readOnly: true
-          type: boolean
-        avatarUrls:
-          allOf:
-          - $ref: '#/components/schemas/AvatarUrlsBean'
-          description: The avatars of the user.
-          readOnly: true
-        displayName:
-          description: The display name of the user. Depending on the user’s privacy settings, this may return an alternative value.
-          readOnly: true
-          type: string
-        emailAddress:
-          description: The email address of the user. Depending on the user’s privacy settings, this may be returned as null.
-          readOnly: true
-          type: string
-        key:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          readOnly: true
-          type: string
-        name:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the user.
-          readOnly: true
-          type: string
-        timeZone:
-          description: The time zone specified in the user's profile. Depending on the user’s privacy settings, this may be returned as null.
-          readOnly: true
-          type: string
-      type: object
-    NotificationScheme:
-      additionalProperties: false
-      description: Details about a notification scheme.
-      properties:
-        description:
-          description: The description of the notification scheme.
-          type: string
-        expand:
-          description: Expand options that include additional notification scheme details in the response.
-          type: string
-        id:
-          description: The ID of the notification scheme.
-          format: int64
-          type: integer
-        name:
-          description: The name of the notification scheme.
-          type: string
-        notificationSchemeEvents:
-          description: The notification events and associated recipients.
-          items:
-            $ref: '#/components/schemas/NotificationSchemeEvent'
-          type: array
-        projects:
-          description: The list of project IDs associated with the notification scheme.
-          items:
-            format: int64
-            type: integer
-          type: array
-        scope:
-          allOf:
-          - $ref: '#/components/schemas/Scope'
-          description: The scope of the notification scheme.
-        self:
-          type: string
-      type: object
-    ProjectRoleGroup:
-      additionalProperties: false
-      description: Details of the group associated with the role.
-      properties:
-        displayName:
-          description: The display name of the group.
-          type: string
-        groupId:
-          description: The ID of the group.
-          type: string
-        name:
-          description: The name of the group. As a group's name can change, use of `groupId` is recommended to identify the group.
-          type: string
-      type: object
-    NotificationSchemeEventDetails:
-      additionalProperties: true
-      description: Details of a notification scheme event.
-      properties:
-        event:
-          allOf:
-          - $ref: '#/components/schemas/NotificationSchemeEventTypeId'
-          description: The ID of the event.
-        notifications:
-          description: The list of notifications mapped to a specified event.
-          items:
-            $ref: '#/components/schemas/NotificationSchemeNotificationDetails'
-          maxLength: 255
-          type: array
-          writeOnly: true
-      required:
-      - event
-      - notifications
-      type: object
-      writeOnly: true
     RoleActor:
       additionalProperties: false
       description: Details about a user assigned to a project role.
@@ -1161,49 +1179,6 @@ components:
       type: object
       xml:
         name: projectRoleActor
-    ProjectDetails:
-      additionalProperties: false
-      description: Details about a project.
-      properties:
-        avatarUrls:
-          allOf:
-          - $ref: '#/components/schemas/AvatarUrlsBean'
-          description: The URLs of the project's avatars.
-          readOnly: true
-        id:
-          description: The ID of the project.
-          type: string
-        key:
-          description: The key of the project.
-          readOnly: true
-          type: string
-        name:
-          description: The name of the project.
-          readOnly: true
-          type: string
-        projectCategory:
-          allOf:
-          - $ref: '#/components/schemas/UpdatedProjectCategory'
-          description: The category the project belongs to.
-          readOnly: true
-        projectTypeKey:
-          description: The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes) of the project.
-          enum:
-          - software
-          - service_desk
-          - business
-          - product_discovery
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the project details.
-          readOnly: true
-          type: string
-        simplified:
-          description: Whether or not the project is simplified.
-          readOnly: true
-          type: boolean
-      type: object
     NotificationEvent:
       additionalProperties: false
       description: Details about a notification event.
@@ -1223,50 +1198,75 @@ components:
           - $ref: '#/components/schemas/NotificationEvent'
           description: The template of the event. Only custom events configured by Jira administrators have template.
       type: object
-    Scope:
+    NotificationSchemeEventDetails:
       additionalProperties: true
-      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
+      description: Details of a notification scheme event.
       properties:
-        project:
+        event:
           allOf:
-          - $ref: '#/components/schemas/ProjectDetails'
-          description: The project the item has scope in.
-          readOnly: true
-        type:
-          description: The type of scope.
-          enum:
-          - PROJECT
-          - TEMPLATE
-          readOnly: true
-          type: string
+          - $ref: '#/components/schemas/NotificationSchemeEventTypeId'
+          description: The ID of the event.
+        notifications:
+          description: The list of notifications mapped to a specified event.
+          items:
+            $ref: '#/components/schemas/NotificationSchemeNotificationDetails'
+          maxLength: 255
+          type: array
+          writeOnly: true
+      required:
+      - event
+      - notifications
       type: object
-    UpdatedProjectCategory:
+      writeOnly: true
+    ProjectRole:
       additionalProperties: false
-      description: A project category.
+      description: Details about the roles in a project.
       properties:
+        actors:
+          description: The list of users who act in this role.
+          items:
+            $ref: '#/components/schemas/RoleActor'
+          readOnly: true
+          type: array
+        admin:
+          description: Whether this role is the admin role for the project.
+          readOnly: true
+          type: boolean
+        currentUserRole:
+          description: Whether the calling user is part of this role.
+          type: boolean
+        default:
+          description: Whether this role is the default role for the project
+          readOnly: true
+          type: boolean
         description:
-          description: The name of the project category.
+          description: The description of the project role.
           readOnly: true
           type: string
         id:
-          description: The ID of the project category.
+          description: The ID of the project role.
+          format: int64
           readOnly: true
-          type: string
+          type: integer
         name:
-          description: The description of the project category.
-          readOnly: true
+          description: The name of the project role.
           type: string
+        roleConfigurable:
+          description: Whether the roles are configurable for this project.
+          readOnly: true
+          type: boolean
+        scope:
+          allOf:
+          - $ref: '#/components/schemas/Scope'
+          description: The scope of the role. Indicated for roles associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
+          readOnly: true
         self:
-          description: The URL of the project category.
+          description: The URL the project role details.
+          format: uri
           readOnly: true
           type: string
-      type: object
-    NotificationSchemeAndProjectMappingJsonBean:
-      additionalProperties: false
-      properties:
-        notificationSchemeId:
-          type: string
-        projectId:
+        translatedName:
+          description: The translated name of the project role.
           type: string
       type: object
   securitySchemes:

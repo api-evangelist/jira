@@ -598,22 +598,6 @@ paths:
       x-atlassian-connect-scope: INACCESSIBLE
 components:
   schemas:
-    OperationMessage:
-      additionalProperties: false
-      example:
-        message: An example message.
-        statusCode: 200
-      properties:
-        message:
-          description: The human-readable message that describes the result.
-          type: string
-        statusCode:
-          description: The status code of the response.
-          type: integer
-      required:
-      - message
-      - statusCode
-      type: object
     EntityProperty:
       additionalProperties: false
       description: An entity property, for more information see [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).
@@ -634,6 +618,22 @@ components:
             $ref: '#/components/schemas/PropertyKey'
           readOnly: true
           type: array
+      type: object
+    OperationMessage:
+      additionalProperties: false
+      example:
+        message: An example message.
+        statusCode: 200
+      properties:
+        message:
+          description: The human-readable message that describes the result.
+          type: string
+        statusCode:
+          description: The status code of the response.
+          type: integer
+      required:
+      - message
+      - statusCode
       type: object
     PropertyKey:
       additionalProperties: false

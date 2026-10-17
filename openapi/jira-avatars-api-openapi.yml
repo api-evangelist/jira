@@ -723,26 +723,6 @@ paths:
       x-atlassian-connect-scope: READ
 components:
   schemas:
-    StreamingResponseBody:
-      additionalProperties: false
-      type: object
-    Avatars:
-      additionalProperties: false
-      description: Details about system and custom avatars.
-      properties:
-        custom:
-          description: Custom avatars list.
-          items:
-            $ref: '#/components/schemas/Avatar'
-          readOnly: true
-          type: array
-        system:
-          description: System avatars list.
-          items:
-            $ref: '#/components/schemas/Avatar'
-          readOnly: true
-          type: array
-      type: object
     ErrorCollection:
       additionalProperties: false
       description: Error messages from an operation.
@@ -761,6 +741,23 @@ components:
           format: int32
           type: integer
       type: object
+    Avatars:
+      additionalProperties: false
+      description: Details about system and custom avatars.
+      properties:
+        custom:
+          description: Custom avatars list.
+          items:
+            $ref: '#/components/schemas/Avatar'
+          readOnly: true
+          type: array
+        system:
+          description: System avatars list.
+          items:
+            $ref: '#/components/schemas/Avatar'
+          readOnly: true
+          type: array
+      type: object
     SystemAvatars:
       additionalProperties: false
       description: List of system avatars.
@@ -771,6 +768,9 @@ components:
             $ref: '#/components/schemas/Avatar'
           readOnly: true
           type: array
+      type: object
+    StreamingResponseBody:
+      additionalProperties: false
       type: object
     Avatar:
       additionalProperties: true

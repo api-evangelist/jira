@@ -147,18 +147,50 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    Transitions:
+    StatusCategory:
       type: object
-      description: Available transitions for an issue.
+      description: A status category in Jira.
       properties:
-        expand:
+        self:
           type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: integer
+          format: int64
+          example: abc123
+        key:
+          type: string
+          description: The key of the status category (e.g., new, indeterminate, done).
           example: example_value
-        transitions:
+        colorName:
+          type: string
+          description: The color name for the status category.
+          example: example_value
+        name:
+          type: string
+          description: The name of the status category.
+          example: Example Title
+    ErrorCollection:
+      type: object
+      description: Error details returned by the API.
+      properties:
+        errorMessages:
           type: array
+          description: The list of error messages.
           items:
-            $ref: '#/components/schemas/Transition'
+            type: string
           example: []
+        errors:
+          type: object
+          description: Field-specific errors.
+          additionalProperties:
+            type: string
+          example: example_value
+        status:
+          type: integer
+          description: The HTTP status code.
+          example: 10
     IssueTransitionRequest:
       type: object
       description: Request body for performing an issue transition.
@@ -185,54 +217,18 @@ components:
           description: Metadata about the history entry.
           additionalProperties: true
           example: example_value
-    StatusCategory:
+    Transitions:
       type: object
-      description: A status category in Jira.
+      description: Available transitions for an issue.
       properties:
-        self:
+        expand:
           type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: integer
-          format: int64
-          example: abc123
-        key:
-          type: string
-          description: The key of the status category (e.g., new, indeterminate, done).
           example: example_value
-        colorName:
-          type: string
-          description: The color name for the status category.
-          example: example_value
-        name:
-          type: string
-          description: The name of the status category.
-          example: Example Title
-    StatusDetails:
-      type: object
-      description: A status in Jira.
-      properties:
-        self:
-          type: string
-          format: uri
-          example: https://www.example.com
-        id:
-          type: string
-          example: abc123
-        name:
-          type: string
-          description: The name of the status (e.g., To Do, In Progress, Done).
-          example: Example Title
-        description:
-          type: string
-          example: A sample description.
-        iconUrl:
-          type: string
-          format: uri
-          example: https://www.example.com
-        statusCategory:
-          $ref: '#/components/schemas/StatusCategory'
+        transitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transition'
+          example: []
     FieldUpdateOperation:
       type: object
       description: An operation to perform on a field value.
@@ -252,36 +248,6 @@ components:
         copy:
           description: Value to copy to the field.
           example: example_value
-    TransitionRef:
-      type: object
-      description: A reference to a transition by ID.
-      properties:
-        id:
-          type: string
-          description: The ID of the transition.
-          example: abc123
-      required:
-      - id
-    ErrorCollection:
-      type: object
-      description: Error details returned by the API.
-      properties:
-        errorMessages:
-          type: array
-          description: The list of error messages.
-          items:
-            type: string
-          example: []
-        errors:
-          type: object
-          description: Field-specific errors.
-          additionalProperties:
-            type: string
-          example: example_value
-        status:
-          type: integer
-          description: The HTTP status code.
-          example: 10
     Transition:
       type: object
       description: A workflow transition.
@@ -311,6 +277,40 @@ components:
           description: Fields available during the transition.
           additionalProperties: true
           example: example_value
+    TransitionRef:
+      type: object
+      description: A reference to a transition by ID.
+      properties:
+        id:
+          type: string
+          description: The ID of the transition.
+          example: abc123
+      required:
+      - id
+    StatusDetails:
+      type: object
+      description: A status in Jira.
+      properties:
+        self:
+          type: string
+          format: uri
+          example: https://www.example.com
+        id:
+          type: string
+          example: abc123
+        name:
+          type: string
+          description: The name of the status (e.g., To Do, In Progress, Done).
+          example: Example Title
+        description:
+          type: string
+          example: A sample description.
+        iconUrl:
+          type: string
+          format: uri
+          example: https://www.example.com
+        statusCategory:
+          $ref: '#/components/schemas/StatusCategory'
   parameters:
     issueIdOrKey:
       name: issueIdOrKey

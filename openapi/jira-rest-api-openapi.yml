@@ -188,6 +188,15 @@ components:
           format: int64
           type: integer
       type: object
+    BulkWorklogKeyResponseBean:
+      additionalProperties: false
+      properties:
+        worklogs:
+          description: A list of successfully retrieved worklogs with their issue and worklog IDs.
+          items:
+            $ref: '#/components/schemas/WorklogKeyResult'
+          type: array
+      type: object
     WorklogKeyResult:
       additionalProperties: false
       properties:
@@ -209,30 +218,21 @@ components:
             $ref: '#/components/schemas/WorklogCompositeKey'
           type: array
       type: object
-    BulkWorklogKeyResponseBean:
+    ServiceDeskCustomerDTO:
       additionalProperties: false
       properties:
-        worklogs:
-          description: A list of successfully retrieved worklogs with their issue and worklog IDs.
+        accountIds:
+          description: List of users, specified by account IDs, to add to or remove from a service desk.
           items:
-            $ref: '#/components/schemas/WorklogKeyResult'
-          type: array
-      type: object
-    UserLinkDTO:
-      additionalProperties: false
-      properties:
-        avatarUrls:
-          additionalProperties:
             type: string
-          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
-          type: object
-        jiraRest:
-          description: REST API URL for the customer.
-          format: uri
-          type: string
-        self:
-          format: uri
-          type: string
+          type: array
+          uniqueItems: true
+        usernames:
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. Use `accountIds` instead.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
       type: object
     UserDTO:
       additionalProperties: false
@@ -263,22 +263,6 @@ components:
           description: Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
           type: string
       type: object
-    ServiceDeskCustomerDTO:
-      additionalProperties: false
-      properties:
-        accountIds:
-          description: List of users, specified by account IDs, to add to or remove from a service desk.
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        usernames:
-          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. Use `accountIds` instead.
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
     CustomerCreateDTO:
       additionalProperties: false
       properties:
@@ -290,6 +274,22 @@ components:
           type: string
         fullName:
           description: Deprecated, please use 'displayName'.
+          type: string
+      type: object
+    UserLinkDTO:
+      additionalProperties: false
+      properties:
+        avatarUrls:
+          additionalProperties:
+            type: string
+          description: Links to the various sizes of the customer's avatar. Note that this property is deprecated, and will be removed in future versions.
+          type: object
+        jiraRest:
+          description: REST API URL for the customer.
+          format: uri
+          type: string
+        self:
+          format: uri
           type: string
       type: object
   securitySchemes:

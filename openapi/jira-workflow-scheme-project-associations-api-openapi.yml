@@ -154,25 +154,29 @@ paths:
       x-atlassian-connect-scope: ADMIN
 components:
   schemas:
-    ListWrapperCallbackGroupName:
+    ListWrapperCallbackApplicationRole:
       additionalProperties: false
       type: object
-    WorkflowSchemeAssociations:
+    UpdatedProjectCategory:
       additionalProperties: false
-      description: A workflow scheme along with a list of projects that use it.
+      description: A project category.
       properties:
-        projectIds:
-          description: The list of projects that use the workflow scheme.
-          items:
-            type: string
-          type: array
-        workflowScheme:
-          allOf:
-          - $ref: '#/components/schemas/WorkflowScheme'
-          description: The workflow scheme.
-      required:
-      - projectIds
-      - workflowScheme
+        description:
+          description: The name of the project category.
+          readOnly: true
+          type: string
+        id:
+          description: The ID of the project category.
+          readOnly: true
+          type: string
+        name:
+          description: The description of the project category.
+          readOnly: true
+          type: string
+        self:
+          description: The URL of the project category.
+          readOnly: true
+          type: string
       type: object
     IssueTypeDetails:
       additionalProperties: false
@@ -223,23 +227,6 @@ components:
           readOnly: true
           type: boolean
       type: object
-    Scope:
-      additionalProperties: true
-      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
-      properties:
-        project:
-          allOf:
-          - $ref: '#/components/schemas/ProjectDetails'
-          description: The project the item has scope in.
-          readOnly: true
-        type:
-          description: The type of scope.
-          enum:
-          - PROJECT
-          - TEMPLATE
-          readOnly: true
-          type: string
-      type: object
     SimpleListWrapperGroupName:
       additionalProperties: false
       properties:
@@ -265,108 +252,18 @@ components:
       type: object
       xml:
         name: list
-    GroupName:
+    WorkflowSchemeProjectAssociation:
       additionalProperties: false
-      description: Details about a group.
+      description: An associated workflow scheme and project.
       properties:
-        groupId:
-          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
-          type:
-          - string
-          - 'null'
-        name:
-          description: The name of group.
+        projectId:
+          description: The ID of the project.
           type: string
-        self:
-          description: The URL for these group details.
-          format: uri
-          readOnly: true
+        workflowSchemeId:
+          description: The ID of the workflow scheme. If the workflow scheme ID is `null`, the operation assigns the default workflow scheme.
           type: string
-      type: object
-    WorkflowScheme:
-      additionalProperties: false
-      description: Details about a workflow scheme.
-      properties:
-        defaultWorkflow:
-          description: The name of the default workflow for the workflow scheme. The default workflow has *All Unassigned Issue Types* assigned to it in Jira. If `defaultWorkflow` is not specified when creating a workflow scheme, it is set to *Jira Workflow (jira)*.
-          type: string
-        description:
-          description: The description of the workflow scheme.
-          type: string
-        draft:
-          description: Whether the workflow scheme is a draft or not.
-          readOnly: true
-          type: boolean
-        id:
-          description: The ID of the workflow scheme.
-          format: int64
-          readOnly: true
-          type: integer
-        issueTypeMappings:
-          additionalProperties:
-            type: string
-          description: The issue type to workflow mappings, where each mapping is an issue type ID and workflow name pair. Note that an issue type can only be mapped to one workflow in a workflow scheme.
-          type: object
-        issueTypes:
-          additionalProperties:
-            $ref: '#/components/schemas/IssueTypeDetails'
-          description: The issue types available in Jira.
-          readOnly: true
-          type: object
-        lastModified:
-          description: The date-time that the draft workflow scheme was last modified. A modification is a change to the issue type-project mappings only. This property does not apply to non-draft workflows.
-          readOnly: true
-          type: string
-        lastModifiedUser:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          description: The user that last modified the draft workflow scheme. A modification is a change to the issue type-project mappings only. This property does not apply to non-draft workflows.
-          readOnly: true
-        name:
-          description: The name of the workflow scheme. The name must be unique. The maximum length is 255 characters. Required when creating a workflow scheme.
-          type: string
-        originalDefaultWorkflow:
-          description: For draft workflow schemes, this property is the name of the default workflow for the original workflow scheme. The default workflow has *All Unassigned Issue Types* assigned to it in Jira.
-          readOnly: true
-          type: string
-        originalIssueTypeMappings:
-          additionalProperties:
-            readOnly: true
-            type: string
-          description: For draft workflow schemes, this property is the issue type to workflow mappings for the original workflow scheme, where each mapping is an issue type ID and workflow name pair. Note that an issue type can only be mapped to one workflow in a workflow scheme.
-          readOnly: true
-          type: object
-        self:
-          format: uri
-          readOnly: true
-          type: string
-        updateDraftIfNeeded:
-          description: "Whether to create or update a draft workflow scheme when updating an active workflow scheme. An active workflow scheme is a workflow scheme that is used by at least one project. The following examples show how this property works:\n\n *  Update an active workflow scheme with `updateDraftIfNeeded` set to `true`: If a draft workflow scheme exists, it is updated. Otherwise, a draft workflow scheme is created.\n *  Update an active workflow scheme with `updateDraftIfNeeded` set to `false`: An error is returned, as active workflow schemes cannot be updated.\n *  Update an inactive workflow scheme with `updateDraftIfNeeded` set to `true`: The workflow scheme is updated, as inactive workflow schemes do not require drafts to update.\n\nDefaults to `false`."
-          type: boolean
-      type: object
-    UpdatedProjectCategory:
-      additionalProperties: false
-      description: A project category.
-      properties:
-        description:
-          description: The name of the project category.
-          readOnly: true
-          type: string
-        id:
-          description: The ID of the project category.
-          readOnly: true
-          type: string
-        name:
-          description: The description of the project category.
-          readOnly: true
-          type: string
-        self:
-          description: The URL of the project category.
-          readOnly: true
-          type: string
-      type: object
-    ListWrapperCallbackApplicationRole:
-      additionalProperties: false
+      required:
+      - projectId
       type: object
     SimpleListWrapperApplicationRole:
       additionalProperties: false
@@ -473,6 +370,53 @@ components:
       type: object
       xml:
         name: user
+    GroupName:
+      additionalProperties: false
+      description: Details about a group.
+      properties:
+        groupId:
+          description: The ID of the group, which uniquely identifies the group across all Atlassian products. For example, *952d12c3-5b5b-4d04-bb32-44d383afc4b2*.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The name of group.
+          type: string
+        self:
+          description: The URL for these group details.
+          format: uri
+          readOnly: true
+          type: string
+      type: object
+    Scope:
+      additionalProperties: true
+      description: The projects the item is associated with. Indicated for items associated with [next-gen projects](https://confluence.atlassian.com/x/loMyO).
+      properties:
+        project:
+          allOf:
+          - $ref: '#/components/schemas/ProjectDetails'
+          description: The project the item has scope in.
+          readOnly: true
+        type:
+          description: The type of scope.
+          enum:
+          - PROJECT
+          - TEMPLATE
+          readOnly: true
+          type: string
+      type: object
+    ContainerOfWorkflowSchemeAssociations:
+      additionalProperties: false
+      description: A container for a list of workflow schemes together with the projects they are associated with.
+      properties:
+        values:
+          description: A list of workflow schemes together with projects they are associated with.
+          items:
+            $ref: '#/components/schemas/WorkflowSchemeAssociations'
+          type: array
+      required:
+      - values
+      type: object
     ProjectDetails:
       additionalProperties: false
       description: Details about a project.
@@ -516,18 +460,106 @@ components:
           readOnly: true
           type: boolean
       type: object
-    WorkflowSchemeProjectAssociation:
+    ListWrapperCallbackGroupName:
       additionalProperties: false
-      description: An associated workflow scheme and project.
+      type: object
+    WorkflowSchemeAssociations:
+      additionalProperties: false
+      description: A workflow scheme along with a list of projects that use it.
       properties:
-        projectId:
-          description: The ID of the project.
-          type: string
-        workflowSchemeId:
-          description: The ID of the workflow scheme. If the workflow scheme ID is `null`, the operation assigns the default workflow scheme.
-          type: string
+        projectIds:
+          description: The list of projects that use the workflow scheme.
+          items:
+            type: string
+          type: array
+        workflowScheme:
+          allOf:
+          - $ref: '#/components/schemas/WorkflowScheme'
+          description: The workflow scheme.
       required:
-      - projectId
+      - projectIds
+      - workflowScheme
+      type: object
+    AvatarUrlsBean:
+      additionalProperties: false
+      properties:
+        16x16:
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+          type: string
+        24x24:
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+          type: string
+        32x32:
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+          type: string
+        48x48:
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+          type: string
+      type: object
+    WorkflowScheme:
+      additionalProperties: false
+      description: Details about a workflow scheme.
+      properties:
+        defaultWorkflow:
+          description: The name of the default workflow for the workflow scheme. The default workflow has *All Unassigned Issue Types* assigned to it in Jira. If `defaultWorkflow` is not specified when creating a workflow scheme, it is set to *Jira Workflow (jira)*.
+          type: string
+        description:
+          description: The description of the workflow scheme.
+          type: string
+        draft:
+          description: Whether the workflow scheme is a draft or not.
+          readOnly: true
+          type: boolean
+        id:
+          description: The ID of the workflow scheme.
+          format: int64
+          readOnly: true
+          type: integer
+        issueTypeMappings:
+          additionalProperties:
+            type: string
+          description: The issue type to workflow mappings, where each mapping is an issue type ID and workflow name pair. Note that an issue type can only be mapped to one workflow in a workflow scheme.
+          type: object
+        issueTypes:
+          additionalProperties:
+            $ref: '#/components/schemas/IssueTypeDetails'
+          description: The issue types available in Jira.
+          readOnly: true
+          type: object
+        lastModified:
+          description: The date-time that the draft workflow scheme was last modified. A modification is a change to the issue type-project mappings only. This property does not apply to non-draft workflows.
+          readOnly: true
+          type: string
+        lastModifiedUser:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          description: The user that last modified the draft workflow scheme. A modification is a change to the issue type-project mappings only. This property does not apply to non-draft workflows.
+          readOnly: true
+        name:
+          description: The name of the workflow scheme. The name must be unique. The maximum length is 255 characters. Required when creating a workflow scheme.
+          type: string
+        originalDefaultWorkflow:
+          description: For draft workflow schemes, this property is the name of the default workflow for the original workflow scheme. The default workflow has *All Unassigned Issue Types* assigned to it in Jira.
+          readOnly: true
+          type: string
+        originalIssueTypeMappings:
+          additionalProperties:
+            readOnly: true
+            type: string
+          description: For draft workflow schemes, this property is the issue type to workflow mappings for the original workflow scheme, where each mapping is an issue type ID and workflow name pair. Note that an issue type can only be mapped to one workflow in a workflow scheme.
+          readOnly: true
+          type: object
+        self:
+          format: uri
+          readOnly: true
+          type: string
+        updateDraftIfNeeded:
+          description: "Whether to create or update a draft workflow scheme when updating an active workflow scheme. An active workflow scheme is a workflow scheme that is used by at least one project. The following examples show how this property works:\n\n *  Update an active workflow scheme with `updateDraftIfNeeded` set to `true`: If a draft workflow scheme exists, it is updated. Otherwise, a draft workflow scheme is created.\n *  Update an active workflow scheme with `updateDraftIfNeeded` set to `false`: An error is returned, as active workflow schemes cannot be updated.\n *  Update an inactive workflow scheme with `updateDraftIfNeeded` set to `true`: The workflow scheme is updated, as inactive workflow schemes do not require drafts to update.\n\nDefaults to `false`."
+          type: boolean
       type: object
     ApplicationRole:
       additionalProperties: false
@@ -587,38 +619,6 @@ components:
         userCountDescription:
           description: The [type of users](https://confluence.atlassian.com/x/lRW3Ng) being counted against your license.
           type: string
-      type: object
-    AvatarUrlsBean:
-      additionalProperties: false
-      properties:
-        16x16:
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
-          type: string
-        24x24:
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
-          type: string
-        32x32:
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-          type: string
-        48x48:
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
-          type: string
-      type: object
-    ContainerOfWorkflowSchemeAssociations:
-      additionalProperties: false
-      description: A container for a list of workflow schemes together with the projects they are associated with.
-      properties:
-        values:
-          description: A list of workflow schemes together with projects they are associated with.
-          items:
-            $ref: '#/components/schemas/WorkflowSchemeAssociations'
-          type: array
-      required:
-      - values
       type: object
   securitySchemes:
     OAuth2:
