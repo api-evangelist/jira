@@ -15,6 +15,7 @@
   evidence: https://zapier.com/apps/google-forms/integrations/jira-software-server/11098/create-jira-issues-from-new-google-forms-responses
   template: https://zapier.com/apps/google-forms/integrations/jira-software-server/11098/create-jira-issues-from-new-google-forms-responses
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: jira-add-new-typeform-entries-to-jira-as-issues
@@ -29,6 +30,7 @@
   evidence: https://zapier.com/apps/jira-software-server/integrations/typeform/2484/add-new-typeform-entries-to-jira-as-issues
   template: https://zapier.com/apps/jira-software-server/integrations/typeform/2484/add-new-typeform-entries-to-jira-as-issues
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: jira-add-new-jira-issues-as-detailed-events-in-google-calendar
@@ -43,6 +45,7 @@
   evidence: https://zapier.com/apps/google-calendar/integrations/jira-software-server/2489/add-new-jira-issues-as-detailed-events-in-google-calendar
   template: https://zapier.com/apps/google-calendar/integrations/jira-software-server/2489/add-new-jira-issues-as-detailed-events-in-google-calendar
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: jira-create-jira-issues-from-new-slack-reactions
@@ -57,6 +60,7 @@
   evidence: https://zapier.com/apps/jira-software-server/integrations/slack/509376/create-jira-issues-from-new-slack-reactions
   template: https://zapier.com/apps/jira-software-server/integrations/slack/509376/create-jira-issues-from-new-slack-reactions
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: jira-create-trello-cards-from-new-jira-issues
@@ -71,6 +75,7 @@
   evidence: https://zapier.com/apps/jira-software-server/integrations/trello/1106/create-trello-cards-from-new-jira-issues
   template: https://zapier.com/apps/jira-software-server/integrations/trello/1106/create-trello-cards-from-new-jira-issues
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: jira-get-slack-notifications-for-new-jira-issues
@@ -85,6 +90,7 @@
   evidence: https://zapier.com/apps/jira-software-server/integrations/slack/1594/get-slack-notifications-for-new-jira-issues
   template: https://zapier.com/apps/jira-software-server/integrations/slack/1594/get-slack-notifications-for-new-jira-issues
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: jira-add-new-jira-issues-to-asana-as-tasks
@@ -99,286 +105,7 @@
   evidence: https://zapier.com/apps/asana/integrations/jira-software-server/1308/add-new-jira-issues-to-asana-as-tasks
   template: https://zapier.com/apps/asana/integrations/jira-software-server/1308/add-new-jira-issues-to-asana-as-tasks
   source: template
-  status: pending-generation
-  arazzo: null
-- slug: jira-todoist
-  label: Todoist
-  partner: todoist
-  partner_name: Todoist
-  category: Task Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/todoist
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-clickup
-  label: ClickUp
-  partner: clickup
-  partner_name: ClickUp
-  category: Project Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/clickup
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-basecamp
-  label: Basecamp
-  partner: basecamp
-  partner_name: Basecamp
-  category: Project Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/basecamp
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-omnifocus
-  label: OmniFocus
-  partner_name: OmniFocus
-  category: Task Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/omnifocus
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: jira-hubspot
-  label: HubSpot
-  partner: hubspot
-  partner_name: HubSpot
-  category: Marketing Automation
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/hubspot
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-wrike
-  label: Wrike
-  partner: wrike
-  partner_name: Wrike
-  category: Project Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/wrike
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-things
-  label: Things
-  partner_name: Things
-  category: Task Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/things
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: jira-connectwise-manage
-  label: ConnectWise Manage
-  partner_name: ConnectWise Manage
-  category: CRM (Customer Relationship Management)
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/connectwise-manage
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: jira-superhuman-docs
-  label: Superhuman Docs
-  partner: superhuman
-  partner_name: Superhuman Docs
-  category: Documents
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/superhuman-docs
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: jira-monday-com
-  label: monday.com
-  partner_name: monday.com
-  category: Project Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/monday
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: jira-notion
-  label: Notion
-  partner: notion
-  partner_name: Notion
-  category: Task Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/notion
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-google-docs
-  label: Google Docs
-  partner: google-docs
-  partner_name: Google Docs
-  category: Documents
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/google-docs
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-smartsheet
-  label: Smartsheet
-  partner: smartsheet
-  partner_name: Smartsheet
-  category: Spreadsheets
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/smartsheet
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-google-tasks
-  label: Google Tasks
-  partner: google-tasks
-  partner_name: Google Tasks
-  category: Google
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/google-tasks
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-intercom
-  label: Intercom
-  partner: intercom
-  partner_name: Intercom
-  category: Customer Support
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/intercom
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-microsoft-onenote
-  label: Microsoft OneNote
-  partner: microsoft-onenote
-  partner_name: Microsoft OneNote
-  category: Microsoft
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/microsoft-onenote
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-ryver
-  label: Ryver
-  partner_name: Ryver
-  category: Team Collaboration
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/ryver
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: jira-pipedrive
-  label: Pipedrive
-  partner: pipedrive
-  partner_name: Pipedrive
-  category: CRM (Customer Relationship Management)
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/pipedrive
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-dropbox
-  label: Dropbox
-  partner: dropbox
-  partner_name: Dropbox
-  category: File Management & Storage
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/dropbox
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-freshping
-  label: Freshping
-  partner_name: Freshping
-  category: Server Monitoring
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/freshping
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: jira-jenkins
-  label: Jenkins
-  partner: jenkins
-  partner_name: Jenkins
-  category: Developer Tools
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/jenkins
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: jira-kayako
-  label: Kayako
-  partner_name: Kayako
-  category: Customer Support
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/kayako
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: jira-microsoft-to-do
-  label: Microsoft To Do
-  partner_name: Microsoft To Do
-  category: Microsoft
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/microsoft-todo
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: jira-bamboohr
-  label: BambooHR
-  partner: bamboohr
-  partner_name: BambooHR
-  category: HR Talent & Recruitment
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/jira/integrations/bamboohr
-  source: edge
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: jira-hightouch
@@ -595,4 +322,310 @@
   source: edge
   relationship: platform-app
   status: not-a-workflow
+  arazzo: null
+- slug: jira-todoist
+  label: Todoist
+  partner: todoist
+  partner_name: Todoist
+  category: Task Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/todoist
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-clickup
+  label: ClickUp
+  partner: clickup
+  partner_name: ClickUp
+  category: Project Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/clickup
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-basecamp
+  label: Basecamp
+  partner: basecamp
+  partner_name: Basecamp
+  category: Project Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/basecamp
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-omnifocus
+  label: OmniFocus
+  partner_name: OmniFocus
+  category: Task Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/omnifocus
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: jira-hubspot
+  label: HubSpot
+  partner: hubspot
+  partner_name: HubSpot
+  category: Marketing Automation
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/hubspot
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-wrike
+  label: Wrike
+  partner: wrike
+  partner_name: Wrike
+  category: Project Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/wrike
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-things
+  label: Things
+  partner_name: Things
+  category: Task Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/things
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: jira-connectwise-manage
+  label: ConnectWise Manage
+  partner_name: ConnectWise Manage
+  category: CRM (Customer Relationship Management)
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/connectwise-manage
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: jira-superhuman-docs
+  label: Superhuman Docs
+  partner: superhuman
+  partner_name: Superhuman Docs
+  category: Documents
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/superhuman-docs
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: jira-monday-com
+  label: monday.com
+  partner: monday-com
+  partner_name: monday.com
+  category: Project Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/monday
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-notion
+  label: Notion
+  partner: notion
+  partner_name: Notion
+  category: Task Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/notion
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-google-docs
+  label: Google Docs
+  partner: google-docs
+  partner_name: Google Docs
+  category: Documents
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/google-docs
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-smartsheet
+  label: Smartsheet
+  partner: smartsheet
+  partner_name: Smartsheet
+  category: Spreadsheets
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/smartsheet
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-google-tasks
+  label: Google Tasks
+  partner: google-tasks
+  partner_name: Google Tasks
+  category: Google
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/google-tasks
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-intercom
+  label: Intercom
+  partner: intercom
+  partner_name: Intercom
+  category: Customer Support
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/intercom
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-microsoft-onenote
+  label: Microsoft OneNote
+  partner: microsoft-onenote
+  partner_name: Microsoft OneNote
+  category: Microsoft
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/microsoft-onenote
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-ryver
+  label: Ryver
+  partner_name: Ryver
+  category: Team Collaboration
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/ryver
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: jira-pipedrive
+  label: Pipedrive
+  partner: pipedrive
+  partner_name: Pipedrive
+  category: CRM (Customer Relationship Management)
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/pipedrive
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-dropbox
+  label: Dropbox
+  partner: dropbox
+  partner_name: Dropbox
+  category: File Management & Storage
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/dropbox
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-freshping
+  label: Freshping
+  partner_name: Freshping
+  category: Server Monitoring
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/freshping
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: jira-jenkins
+  label: Jenkins
+  partner: jenkins
+  partner_name: Jenkins
+  category: Developer Tools
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/jenkins
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-kayako
+  label: Kayako
+  partner_name: Kayako
+  category: Customer Support
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/kayako
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: jira-microsoft-to-do
+  label: Microsoft To Do
+  partner: microsoft-to-do
+  partner_name: Microsoft To Do
+  category: Microsoft
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/microsoft-todo
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: jira-bamboohr
+  label: BambooHR
+  partner: bamboohr
+  partner_name: BambooHR
+  category: HR Talent & Recruitment
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/jira/integrations/bamboohr
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
   arazzo: null
