@@ -493,3 +493,9 @@ x-atlassian-narrative:
   - anchor: status-codes
     body: "The Jira Cloud platform REST API uses the [standard HTTP status codes](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).\n\nOperations that return an error status code may also return a response body containing details of the error or errors. \nThe schema for the response body is shown below:\n\n\n```json\n{\n  \"id\": \"https://docs.atlassian.com/jira/REST/schema/error-collection#\",\n  \"title\": \"Error Collection\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"errorMessages\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    },\n    \"errors\": {\n      \"type\": \"object\",\n      \"patternProperties\": {\n        \".+\": {\n          \"type\": \"string\"\n        }\n      },\n      \"additionalProperties\": false\n    },\n    \"status\": { \n      \"type\": \"integer\"\n    }\n  },\n  \"additionalProperties\": false\n}\n```"
     title: Status codes
+x-provenance:
+  method: harvested
+  publisher: Jira
+  source: https://developer.atlassian.com/cloud/jira/platform/swagger-v3.v3.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
